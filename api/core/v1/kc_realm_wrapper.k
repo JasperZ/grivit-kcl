@@ -11,7 +11,6 @@ schema KcRealmWrapper:
         }
         spec.forProvider.enabled = True
         spec.forProvider.realm = _name
-        spec.forProvider.policy = _name
         spec.providerConfigRef.name = _controlPlaneKcProviderConfigName
     }
     usages: [CpUsage] = []
