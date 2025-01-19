@@ -1,0 +1,3 @@
+schema CpUsageSpecResourceResourceRef:
+    name: str
+

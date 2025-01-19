@@ -1,0 +1,3 @@
+schema CpManagedResourceMetadataLabels:
+    [str]: str
+
