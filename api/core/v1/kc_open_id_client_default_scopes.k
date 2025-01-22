@@ -12,7 +12,7 @@ schema KcOpenIdClientDefaultScopes:
         metadata.annotations = {
             "krm.kcl.dev/composition-resource-name" = _name
         }
-        spec.forProvider.clientId = True
+        spec.forProvider.clientId = _clientId
         spec.forProvider.defaultScopes = [
             "acr"
             "basic"
