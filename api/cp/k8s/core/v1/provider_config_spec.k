@@ -1,0 +1,3 @@
+schema ProviderConfigSpec:
+    credentials: ProviderConfigSpecCredentials
+

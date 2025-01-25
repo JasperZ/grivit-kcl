@@ -1,0 +1,47 @@
+import api.cp.core.v1 as cpCore
+
+schema ClusterWrapper:
+    _name: str
+    _controlPlaneK8sProviderConfigName: str
+    _controlPlaneKubeadm: KubeadmControlPlaneWrapper
+    _openstackCluster: OsClusterWrapper
+    _tenantNamespace: str
+    _uses: [cpCore.ManagedResource] = []
+
+    managedResource: cpCore.ManagedResource {
+        apiVersion = "kubernetes.crossplane.io/v1alpha2"
+        kind = "Object"
+        metadata.name = _name
+        spec.forProvider.manifest = {
+            apiVersion = "cluster.x-k8s.io/v1beta1"
+            kind = "Cluster"
+            metadata.name = _name
+            metadata.namespace = _tenantNamespace
+            spec = {
+                clusterNetwork.pods.cidrBlocks = ["192.168.0.0/16"]
+                clusterNetwork.serviceDomain = "cluster.local"
+                controlPlaneRef = {
+                    apiVersion = "controlplane.cluster.x-k8s.io/v1beta1"
+                    kind = "KubeadmControlPlane"
+                    name = _controlPlaneKubeadm.managedResource.metadata.name
+                }
+                infrastructureRef = {
+                    apiVersion = "infrastructure.cluster.x-k8s.io/v1beta1"
+                    kind = "OpenStackCluster"
+                    name = _openstackCluster.managedResource.metadata.name
+                }
+            }
+        }
+        spec.readiness.policy = "AllTrue"
+        spec.providerConfigRef.name = _controlPlaneK8sProviderConfigName
+    }
+    usages: [cpCore.Usage] = [cpCore.Usage {
+        metadata.name = "${_name}-uses-${ofResource.metadata.name}"
+        spec.by.apiVersion = managedResource.apiVersion
+        spec.by.kind = managedResource.kind
+        spec.by.resourceRef.name = managedResource.metadata.name
+        spec.of.apiVersion = ofResource.apiVersion
+        spec.of.kind = ofResource.kind
+        spec.of.resourceRef.name = ofResource.metadata.name
+    } for ofResource in _uses]
+

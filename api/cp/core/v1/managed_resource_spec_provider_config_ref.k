@@ -1,0 +1,3 @@
+schema ManagedResourceSpecProviderConfigRef:
+    name: str
+
