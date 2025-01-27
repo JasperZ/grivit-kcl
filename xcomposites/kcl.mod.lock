@@ -1,18 +1,4 @@
 [dependencies]
-  [dependencies.grivit-crossplane-resources]
-    name = "grivit-crossplane-resources"
-    full_name = "grivit-crossplane-resources_0.0.1"
-    version = "0.0.1"
-    reg = "ghcr.io"
-    repo = "kcl-lang/grivit-crossplane-resources"
-    oci_tag = "0.0.1"
-  [dependencies.grivitcrossplaneresources]
-    name = "grivitcrossplaneresources"
-    full_name = "grivit-crossplane-resources_0.0.1"
-    version = "0.0.1"
-    reg = "ghcr.io"
-    repo = "kcl-lang/grivitcrossplaneresources"
-    oci_tag = "0.0.1"
   [dependencies.xresources]
     name = "xresources"
     full_name = "xresources_0.0.2"
