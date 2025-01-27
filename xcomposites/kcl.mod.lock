@@ -15,5 +15,5 @@
     oci_tag = "0.0.1"
   [dependencies.xresources]
     name = "xresources"
-    full_name = "xresources_0.0.1"
-    version = "0.0.1"
+    full_name = "xresources_0.0.2"
+    version = "0.0.2"
