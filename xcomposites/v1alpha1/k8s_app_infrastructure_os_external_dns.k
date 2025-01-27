@@ -1,5 +1,4 @@
 import xresources.v1alpha1 as res
-import base64
 
 schema K8sAppInfrastructureOsExternalDNS:
     _name: str
@@ -23,13 +22,6 @@ schema K8sAppInfrastructureOsExternalDNS:
         _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
         _tenantNamespace = _tenantNamespace
     }
-    _applicationCredentialId: str = ""
-    _applicationCredentialSecret: str = ""
-    _applicationCredentialName: str = applicationCredential.managedResource.metadata.name
-    if _applicationCredentialName in _observedCompositeResource:
-        _applicationCredentialId = str(_observedCompositeResource[_applicationCredentialName].Resource?.status?.atProvider?.id or "")
-        _applicationCredentialSecret = base64.decode(_observedCompositeResource[_applicationCredentialName].ConnectionDetails["attribute.secret"] or base64.encode("dummy"))
-
     helmRelease: res.K8sFluxHelmReleaseWrapper {
         _name = "${_name}-rel"
         _helmChartName = "external-dns"
@@ -55,11 +47,11 @@ schema K8sAppInfrastructureOsExternalDNS:
                 }
                 {
                     name = "OS_APPLICATION_CREDENTIAL_ID"
-                    value = _applicationCredentialId
+                    value = applicationCredential.getApplicationCredentialId(_observedCompositeResource)
                 }
                 {
                     name = "OS_APPLICATION_CREDENTIAL_SECRET"
-                    value = _applicationCredentialSecret
+                    value = applicationCredential.getApplicationCredentialSecret(_observedCompositeResource)
                 }
             ]
             extraArgs = ["--txt-wildcard-replacement=wildcard"]

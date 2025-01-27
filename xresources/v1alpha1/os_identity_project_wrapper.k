@@ -12,3 +12,11 @@ schema OsIdentityProjectWrapper:
     }
     usages: [Usage] = []
 
+    getProjectId: (any) -> str = lambda observedCompositeResource: any -> str {
+        _projectId: str = ""
+        if managedResource.metadata.name in observedCompositeResource:
+            _projectId = str(observedCompositeResource[managedResource.metadata.name].Resource?.status?.atProvider?.id or "")
+
+        _projectId
+    }
+

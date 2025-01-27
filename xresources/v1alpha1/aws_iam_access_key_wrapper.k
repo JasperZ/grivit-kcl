@@ -1,3 +1,5 @@
+import base64
+
 schema AwsIamAccessKeyWrapper:
     _controlPlaneAwsProviderConfigName: str
     _name: str
@@ -17,4 +19,20 @@ schema AwsIamAccessKeyWrapper:
         spec.writeConnectionSecretToRef.namespace = _tenantNamespace
     }
     usages: [Usage] = []
+
+    getAccessKeyId: (any) -> str = lambda observedCompositeResource: any -> str {
+        _accessKeyId: str = ""
+        if managedResource.metadata.name in observedCompositeResource:
+            _accessKeyId = str(base64.decode(observedCompositeResource[managedResource.metadata.name].ConnectionDetails?.username))
+
+        _accessKeyId
+    }
+
+    getAccessKeySecret: (any) -> str = lambda observedCompositeResource: any -> str {
+        _accessKeySecret: str = ""
+        if managedResource.metadata.name in observedCompositeResource:
+            _accessKeySecret = str(base64.decode(observedCompositeResource[managedResource.metadata.name].ConnectionDetails?.password))
+
+        _accessKeySecret
+    }
 

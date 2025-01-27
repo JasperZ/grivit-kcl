@@ -24,13 +24,6 @@ schema K8sAppInfrastructureOsCloudControllerManager:
         _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
         _tenantNamespace = _tenantNamespace
     }
-    _applicationCredentialId: str = ""
-    _applicationCredentialSecret: str = ""
-    _applicationCredentialName: str = applicationCredential.managedResource.metadata.name
-    if _applicationCredentialName in _observedCompositeResource:
-        _applicationCredentialId = str(_observedCompositeResource[_applicationCredentialName].Resource?.status?.atProvider?.id or "")
-        _applicationCredentialSecret = base64.decode(_observedCompositeResource[_applicationCredentialName].ConnectionDetails["attribute.secret"] or base64.encode("dummy"))
-
     helmRelease: res.K8sFluxHelmReleaseWrapper {
         _name = "${_name}-rel"
         _helmChartName = "openstack-cloud-controller-manager"
@@ -48,8 +41,8 @@ schema K8sAppInfrastructureOsCloudControllerManager:
                 global = {
                     # ToDo: hard coded url
                     "auth-url" = "https://test.grivit.cloud:5000"
-                    "application-credential-id" = _applicationCredentialId
-                    "application-credential-secret" = _applicationCredentialSecret
+                    "application-credential-id" = applicationCredential.getApplicationCredentialId(_observedCompositeResource)
+                    "application-credential-secret" = applicationCredential.getApplicationCredentialSecret(_observedCompositeResource)
                 }
                 loadBalancer = {
                     "subnet-id" = _clusterSubnetId

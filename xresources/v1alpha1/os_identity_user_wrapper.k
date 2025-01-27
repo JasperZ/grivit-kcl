@@ -32,3 +32,11 @@ schema OsIdentityUserWrapper:
         spec.of.resourceRef.name = ofResource.metadata.name
     } for ofResource in _uses]
 
+    getUserId: (any) -> str = lambda observedCompositeResource: any -> str {
+        _userId: str = ""
+        if managedResource.metadata.name in observedCompositeResource:
+            _userId = str(observedCompositeResource[managedResource.metadata.name].Resource?.status?.atProvider?.id or "")
+
+        _userId
+    }
+

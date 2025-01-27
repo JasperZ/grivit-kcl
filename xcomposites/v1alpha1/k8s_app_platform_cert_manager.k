@@ -1,5 +1,4 @@
 import xresources.v1alpha1 as res
-import base64
 
 schema K8sAppPlatformCertManager:
     _name: str
@@ -50,16 +49,11 @@ schema K8sAppPlatformCertManager:
 }
 """
     }
-    _awsPolicyArn: str = ""
-    _awsPolicyName: str = awsPolicy.managedResource.metadata.name
-    if _awsPolicyName in _observedCompositeResource:
-        _awsPolicyArn = str(_observedCompositeResource[_awsPolicyName].Resource?.status?.atProvider?.arn or "")
-
     awsUserPolicyAttachment: res.AwsIamUserPolicyAttachmentWrapper {
         _controlPlaneAwsProviderConfigName = _controlPlaneAwsProviderConfigName
         _name = "${_name}-aws-user-policy-attachment"
         _userName = awsUser.managedResource.metadata.name
-        _policyArn = _awsPolicyArn
+        _policyArn = awsPolicy.getPolicyArn(_observedCompositeResource)
     }
     helmRepo: res.K8sFluxHelmRepositoryWrapper {
         _name = "${_name}-repo"
@@ -88,19 +82,12 @@ schema K8sAppPlatformCertManager:
             ]
         }
     }
-    _accessKeyId: str = ""
-    _accessKeySecret: str = ""
-    _accessKeyName: str = awsAccessKey.managedResource.metadata.name
-    if _accessKeyName in _observedCompositeResource:
-        _accessKeyId = str(base64.decode(_observedCompositeResource[_accessKeyName].ConnectionDetails?.username))
-        _accessKeySecret = str(base64.decode(_observedCompositeResource[_accessKeyName].ConnectionDetails?.password))
-
     clusterIssuerCredentials: res.K8sObjectSecretWrapper {
         _name = "${_name}-cluster-issuer-credentials"
         _targetK8sProviderConfigName = _targetK8sProviderConfig.managedResource.metadata.name
         _stringData = {
-            accessKeyId = _accessKeyId
-            accessKeySecret = _accessKeySecret
+            accessKeyId = awsAccessKey.getAccessKeyId(_observedCompositeResource)
+            accessKeySecret = awsAccessKey.getAccessKeySecret(_observedCompositeResource)
         }
         _targetNamespace = "cert-manager"
     }

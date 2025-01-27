@@ -21,37 +21,22 @@ schema OsStage:
         _controlPlaneOsProviderConfigName = _spec.controlPlaneOsProviderConfigName
         _projectName = _spec.projectName
     }
-    _projectId: str = ""
-    _projectName: str = project.managedResource.metadata.name
-    if _projectName in _observedCompositeResource:
-        _projectId = str(_observedCompositeResource[_projectName].Resource?.status?.atProvider?.id or "")
-
     user: res.OsIdentityUserWrapper {
         _controlPlaneOsProviderConfigName = _spec.controlPlaneOsProviderConfigName
         _name = "${_claimName}-user"
-        _projectId = _projectId
+        _projectId = project.getProjectId(_observedCompositeResource)
         _projectName = _projectName
         _passwordSecret = password
         _passwordSecretKey = "password"
         _userName = "${_spec.projectName}-crossplane"
         _uses = [password.managedResource]
     }
-    _userId: str = ""
-    _userName: str = user.managedResource.metadata.name
-    if _userName in _observedCompositeResource:
-        _userId = str(_observedCompositeResource[_userName].Resource?.status?.atProvider?.id or "")
-
     userRoleAssignment: res.OsIdentityRoleAssignmentWrapper {
         _controlPlaneOsProviderConfigName = _spec.controlPlaneOsProviderConfigName
         _name = "${_claimName}-user-role-assignment"
-        _projectId = _projectId
-        _userId = _userId
+        _projectId = project.getProjectId(_observedCompositeResource)
+        _userId = user.getUserId(_observedCompositeResource)
     }
-    _projectId = None
-    _projectName = project.managedResource.metadata.name
-    if _projectName in _observedComposedResources:
-        _projectId = _observedComposedResources[_spec.projectName].Resource?.status?.atProvider?.id or ""
-
     cloudConfig: res.K8sObjectSecretWrapper {
         _targetK8sProviderConfigName = _spec.controlPlaneK8sProviderConfigName
         _name = "${_claimName}-cloud-config"
@@ -61,7 +46,7 @@ schema OsStage:
     {
     "auth_url": "https://test.grivit.cloud:5000",
     "insecure": "false",
-    "tenant_id": "${_projectId}",
+    "tenant_id": "${project.getProjectId(_observedCompositeResource)}",
     "tenant_name": "${project.managedResource.spec.forProvider.name}",
     "user_domain_name": "Default",
     "user_name": "${user.managedResource.spec.forProvider.name}",
