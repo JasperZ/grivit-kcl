@@ -184,17 +184,10 @@ clouds:
         _redirectUri = "https://${_argoCdDomain}/auth/callback"
         _url = "https://${_argoCdDomain}"
     }
-    _kcArgoCdClientId = None
-    _kcArgoCdClientSecret = None
-    _kcArgoCdClientName: str = kcArgoCdClient.managedResource.metadata.name
-    if _kcArgoCdClientName in _observedCompositeResource:
-        _kcArgoCdClientId = str(_observedCompositeResource[_kcArgoCdClientName].Resource?.status?.atProvider?.id or "")
-        _kcArgoCdClientSecret = base64.decode(_observedCompositeResource[_kcArgoCdClientName].ConnectionDetails["attribute.client_secret"])
-
     kcArgoCdClientDefaultScopes: core.KcOpenIdClientDefaultScopesWrapper {
         _additionalScopes = ["groups"]
         _controlPlaneKcProviderConfigName = _controlPlaneKcProviderConfigName
-        _clientId = _kcArgoCdClientId
+        _clientId = kcArgoCdClient.getClientId(_observedCompositeResource)
         _name = "${_name}-argocd-client-default-scopes"
         _realmId = _realmId
     }
@@ -210,7 +203,7 @@ clouds:
 name: Keycloak
 issuer: https://keycloak.hub.test.grivit.com/realms/${_realmId}
 clientID: ${kcArgoCdClient.managedResource.spec.forProvider.clientId}
-clientSecret: ${_kcArgoCdClientSecret}
+clientSecret: ${kcArgoCdClient.getClientSecret(_observedCompositeResource)}
 requestedScopes: ["openid", "profile", "email", "groups"]
 """
         }
