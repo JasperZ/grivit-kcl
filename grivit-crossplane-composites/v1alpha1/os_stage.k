@@ -21,20 +21,31 @@ schema OsStage:
         _controlPlaneOsProviderConfigName = _spec.controlPlaneOsProviderConfigName
         _projectName = _spec.projectName
     }
+    _projectId: str = ""
+    _projectName: str = project.managedResource.metadata.name
+    if _projectName in _observedCompositeResource:
+        _projectId = str(_observedCompositeResource[_projectName].Resource?.status?.atProvider?.id or "")
+
     user: res.OsIdentityUserWrapper {
         _controlPlaneOsProviderConfigName = _spec.controlPlaneOsProviderConfigName
         _name = "${_claimName}-user"
-        _osProject = project
+        _projectId = _projectId
+        _projectName = _projectName
         _passwordSecret = password
         _passwordSecretKey = "password"
         _userName = "${_spec.projectName}-crossplane"
         _uses = [password.managedResource]
     }
+    _userId: str = ""
+    _userName: str = user.managedResource.metadata.name
+    if _userName in _observedCompositeResource:
+        _userId = str(_observedCompositeResource[_userName].Resource?.status?.atProvider?.id or "")
+
     userRoleAssignment: res.OsIdentityRoleAssignmentWrapper {
         _controlPlaneOsProviderConfigName = _spec.controlPlaneOsProviderConfigName
         _name = "${_claimName}-user-role-assignment"
-        _osProject = project
-        _osUser = user
+        _projectId = _projectId
+        _userId = _userId
     }
     _projectId = None
     _projectName = project.managedResource.metadata.name
