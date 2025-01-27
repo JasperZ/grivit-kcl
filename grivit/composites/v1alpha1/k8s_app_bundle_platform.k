@@ -1,12 +1,12 @@
-import xresources.v1alpha1 as res
+import core.v1alpha1 as core
 
 schema K8sAppBundlePlatform:
     _controlPlaneAwsProviderConfigName: str
     _controlPlaneK8sProviderConfigName: str
-    _fluxHelmReleaseDependencies?: [res.K8sFluxHelmReleaseWrapper]
+    _fluxHelmReleaseDependencies?: [core.K8sFluxHelmReleaseWrapper]
     _name: str
     _observedCompositeResource: any
-    _targetK8sProviderConfig: res.K8sProviderConfigWrapper
+    _targetK8sProviderConfig: core.K8sProviderConfigWrapper
     _tenantNamespace: str
 
     k8sAppsPlatformCertManager: K8sAppPlatformCertManager {
@@ -46,12 +46,12 @@ schema K8sAppBundlePlatform:
         _targetK8sProviderConfig = _targetK8sProviderConfig
         _tenantNamespace = _tenantNamespace
     }
-    fluxHelmReleases: [res.K8sFluxHelmReleaseWrapper] = [
+    fluxHelmReleases: [core.K8sFluxHelmReleaseWrapper] = [
         k8sAppsPlatformIngressNginx.helmRelease
         k8sAppsPlatformMetricsServer.helmRelease
         k8sAppsPlatformVerticalPodAutoscaler.helmRelease
     ]
 
-    managedResources: [res.ManagedResource] = k8sAppsPlatformCertManager.managedResources + k8sAppsPlatformIngressNginx.managedResources + k8sAppsPlatformMetricsServer.managedResources + k8sAppsPlatformSnapshotController.managedResources + k8sAppsPlatformVerticalPodAutoscaler.managedResources
-    usages: [res.Usage] = k8sAppsPlatformCertManager.usages + k8sAppsPlatformIngressNginx.usages + k8sAppsPlatformMetricsServer.usages + k8sAppsPlatformSnapshotController.usages + k8sAppsPlatformVerticalPodAutoscaler.usages
+    managedResources: [core.ManagedResource] = k8sAppsPlatformCertManager.managedResources + k8sAppsPlatformIngressNginx.managedResources + k8sAppsPlatformMetricsServer.managedResources + k8sAppsPlatformSnapshotController.managedResources + k8sAppsPlatformVerticalPodAutoscaler.managedResources
+    usages: [core.Usage] = k8sAppsPlatformCertManager.usages + k8sAppsPlatformIngressNginx.usages + k8sAppsPlatformMetricsServer.usages + k8sAppsPlatformSnapshotController.usages + k8sAppsPlatformVerticalPodAutoscaler.usages
 

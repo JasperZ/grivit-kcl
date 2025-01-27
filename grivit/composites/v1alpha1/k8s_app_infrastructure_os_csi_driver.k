@@ -1,27 +1,27 @@
-import xresources.v1alpha1 as res
+import core.v1alpha1 as core
 
 schema K8sAppInfrastructureOsCsiDriver:
     _name: str
-    _fluxHelmReleaseDependencies?: [res.K8sFluxHelmReleaseWrapper]
+    _fluxHelmReleaseDependencies?: [core.K8sFluxHelmReleaseWrapper]
     _clusterName: str
     _tenantNamespace: str
     _controlPlaneK8sProviderConfigName: str
-    _targetK8sProviderConfig: res.K8sProviderConfigWrapper
+    _targetK8sProviderConfig: core.K8sProviderConfigWrapper
     _targetOsProviderConfigName: str
     _observedCompositeResource: any
 
-    applicationCredential: res.OsIdentityApplicationCredentialWrapper {
+    applicationCredential: core.OsIdentityApplicationCredentialWrapper {
         _name = "${_name}-application-credential"
         _tenantNamespace = _tenantNamespace
         _targetOsProviderConfigName = _targetOsProviderConfigName
     }
-    helmRepo: res.K8sFluxHelmRepositoryWrapper {
+    helmRepo: core.K8sFluxHelmRepositoryWrapper {
         _name = "${_name}-repo"
         _helmRepoUrl = "https://kubernetes.github.io/cloud-provider-openstack"
         _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
         _tenantNamespace = _tenantNamespace
     }
-    helmRelease: res.K8sFluxHelmReleaseWrapper {
+    helmRelease: core.K8sFluxHelmReleaseWrapper {
         _name = "${_name}-rel"
         _helmChartName = "openstack-cinder-csi"
         _helmChartVersion = "2.31.2"
@@ -70,11 +70,11 @@ application-credential-secret=${applicationCredential.getApplicationCredentialSe
         }
         managedResource.spec.forProvider.manifest.spec.install.createNamespace = False
     }
-    managedResources: [res.ManagedResource] = [
+    managedResources: [core.ManagedResource] = [
         applicationCredential.managedResource
         helmRepo.managedResource
         helmRelease.managedResource
     ]
 
-    usages: [res.Usage] = applicationCredential.usages + helmRepo.usages + helmRelease.usages
+    usages: [core.Usage] = applicationCredential.usages + helmRepo.usages + helmRelease.usages
 

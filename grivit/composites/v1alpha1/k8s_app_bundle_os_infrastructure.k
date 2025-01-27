@@ -1,4 +1,4 @@
-import xresources.v1alpha1 as res
+import core.v1alpha1 as core
 
 schema K8sAppBundleOsInfrastructure:
     _clusterName: str
@@ -7,10 +7,10 @@ schema K8sAppBundleOsInfrastructure:
     _controlPlaneK8sProviderConfigName: str
     _domainFilters: [str]
     _externalNetworkId: str
-    _fluxHelmReleaseDependencies?: [res.K8sFluxHelmReleaseWrapper]
+    _fluxHelmReleaseDependencies?: [core.K8sFluxHelmReleaseWrapper]
     _name: str
     _observedCompositeResource: any
-    _targetK8sProviderConfig: res.K8sProviderConfigWrapper
+    _targetK8sProviderConfig: core.K8sProviderConfigWrapper
     _targetOsProviderConfigName: str
     _tenantNamespace: str
 
@@ -60,13 +60,13 @@ schema K8sAppBundleOsInfrastructure:
         _controlPlaneHelmProviderConfigName = _controlPlaneHelmProviderConfigName
         _tenantNamespace = _tenantNamespace
     }
-    fluxHelmReleases: [res.K8sFluxHelmReleaseWrapper] = [
+    fluxHelmReleases: [core.K8sFluxHelmReleaseWrapper] = [
         k8sAppsInfrastructureCilium.helmRelease
         k8sAppsInfrastructureOsCloudControllerManager.helmRelease
         k8sAppsInfrastructureOsCSIDriver.helmRelease
         k8sAppsInfrastructureOsExternalDNS.helmRelease
     ]
 
-    managedResources: [res.ManagedResource] = k8sAppsInfrastructureCilium.managedResources + k8sAppsInfrastructureOsCloudControllerManager.managedResources + k8sAppsInfrastructureOsCSIDriver.managedResources + k8sAppsInfrastructureOsExternalDNS.managedResources + k8sAppsInfrastructureClusterAutoscaler.managedResources
-    usages: [res.Usage] = k8sAppsInfrastructureCilium.usages + k8sAppsInfrastructureOsCloudControllerManager.usages + k8sAppsInfrastructureOsCSIDriver.usages + k8sAppsInfrastructureOsExternalDNS.usages + k8sAppsInfrastructureClusterAutoscaler.usages
+    managedResources: [core.ManagedResource] = k8sAppsInfrastructureCilium.managedResources + k8sAppsInfrastructureOsCloudControllerManager.managedResources + k8sAppsInfrastructureOsCSIDriver.managedResources + k8sAppsInfrastructureOsExternalDNS.managedResources + k8sAppsInfrastructureClusterAutoscaler.managedResources
+    usages: [core.Usage] = k8sAppsInfrastructureCilium.usages + k8sAppsInfrastructureOsCloudControllerManager.usages + k8sAppsInfrastructureOsCSIDriver.usages + k8sAppsInfrastructureOsExternalDNS.usages + k8sAppsInfrastructureClusterAutoscaler.usages
 

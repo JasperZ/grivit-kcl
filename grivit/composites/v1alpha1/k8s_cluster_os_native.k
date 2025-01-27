@@ -1,6 +1,6 @@
 import base64
 import crypto
-import xresources.v1alpha1 as res
+import core.v1alpha1 as core
 
 schema K8sClustersOsNativeConfigWorkersAutoscaling:
     minSize: int
@@ -34,24 +34,16 @@ schema K8sClustersOsNative:
     _tenantNamespace: str
     _workers: K8sClustersOsNativeConfigWorkers
 
-    applicationCredential: res.OsIdentityApplicationCredentialWrapper {
+    applicationCredential: core.OsIdentityApplicationCredentialWrapper {
         _name = "${_name}-application-credential"
         _tenantNamespace = _tenantNamespace
         _targetOsProviderConfigName = _targetOsProviderConfigName
     }
-    keypair: res.OsComputeKeypairWrapper {
+    keypair: core.OsComputeKeypairWrapper {
         _name = "${_name}-keypair"
         _targetOsProviderConfigName = _targetOsProviderConfigName
     }
-    # ToDo: url, project_id & project_name hardcoded
-    _appCredId = None
-    _appCredSecret = None
-    _appCredName: str = applicationCredential.managedResource.metadata.name
-    if _appCredName in _observedCompositeResource:
-        _appCredId = str(_observedCompositeResource[_appCredName].Resource?.status?.atProvider?.id or "")
-        _appCredSecret = base64.decode(_observedCompositeResource[_appCredName].ConnectionDetails["attribute.secret"])
-
-    cloudConfig: res.K8sObjectSecretWrapper {
+    cloudConfig: core.K8sObjectSecretWrapper {
         _name = "${_name}-cloud-config"
         _targetK8sProviderConfigName = _controlPlaneK8sProviderConfigName
         _stringData = {
@@ -61,8 +53,8 @@ clouds:
     auth:
       auth_url: https://test.grivit.cloud:5000
       auth_type: v3applicationcredential
-      application_credential_id: ${_appCredId}
-      application_credential_secret: ${_appCredSecret}
+      application_credential_id: ${applicationCredential.getApplicationCredentialId(_observedCompositeResource)}
+      application_credential_secret: ${applicationCredential.getApplicationCredentialSecret(_observedCompositeResource)}
       project_id: 48f988d765c6418e92ad153a9bfcb5a4
       project_name: "os.grivit.cust.jasper.dev"
       user_domain_name: "Default"
@@ -78,7 +70,7 @@ clouds:
     _controlPlaneMachineTemplateImageName = str("ubuntu-2204-kube-${_k8sVersion}")
     _controlPlaneMachineTemplateRootVolumeSize = int(_controlPlane.rootVolumeSize)
     _controlPlaneMachineTemplateHash = str(crypto.sha256("${_controlPlaneMachineTemplateFlavorName},${_controlPlaneMachineTemplateImageName},${_controlPlaneMachineTemplateRootVolumeSize}"))[:8:]
-    controlPlaneMachineTemplate: res.K8sCapiOsMachineTemplateWrapper {
+    controlPlaneMachineTemplate: core.K8sCapiOsMachineTemplateWrapper {
         _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
         _flavor = _controlPlaneMachineTemplateFlavorName
         _name = "${_name}-ctl-plane-machine-template-${_controlPlaneMachineTemplateHash}"
@@ -88,7 +80,7 @@ clouds:
         _tenantNamespace = _tenantNamespace
         _uses = [keypair.managedResource]
     }
-    controlPlaneKubeadm: res.K8sCapiKubeadmControlPlaneWrapper {
+    controlPlaneKubeadm: core.K8sCapiKubeadmControlPlaneWrapper {
         _name = "${_name}-ctl-plane-kubeadm"
         _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
         _controlPlaneMachineTemplate = controlPlaneMachineTemplate
@@ -96,14 +88,14 @@ clouds:
         _replicas = _controlPlane.replicas
         _tenantNamespace = _tenantNamespace
     }
-    openstackCluster: res.K8sCapiOsClusterWrapper {
+    openstackCluster: core.K8sCapiOsClusterWrapper {
         _name = "${_name}-os-cluster"
         _cloudConfigName = cloudConfig.managedResource.metadata.name
         _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
         _externalNetworkName = _externalNetworkName
         _tenantNamespace = _tenantNamespace
     }
-    cluster: res.K8sCapiClusterWrapper {
+    cluster: core.K8sCapiClusterWrapper {
         _name = "${_name}-cluster"
         _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
         _controlPlaneKubeadm = controlPlaneKubeadm
@@ -111,7 +103,7 @@ clouds:
         _tenantNamespace = _tenantNamespace
         _uses = [cloudConfig.managedResource]
     }
-    workerKubeadmConfigTemplate: res.K8sCapiKubeadmConfigTemplateWrapper {
+    workerKubeadmConfigTemplate: core.K8sCapiKubeadmConfigTemplateWrapper {
         _name = "${_name}-worker-kubeadm-template"
         _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
         _tenantNamespace = _tenantNamespace
@@ -121,7 +113,7 @@ clouds:
     _workerMachineTemplateImageName = str("ubuntu-2204-kube-${_workerMachineKubernetesVersion}")
     _workerMachineTemplateRootVolumeSize = int(_workers.rootVolumeSize)
     _workerMachineTemplateHash = str(crypto.sha256("${_workerMachineTemplateFlavorName},${_workerMachineTemplateImageName},${_workerMachineTemplateRootVolumeSize}"))[:8:]
-    workerMachineTemplate: res.K8sCapiOsMachineTemplateWrapper {
+    workerMachineTemplate: core.K8sCapiOsMachineTemplateWrapper {
         _name = "${_name}-worker-machine-template-${_workerMachineTemplateHash}"
         _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
         _flavor = _workerMachineTemplateFlavorName
@@ -131,7 +123,7 @@ clouds:
         _tenantNamespace = _tenantNamespace
         _uses = [keypair.managedResource]
     }
-    workerMachineDeployment: res.K8sCapiMachineDeploymentWrapper {
+    workerMachineDeployment: core.K8sCapiMachineDeploymentWrapper {
         _name = "${_name}-worker-machine-deployment"
         _autoscalingMinSize = _workers.autoscaling.minSize
         _autoscalingMaxSize = _workers.autoscaling.maxSize
@@ -142,7 +134,7 @@ clouds:
         _k8sVersion = _workerMachineKubernetesVersion
         _tenantNamespace = _tenantNamespace
     }
-    providerConfig: res.K8sProviderConfigWrapper {
+    providerConfig: core.K8sProviderConfigWrapper {
         _name = "${_name}-provider-config"
         _credentialsSecretName = "${cluster.managedResource.metadata.name}-kubeconfig"
         _credentialsSecretNamespace = _tenantNamespace
@@ -159,22 +151,13 @@ clouds:
         _targetK8sProviderConfig = providerConfig
         _tenantNamespace = _tenantNamespace
     }
-    _clusterSubnetId: str = ""
-    _externalNetworkId: str = ""
-    _osClusterName: str = openstackCluster.managedResource.metadata.name
-    if _observedCompositeResource[_osClusterName].Resource?.status?.atProvider?.manifest?.status?.network?.subnets and len(_observedCompositeResource[_osClusterName].Resource.status.atProvider.manifest.status.network.subnets) > 0:
-        _clusterSubnetId = _observedCompositeResource[_osClusterName].Resource.status.atProvider.manifest.status.network.subnets[0].id
-
-    if _observedCompositeResource[_osClusterName].Resource?.status?.atProvider?.manifest?.status?.externalNetwork?.id:
-        _externalNetworkId = _observedCompositeResource[_osClusterName].Resource.status.atProvider.manifest.status.externalNetwork.id
-
     k8sAppsInfrastructureOsBundle: K8sAppBundleOsInfrastructure {
         _clusterName = cluster.managedResource.metadata.name
-        _clusterSubnetId = _clusterSubnetId
+        _clusterSubnetId = openstackCluster.getSubnetId(_observedCompositeResource)
         _controlPlaneHelmProviderConfigName = _controlPlaneHelmProviderConfigName
         _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
         _domainFilters = [_domain]
-        _externalNetworkId = _externalNetworkId
+        _externalNetworkId = openstackCluster.getExternalNetworkId(_observedCompositeResource)
         _fluxHelmReleaseDependencies = k8sCRDsBundle.fluxHelmReleases
         _name = "${_name}-ia"
         _observedCompositeResource = _observedCompositeResource
@@ -191,7 +174,7 @@ clouds:
         _targetK8sProviderConfig = providerConfig
         _tenantNamespace = _tenantNamespace
     }
-    kcArgoCdClient: res.KcOpenIdClientWrapper {
+    kcArgoCdClient: core.KcOpenIdClientWrapper {
         _controlPlaneKcProviderConfigName = _controlPlaneKcProviderConfigName
         _connectionSecretName = "${_name}-argocd-client-conn"
         _connectionSecretNamespace = _tenantNamespace
@@ -208,7 +191,7 @@ clouds:
         _kcArgoCdClientId = str(_observedCompositeResource[_kcArgoCdClientName].Resource?.status?.atProvider?.id or "")
         _kcArgoCdClientSecret = base64.decode(_observedCompositeResource[_kcArgoCdClientName].ConnectionDetails["attribute.client_secret"])
 
-    kcArgoCdClientDefaultScopes: res.KcOpenIdClientDefaultScopesWrapper {
+    kcArgoCdClientDefaultScopes: core.KcOpenIdClientDefaultScopesWrapper {
         _additionalScopes = ["groups"]
         _controlPlaneKcProviderConfigName = _controlPlaneKcProviderConfigName
         _clientId = _kcArgoCdClientId
@@ -242,7 +225,7 @@ g, viewer, role:readonly
             scopes = "[groups]"
         }
     }
-    managedResources: [res.K8sProviderConfig | res.ManagedResource] = [
+    managedResources: [core.K8sProviderConfig | core.ManagedResource] = [
         applicationCredential.managedResource
         cluster.managedResource
         cloudConfig.managedResource
@@ -258,5 +241,5 @@ g, viewer, role:readonly
         kcArgoCdClientDefaultScopes.managedResource
     ] + k8sCRDsBundle.managedResources + k8sAppsInfrastructureOsBundle.managedResources + k8sAppsPlatformBundle.managedResources + k8sAppsOperationArgoCd.managedResources
 
-    usages: [res.Usage] = applicationCredential.usages + cluster.usages + cloudConfig.usages + controlPlaneKubeadm.usages + controlPlaneMachineTemplate.usages + keypair.usages + openstackCluster.usages + workerKubeadmConfigTemplate.usages + workerMachineDeployment.usages + workerMachineTemplate.usages + providerConfig.usages + k8sCRDsBundle.usages + k8sAppsInfrastructureOsBundle.usages + k8sAppsPlatformBundle.usages + k8sAppsOperationArgoCd.usages + kcArgoCdClient.usages + kcArgoCdClientDefaultScopes.usages
+    usages: [core.Usage] = applicationCredential.usages + cluster.usages + cloudConfig.usages + controlPlaneKubeadm.usages + controlPlaneMachineTemplate.usages + keypair.usages + openstackCluster.usages + workerKubeadmConfigTemplate.usages + workerMachineDeployment.usages + workerMachineTemplate.usages + providerConfig.usages + k8sCRDsBundle.usages + k8sAppsInfrastructureOsBundle.usages + k8sAppsPlatformBundle.usages + k8sAppsOperationArgoCd.usages + kcArgoCdClient.usages + kcArgoCdClientDefaultScopes.usages
 

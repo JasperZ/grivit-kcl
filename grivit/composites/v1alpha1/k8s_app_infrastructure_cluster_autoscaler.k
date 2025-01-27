@@ -1,4 +1,4 @@
-import xresources.v1alpha1 as res
+import core.v1alpha1 as core
 
 schema K8sAppInfrastructureClusterAutoscaler:
     _name: str
@@ -7,7 +7,7 @@ schema K8sAppInfrastructureClusterAutoscaler:
     _controlPlaneHelmProviderConfigName: str
     _tenantNamespace: str
 
-    helmRelease: res.HelmReleaseWrapper {
+    helmRelease: core.HelmReleaseWrapper {
         _name = _name
         _chartName = "cluster-autoscaler"
         _chartVersion = "9.40.0"
@@ -28,9 +28,9 @@ schema K8sAppInfrastructureClusterAutoscaler:
             }
         }
     }
-    managedResources: [res.ManagedResource] = [
+    managedResources: [core.ManagedResource] = [
         helmRelease.managedResource
     ]
 
-    usages: [res.Usage] = helmRelease.usages
+    usages: [core.Usage] = helmRelease.usages
 

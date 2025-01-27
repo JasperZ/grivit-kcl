@@ -1,20 +1,20 @@
-import xresources.v1alpha1 as res
+import core.v1alpha1 as core
 
 schema K8sAppOperationHeadlamp:
     _name: str
     _domain: str
-    _fluxHelmReleaseDependencies?: [res.K8sFluxHelmReleaseWrapper]
+    _fluxHelmReleaseDependencies?: [core.K8sFluxHelmReleaseWrapper]
     _controlPlaneK8sProviderConfigName: str
-    _targetK8sProviderConfig: res.K8sProviderConfigWrapper
+    _targetK8sProviderConfig: core.K8sProviderConfigWrapper
     _tenantNamespace: str
 
-    helmRepo: res.K8sFluxHelmRepositoryWrapper {
+    helmRepo: core.K8sFluxHelmRepositoryWrapper {
         _name = "${_name}-repo"
         _helmRepoUrl = "https://headlamp-k8s.github.io/headlamp"
         _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
         _tenantNamespace = _tenantNamespace
     }
-    helmRelease: res.K8sFluxHelmReleaseWrapper {
+    helmRelease: core.K8sFluxHelmReleaseWrapper {
         _name = "${_name}-rel"
         _helmChartName = "headlamp"
         _helmChartVersion = "0.27.0"
@@ -93,10 +93,10 @@ schema K8sAppOperationHeadlamp:
         }
         managedResource.spec.forProvider.manifest.spec.install.createNamespace = False
     }
-    managedResources: [res.ManagedResource] = [
+    managedResources: [core.ManagedResource] = [
         helmRepo.managedResource
         helmRelease.managedResource
     ]
 
-    usages: [res.Usage] = helmRepo.usages + helmRelease.usages
+    usages: [core.Usage] = helmRepo.usages + helmRelease.usages
 

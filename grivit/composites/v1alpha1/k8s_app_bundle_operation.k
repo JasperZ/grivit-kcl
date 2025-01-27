@@ -1,10 +1,10 @@
-import xresources.v1alpha1 as res
+import core.v1alpha1 as core
 
 schema K8sAppBundleOperation:
     _name: str
-    _fluxHelmReleaseDependencies?: [res.K8sFluxHelmReleaseWrapper]
+    _fluxHelmReleaseDependencies?: [core.K8sFluxHelmReleaseWrapper]
     _controlPlaneK8sProviderConfigName: str
-    _targetK8sProviderConfig: res.K8sProviderConfigWrapper
+    _targetK8sProviderConfig: core.K8sProviderConfigWrapper
     _tenantNamespace: str
     _argoCdDomain: str
     _headlampDomain: str
@@ -25,11 +25,11 @@ schema K8sAppBundleOperation:
         _targetK8sProviderConfig = _targetK8sProviderConfig
         _tenantNamespace = _tenantNamespace
     }
-    fluxHelmReleases: [res.K8sFluxHelmReleaseWrapper] = [
+    fluxHelmReleases: [core.K8sFluxHelmReleaseWrapper] = [
         k8sAppsOperationArgoCd.helmRelease
         k8sAppsOperationHeadlamp.helmRelease
     ]
 
-    managedResources: [res.ManagedResource] = k8sAppsOperationArgoCd.managedResources + k8sAppsOperationHeadlamp.managedResources
-    usages: [res.Usage] = k8sAppsOperationArgoCd.usages + k8sAppsOperationHeadlamp.usages
+    managedResources: [core.ManagedResource] = k8sAppsOperationArgoCd.managedResources + k8sAppsOperationHeadlamp.managedResources
+    usages: [core.Usage] = k8sAppsOperationArgoCd.usages + k8sAppsOperationHeadlamp.usages
 

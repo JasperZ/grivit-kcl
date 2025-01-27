@@ -1,4 +1,4 @@
-import  as res
+import core.v1alpha1 as core
 
 schema OsStage:
     _controlPlaneK8sProviderConfigName: str
@@ -10,7 +10,7 @@ schema OsStage:
     _projectName: str
     _tenantNamespace: str
 
-    password: res.K8sOb0jectSecretWrapper {
+    password: core.K8sObjectSecretWrapper {
         _targetK8sProviderConfigName = _controlPlaneK8sProviderConfigName
         _name = "${_name}-password"
         _stringData = {
@@ -19,11 +19,11 @@ schema OsStage:
         }
         _targetNamespace = _tenantNamespace
     }
-    project: res.OsIdentityProjectWrapper {
+    project: core.OsIdentityProjectWrapper {
         _controlPlaneOsProviderConfigName = _controlPlaneOsProviderConfigName
         _projectName = _projectName
     }
-    user: res.OsIdentityUserWrapper {
+    user: core.OsIdentityUserWrapper {
         _controlPlaneOsProviderConfigName = _controlPlaneOsProviderConfigName
         _name = "${_name}-user"
         _projectId = project.getProjectId(_observedCompositeResource)
@@ -33,13 +33,13 @@ schema OsStage:
         _userName = "${_projectName}-crossplane"
         _uses = [password.managedResource]
     }
-    userRoleAssignment: res.OsIdentityRoleAssignmentWrapper {
+    userRoleAssignment: core.OsIdentityRoleAssignmentWrapper {
         _controlPlaneOsProviderConfigName = _controlPlaneOsProviderConfigName
         _name = "${_name}-user-role-assignment"
         _projectId = project.getProjectId(_observedCompositeResource)
         _userId = user.getUserId(_observedCompositeResource)
     }
-    cloudConfig: res.K8sObjectSecretWrapper {
+    cloudConfig: core.K8sObjectSecretWrapper {
         _targetK8sProviderConfigName = _controlPlaneK8sProviderConfigName
         _name = "${_name}-cloud-config"
         _stringData = {
@@ -63,7 +63,7 @@ schema OsStage:
             userRoleAssignment.managedResource
         ]
     }
-    providerConfig: res.OsProviderConfigWrapper {
+    providerConfig: core.OsProviderConfigWrapper {
         _name = "${_name}-os-provider-config"
         _credentialsSecretName = cloudConfig.managedResource.spec.forProvider.manifest.metadata.name
         _credentialsSecretNamespace = cloudConfig.managedResource.spec.forProvider.manifest.metadata.namespace
@@ -71,14 +71,14 @@ schema OsStage:
             cloudConfig.managedResource
         ]
     }
-    zone: res.OsDnsZoneWrapper {
+    zone: core.OsDnsZoneWrapper {
         _domain = _domain
         _email = _email
         _name = "${_name}-zone"
         _targetOsProviderConfig = providerConfig
         _uses = [providerConfig.managedResource]
     }
-    managedResources: [res.ManagedResource | res.OsProviderConfig] = [
+    managedResources: [core.ManagedResource | core.OsProviderConfig] = [
         password.managedResource
         project.managedResource
         user.managedResource
@@ -88,5 +88,5 @@ schema OsStage:
         zone.managedResource
     ]
 
-    usages: [res.Usage] = password.usages + project.usages + user.usages + userRoleAssignment.usages + cloudConfig.usages + providerConfig.usages + zone.usages
+    usages: [core.Usage] = password.usages + project.usages + user.usages + userRoleAssignment.usages + cloudConfig.usages + providerConfig.usages + zone.usages
 

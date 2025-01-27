@@ -71,3 +71,25 @@ schema K8sCapiOsClusterWrapper:
     }
     usages: [Usage] = []
 
+    getSubnetId: (any) -> str = lambda observedCompositeResource: any -> str {
+        _subnetId: str = ""
+        if managedResource.metadata.name in observedCompositeResource:
+            if observedCompositeResource[managedResource.metadata.name].Resource?.status?.atProvider?.manifest?.status?.network?.subnets:
+                if len(observedCompositeResource[managedResource.metadata.name].Resource.status.atProvider.manifest.status.network.subnets) > 0:
+                    _subnetId = observedCompositeResource[_osClusterName].Resource.status.atProvider.manifest.status.network.subnets[0].id
+
+
+
+        _subnetId
+    }
+
+    getExternalNetworkId: (any) -> str = lambda observedCompositeResource: any -> str {
+        _externalNetworkId: str = ""
+        if managedResource.metadata.name in observedCompositeResource:
+            if observedCompositeResource[managedResource.metadata.name].Resource?.status?.atProvider?.manifest?.status?.externalNetwork?.id:
+                _externalNetworkId = observedCompositeResource[managedResource.metadata.name].Resource.status.atProvider.manifest.status.externalNetwork.id
+
+
+        _externalNetworkId
+    }
+

@@ -1,5 +1,0 @@
-[dependencies]
-  [dependencies.xresources]
-    name = "xresources"
-    full_name = "xresources_0.0.2"
-    version = "0.0.2"
