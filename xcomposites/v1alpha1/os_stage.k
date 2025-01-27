@@ -1,45 +1,47 @@
-import xresources.v1alpha1 as res
-
-_observedComposedResources: any = option("params").oxr
-_observedCompositeResource: any = option("params").ocds
-
-_claimName: str = _observedComposedResources.metadata.name
-_claimNamespace: str = _observedComposedResources.metadata.labels["crossplane.io/claim-namespace"]
-_spec: any = _observedComposedResources.spec
+import  as res
 
 schema OsStage:
-    password: res.K8sObjectSecretWrapper {
-        _targetK8sProviderConfigName = _spec.controlPlaneK8sProviderConfigName
-        _name = "${_claimName}-password"
+    _controlPlaneK8sProviderConfigName: str
+    _controlPlaneOsProviderConfigName: str
+    _domain: str
+    _email: str
+    _name: str
+    _observedCompositeResource: any
+    _projectName: str
+    _tenantNamespace: str
+
+    password: res.K8sOb0jectSecretWrapper {
+        _targetK8sProviderConfigName = _controlPlaneK8sProviderConfigName
+        _name = "${_name}-password"
         _stringData = {
             # ToDo: hard coded password
             password = "gfjhgfjgfjgfjhg"
         }
-        _targetNamespace = _claimNamespace
+        _targetNamespace = _tenantNamespace
     }
     project: res.OsIdentityProjectWrapper {
-        _controlPlaneOsProviderConfigName = _spec.controlPlaneOsProviderConfigName
-        _projectName = _spec.projectName
+        _controlPlaneOsProviderConfigName = _controlPlaneOsProviderConfigName
+        _projectName = _projectName
     }
     user: res.OsIdentityUserWrapper {
-        _controlPlaneOsProviderConfigName = _spec.controlPlaneOsProviderConfigName
-        _name = "${_claimName}-user"
+        _controlPlaneOsProviderConfigName = _controlPlaneOsProviderConfigName
+        _name = "${_name}-user"
         _projectId = project.getProjectId(_observedCompositeResource)
-        _projectName = _projectName
+        _projectName = project.managedResource.metadata.name
         _passwordSecret = password
         _passwordSecretKey = "password"
-        _userName = "${_spec.projectName}-crossplane"
+        _userName = "${_projectName}-crossplane"
         _uses = [password.managedResource]
     }
     userRoleAssignment: res.OsIdentityRoleAssignmentWrapper {
-        _controlPlaneOsProviderConfigName = _spec.controlPlaneOsProviderConfigName
-        _name = "${_claimName}-user-role-assignment"
+        _controlPlaneOsProviderConfigName = _controlPlaneOsProviderConfigName
+        _name = "${_name}-user-role-assignment"
         _projectId = project.getProjectId(_observedCompositeResource)
         _userId = user.getUserId(_observedCompositeResource)
     }
     cloudConfig: res.K8sObjectSecretWrapper {
-        _targetK8sProviderConfigName = _spec.controlPlaneK8sProviderConfigName
-        _name = "${_claimName}-cloud-config"
+        _targetK8sProviderConfigName = _controlPlaneK8sProviderConfigName
+        _name = "${_name}-cloud-config"
         _stringData = {
             # ToDo: Hard coded url
             value = """\
@@ -54,7 +56,7 @@ schema OsStage:
     }
     """
         }
-        _targetNamespace = _claimNamespace
+        _targetNamespace = _tenantNamespace
         _uses = [
             project.managedResource
             user.managedResource
@@ -62,7 +64,7 @@ schema OsStage:
         ]
     }
     providerConfig: res.OsProviderConfigWrapper {
-        _name = "${_claimName}-os-provider-config"
+        _name = "${_name}-os-provider-config"
         _credentialsSecretName = cloudConfig.managedResource.spec.forProvider.manifest.metadata.name
         _credentialsSecretNamespace = cloudConfig.managedResource.spec.forProvider.manifest.metadata.namespace
         _uses = [
@@ -70,9 +72,9 @@ schema OsStage:
         ]
     }
     zone: res.OsDnsZoneWrapper {
-        _domain = _spec.domain
-        _email = _spec.email
-        _name = "${_claimName}-zone"
+        _domain = _domain
+        _email = _email
+        _name = "${_name}-zone"
         _targetOsProviderConfig = providerConfig
         _uses = [providerConfig.managedResource]
     }
