@@ -1,21 +1,19 @@
-import api.cp.core.v1 as cpCore
-import api.cp.k8s.core.v1 as cpK8sCore
-import api.cp.k8s.flux.v1 as cpK8sFlux
+import xresources.v1alpha1 as res
 
 schema K8sAppCrdPrometheusOperator:
     _name: str
 
     _controlPlaneK8sProviderConfigName: str
-    _targetK8sProviderConfig: cpK8sCore.ProviderConfigWrapper
+    _targetK8sProviderConfig: res.K8sProviderConfigWrapper
     _tenantNamespace: str
 
-    helmRepo: cpK8sFlux.HelmRepositoryWrapper {
+    helmRepo: res.K8sFluxHelmRepositoryWrapper {
         _name = "${_name}-repo"
         _helmRepoUrl = "https://prometheus-community.github.io/helm-charts"
         _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
         _tenantNamespace = _tenantNamespace
     }
-    helmRelease: cpK8sFlux.HelmReleaseWrapper {
+    helmRelease: res.K8sFluxHelmReleaseWrapper {
         _name = "${_name}-rel"
         _helmChartName = "prometheus-operator-crds"
         _helmChartVersion = "14.0.0"
@@ -27,10 +25,10 @@ schema K8sAppCrdPrometheusOperator:
         _tenantNamespace = _tenantNamespace
         managedResource.spec.forProvider.manifest.spec.install.createNamespace = False
     }
-    managedResources: [cpCore.ManagedResource] = [
+    managedResources: [res.ManagedResource] = [
         helmRepo.managedResource
         helmRelease.managedResource
     ]
 
-    usages: [cpCore.Usage] = helmRepo.usages + helmRelease.usages
+    usages: [res.Usage] = helmRepo.usages + helmRelease.usages
 

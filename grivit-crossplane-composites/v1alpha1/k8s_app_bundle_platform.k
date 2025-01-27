@@ -1,18 +1,15 @@
-import api.cp.core.v1 as cpCore
-import api.cp.k8s.app.v1 as cpK8sApp
-import api.cp.k8s.core.v1 as cpK8sCore
-import api.cp.k8s.flux.v1 as cpK8sFlux
+import xresources.v1alpha1 as res
 
 schema K8sAppBundlePlatform:
     _controlPlaneAwsProviderConfigName: str
     _controlPlaneK8sProviderConfigName: str
-    _fluxHelmReleaseDependencies?: [cpK8sFlux.HelmReleaseWrapper]
+    _fluxHelmReleaseDependencies?: [res.K8sFluxHelmReleaseWrapper]
     _name: str
     _observedCompositeResource: any
-    _targetK8sProviderConfig: cpK8sCore.ProviderConfigWrapper
+    _targetK8sProviderConfig: res.K8sProviderConfigWrapper
     _tenantNamespace: str
 
-    k8sAppsPlatformCertManager: cpK8sApp.PlatformCertManager {
+    k8sAppsPlatformCertManager: K8sAppPlatformCertManager {
         _name = "${_name}-certmanager"
         _fluxHelmReleaseDependencies = _fluxHelmReleaseDependencies
         _controlPlaneAwsProviderConfigName = _controlPlaneAwsProviderConfigName
@@ -21,40 +18,40 @@ schema K8sAppBundlePlatform:
         _targetK8sProviderConfig = _targetK8sProviderConfig
         _tenantNamespace = _tenantNamespace
     }
-    k8sAppsPlatformIngressNginx: cpK8sApp.PlatformIngressNginx {
+    k8sAppsPlatformIngressNginx: K8sAppPlatformIngressNginx {
         _name = "${_name}-ingress"
         _fluxHelmReleaseDependencies = _fluxHelmReleaseDependencies
         _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
         _targetK8sProviderConfig = _targetK8sProviderConfig
         _tenantNamespace = _tenantNamespace
     }
-    k8sAppsPlatformMetricsServer: cpK8sApp.PlatformMetricsServer {
+    k8sAppsPlatformMetricsServer: K8sAppPlatformMetricsServer {
         _name = "${_name}-metrics"
         _fluxHelmReleaseDependencies = _fluxHelmReleaseDependencies
         _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
         _targetK8sProviderConfig = _targetK8sProviderConfig
         _tenantNamespace = _tenantNamespace
     }
-    k8sAppsPlatformSnapshotController: cpK8sApp.PlatformSnapshotController {
+    k8sAppsPlatformSnapshotController: K8sAppPlatformSnapshotController {
         _name = "${_name}-sc"
         _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
         _targetK8sProviderConfig = _targetK8sProviderConfig
         _tenantNamespace = _tenantNamespace
     }
     # ToDo: Velero
-    k8sAppsPlatformVerticalPodAutoscaler: cpK8sApp.PlatformVerticalPodAutoscaler {
+    k8sAppsPlatformVerticalPodAutoscaler: K8sAppPlatformVerticalPodAutoscaler {
         _name = "${_name}-vpa"
         _fluxHelmReleaseDependencies = _fluxHelmReleaseDependencies
         _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
         _targetK8sProviderConfig = _targetK8sProviderConfig
         _tenantNamespace = _tenantNamespace
     }
-    fluxHelmReleases: [cpK8sFlux.HelmReleaseWrapper] = [
+    fluxHelmReleases: [res.K8sFluxHelmReleaseWrapper] = [
         k8sAppsPlatformIngressNginx.helmRelease
         k8sAppsPlatformMetricsServer.helmRelease
         k8sAppsPlatformVerticalPodAutoscaler.helmRelease
     ]
 
-    managedResources: [cpCore.ManagedResource] = k8sAppsPlatformCertManager.managedResources + k8sAppsPlatformIngressNginx.managedResources + k8sAppsPlatformMetricsServer.managedResources + k8sAppsPlatformSnapshotController.managedResources + k8sAppsPlatformVerticalPodAutoscaler.managedResources
-    usages: [cpCore.Usage] = k8sAppsPlatformCertManager.usages + k8sAppsPlatformIngressNginx.usages + k8sAppsPlatformMetricsServer.usages + k8sAppsPlatformSnapshotController.usages + k8sAppsPlatformVerticalPodAutoscaler.usages
+    managedResources: [res.ManagedResource] = k8sAppsPlatformCertManager.managedResources + k8sAppsPlatformIngressNginx.managedResources + k8sAppsPlatformMetricsServer.managedResources + k8sAppsPlatformSnapshotController.managedResources + k8sAppsPlatformVerticalPodAutoscaler.managedResources
+    usages: [res.Usage] = k8sAppsPlatformCertManager.usages + k8sAppsPlatformIngressNginx.usages + k8sAppsPlatformMetricsServer.usages + k8sAppsPlatformSnapshotController.usages + k8sAppsPlatformVerticalPodAutoscaler.usages
 

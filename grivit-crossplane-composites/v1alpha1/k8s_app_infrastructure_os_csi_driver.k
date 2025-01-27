@@ -1,25 +1,22 @@
-import api.cp.core.v1 as cpCore
-import api.cp.k8s.core.v1 as cpK8sCore
-import api.cp.k8s.flux.v1 as cpK8sFlux
-import api.cp.os.v1 as cpOs
+import xresources.v1alpha1 as res
 import base64
 
-schema K8sAppInfrastructureOsCSIDriver:
+schema K8sAppInfrastructureOsCsiDriver:
     _name: str
-    _fluxHelmReleaseDependencies?: [cpK8sFlux.HelmReleaseWrapper]
+    _fluxHelmReleaseDependencies?: [res.K8sFluxHelmReleaseWrapper]
     _clusterName: str
     _tenantNamespace: str
     _controlPlaneK8sProviderConfigName: str
-    _targetK8sProviderConfig: cpK8sCore.ProviderConfigWrapper
+    _targetK8sProviderConfig: res.K8sProviderConfigWrapper
     _targetOsProviderConfigName: str
     _observedCompositeResource: any
 
-    applicationCredential: cpOs.IdentityApplicationCredentialWrapper {
+    applicationCredential: res.OsIdentityApplicationCredentialWrapper {
         _name = "${_name}-application-credential"
         _tenantNamespace = _tenantNamespace
         _targetOsProviderConfigName = _targetOsProviderConfigName
     }
-    helmRepo: cpK8sFlux.HelmRepositoryWrapper {
+    helmRepo: res.K8sFluxHelmRepositoryWrapper {
         _name = "${_name}-repo"
         _helmRepoUrl = "https://kubernetes.github.io/cloud-provider-openstack"
         _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
@@ -32,7 +29,7 @@ schema K8sAppInfrastructureOsCSIDriver:
         _applicationCredentialId = str(_observedCompositeResource[_applicationCredentialName].Resource?.status?.atProvider?.id or "")
         _applicationCredentialSecret = base64.decode(_observedCompositeResource[_applicationCredentialName].ConnectionDetails["attribute.secret"] or base64.encode("dummy"))
 
-    helmRelease: cpK8sFlux.HelmReleaseWrapper {
+    helmRelease: res.K8sFluxHelmReleaseWrapper {
         _name = "${_name}-rel"
         _helmChartName = "openstack-cinder-csi"
         _helmChartVersion = "2.31.2"
@@ -81,11 +78,11 @@ application-credential-secret=${_applicationCredentialSecret}
         }
         managedResource.spec.forProvider.manifest.spec.install.createNamespace = False
     }
-    managedResources: [cpCore.ManagedResource] = [
+    managedResources: [res.ManagedResource] = [
         applicationCredential.managedResource
         helmRepo.managedResource
         helmRelease.managedResource
     ]
 
-    usages: [cpCore.Usage] = applicationCredential.usages + helmRepo.usages + helmRelease.usages
+    usages: [res.Usage] = applicationCredential.usages + helmRepo.usages + helmRelease.usages
 

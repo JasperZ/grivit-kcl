@@ -1,21 +1,19 @@
-import api.cp.core.v1 as cpCore
-import api.cp.k8s.core.v1 as cpK8sCore
-import api.cp.k8s.flux.v1 as cpK8sFlux
+import xresources.v1alpha1 as res
 
 schema K8sAppPlatformMetricsServer:
     _name: str
-    _fluxHelmReleaseDependencies?: [cpK8sFlux.HelmReleaseWrapper]
+    _fluxHelmReleaseDependencies?: [res.K8sFluxHelmReleaseWrapper]
     _controlPlaneK8sProviderConfigName: str
-    _targetK8sProviderConfig: cpK8sCore.ProviderConfigWrapper
+    _targetK8sProviderConfig: res.K8sProviderConfigWrapper
     _tenantNamespace: str
 
-    helmRepo: cpK8sFlux.HelmRepositoryWrapper {
+    helmRepo: res.K8sFluxHelmRepositoryWrapper {
         _name = "${_name}-repo"
         _helmRepoUrl = "https://kubernetes-sigs.github.io/metrics-server"
         _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
         _tenantNamespace = _tenantNamespace
     }
-    helmRelease: cpK8sFlux.HelmReleaseWrapper {
+    helmRelease: res.K8sFluxHelmReleaseWrapper {
         _name = "${_name}-rel"
         _helmChartName = "metrics-server"
         _helmChartVersion = "3.12.1"
@@ -31,10 +29,10 @@ schema K8sAppPlatformMetricsServer:
         }
         managedResource.spec.forProvider.manifest.spec.install.createNamespace = False
     }
-    managedResources: [cpCore.ManagedResource] = [
+    managedResources: [res.ManagedResource] = [
         helmRepo.managedResource
         helmRelease.managedResource
     ]
 
-    usages: [cpCore.Usage] = helmRepo.usages + helmRelease.usages
+    usages: [res.Usage] = helmRepo.usages + helmRelease.usages
 

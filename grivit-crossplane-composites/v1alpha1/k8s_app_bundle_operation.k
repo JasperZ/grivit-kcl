@@ -1,18 +1,15 @@
-import api.cp.core.v1 as cpCore
-import api.cp.k8s.app.v1 as cpK8sApp
-import api.cp.k8s.core.v1 as cpK8sCore
-import api.cp.k8s.flux.v1 as cpK8sFlux
+import xresources.v1alpha1 as res
 
 schema K8sAppBundleOperation:
     _name: str
-    _fluxHelmReleaseDependencies?: [cpK8sFlux.HelmReleaseWrapper]
+    _fluxHelmReleaseDependencies?: [res.K8sFluxHelmReleaseWrapper]
     _controlPlaneK8sProviderConfigName: str
-    _targetK8sProviderConfig: cpK8sCore.ProviderConfigWrapper
+    _targetK8sProviderConfig: res.K8sProviderConfigWrapper
     _tenantNamespace: str
     _argoCdDomain: str
     _headlampDomain: str
 
-    k8sAppsOperationArgoCd: cpK8sApp.OperationArgoCd {
+    k8sAppsOperationArgoCd: K8sAppOperationArgoCd {
         _name = "${_name}-argocd"
         _domain = _argoCdDomain
         _fluxHelmReleaseDependencies = _fluxHelmReleaseDependencies
@@ -20,7 +17,7 @@ schema K8sAppBundleOperation:
         _targetK8sProviderConfig = _targetK8sProviderConfig
         _tenantNamespace = _tenantNamespace
     }
-    k8sAppsOperationHeadlamp: cpK8sApp.OperationHeadlamp {
+    k8sAppsOperationHeadlamp: K8sAppOperationHeadlamp {
         _name = "${_name}-headlamp"
         _domain = _headlampDomain
         _fluxHelmReleaseDependencies = _fluxHelmReleaseDependencies
@@ -28,11 +25,11 @@ schema K8sAppBundleOperation:
         _targetK8sProviderConfig = _targetK8sProviderConfig
         _tenantNamespace = _tenantNamespace
     }
-    fluxHelmReleases: [cpK8sFlux.HelmReleaseWrapper] = [
+    fluxHelmReleases: [res.K8sFluxHelmReleaseWrapper] = [
         k8sAppsOperationArgoCd.helmRelease
         k8sAppsOperationHeadlamp.helmRelease
     ]
 
-    managedResources: [cpCore.ManagedResource] = k8sAppsOperationArgoCd.managedResources + k8sAppsOperationHeadlamp.managedResources
-    usages: [cpCore.Usage] = k8sAppsOperationArgoCd.usages + k8sAppsOperationHeadlamp.usages
+    managedResources: [res.ManagedResource] = k8sAppsOperationArgoCd.managedResources + k8sAppsOperationHeadlamp.managedResources
+    usages: [res.Usage] = k8sAppsOperationArgoCd.usages + k8sAppsOperationHeadlamp.usages
 

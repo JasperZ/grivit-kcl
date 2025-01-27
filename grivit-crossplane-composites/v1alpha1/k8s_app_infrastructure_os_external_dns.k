@@ -1,7 +1,4 @@
-import api.cp.core.v1 as cpCore
-import api.cp.k8s.core.v1 as cpK8sCore
-import api.cp.k8s.flux.v1 as cpK8sFlux
-import api.cp.os.v1 as cpOs
+import xresources.v1alpha1 as res
 import base64
 
 schema K8sAppInfrastructureOsExternalDNS:
@@ -9,18 +6,18 @@ schema K8sAppInfrastructureOsExternalDNS:
     _clusterName: str
     _controlPlaneK8sProviderConfigName: str
     _domainFilters: [str]
-    _fluxHelmReleaseDependencies?: [cpK8sFlux.HelmReleaseWrapper]
-    _targetK8sProviderConfig: cpK8sCore.ProviderConfigWrapper
+    _fluxHelmReleaseDependencies?: [res.K8sFluxHelmReleaseWrapper]
+    _targetK8sProviderConfig: res.K8sProviderConfigWrapper
     _targetOsProviderConfigName: str
     _tenantNamespace: str
     _observedCompositeResource: any
 
-    applicationCredential: cpOs.IdentityApplicationCredentialWrapper {
+    applicationCredential: res.OsIdentityApplicationCredentialWrapper {
         _name = "${_name}-application-credential"
         _targetOsProviderConfigName = _targetOsProviderConfigName
         _tenantNamespace = _tenantNamespace
     }
-    helmRepo: cpK8sFlux.HelmRepositoryWrapper {
+    helmRepo: res.K8sFluxHelmRepositoryWrapper {
         _name = "${_name}-repo"
         _helmRepoUrl = "https://kubernetes-sigs.github.io/external-dns"
         _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
@@ -33,7 +30,7 @@ schema K8sAppInfrastructureOsExternalDNS:
         _applicationCredentialId = str(_observedCompositeResource[_applicationCredentialName].Resource?.status?.atProvider?.id or "")
         _applicationCredentialSecret = base64.decode(_observedCompositeResource[_applicationCredentialName].ConnectionDetails["attribute.secret"] or base64.encode("dummy"))
 
-    helmRelease: cpK8sFlux.HelmReleaseWrapper {
+    helmRelease: res.K8sFluxHelmReleaseWrapper {
         _name = "${_name}-rel"
         _helmChartName = "external-dns"
         _helmChartVersion = "1.14.5"
@@ -74,11 +71,11 @@ schema K8sAppInfrastructureOsExternalDNS:
         }
         managedResource.spec.forProvider.manifest.spec.install.createNamespace = False
     }
-    managedResources: [cpCore.ManagedResource] = [
+    managedResources: [res.ManagedResource] = [
         applicationCredential.managedResource
         helmRepo.managedResource
         helmRelease.managedResource
     ]
 
-    usages: [cpCore.Usage] = applicationCredential.usages + helmRepo.usages + helmRelease.usages
+    usages: [res.Usage] = applicationCredential.usages + helmRepo.usages + helmRelease.usages
 

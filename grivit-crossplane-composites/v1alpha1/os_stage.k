@@ -1,6 +1,4 @@
-import api.cp.core.v1 as cpCore
-import api.cp.k8s.core.v1 as cpK8sCore
-import api.cp.os.core.v1 as cpOsCore
+import xresources.v1alpha1 as res
 
 _observedComposedResources: any = option("params").oxr
 _observedCompositeResource: any = option("params").ocds
@@ -9,8 +7,8 @@ _claimName: str = _observedComposedResources.metadata.name
 _claimNamespace: str = _observedComposedResources.metadata.labels["crossplane.io/claim-namespace"]
 _spec: any = _observedComposedResources.spec
 
-Schema OsStage:
-    password: cpK8sCore.ObjectSecretWrapper {
+schema OsStage:
+    password: res.K8sObjectSecretWrapper {
         _targetK8sProviderConfigName = _spec.controlPlaneK8sProviderConfigName
         _name = "${_claimName}-password"
         _stringData = {
@@ -19,11 +17,11 @@ Schema OsStage:
         }
         _targetNamespace = _claimNamespace
     }
-    project: cpOsCore.IdentityProjectWrapper {
+    project: res.OsIdentityProjectWrapper {
         _controlPlaneOsProviderConfigName = _spec.controlPlaneOsProviderConfigName
         _projectName = _spec.projectName
     }
-    user: cpOsCore.IdentityUserWrapper {
+    user: res.OsIdentityUserWrapper {
         _controlPlaneOsProviderConfigName = _spec.controlPlaneOsProviderConfigName
         _name = "${_claimName}-user"
         _osProject = project
@@ -32,7 +30,7 @@ Schema OsStage:
         _userName = "${_spec.projectName}-crossplane"
         _uses = [password.managedResource]
     }
-    userRoleAssignment: cpOsCore.IdentityRoleAssignmentWrapper {
+    userRoleAssignment: res.OsIdentityRoleAssignmentWrapper {
         _controlPlaneOsProviderConfigName = _spec.controlPlaneOsProviderConfigName
         _name = "${_claimName}-user-role-assignment"
         _osProject = project
@@ -43,7 +41,7 @@ Schema OsStage:
     if _projectName in _observedComposedResources:
         _projectId = _observedComposedResources[_spec.projectName].Resource?.status?.atProvider?.id or ""
 
-    cloudConfig: cpK8sCore.ObjectSecretWrapper {
+    cloudConfig: res.K8sObjectSecretWrapper {
         _targetK8sProviderConfigName = _spec.controlPlaneK8sProviderConfigName
         _name = "${_claimName}-cloud-config"
         _stringData = {
@@ -67,7 +65,7 @@ Schema OsStage:
             userRoleAssignment.managedResource
         ]
     }
-    providerConfig: cpOsCore.ProviderConfigWrapper {
+    providerConfig: res.OsProviderConfigWrapper {
         _name = "${_claimName}-os-provider-config"
         _credentialsSecretName = cloudConfig.managedResource.spec.forProvider.manifest.metadata.name
         _credentialsSecretNamespace = cloudConfig.managedResource.spec.forProvider.manifest.metadata.namespace
@@ -75,14 +73,14 @@ Schema OsStage:
             cloudConfig.managedResource
         ]
     }
-    zone: cpOsCore.DnsZoneWrapper {
+    zone: res.OsDnsZoneWrapper {
         _domain = _spec.domain
         _email = _spec.email
         _name = "${_claimName}-zone"
         _targetOsProviderConfig = providerConfig
         _uses = [providerConfig.managedResource]
     }
-    managedResources: [cpCore.ManagedResource | cpOsCore.ProviderConfig] = [
+    managedResources: [res.ManagedResource | res.OsProviderConfig] = [
         password.managedResource
         project.managedResource
         user.managedResource
@@ -92,4 +90,5 @@ Schema OsStage:
         zone.managedResource
     ]
 
-    usages: [cpCore.Usage] = password.usages + project.usages + user.usages + userRoleAssignment.usages + cloudConfig.usages + providerConfig.usages + zone.usages
+    usages: [res.Usage] = password.usages + project.usages + user.usages + userRoleAssignment.usages + cloudConfig.usages + providerConfig.usages + zone.usages
+

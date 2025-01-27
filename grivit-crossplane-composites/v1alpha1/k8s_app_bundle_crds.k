@@ -1,12 +1,10 @@
-import api.cp.core.v1 as cpCore
-import api.cp.k8s.core.v1 as cpK8sCore
-import api.cp.k8s.flux.v1 as cpK8sFlux
+import xresources.v1alpha1 as res
 
 schema K8sAppBundleCrds:
     _clusterName: str
 
     _controlPlaneK8sProviderConfigName: str
-    _targetK8sProviderConfig: cpK8sCore.ProviderConfigWrapper
+    _targetK8sProviderConfig: res.K8sProviderConfigWrapper
     _tenantNamespace: str
 
     k8sAppsCRDsPrometheusOperator: K8sAppCrdPrometheusOperator {
@@ -15,10 +13,10 @@ schema K8sAppBundleCrds:
         _targetK8sProviderConfig = _targetK8sProviderConfig
         _tenantNamespace = _tenantNamespace
     }
-    fluxHelmReleases: [cpK8sFlux.HelmReleaseWrapper] = [
+    fluxHelmReleases: [res.K8sFluxHelmReleaseWrapper] = [
         k8sAppsCRDsPrometheusOperator.helmRelease
     ]
 
-    managedResources: [cpCore.ManagedResource] = k8sAppsCRDsPrometheusOperator.managedResources
-    usages: [cpCore.Usage] = k8sAppsCRDsPrometheusOperator.usages
+    managedResources: [res.ManagedResource] = k8sAppsCRDsPrometheusOperator.managedResources
+    usages: [res.Usage] = k8sAppsCRDsPrometheusOperator.usages
 

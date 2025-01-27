@@ -1,29 +1,26 @@
-import api.cp.core.v1 as cpCore
-import api.cp.aws.v1 as cpAws
-import api.cp.k8s.core.v1 as cpK8sCore
-import api.cp.k8s.flux.v1 as cpK8sFlux
+import xresources.v1alpha1 as res
 import base64
 
 schema K8sAppPlatformCertManager:
     _name: str
-    _fluxHelmReleaseDependencies?: [cpK8sFlux.HelmReleaseWrapper]
+    _fluxHelmReleaseDependencies?: [res.K8sFluxHelmReleaseWrapper]
     _controlPlaneAwsProviderConfigName: str
     _controlPlaneK8sProviderConfigName: str
-    _targetK8sProviderConfig: cpK8sCore.ProviderConfigWrapper
+    _targetK8sProviderConfig: res.K8sProviderConfigWrapper
     _tenantNamespace: str
     _observedCompositeResource: any
 
-    awsUser: cpAws.IamUserWrapper {
+    awsUser: res.AwsIamUserWrapper {
         _controlPlaneAwsProviderConfigName = _controlPlaneAwsProviderConfigName
         _name = "${_name}-aws-user"
     }
-    awsAccessKey: cpAws.IamAccessKeyWrapper {
+    awsAccessKey: res.AwsIamAccessKeyWrapper {
         _controlPlaneAwsProviderConfigName = _controlPlaneAwsProviderConfigName
         _name = "${_name}-aws-access-key"
         _awsIamUserWrapper = awsUser
         _tenantNamespace = _tenantNamespace
     }
-    awsPolicy: cpAws.IamPolicyWrapper {
+    awsPolicy: res.AwsIamPolicyWrapper {
         _controlPlaneAwsProviderConfigName = _controlPlaneAwsProviderConfigName
         _name = "${_name}-aws-policy"
         _description = "Allow ${_name} to access Route53"
@@ -58,19 +55,19 @@ schema K8sAppPlatformCertManager:
     if _awsPolicyName in _observedCompositeResource:
         _awsPolicyArn = str(_observedCompositeResource[_awsPolicyName].Resource?.status?.atProvider?.arn or "")
 
-    awsUserPolicyAttachment: cpAws.IamUserPolicyAttachmentWrapper {
+    awsUserPolicyAttachment: res.AwsIamUserPolicyAttachmentWrapper {
         _controlPlaneAwsProviderConfigName = _controlPlaneAwsProviderConfigName
         _name = "${_name}-aws-user-policy-attachment"
         _userName = awsUser.managedResource.metadata.name
         _policyArn = _awsPolicyArn
     }
-    helmRepo: cpK8sFlux.HelmRepositoryWrapper {
+    helmRepo: res.K8sFluxHelmRepositoryWrapper {
         _name = "${_name}-repo"
         _helmRepoUrl = "https://charts.jetstack.io"
         _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
         _tenantNamespace = _tenantNamespace
     }
-    helmRelease: cpK8sFlux.HelmReleaseWrapper {
+    helmRelease: res.K8sFluxHelmReleaseWrapper {
         _name = "${_name}-rel"
         _helmChartName = "cert-manager"
         _helmChartVersion = "1.15.3"
@@ -98,7 +95,7 @@ schema K8sAppPlatformCertManager:
         _accessKeyId = str(base64.decode(_observedCompositeResource[_accessKeyName].ConnectionDetails?.username))
         _accessKeySecret = str(base64.decode(_observedCompositeResource[_accessKeyName].ConnectionDetails?.password))
 
-    clusterIssuerCredentials: cpK8sCore.ObjectSecretWrapper {
+    clusterIssuerCredentials: res.K8sObjectSecretWrapper {
         _name = "${_name}-cluster-issuer-credentials"
         _targetK8sProviderConfigName = _targetK8sProviderConfig.managedResource.metadata.name
         _stringData = {
@@ -107,7 +104,7 @@ schema K8sAppPlatformCertManager:
         }
         _targetNamespace = "cert-manager"
     }
-    clusterIssuer: cpK8sCore.ObjectGenericWrapper {
+    clusterIssuer: res.K8sObjectGenericWrapper {
         _name = "${_name}-cluster-issuer"
         _targetK8sProviderConfigName = _targetK8sProviderConfig.managedResource.metadata.name
         managedResource.spec.forProvider.manifest = {
@@ -139,7 +136,7 @@ schema K8sAppPlatformCertManager:
             }
         }
     }
-    managedResources: [cpCore.ManagedResource] = [
+    managedResources: [res.ManagedResource] = [
         awsUser.managedResource
         awsAccessKey.managedResource
         awsPolicy.managedResource
@@ -150,5 +147,5 @@ schema K8sAppPlatformCertManager:
         clusterIssuer.managedResource
     ]
 
-    usages: [cpCore.Usage] = awsUser.usages + awsAccessKey.usages + awsPolicy.usages + awsUserPolicyAttachment.usages + helmRepo.usages + helmRelease.usages + clusterIssuerCredentials.usages + clusterIssuer.usages
+    usages: [res.Usage] = awsUser.usages + awsAccessKey.usages + awsPolicy.usages + awsUserPolicyAttachment.usages + helmRepo.usages + helmRelease.usages + clusterIssuerCredentials.usages + clusterIssuer.usages
 

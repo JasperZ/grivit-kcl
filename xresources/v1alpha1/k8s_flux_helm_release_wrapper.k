@@ -5,7 +5,7 @@ schema K8sFluxHelmReleaseWrapper:
     _helmReleaseName: str
     _helmReleaseNamespace: str
     _helmRepositoryWrapper: K8sFluxHelmRepositoryWrapper
-    _helmReleaseWrapperDependencies?: [HelmReleaseWrapper] = []
+    _helmReleaseWrapperDependencies?: [K8sFluxHelmReleaseWrapper] = []
     _targetK8sProviderConfig: K8sProviderConfigWrapper
     _controlPlaneK8sProviderConfigName: str
     _tenantNamespace: str
