@@ -1,13 +1,14 @@
-schema OsProviderConfigWrapper:
+schema K8sObjectGenericWrapper:
     _name: str
-    _credentialsSecretName: str
-    _credentialsSecretNamespace: str
     _uses: [ManagedResource] = []
 
-    managedResource: OsProviderConfig {
-        _name = _name
-        _credentialsSecretName = _credentialsSecretName
-        _credentialsSecretNamespace = _credentialsSecretNamespace
+    _targetK8sProviderConfigName: str
+
+    managedResource: ManagedResource {
+        apiVersion = "kubernetes.crossplane.io/v1alpha2"
+        kind = "Object"
+        metadata.name = _name
+        spec.providerConfigRef.name = _targetK8sProviderConfigName
     }
     usages: [Usage] = [Usage {
         metadata.name = "${_name}-uses-${ofResource.metadata.name}"

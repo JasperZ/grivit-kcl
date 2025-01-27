@@ -1,12 +1,10 @@
-import api.cp.core.v1 as cpCore
-
 schema AwsIamAccessKeyWrapper:
     _controlPlaneAwsProviderConfigName: str
     _name: str
-    _awsIamUserWrapper: IamUserWrapper
+    _awsIamUserWrapper: AwsIamUserWrapper
     _tenantNamespace: str
 
-    managedResource: cpCore.ManagedResource {
+    managedResource: ManagedResource {
         apiVersion = "iam.aws.upbound.io/v1beta1"
         kind = "AccessKey"
         metadata.name = _name
@@ -18,5 +16,5 @@ schema AwsIamAccessKeyWrapper:
         spec.writeConnectionSecretToRef.name = _name
         spec.writeConnectionSecretToRef.namespace = _tenantNamespace
     }
-    usages: [cpCore.Usage] = []
+    usages: [Usage] = []
 

@@ -1,5 +1,3 @@
-import api.cp.core.v1 as cpCore
-
 schema KcOpenIdClientWrapper:
     _controlPlaneKcProviderConfigName: str
     _connectionSecretName: str
@@ -10,7 +8,7 @@ schema KcOpenIdClientWrapper:
     _redirectUri: str
     _url: str
 
-    managedResource: cpCore.ManagedResource {
+    managedResource: ManagedResource {
         apiVersion = "openidclient.keycloak.crossplane.io/v1alpha1"
         kind = "Client"
         metadata.name = _name
@@ -32,5 +30,5 @@ schema KcOpenIdClientWrapper:
         spec.writeConnectionSecretToRef.namespace = _connectionSecretNamespace
         spec.providerConfigRef.name = _controlPlaneKcProviderConfigName
     }
-    usages: [cpCore.Usage] = []
+    usages: [Usage] = []
 

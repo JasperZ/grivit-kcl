@@ -1,13 +1,11 @@
-import api.cp.core.v1 as cpCore
-
 schema OsDnsZoneWrapper:
-    _targetOsProviderConfig: ProviderConfigWrapper
+    _targetOsProviderConfig: OsProviderConfigWrapper
     _name: str
     _domain: str
     _email: str
-    _uses: [cpCore.ManagedResource | ProviderConfig] = []
+    _uses: [ManagedResource | OsProviderConfig] = []
 
-    managedResource: cpCore.ManagedResource {
+    managedResource: ManagedResource {
         apiVersion = "dns.openstack.crossplane.io/v1alpha1"
         kind = "ZoneV2"
         metadata.name = _name
@@ -18,5 +16,5 @@ schema OsDnsZoneWrapper:
         spec.forProvider.type = "PRIMARY"
         spec.providerConfigRef.name = _targetOsProviderConfig.managedResource.metadata.name
     }
-    usages: [cpCore.Usage] = []
+    usages: [Usage] = []
 

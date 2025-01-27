@@ -1,17 +1,17 @@
-schema OsProviderConfig:
+schema K8sProviderConfig:
     _name: str
     _credentialsSecretName: str
     _credentialsSecretNamespace: str
 
-    apiVersion: str = "openstack.crossplane.io/v1beta1"
+    apiVersion: str = "kubernetes.crossplane.io/v1alpha1"
     kind: str = "ProviderConfig"
-    metadata: OsProviderConfigMetadata {
+    metadata: K8sProviderConfigMetadata {
         annotations = {
             "krm.kcl.dev/composition-resource-name" = _name
         }
         name = _name
     }
-    spec: OsProviderConfigSpec {
+    spec: K8sProviderConfigSpec {
         credentials = {
             secretRef = {
                 key = "value"
@@ -21,22 +21,22 @@ schema OsProviderConfig:
         }
     }
 
-schema OsProviderConfigMetadata:
-    annotations: OsProviderConfigMetadataAnnotations
+schema K8sProviderConfigMetadata:
+    annotations: K8sProviderConfigMetadataAnnotations
     name: str
 
-schema OsProviderConfigMetadataAnnotations:
+schema K8sProviderConfigMetadataAnnotations:
     "krm.kcl.dev/composition-resource-name": str
     "krm.kcl.dev/ready": str = "True"
 
-schema OsProviderConfigSpec:
-    credentials: OsProviderConfigSpecCredentials
+schema K8sProviderConfigSpec:
+    credentials: K8sProviderConfigSpecCredentials
 
-schema OsProviderConfigSpecCredentials:
-    secretRef: OsProviderConfigSpecCredentialsSecretRef
+schema K8sProviderConfigSpecCredentials:
+    secretRef: K8sProviderConfigSpecCredentialsSecretRef
     source: "Secret" = "Secret"
 
-schema OsProviderConfigSpecCredentialsSecretRef:
+schema K8sProviderConfigSpecCredentialsSecretRef:
     key: str
     name: str
     namespace: str

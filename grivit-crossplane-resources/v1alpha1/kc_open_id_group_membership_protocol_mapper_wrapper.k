@@ -1,5 +1,3 @@
-import api.cp.core.v1 as cpCore
-
 schema KcOpenIdGroupMembershipProtocolMapperWrapper:
     _controlPlaneKcProviderConfigName: str
     _claimName: str
@@ -7,7 +5,7 @@ schema KcOpenIdGroupMembershipProtocolMapperWrapper:
     _name: str
     _realmId: str
 
-    managedResource: cpCore.ManagedResource {
+    managedResource: ManagedResource {
         apiVersion = "openidgroup.keycloak.crossplane.io/v1alpha1"
         kind = "GroupMembershipProtocolMapper"
         metadata.name = _name
@@ -24,5 +22,5 @@ schema KcOpenIdGroupMembershipProtocolMapperWrapper:
         spec.forProvider.realmId = _realmId
         spec.providerConfigRef.name = _controlPlaneKcProviderConfigName
     }
-    usages: [cpCore.Usage] = []
+    usages: [Usage] = []
 

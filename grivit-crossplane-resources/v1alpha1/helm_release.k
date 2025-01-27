@@ -1,5 +1,3 @@
-import api.cp.core.v1 as cpCore
-
 schema HelmReleaseWrapper:
     _name: str
     _chartName: str
@@ -9,7 +7,7 @@ schema HelmReleaseWrapper:
 
     _targetHelmProviderConfigName: str
 
-    managedResource: cpCore.ManagedResource {
+    managedResource: ManagedResource {
         apiVersion = "helm.crossplane.io/v1beta1"
         kind = "Release"
         metadata.name = _name
@@ -24,5 +22,5 @@ schema HelmReleaseWrapper:
         }
         spec.providerConfigRef.name = _targetHelmProviderConfigName
     }
-    usages: [cpCore.Usage] = []
+    usages: [Usage] = []
 

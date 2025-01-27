@@ -1,11 +1,9 @@
-import api.cp.core.v1 as cpCore
-
 schema OsIdentityApplicationCredentialWrapper:
     _name: str
     _tenantNamespace: str
     _targetOsProviderConfigName: str
 
-    managedResource: cpCore.ManagedResource {
+    managedResource: ManagedResource {
         apiVersion = "identity.openstack.crossplane.io/v1alpha1"
         kind = "ApplicationCredentialV3"
         metadata.name = _name
@@ -15,5 +13,5 @@ schema OsIdentityApplicationCredentialWrapper:
         spec.writeConnectionSecretToRef.name = _name + "-conn"
         spec.writeConnectionSecretToRef.namespace = _tenantNamespace
     }
-    usages: [cpCore.Usage] = []
+    usages: [Usage] = []
 

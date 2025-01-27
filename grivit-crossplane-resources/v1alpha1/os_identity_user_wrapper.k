@@ -1,17 +1,14 @@
-import api.cp.core.v1 as cpCore
-import api.cp.k8s.core.v1 as cpK8sCore
-
 schema OsIdentityUserWrapper:
     _controlPlaneOsProviderConfigName: str
     _name: str
-    _passwordSecret: cpK8sCore.ObjectSecretWrapper
+    _passwordSecret: K8sObjectSecretWrapper
     _passwordSecretKey: str
     _projectId: str
     _projectName: str
     _userName: str
-    _uses: [cpCore.ManagedResource] = []
+    _uses: [ManagedResource] = []
 
-    managedResource: cpCore.ManagedResource {
+    managedResource: ManagedResource {
         apiVersion = "identity.openstack.crossplane.io/v1alpha1"
         kind = "UserV3"
         metadata.name = _name
@@ -25,7 +22,7 @@ schema OsIdentityUserWrapper:
         }
         spec.providerConfigRef.name = _controlPlaneOsProviderConfigName
     }
-    usages: [cpCore.Usage] = [cpCore.Usage {
+    usages: [Usage] = [Usage {
         metadata.name = "${_name}-uses-${ofResource.metadata.name}"
         spec.by.apiVersion = managedResource.apiVersion
         spec.by.kind = managedResource.kind

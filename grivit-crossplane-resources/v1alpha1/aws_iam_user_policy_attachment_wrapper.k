@@ -1,12 +1,10 @@
-import api.cp.core.v1 as cpCore
-
 schema AwsIamUserPolicyAttachmentWrapper:
     _controlPlaneAwsProviderConfigName: str
     _name: str
     _policyArn: str
     _userName: str
 
-    managedResource: cpCore.ManagedResource {
+    managedResource: ManagedResource {
         apiVersion = "iam.aws.upbound.io/v1beta1"
         kind = "UserPolicyAttachment"
         metadata.name = _name
@@ -17,5 +15,5 @@ schema AwsIamUserPolicyAttachmentWrapper:
         spec.forProvider.user = _userName
         spec.providerConfigRef.name = _controlPlaneAwsProviderConfigName
     }
-    usages: [cpCore.Usage] = []
+    usages: [Usage] = []
 

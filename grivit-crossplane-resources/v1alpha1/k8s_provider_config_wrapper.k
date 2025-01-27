@@ -1,10 +1,10 @@
-schema OsProviderConfigWrapper:
+schema K8sProviderConfigWrapper:
     _name: str
     _credentialsSecretName: str
     _credentialsSecretNamespace: str
     _uses: [ManagedResource] = []
 
-    managedResource: OsProviderConfig {
+    managedResource: K8sProviderConfig {
         _name = _name
         _credentialsSecretName = _credentialsSecretName
         _credentialsSecretNamespace = _credentialsSecretNamespace

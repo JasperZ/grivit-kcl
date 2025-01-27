@@ -1,5 +1,3 @@
-import api.cp.core.v1 as cpCore
-
 schema KcOpenIdClientDefaultScopesWrapper:
     _additionalScopes: [str] = []
     _controlPlaneKcProviderConfigName: str
@@ -7,7 +5,7 @@ schema KcOpenIdClientDefaultScopesWrapper:
     _name: str
     _realmId: str
 
-    managedResource: cpCore.ManagedResource {
+    managedResource: ManagedResource {
         apiVersion = "openidclient.keycloak.crossplane.io/v1alpha1"
         kind = "ClientDefaultScopes"
         metadata.name = _name
@@ -26,5 +24,5 @@ schema KcOpenIdClientDefaultScopesWrapper:
         spec.forProvider.realmId = _realmId
         spec.providerConfigRef.name = _controlPlaneKcProviderConfigName
     }
-    usages: [cpCore.Usage] = []
+    usages: [Usage] = []
 

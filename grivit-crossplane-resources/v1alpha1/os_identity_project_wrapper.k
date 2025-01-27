@@ -1,10 +1,8 @@
-import api.cp.core.v1 as cpCore
-
 schema OsIdentityProjectWrapper:
     _controlPlaneOsProviderConfigName: str
     _projectName: str
 
-    managedResource: cpCore.ManagedResource {
+    managedResource: ManagedResource {
         apiVersion = "identity.openstack.crossplane.io/v1alpha1"
         kind = "ProjectV3"
         metadata.name = _projectName
@@ -12,5 +10,5 @@ schema OsIdentityProjectWrapper:
         spec.forProvider.name = _projectName
         spec.providerConfigRef.name = _controlPlaneOsProviderConfigName
     }
-    usages: [cpCore.Usage] = []
+    usages: [Usage] = []
 

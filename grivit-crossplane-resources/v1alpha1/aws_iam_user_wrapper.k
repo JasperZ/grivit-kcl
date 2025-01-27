@@ -1,10 +1,8 @@
-import api.cp.core.v1 as cpCore
-
 schema AwsIamUserWrapper:
     _controlPlaneAwsProviderConfigName: str
     _name: str
 
-    managedResource: cpCore.ManagedResource {
+    managedResource: ManagedResource {
         apiVersion = "iam.aws.upbound.io/v1beta1"
         kind = "User"
         metadata.name = _name
@@ -14,5 +12,5 @@ schema AwsIamUserWrapper:
         spec.forProvider = {}
         spec.providerConfigRef.name = _controlPlaneAwsProviderConfigName
     }
-    usages: [cpCore.Usage] = []
+    usages: [Usage] = []
 

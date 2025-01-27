@@ -1,12 +1,10 @@
-import api.cp.core.v1 as cpCore
-
 schema AwsIamPolicyWrapper:
     _controlPlaneAwsProviderConfigName: str
     _description: str
     _name: str
     _policy: str
 
-    managedResource: cpCore.ManagedResource {
+    managedResource: ManagedResource {
         apiVersion = "iam.aws.upbound.io/v1beta1"
         kind = "Policy"
         metadata.name = _name
@@ -17,5 +15,5 @@ schema AwsIamPolicyWrapper:
         spec.forProvider.policy = _policy
         spec.providerConfigRef.name = _controlPlaneAwsProviderConfigName
     }
-    usages: [cpCore.Usage] = []
+    usages: [Usage] = []
 
