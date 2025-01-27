@@ -1,3 +1,0 @@
-schema UsageSpecResourceResourceRef:
-    name: str
-

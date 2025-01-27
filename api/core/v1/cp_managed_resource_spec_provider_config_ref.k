@@ -1,3 +1,0 @@
-schema CpManagedResourceSpecProviderConfigRef:
-    name: str
-

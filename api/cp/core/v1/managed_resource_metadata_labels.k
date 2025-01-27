@@ -1,3 +1,0 @@
-schema ManagedResourceMetadataLabels:
-    [str]: str
-

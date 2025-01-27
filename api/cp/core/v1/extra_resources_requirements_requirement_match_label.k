@@ -1,3 +1,0 @@
-schema ExtraResourcesRequirementMatchLabels:
-    [str]: str
-
