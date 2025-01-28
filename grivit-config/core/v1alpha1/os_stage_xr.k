@@ -31,7 +31,7 @@ osStage: glcomp.OsStage = glcomp.OsStage {
     _domain = spec.domain
     _email = spec.email
     _name = claimName
-    _observedCompositeResource = observedComposedResources
+    _observedComposedResources = observedComposedResources
     _projectName = spec.projectName
     _tenantNamespace = claimNamespace
 }
