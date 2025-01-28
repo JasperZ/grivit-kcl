@@ -12,6 +12,9 @@ schema OsIdentityUserWrapper:
         apiVersion = "identity.openstack.crossplane.io/v1alpha1"
         kind = "UserV3"
         metadata.name = _name
+        metadata.annotations = {
+            "krm.kcl.dev/composition-resource-name" = _name
+        }
         spec.forProvider.defaultProjectId = _projectId
         spec.forProvider.description = "User '${_userName}' managed and used by Crossplane to access the project '${_projectName}'"
         spec.forProvider.name = _userName
@@ -24,6 +27,9 @@ schema OsIdentityUserWrapper:
     }
     usages: [Usage] = [Usage {
         metadata.name = "${_name}-uses-${ofResource.metadata.name}"
+        metadata.annotations = {
+            "krm.kcl.dev/composition-resource-name" = "${_name}-uses-${ofResource.metadata.name}"
+        }
         spec.by.apiVersion = managedResource.apiVersion
         spec.by.kind = managedResource.kind
         spec.by.resourceRef.name = managedResource.metadata.name
@@ -32,10 +38,10 @@ schema OsIdentityUserWrapper:
         spec.of.resourceRef.name = ofResource.metadata.name
     } for ofResource in _uses]
 
-    getUserId: (any) -> str = lambda observedCompositeResource: any -> str {
+    getUserId: (any) -> str = lambda observedComposedResources: any -> str {
         _userId: str = ""
-        if managedResource.metadata.name in observedCompositeResource:
-            _userId = str(observedCompositeResource[managedResource.metadata.name].Resource?.status?.atProvider?.id or "")
+        if managedResource.metadata.name in observedComposedResources:
+            _userId = str(observedComposedResources[managedResource.metadata.name].Resource?.status?.atProvider?.id or "")
 
         _userId
     }

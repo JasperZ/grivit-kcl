@@ -7,7 +7,7 @@ schema Usage:
 schema UsageSpec:
     by: UsageSpecResource
     of: UsageSpecResource
-    replayDeletion: bool
+    replayDeletion: bool = True
 
 schema UsageMetadata:
     annotations: UsageMetadataAnnotations

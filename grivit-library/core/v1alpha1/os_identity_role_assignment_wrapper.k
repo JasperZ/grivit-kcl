@@ -9,6 +9,9 @@ schema OsIdentityRoleAssignmentWrapper:
         apiVersion = "identity.openstack.crossplane.io/v1alpha1"
         kind = "RoleAssignmentV3"
         metadata.name = _name
+        metadata.annotations = {
+            "krm.kcl.dev/composition-resource-name" = _name
+        }
         spec.forProvider.projectId = _projectId
         # ToDo: make configurable
         spec.forProvider.roleId = _roleId

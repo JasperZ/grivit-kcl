@@ -7,7 +7,7 @@ schema K8sAppPlatformCertManager:
     _controlPlaneK8sProviderConfigName: str
     _targetK8sProviderConfig: core.K8sProviderConfigWrapper
     _tenantNamespace: str
-    _observedCompositeResource: any
+    _observedComposedResources: any
 
     awsUser: core.AwsIamUserWrapper {
         _controlPlaneAwsProviderConfigName = _controlPlaneAwsProviderConfigName
@@ -16,7 +16,7 @@ schema K8sAppPlatformCertManager:
     awsAccessKey: core.AwsIamAccessKeyWrapper {
         _controlPlaneAwsProviderConfigName = _controlPlaneAwsProviderConfigName
         _name = "${_name}-aws-access-key"
-        _awsIamUserWrapper = awsUser
+        _awsIamUserName = awsUser.managedResource.metadata.name
         _tenantNamespace = _tenantNamespace
     }
     awsPolicy: core.AwsIamPolicyWrapper {
@@ -53,7 +53,7 @@ schema K8sAppPlatformCertManager:
         _controlPlaneAwsProviderConfigName = _controlPlaneAwsProviderConfigName
         _name = "${_name}-aws-user-policy-attachment"
         _userName = awsUser.managedResource.metadata.name
-        _policyArn = awsPolicy.getPolicyArn(_observedCompositeResource)
+        _policyArn = awsPolicy.getPolicyArn(_observedComposedResources)
     }
     helmRepo: core.K8sFluxHelmRepositoryWrapper {
         _name = "${_name}-repo"
@@ -86,8 +86,8 @@ schema K8sAppPlatformCertManager:
         _name = "${_name}-cluster-issuer-credentials"
         _targetK8sProviderConfigName = _targetK8sProviderConfig.managedResource.metadata.name
         _stringData = {
-            accessKeyId = awsAccessKey.getAccessKeyId(_observedCompositeResource)
-            accessKeySecret = awsAccessKey.getAccessKeySecret(_observedCompositeResource)
+            accessKeyId = awsAccessKey.getAccessKeyId(_observedComposedResources)
+            accessKeySecret = awsAccessKey.getAccessKeySecret(_observedComposedResources)
         }
         _targetNamespace = "cert-manager"
     }

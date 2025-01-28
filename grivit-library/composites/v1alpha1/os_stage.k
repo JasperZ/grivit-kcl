@@ -6,7 +6,7 @@ schema OsStage:
     _domain: str
     _email: str
     _name: str
-    _observedCompositeResource: any
+    _observedComposedResources: any
     _projectName: str
     _tenantNamespace: str
 
@@ -21,12 +21,13 @@ schema OsStage:
     }
     project: core.OsIdentityProjectWrapper {
         _controlPlaneOsProviderConfigName = _controlPlaneOsProviderConfigName
+        _name = "${_name}-project"
         _projectName = _projectName
     }
     user: core.OsIdentityUserWrapper {
         _controlPlaneOsProviderConfigName = _controlPlaneOsProviderConfigName
         _name = "${_name}-user"
-        _projectId = project.getProjectId(_observedCompositeResource)
+        _projectId = project.getProjectId(_observedComposedResources)
         _projectName = project.managedResource.metadata.name
         _passwordSecret = password
         _passwordSecretKey = "password"
@@ -36,8 +37,8 @@ schema OsStage:
     userRoleAssignment: core.OsIdentityRoleAssignmentWrapper {
         _controlPlaneOsProviderConfigName = _controlPlaneOsProviderConfigName
         _name = "${_name}-user-role-assignment"
-        _projectId = project.getProjectId(_observedCompositeResource)
-        _userId = user.getUserId(_observedCompositeResource)
+        _projectId = project.getProjectId(_observedComposedResources)
+        _userId = user.getUserId(_observedComposedResources)
     }
     cloudConfig: core.K8sObjectSecretWrapper {
         _targetK8sProviderConfigName = _controlPlaneK8sProviderConfigName
@@ -48,7 +49,7 @@ schema OsStage:
     {
     "auth_url": "https://test.grivit.cloud:5000",
     "insecure": "false",
-    "tenant_id": "${project.getProjectId(_observedCompositeResource)}",
+    "tenant_id": "${project.getProjectId(_observedComposedResources)}",
     "tenant_name": "${project.managedResource.spec.forProvider.name}",
     "user_domain_name": "Default",
     "user_name": "${user.managedResource.spec.forProvider.name}",

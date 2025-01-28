@@ -5,7 +5,7 @@ schema K8sAppBundlePlatform:
     _controlPlaneK8sProviderConfigName: str
     _fluxHelmReleaseDependencies?: [core.K8sFluxHelmReleaseWrapper]
     _name: str
-    _observedCompositeResource: any
+    _observedComposedResources: any
     _targetK8sProviderConfig: core.K8sProviderConfigWrapper
     _tenantNamespace: str
 
@@ -14,7 +14,7 @@ schema K8sAppBundlePlatform:
         _fluxHelmReleaseDependencies = _fluxHelmReleaseDependencies
         _controlPlaneAwsProviderConfigName = _controlPlaneAwsProviderConfigName
         _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
-        _observedCompositeResource = _observedCompositeResource
+        _observedComposedResources = _observedComposedResources
         _targetK8sProviderConfig = _targetK8sProviderConfig
         _tenantNamespace = _tenantNamespace
     }

@@ -9,6 +9,9 @@ schema OsDnsZoneWrapper:
         apiVersion = "dns.openstack.crossplane.io/v1alpha1"
         kind = "ZoneV2"
         metadata.name = _name
+        metadata.annotations = {
+            "krm.kcl.dev/composition-resource-name" = _name
+        }
         spec.forProvider.description = "Zone '${_domain}' managed by Crossplane"
         spec.forProvider.email = _email
         spec.forProvider.name = "${_domain}."

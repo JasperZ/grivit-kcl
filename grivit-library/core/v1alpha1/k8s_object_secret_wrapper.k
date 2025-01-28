@@ -10,6 +10,9 @@ schema K8sObjectSecretWrapper:
         apiVersion = "kubernetes.crossplane.io/v1alpha2"
         kind = "Object"
         metadata.name = _name
+        metadata.annotations = {
+            "krm.kcl.dev/composition-resource-name" = _name
+        }
         spec.forProvider.manifest = {
             apiVersion = "v1"
             kind = "Secret"
@@ -22,6 +25,9 @@ schema K8sObjectSecretWrapper:
     }
     usages: [Usage] = [Usage {
         metadata.name = "${_name}-uses-${ofResource.metadata.name}"
+        metadata.annotations = {
+            "krm.kcl.dev/composition-resource-name" = "${_name}-uses-${ofResource.metadata.name}"
+        }
         spec.by.apiVersion = managedResource.apiVersion
         spec.by.kind = managedResource.kind
         spec.by.resourceRef.name = managedResource.metadata.name

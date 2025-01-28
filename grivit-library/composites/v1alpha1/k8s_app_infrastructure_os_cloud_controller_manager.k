@@ -8,7 +8,7 @@ schema K8sAppInfrastructureOsCloudControllerManager:
     _tenantNamespace: str
     _targetK8sProviderConfig: core.K8sProviderConfigWrapper
     _targetOsProviderConfigName: str
-    _observedCompositeResource: any
+    _observedComposedResources: any
     _clusterSubnetId: str
     _externalNetworkId: str
 
@@ -40,8 +40,8 @@ schema K8sAppInfrastructureOsCloudControllerManager:
                 global = {
                     # ToDo: hard coded url
                     "auth-url" = "https://test.grivit.cloud:5000"
-                    "application-credential-id" = applicationCredential.getApplicationCredentialId(_observedCompositeResource)
-                    "application-credential-secret" = applicationCredential.getApplicationCredentialSecret(_observedCompositeResource)
+                    "application-credential-id" = applicationCredential.getApplicationCredentialId(_observedComposedResources)
+                    "application-credential-secret" = applicationCredential.getApplicationCredentialSecret(_observedComposedResources)
                 }
                 loadBalancer = {
                     "subnet-id" = _clusterSubnetId

@@ -9,7 +9,7 @@ schema K8sAppInfrastructureOsExternalDNS:
     _targetK8sProviderConfig: core.K8sProviderConfigWrapper
     _targetOsProviderConfigName: str
     _tenantNamespace: str
-    _observedCompositeResource: any
+    _observedComposedResources: any
 
     applicationCredential: core.OsIdentityApplicationCredentialWrapper {
         _name = "${_name}-application-credential"
@@ -47,11 +47,11 @@ schema K8sAppInfrastructureOsExternalDNS:
                 }
                 {
                     name = "OS_APPLICATION_CREDENTIAL_ID"
-                    value = applicationCredential.getApplicationCredentialId(_observedCompositeResource)
+                    value = applicationCredential.getApplicationCredentialId(_observedComposedResources)
                 }
                 {
                     name = "OS_APPLICATION_CREDENTIAL_SECRET"
-                    value = applicationCredential.getApplicationCredentialSecret(_observedCompositeResource)
+                    value = applicationCredential.getApplicationCredentialSecret(_observedComposedResources)
                 }
             ]
             extraArgs = ["--txt-wildcard-replacement=wildcard"]

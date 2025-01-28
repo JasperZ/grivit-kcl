@@ -8,7 +8,7 @@ schema K8sAppInfrastructureOsCsiDriver:
     _controlPlaneK8sProviderConfigName: str
     _targetK8sProviderConfig: core.K8sProviderConfigWrapper
     _targetOsProviderConfigName: str
-    _observedCompositeResource: any
+    _observedComposedResources: any
 
     applicationCredential: core.OsIdentityApplicationCredentialWrapper {
         _name = "${_name}-application-credential"
@@ -42,8 +42,8 @@ schema K8sAppInfrastructureOsCsiDriver:
                     "cloud.conf" = """\
 [Global]
 auth-url=https://test.grivit.cloud:5000
-application-credential-id=${applicationCredential.getApplicationCredentialId(_observedCompositeResource)}
-application-credential-secret=${applicationCredential.getApplicationCredentialSecret(_observedCompositeResource)}
+application-credential-id=${applicationCredential.getApplicationCredentialId(_observedComposedResources)}
+application-credential-secret=${applicationCredential.getApplicationCredentialSecret(_observedComposedResources)}
 """
                 }
             }

@@ -15,18 +15,18 @@ schema OsIdentityApplicationCredentialWrapper:
     }
     usages: [Usage] = []
 
-    getApplicationCredentialId: (any) -> str = lambda observedCompositeResource: any -> str {
+    getApplicationCredentialId: (any) -> str = lambda observedComposedResources: any -> str {
         _applicationCredentialId: str = ""
-        if managedResource.metadata.name in observedCompositeResource:
-            _applicationCredentialId = str(observedCompositeResource[managedResource.metadata.name].Resource?.status?.atProvider?.id or "")
+        if managedResource.metadata.name in observedComposedResources:
+            _applicationCredentialId = str(observedComposedResources[managedResource.metadata.name].Resource?.status?.atProvider?.id or "")
 
         _applicationCredentialId
     }
 
-    getApplicationCredentialSecret: (any) -> str = lambda observedCompositeResource: any -> str {
+    getApplicationCredentialSecret: (any) -> str = lambda observedComposedResources: any -> str {
         _applicationCredentialSecret: str = ""
-        if managedResource.metadata.name in observedCompositeResource:
-            _applicationCredentialSecret = base64.decode(observedCompositeResource[managedResource.metadata.name].ConnectionDetails["attribute.secret"] or base64.encode("dummy"))
+        if managedResource.metadata.name in observedComposedResources:
+            _applicationCredentialSecret = base64.decode(observedComposedResources[managedResource.metadata.name].ConnectionDetails["attribute.secret"] or base64.encode("dummy"))
 
         _applicationCredentialSecret
     }

@@ -17,11 +17,11 @@ schema AwsIamPolicyWrapper:
     }
     usages: [Usage] = []
 
-    getPolicyArn: (any) -> str = lambda observedCompositeResource: any -> str {
+    getPolicyArn: (any) -> str = lambda observedComposedResources: any -> str {
         _awsPolicyArn: str = ""
 
-        if managedResource.metadata.name in observedCompositeResource:
-            _awsPolicyArn = str(observedCompositeResource[managedResource.metadata.name].Resource?.status?.atProvider?.arn or "")
+        if managedResource.metadata.name in observedComposedResources:
+            _awsPolicyArn = str(observedComposedResources[managedResource.metadata.name].Resource?.status?.atProvider?.arn or "")
 
         _awsPolicyArn
     }

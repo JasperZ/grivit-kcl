@@ -9,7 +9,7 @@ schema K8sAppBundleOsInfrastructure:
     _externalNetworkId: str
     _fluxHelmReleaseDependencies?: [core.K8sFluxHelmReleaseWrapper]
     _name: str
-    _observedCompositeResource: any
+    _observedComposedResources: any
     _targetK8sProviderConfig: core.K8sProviderConfigWrapper
     _targetOsProviderConfigName: str
     _tenantNamespace: str
@@ -37,7 +37,7 @@ schema K8sAppBundleOsInfrastructure:
         _clusterName = _clusterName
         _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
         _fluxHelmReleaseDependencies = _fluxHelmReleaseDependencies
-        _observedCompositeResource = _observedCompositeResource
+        _observedComposedResources = _observedComposedResources
         _targetK8sProviderConfig = _targetK8sProviderConfig
         _targetOsProviderConfigName = _targetOsProviderConfigName
         _tenantNamespace = _tenantNamespace
@@ -48,7 +48,7 @@ schema K8sAppBundleOsInfrastructure:
         _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
         _domainFilters = _domainFilters
         _fluxHelmReleaseDependencies = _fluxHelmReleaseDependencies
-        _observedCompositeResource = _observedCompositeResource
+        _observedComposedResources = _observedComposedResources
         _targetK8sProviderConfig = _targetK8sProviderConfig
         _targetOsProviderConfigName = _targetOsProviderConfigName
         _tenantNamespace = _tenantNamespace

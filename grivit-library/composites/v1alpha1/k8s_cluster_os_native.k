@@ -27,7 +27,7 @@ schema K8sClustersOsNative:
     _externalNetworkName: str
     _k8sVersion: str
     _name: str
-    _observedCompositeResource: any
+    _observedComposedResources: any
     _realmId: str
     _targetOsProviderConfigName: str
     _tenantNamespace: str
@@ -52,8 +52,8 @@ clouds:
     auth:
       auth_url: https://test.grivit.cloud:5000
       auth_type: v3applicationcredential
-      application_credential_id: ${applicationCredential.getApplicationCredentialId(_observedCompositeResource)}
-      application_credential_secret: ${applicationCredential.getApplicationCredentialSecret(_observedCompositeResource)}
+      application_credential_id: ${applicationCredential.getApplicationCredentialId(_observedComposedResources)}
+      application_credential_secret: ${applicationCredential.getApplicationCredentialSecret(_observedComposedResources)}
       project_id: 48f988d765c6418e92ad153a9bfcb5a4
       project_name: "os.grivit.cust.jasper.dev"
       user_domain_name: "Default"
@@ -107,7 +107,7 @@ clouds:
         _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
         _tenantNamespace = _tenantNamespace
     }
-    _workerMachineKubernetesVersion = _observedCompositeResource[controlPlaneKubeadm.managedResource.metadata.name].Resource?.status?.atProvider?.manifest?.status?.version or ""
+    _workerMachineKubernetesVersion = _observedComposedResources[controlPlaneKubeadm.managedResource.metadata.name].Resource?.status?.atProvider?.manifest?.status?.version or ""
     _workerMachineTemplateFlavorName = str(_workers.flavorName)
     _workerMachineTemplateImageName = str("ubuntu-2204-kube-${_workerMachineKubernetesVersion}")
     _workerMachineTemplateRootVolumeSize = int(_workers.rootVolumeSize)
@@ -152,14 +152,14 @@ clouds:
     }
     k8sAppsInfrastructureOsBundle: K8sAppBundleOsInfrastructure {
         _clusterName = cluster.managedResource.metadata.name
-        _clusterSubnetId = openstackCluster.getSubnetId(_observedCompositeResource)
+        _clusterSubnetId = openstackCluster.getSubnetId(_observedComposedResources)
         _controlPlaneHelmProviderConfigName = _controlPlaneHelmProviderConfigName
         _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
         _domainFilters = [_domain]
-        _externalNetworkId = openstackCluster.getExternalNetworkId(_observedCompositeResource)
+        _externalNetworkId = openstackCluster.getExternalNetworkId(_observedComposedResources)
         _fluxHelmReleaseDependencies = k8sCRDsBundle.fluxHelmReleases
         _name = "${_name}-ia"
-        _observedCompositeResource = _observedCompositeResource
+        _observedComposedResources = _observedComposedResources
         _targetK8sProviderConfig = providerConfig
         _targetOsProviderConfigName = _targetOsProviderConfigName
         _tenantNamespace = _tenantNamespace
@@ -169,7 +169,7 @@ clouds:
         _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
         _fluxHelmReleaseDependencies = k8sAppsInfrastructureOsBundle.fluxHelmReleases
         _name = "${_name}-pa"
-        _observedCompositeResource = _observedCompositeResource
+        _observedComposedResources = _observedComposedResources
         _targetK8sProviderConfig = providerConfig
         _tenantNamespace = _tenantNamespace
     }
@@ -186,7 +186,7 @@ clouds:
     kcArgoCdClientDefaultScopes: core.KcOpenIdClientDefaultScopesWrapper {
         _additionalScopes = ["groups"]
         _controlPlaneKcProviderConfigName = _controlPlaneKcProviderConfigName
-        _clientId = kcArgoCdClient.getClientId(_observedCompositeResource)
+        _clientId = kcArgoCdClient.getClientId(_observedComposedResources)
         _name = "${_name}-argocd-client-default-scopes"
         _realmId = _realmId
     }
@@ -202,7 +202,7 @@ clouds:
 name: Keycloak
 issuer: https://keycloak.hub.test.grivit.com/realms/${_realmId}
 clientID: ${kcArgoCdClient.managedResource.spec.forProvider.clientId}
-clientSecret: ${kcArgoCdClient.getClientSecret(_observedCompositeResource)}
+clientSecret: ${kcArgoCdClient.getClientSecret(_observedComposedResources)}
 requestedScopes: ["openid", "profile", "email", "groups"]
 """
         }
