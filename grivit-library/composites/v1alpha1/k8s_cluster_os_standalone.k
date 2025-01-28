@@ -1,23 +1,23 @@
 import crypto
 import core.v1alpha1 as core
 
-schema K8sClustersOsNativeConfigWorkersAutoscaling:
+schema K8sClusterOsStandaloneConfigWorkersAutoscaling:
     minSize: int
     maxSize: int
 
-schema K8sClustersOsNativeConfigWorkers:
+schema K8sClusterOsStandaloneConfigWorkers:
     flavorName: str
     rootVolumeSize: int
-    autoscaling: K8sClustersOsNativeConfigWorkersAutoscaling
+    autoscaling: K8sClusterOsStandaloneConfigWorkersAutoscaling
 
-schema K8sClustersOsNativeConfigControlPlane:
+schema K8sClusterOsStandaloneConfigControlPlane:
     flavorName: str
     rootVolumeSize: int
     replicas: int
 
-schema K8sClustersOsNative:
+schema K8sClusterOsStandalone:
     _argoCdDomain: str
-    _controlPlane: K8sClustersOsNativeConfigControlPlane
+    _controlPlane: K8sClusterOsStandaloneConfigControlPlane
     _controlPlaneAwsProviderConfigName: str
     _controlPlaneHelmProviderConfigName: str
     _controlPlaneKcProviderConfigName: str
@@ -31,7 +31,7 @@ schema K8sClustersOsNative:
     _realmId: str
     _targetOsProviderConfigName: str
     _tenantNamespace: str
-    _workers: K8sClustersOsNativeConfigWorkers
+    _workers: K8sClusterOsStandaloneConfigWorkers
 
     applicationCredential: core.OsIdentityApplicationCredentialWrapper {
         _name = "${_name}-application-credential"
