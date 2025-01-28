@@ -96,3 +96,11 @@ override_path = true
     }
     usages: [Usage] = []
 
+    getKubernetesVersion: (any) -> str = lambda observedComposedResources: any -> str {
+        _kubernetesVersion: str = ""
+        if managedResource.metadata.name in observedComposedResources:
+            _kubernetesVersion = str(observedComposedResources[managedResource.metadata.name].Resource?.status?.atProvider?.manifest?.status?.version)
+
+        _kubernetesVersion
+    }
+
