@@ -1,6 +1,5 @@
 schema OsIdentityProjectWrapper:
     _controlPlaneOsProviderConfigName: str
-    _name: str
     _projectName: str
 
     managedResource: ManagedResource {
@@ -8,7 +7,7 @@ schema OsIdentityProjectWrapper:
         kind = "ProjectV3"
         metadata.name = _projectName
         metadata.annotations = {
-            "krm.kcl.dev/composition-resource-name" = _name
+            "krm.kcl.dev/composition-resource-name" = _projectName
         }
         spec.forProvider.description = "Project '${_projectName}' manged by Crossplane"
         spec.forProvider.name = _projectName

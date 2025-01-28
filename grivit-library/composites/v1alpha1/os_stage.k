@@ -21,7 +21,6 @@ schema OsStage:
     }
     project: core.OsIdentityProjectWrapper {
         _controlPlaneOsProviderConfigName = _controlPlaneOsProviderConfigName
-        _name = "${_name}-project"
         _projectName = _projectName
     }
     user: core.OsIdentityUserWrapper {
