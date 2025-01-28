@@ -1,3 +1,5 @@
+import base64
+
 schema KcOpenIdClientWrapper:
     _controlPlaneKcProviderConfigName: str
     _connectionSecretName: str

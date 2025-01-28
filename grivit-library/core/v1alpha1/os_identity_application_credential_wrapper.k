@@ -1,3 +1,5 @@
+import base64
+
 schema OsIdentityApplicationCredentialWrapper:
     _name: str
     _tenantNamespace: str
