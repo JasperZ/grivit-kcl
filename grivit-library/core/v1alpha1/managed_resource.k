@@ -5,7 +5,7 @@ schema ManagedResource:
     spec: ManagedResourceSpec {}
 
 schema ManagedResourceMetadata:
-    annotations: ManagedResourceMetadataAnnotations
+    annotations: ManagedResourceMetadataAnnotations {}
     labels?: ManagedResourceMetadataLabels
     name: str
 
