@@ -1,0 +1,27 @@
+[dependencies]
+  [dependencies.crossplane]
+    name = "crossplane"
+    full_name = "crossplane_1.17.3"
+    version = "1.17.3"
+    reg = "ghcr.io"
+    repo = "kcl-lang/crossplane"
+    oci_tag = "1.17.3"
+  [dependencies.grivit]
+    name = "grivit"
+    full_name = "grivit_0.0.1"
+    version = "0.0.1"
+    reg = "ghcr.io"
+    repo = "kcl-lang/grivit"
+    oci_tag = "0.0.1"
+  [dependencies.grivit-library]
+    name = "grivit-library"
+    full_name = "grivit-library_0.0.1"
+    version = "0.0.1"
+  [dependencies.k8s]
+    name = "k8s"
+    full_name = "k8s_1.31.2"
+    version = "1.31.2"
+    sum = "xBZgPsnpVVyWBpahuPQHReeRx28eUHGFoaPeqbct+vs="
+    reg = "ghcr.io"
+    repo = "kcl-lang/k8s"
+    oci_tag = "1.31.2"

@@ -1,0 +1,21 @@
+import grivit_library.composites.v1alpha1 as glcomp
+
+observedComposedResources: any = option("params").ocds
+observedCompositeResource: any = option("params").oxr
+
+claimName: str = observedCompositeResource.metadata.name
+claimNamespace: str = observedCompositeResource.metadata.labels["crossplane.io/claim-namespace"]
+spec: any = observedCompositeResource.spec
+
+osStage: glcomp.OsStage = glcomp.OsStage {
+    _controlPlaneK8sProviderConfigName = spec.controlPlaneK8sProviderConfigName
+    _controlPlaneOsProviderConfigName = spec.controlPlaneOsProviderConfigName
+    _domain = spec.domain
+    _email = spec.email
+    _name = claimName
+    _observedCompositeResource = observedComposedResources
+    _projectName = spec.projectName
+    _tenantNamespace = claimNamespace
+}
+
+items = osStage.managedResources + osStage.usages
