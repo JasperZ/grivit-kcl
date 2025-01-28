@@ -25,7 +25,7 @@ claimName: str = observedCompositeResource.metadata.name
 claimNamespace: str = observedCompositeResource.metadata.labels["crossplane.io/claim-namespace"]
 spec: any = observedCompositeResource.spec
 
-k8sClusterOsStandalone: glcomp.OsStage = glcomp.K8sClusterOsStandalone {
+k8sClusterOsStandalone: glcomp.K8sClusterOsStandalone = glcomp.K8sClusterOsStandalone {
     _argoCdDomain = spec.argoCdDomain
     _controlPlane = {
         flavorName = spec.controlPlane.flavor
