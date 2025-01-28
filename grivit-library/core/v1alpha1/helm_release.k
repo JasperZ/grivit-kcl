@@ -11,6 +11,9 @@ schema HelmReleaseWrapper:
         apiVersion = "helm.crossplane.io/v1beta1"
         kind = "Release"
         metadata.name = _name
+        metadata.annotations = {
+            "krm.kcl.dev/composition-resource-name" = _name
+        }
         spec.forProvider = {
             chart = {
                 name = _chartName
