@@ -1,8 +1,8 @@
 schema ManagedResource:
     apiVersion: str
     kind: str
-    metadata: ManagedResourceMetadata
-    spec: ManagedResourceSpec
+    metadata: ManagedResourceMetadata {}
+    spec: ManagedResourceSpec {}
 
 schema ManagedResourceMetadata:
     annotations: ManagedResourceMetadataAnnotations
@@ -16,7 +16,7 @@ schema ManagedResourceMetadataLabels:
     [str]: str
 
 schema ManagedResourceSpec:
-    forProvider: any
+    forProvider?: any
     providerConfigRef: ManagedResourceSpecProviderConfigRef
     readiness?: ManagedResourceSpecReadiness
     writeConnectionSecretToRef?: ManagedResourceSpecWriteConnectionSecretToRef
