@@ -20,8 +20,8 @@ schema OsIdentityApplicationCredentialWrapper:
 
     getApplicationCredentialId: (any) -> str = lambda observedComposedResources: any -> str {
         _applicationCredentialId: str = ""
-        if managedResource.metadata.name in observedComposedResources:
-            _applicationCredentialId = str(observedComposedResources[managedResource.metadata.name].Resource?.status?.atProvider?.id or "")
+        # if managedResource.metadata.name in observedComposedResources:
+        #     _applicationCredentialId = str(observedComposedResources[managedResource.metadata.name].Resource?.status?.atProvider?.id or "")
 
         _applicationCredentialId
     }
