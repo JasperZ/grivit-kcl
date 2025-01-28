@@ -31,6 +31,7 @@ schema K8sAppBundleOsInfrastructure:
         _targetK8sProviderConfig = _targetK8sProviderConfig
         _targetOsProviderConfigName = _targetOsProviderConfigName
         _tenantNamespace = _tenantNamespace
+        _observedComposedResources = _observedComposedResources
     }
     k8sAppsInfrastructureOsCSIDriver: K8sAppInfrastructureOsCsiDriver {
         _name = "${_name}-ocsi"
