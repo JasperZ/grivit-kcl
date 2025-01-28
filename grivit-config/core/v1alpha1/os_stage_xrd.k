@@ -34,13 +34,13 @@ schema OsStageXrd(glcore.CompositeResourceDefinition):
                                     controlPlaneOsProviderConfigName = {
                                         type = "string"
                                     }
-                                    projectName = {
-                                        type = "string"
-                                    }
                                     domain = {
                                         type = "string"
                                     }
                                     email = {
+                                        type = "string"
+                                    }
+                                    projectName = {
                                         type = "string"
                                     }
                                 }

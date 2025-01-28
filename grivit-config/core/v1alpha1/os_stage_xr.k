@@ -10,11 +10,11 @@ schema OsStageXr(glcore.Composition):
     }
     spec = {
         compositeTypeRef.apiVersion = "${_apiGroup}/${_apiVersion}"
-        compositeTypeRef.kind = _nameSingular
+        compositeTypeRef.kind = "x${_nameSingular}"
         pipeline: [
             glcore.CompositionSpecPipelineStepKcl {
                 step = "managed-resources"
-                input.spec.dependencies = 'grivit-library = { git = "https://github.com/JasperZ/grivit-kcl.git", branch = "main", version = "0.0.1" }'
+                input.spec.dependencies = 'grivit-library = { git = "https://github.com/JasperZ/grivit-kcl.git", branch = "restructure", version = "0.0.1" }'
                 input.spec.source = """\
 import grivit_library.composites.v1alpha1 as glcomp
 

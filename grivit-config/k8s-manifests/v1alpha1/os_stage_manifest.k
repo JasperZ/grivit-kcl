@@ -3,7 +3,7 @@ import core.v1alpha1 as core
 
 nameSingular: str = "Stage"
 namePlural: str = "Stages"
-apiGroup: str = "os.grivit.com"
+apiGroup: str = "os.grivit.cloud"
 apiVersion: str = "v1alpha1"
 
 xr: core.OsStageXr = core.OsStageXr {
