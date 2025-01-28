@@ -73,6 +73,9 @@ schema K8sFluxHelmReleaseWrapper:
     }
     usages: [Usage] = [Usage {
         metadata.name = "${_name}-uses-${_targetK8sProviderConfig.managedResource.metadata.name}"
+        metadata.annotations = {
+            "krm.kcl.dev/composition-resource-name" = "${_name}-uses-${ofResource.metadata.name}"
+        }
         spec.by.apiVersion = managedResource.apiVersion
         spec.by.kind = managedResource.kind
         spec.by.resourceRef.name = managedResource.metadata.name
@@ -81,6 +84,9 @@ schema K8sFluxHelmReleaseWrapper:
         spec.of.resourceRef.name = _targetK8sProviderConfig.managedResource.metadata.name
     }] + [Usage {
         metadata.name = "${_name}-uses-${k8sFluxHelmReleaseDependency.managedResource.metadata.name}"
+        metadata.annotations = {
+            "krm.kcl.dev/composition-resource-name" = "${_name}-uses-${ofResource.metadata.name}"
+        }
         spec.by.apiVersion = managedResource.apiVersion
         spec.by.kind = managedResource.kind
         spec.by.resourceRef.name = managedResource.metadata.name
