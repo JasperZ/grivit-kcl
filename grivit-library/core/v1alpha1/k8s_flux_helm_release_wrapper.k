@@ -14,6 +14,9 @@ schema K8sFluxHelmReleaseWrapper:
         apiVersion = "kubernetes.crossplane.io/v1alpha2"
         kind = "Object"
         metadata.name = _name
+        metadata.annotations = {
+            "krm.kcl.dev/composition-resource-name" = _name
+        }
         spec.forProvider.manifest = {
             apiVersion = "helm.toolkit.fluxcd.io/v2"
             kind = "HelmRelease"

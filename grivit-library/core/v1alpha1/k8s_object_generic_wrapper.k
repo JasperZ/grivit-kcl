@@ -8,6 +8,9 @@ schema K8sObjectGenericWrapper:
         apiVersion = "kubernetes.crossplane.io/v1alpha2"
         kind = "Object"
         metadata.name = _name
+        metadata.annotations = {
+            "krm.kcl.dev/composition-resource-name" = _name
+        }
         spec.providerConfigRef.name = _targetK8sProviderConfigName
     }
     usages: [Usage] = [Usage {

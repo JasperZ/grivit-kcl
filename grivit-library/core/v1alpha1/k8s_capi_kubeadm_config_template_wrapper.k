@@ -7,6 +7,9 @@ schema K8sCapiKubeadmConfigTemplateWrapper:
         apiVersion = "kubernetes.crossplane.io/v1alpha2"
         kind = "Object"
         metadata.name = _name
+        metadata.annotations = {
+            "krm.kcl.dev/composition-resource-name" = _name
+        }
         spec = {
             forProvider = {
                 manifest = {

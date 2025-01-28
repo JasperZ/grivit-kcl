@@ -10,6 +10,9 @@ schema K8sCapiClusterWrapper:
         apiVersion = "kubernetes.crossplane.io/v1alpha2"
         kind = "Object"
         metadata.name = _name
+        metadata.annotations = {
+            "krm.kcl.dev/composition-resource-name" = _name
+        }
         spec.forProvider.manifest = {
             apiVersion = "cluster.x-k8s.io/v1beta1"
             kind = "Cluster"

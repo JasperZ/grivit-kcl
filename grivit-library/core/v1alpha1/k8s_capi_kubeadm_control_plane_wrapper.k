@@ -11,6 +11,9 @@ schema K8sCapiKubeadmControlPlaneWrapper:
         apiVersion = "kubernetes.crossplane.io/v1alpha2"
         kind = "Object"
         metadata.name = _name
+        metadata.annotations = {
+            "krm.kcl.dev/composition-resource-name" = _name
+        }
         spec.forProvider.manifest = {
             apiVersion = "controlplane.cluster.x-k8s.io/v1beta1"
             kind = "KubeadmControlPlane"
