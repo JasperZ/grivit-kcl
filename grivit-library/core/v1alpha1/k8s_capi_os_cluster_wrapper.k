@@ -79,7 +79,7 @@ schema K8sCapiOsClusterWrapper:
         if managedResource.metadata.name in observedComposedResources:
             if observedComposedResources[managedResource.metadata.name].Resource?.status?.atProvider?.manifest?.status?.network?.subnets:
                 if len(observedComposedResources[managedResource.metadata.name].Resource.status.atProvider.manifest.status.network.subnets) > 0:
-                    _subnetId = observedComposedResources[_osClusterName].Resource.status.atProvider.manifest.status.network.subnets[0].id
+                    _subnetId = observedComposedResources[managedResource.metadata.name].Resource.status.atProvider.manifest.status.network.subnets[0].id
 
 
 
