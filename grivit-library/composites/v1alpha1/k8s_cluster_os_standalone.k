@@ -46,7 +46,7 @@ schema K8sClusterOsStandalone:
         _name = "${_name}-cloud-config"
         _targetK8sProviderConfigName = _controlPlaneK8sProviderConfigName
         _stringData = {
-            "clouds.yaml": """\ 
+            "clouds.yaml": """\
 clouds:
   openstack:
     auth:
