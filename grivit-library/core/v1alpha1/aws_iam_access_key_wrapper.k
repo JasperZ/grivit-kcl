@@ -13,7 +13,7 @@ schema AwsIamAccessKeyWrapper:
         metadata.annotations = {
             "krm.kcl.dev/composition-resource-name" = _name
         }
-        spec.forProvider = _awsIamUserName
+        spec.forProvider.user = _awsIamUserName
         spec.providerConfigRef.name = _controlPlaneAwsProviderConfigName
         spec.writeConnectionSecretToRef.name = _name
         spec.writeConnectionSecretToRef.namespace = _tenantNamespace
