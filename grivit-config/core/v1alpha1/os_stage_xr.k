@@ -16,6 +16,7 @@ schema OsStageXr(glcore.Composition):
                 step = "managed-resources"
                 input.spec.dependencies = 'grivit-library = { git = "https://github.com/JasperZ/grivit-kcl.git", branch = "restructure", version = "0.0.1" }'
                 input.spec.source = """\
+import base64
 import grivit_library.composites.v1alpha1 as glcomp
 
 observedComposedResources: any = option("params").ocds
@@ -36,8 +37,15 @@ osStage: glcomp.OsStage = glcomp.OsStage {
     _tenantNamespace = claimNamespace
 }
 
-items = osStage.managedResources + osStage.usages
+details = {
+    apiVersion: "meta.krm.kcl.dev/v1alpha1"
+    kind: "CompositeConnectionDetails"
+    data: {
+        osProviderConfigName = base64.encode(osStage.providerConfig.managedResource.metadata.name)
+    }
+}
 
+items = [details] + osStage.managedResources + osStage.usages
 """
             }
             glcore.CompositionSpecPipelineStepAutoReady {

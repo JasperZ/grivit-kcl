@@ -12,6 +12,7 @@ schema CompositeResourceDefinitionMetadataAnnotations:
     [str]: str
 
 schema CompositeResourceDefinitionSpec:
+    connectionSecretKeys: [str] = []
     defaultCompositeDeletePolicy: str = "Background"
     group: str
     names: CompositeResourceDefinitionSpecNames

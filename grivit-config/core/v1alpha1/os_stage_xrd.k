@@ -11,6 +11,9 @@ schema OsStageXrd(glcore.CompositeResourceDefinition):
     }
     spec = {
         group = _apiGroup
+        connectionSecretKeys = [
+            "osProviderConfigName"
+        ]
         names.kind = "x${_nameSingular}"
         names.plural = "x${_namePlural}".lower()
         claimNames.kind = _nameSingular

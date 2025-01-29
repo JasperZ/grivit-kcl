@@ -15,6 +15,7 @@ schema CompositionSpec:
     compositeTypeRef: CompositionSpecCompositeTypeRef
     mode: str = "Pipeline"
     pipeline: [CompositionSpecPipelineStepKcl | CompositionSpecPipelineStepAutoReady] = []
+    writeConnectionSecretsToNamespace: str = "crossplane"
 
 schema CompositionSpecCompositeTypeRef:
     apiVersion: str
