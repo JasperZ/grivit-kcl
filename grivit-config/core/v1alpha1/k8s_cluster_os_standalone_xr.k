@@ -79,7 +79,6 @@ details = [
 ]
 
 items = details + k8sClusterOsStandalone.managedResources + k8sClusterOsStandalone.usages
-
 """
             }
             glcore.CompositionSpecPipelineStepAutoReady {
