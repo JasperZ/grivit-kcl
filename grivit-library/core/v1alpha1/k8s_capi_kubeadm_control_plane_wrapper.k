@@ -97,9 +97,9 @@ override_path = true
     usages: [Usage] = []
 
     getKubernetesVersion: (any) -> str = lambda observedComposedResources: any -> str {
-        _kubernetesVersion: str = ""
+        _kubernetesVersion: str = _k8sVersion
         if managedResource.metadata.name in observedComposedResources:
-            _kubernetesVersion = str(observedComposedResources[managedResource.metadata.name].Resource?.status?.atProvider?.manifest?.status?.version)
+            _kubernetesVersion = str(observedComposedResources[managedResource.metadata.name].Resource?.status?.atProvider?.manifest?.status?.version or _k8sVersion)
 
         _kubernetesVersion
     }

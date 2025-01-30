@@ -107,8 +107,7 @@ clouds:
         _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
         _tenantNamespace = _tenantNamespace
     }
-    # _workerMachineKubernetesVersion = controlPlaneKubeadm.getKubernetesVersion(_observedComposedResources) or _k8sVersion # ToDo
-    _workerMachineKubernetesVersion = _k8sVersion
+    _workerMachineKubernetesVersion = controlPlaneKubeadm.getKubernetesVersion(_observedComposedResources)
     _workerMachineTemplateFlavorName = str(_workers.flavorName)
     _workerMachineTemplateImageName = str("ubuntu-2204-kube-${_workerMachineKubernetesVersion}")
     _workerMachineTemplateRootVolumeSize = int(_workers.rootVolumeSize)
