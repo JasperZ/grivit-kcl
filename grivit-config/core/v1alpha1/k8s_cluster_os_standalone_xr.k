@@ -20,6 +20,12 @@ import grivit_library.composites.v1alpha1 as glcomp
 
 observedComposedResources: any = option("params").ocds
 observedCompositeResource: any = option("params").oxr
+extraResources: any = option("params")?.extraResources
+
+_osStageOsProviderConfigName: str = ""
+if extraResources?.osStageComposition:
+    name = extraResources?.osStageComposition[0]?.Resource?.metadata?.name or ""
+    _osStageOsProviderConfigName = "\${name}-os-provider-config"
 
 claimName: str = observedCompositeResource.metadata.name
 claimNamespace: str = observedCompositeResource.metadata.labels["crossplane.io/claim-namespace"]
@@ -43,7 +49,7 @@ k8sClusterOsStandalone: glcomp.K8sClusterOsStandalone = glcomp.K8sClusterOsStand
     _name = claimName
     _observedComposedResources = observedComposedResources
     _realmId = spec.realmId
-    _targetOsProviderConfigName = spec.targetOsProviderConfigName
+    _targetOsProviderConfigName = _osStageOsProviderConfigName
     _tenantNamespace = claimNamespace
     _workers = {
         flavorName = spec.workers.flavor
@@ -55,7 +61,24 @@ k8sClusterOsStandalone: glcomp.K8sClusterOsStandalone = glcomp.K8sClusterOsStand
     }
 }
 
-items = k8sClusterOsStandalone.managedResources + k8sClusterOsStandalone.usages
+details = [
+    {
+        apiVersion: "meta.krm.kcl.dev/v1alpha1"
+        kind: "ExtraResources"
+        requirements = {
+            osStageComposition = {
+                apiVersion: "os.grivit.cloud/v1alpha1",
+                kind: "xStage",
+                matchLabels: {
+                    "crossplane.io/claim-name": spec.osStageClaimRef.name
+                    "crossplane.io/claim-namespace": claimNamespace
+                }
+            }
+        }
+    }
+]
+
+items = details + k8sClusterOsStandalone.managedResources + k8sClusterOsStandalone.usages
 
 """
             }

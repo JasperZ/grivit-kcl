@@ -76,6 +76,14 @@ schema k8sClusterOsStandaloneXrd(glcore.CompositeResourceDefinition):
                                         type = "string"
                                         pattern = "^v(1.28.13|1.29.8|1.30.4|1.31.0)$"
                                     }
+                                    osStageClaimRef = {
+                                        type = "object"
+                                        properties = {
+                                            name = {
+                                                type  = "string"
+                                            }
+                                        }
+                                    }
                                     realmId = {
                                         type = "string"
                                     }

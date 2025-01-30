@@ -37,15 +37,17 @@ osStage: glcomp.OsStage = glcomp.OsStage {
     _tenantNamespace = claimNamespace
 }
 
-details = {
-    apiVersion: "meta.krm.kcl.dev/v1alpha1"
-    kind: "CompositeConnectionDetails"
-    data: {
-        osProviderConfigName = base64.encode(osStage.providerConfig.managedResource.metadata.name)
+details = [
+    {
+        apiVersion: "meta.krm.kcl.dev/v1alpha1"
+        kind: "CompositeConnectionDetails"
+        data: {
+            osProviderConfigName = base64.encode(osStage.providerConfig.managedResource.metadata.name)
+        }
     }
-}
+]
 
-items = [details] + osStage.managedResources + osStage.usages
+items = details + osStage.managedResources + osStage.usages
 """
             }
             glcore.CompositionSpecPipelineStepAutoReady {
