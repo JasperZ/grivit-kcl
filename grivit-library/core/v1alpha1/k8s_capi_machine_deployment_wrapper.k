@@ -31,16 +31,16 @@ schema K8sCapiMachineDeploymentWrapper:
                 selector.matchLabels = None
                 template.spec = {
                     bootstrap.configRef = {
-                        apiVersion = _configTemplateWrapper.managedResource.apiVersion
-                        kind = _configTemplateWrapper.managedResource.kind
-                        name = _configTemplateWrapper.managedResource.metadata.name
+                        apiVersion = _configTemplateWrapper.managedResource.spec.forProvider.manifest.apiVersion
+                        kind = _configTemplateWrapper.managedResource.spec.forProvider.manifest.kind
+                        name = _configTemplateWrapper.managedResource.metadata.spec.forProvider.manifest.name
                     }
                     clusterName = _cluster.managedResource.metadata.name
                     failureDomain = "nova"
                     infrastructureRef = {
-                        apiVersion = _machineTemplateWrapper.managedResource.apiVersion
-                        kind = _machineTemplateWrapper.managedResource.kind
-                        name = _machineTemplateWrapper.managedResource.metadata.name
+                        apiVersion = _machineTemplateWrapper.managedResource.spec.forProvider.manifest.apiVersion
+                        kind = _machineTemplateWrapper.managedResource.spec.forProvider.manifest.kind
+                        name = _machineTemplateWrapper.managedResource.metadata.spec.forProvider.manifest.name
                     }
                     nodeDrainTimeout = "60s"
                     version = _k8sVersion

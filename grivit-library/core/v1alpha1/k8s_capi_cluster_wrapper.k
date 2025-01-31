@@ -22,14 +22,14 @@ schema K8sCapiClusterWrapper:
                 clusterNetwork.pods.cidrBlocks = ["192.168.0.0/16"]
                 clusterNetwork.serviceDomain = "cluster.local"
                 controlPlaneRef = {
-                    apiVersion = _capiControlPlaneWrapper.managedResource.apiVersion
-                    kind = _capiControlPlaneWrapper.managedResource.kind
-                    name = _capiControlPlaneWrapper.managedResource.metadata.name
+                    apiVersion = _capiControlPlaneWrapper.managedResource.spec.forProvider.manifest.apiVersion
+                    kind = _capiControlPlaneWrapper.managedResource.spec.forProvider.manifest.kind
+                    name = _capiControlPlaneWrapper.managedResource.spec.forProvider.manifest.metadata.name
                 }
                 infrastructureRef = {
-                    apiVersion = _capiInfrastructureWrapper.managedResource.apiVersion
-                    kind = _capiInfrastructureWrapper.managedResource.kind
-                    name = _capiInfrastructureWrapper.managedResource.metadata.name
+                    apiVersion = _capiInfrastructureWrapper.managedResource.spec.forProvider.manifest.apiVersion
+                    kind = _capiInfrastructureWrapper.managedResource.spec.forProvider.manifest.kind
+                    name = _capiInfrastructureWrapper.managedResource.metadata.spec.forProvider.manifest.name
                 }
             }
         }
