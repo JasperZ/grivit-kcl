@@ -1,8 +1,8 @@
 schema K8sCapiClusterWrapper:
     _name: str
     _controlPlaneK8sProviderConfigName: str
-    _controlPlaneKubeadm: K8sCapiKubeadmControlPlaneWrapper
-    _openstackCluster: K8sCapiOsClusterWrapper
+    _capiControlPlaneWrapper: K8sCapiKubeadmControlPlaneWrapper | K8sCapiK0smotronControlPlaneWrapper
+    _capiInfrastructureWrapper: K8sCapiOsClusterWrapper
     _tenantNamespace: str
     _uses: [ManagedResource] = []
 
@@ -22,14 +22,14 @@ schema K8sCapiClusterWrapper:
                 clusterNetwork.pods.cidrBlocks = ["192.168.0.0/16"]
                 clusterNetwork.serviceDomain = "cluster.local"
                 controlPlaneRef = {
-                    apiVersion = "controlplane.cluster.x-k8s.io/v1beta1"
-                    kind = "KubeadmControlPlane"
-                    name = _controlPlaneKubeadm.managedResource.metadata.name
+                    apiVersion = _capiControlPlaneWrapper.managedResource.apiVersion
+                    kind = _capiControlPlaneWrapper.managedResource.kind
+                    name = _capiControlPlaneWrapper.managedResource.metadata.name
                 }
                 infrastructureRef = {
-                    apiVersion = "infrastructure.cluster.x-k8s.io/v1beta1"
-                    kind = "OpenStackCluster"
-                    name = _openstackCluster.managedResource.metadata.name
+                    apiVersion = _capiInfrastructureWrapper.managedResource.apiVersion
+                    kind = _capiInfrastructureWrapper.managedResource.kind
+                    name = _capiInfrastructureWrapper.managedResource.metadata.name
                 }
             }
         }

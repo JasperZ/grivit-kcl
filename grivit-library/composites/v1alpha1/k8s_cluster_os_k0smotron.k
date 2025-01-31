@@ -1,23 +1,23 @@
 import crypto
 import core.v1alpha1 as core
 
-schema K8sClusterOsStandaloneConfigWorkersAutoscaling:
+schema K8sClusterOsK0smotronConfigWorkersAutoscaling:
     minSize: int
     maxSize: int
 
-schema K8sClusterOsStandaloneConfigWorkers:
+schema K8sClusterOsK0smotronConfigWorkers:
     flavorName: str
     rootVolumeSize: int
-    autoscaling: K8sClusterOsStandaloneConfigWorkersAutoscaling
+    autoscaling: K8sClusterOsK0smotronConfigWorkersAutoscaling
 
-schema K8sClusterOsStandaloneConfigControlPlane:
+schema K8sClusterOsK0smotronConfigControlPlane:
     flavorName: str
     rootVolumeSize: int
     replicas: int
 
-schema K8sClusterOsStandalone:
+schema K8sClusterOsK0smotron:
     _argoCdDomain: str
-    _controlPlane: K8sClusterOsStandaloneConfigControlPlane
+    _controlPlane: K8sClusterOsK0smotronConfigControlPlane
     _controlPlaneAwsProviderConfigName: str
     _controlPlaneHelmProviderConfigName: str
     _controlPlaneKcProviderConfigName: str
@@ -31,7 +31,7 @@ schema K8sClusterOsStandalone:
     _realmId: str
     _targetOsProviderConfigName: str
     _tenantNamespace: str
-    _workers: K8sClusterOsStandaloneConfigWorkers
+    _workers: K8sClusterOsK0smotronConfigWorkers
 
     applicationCredential: core.OsIdentityApplicationCredentialWrapper {
         _name = "${_name}-application-credential"
@@ -65,24 +65,9 @@ clouds:
         _targetNamespace = _tenantNamespace
         _uses = [applicationCredential.managedResource]
     }
-    _controlPlaneMachineTemplateFlavorName = str(_controlPlane.flavorName)
-    _controlPlaneMachineTemplateImageName = str("ubuntu-2204-kube-${_k8sVersion}")
-    _controlPlaneMachineTemplateRootVolumeSize = int(_controlPlane.rootVolumeSize)
-    _controlPlaneMachineTemplateHash = str(crypto.sha256("${_controlPlaneMachineTemplateFlavorName},${_controlPlaneMachineTemplateImageName},${_controlPlaneMachineTemplateRootVolumeSize}"))[:8:]
-    controlPlaneMachineTemplate: core.K8sCapiOsMachineTemplateWrapper {
-        _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
-        _flavor = _controlPlaneMachineTemplateFlavorName
-        _name = "${_name}-ctl-plane-machine-template-${_controlPlaneMachineTemplateHash}"
-        _imageName = _controlPlaneMachineTemplateImageName
-        _keypairName = keypair.managedResource.metadata.name
-        _rootVolumeSize = _controlPlaneMachineTemplateRootVolumeSize
-        _tenantNamespace = _tenantNamespace
-        _uses = [keypair.managedResource]
-    }
-    controlPlaneKubeadm: core.K8sCapiKubeadmControlPlaneWrapper {
+    controlPlaneWrapper: core.K8sCapiK0smotronControlPlaneWrapper {
         _name = "${_name}-ctl-plane-kubeadm"
         _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
-        _controlPlaneMachineTemplate = controlPlaneMachineTemplate
         _k8sVersion = _k8sVersion
         _replicas = _controlPlane.replicas
         _tenantNamespace = _tenantNamespace
@@ -97,17 +82,18 @@ clouds:
     cluster: core.K8sCapiClusterWrapper {
         _name = "${_name}-cluster"
         _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
-        _capiControlPlaneWrapper = controlPlaneKubeadm
+        _capiControlPlaneWrapper = controlPlaneWrapper
         _capiInfrastructureWrapper = openstackCluster
         _tenantNamespace = _tenantNamespace
         _uses = [cloudConfig.managedResource]
     }
-    workerKubeadmConfigTemplate: core.K8sCapiKubeadmConfigTemplateWrapper {
+    workerConfigTemplate: core.K8sCapiK0smotronConfigTemplateWrapper {
         _name = "${_name}-worker-kubeadm-template"
         _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
         _tenantNamespace = _tenantNamespace
+        _k8sVersion = _k8sVersion
     }
-    _workerMachineKubernetesVersion = controlPlaneKubeadm.getKubernetesVersion(_observedComposedResources)
+    _workerMachineKubernetesVersion = _k8sVersion
     _workerMachineTemplateFlavorName = str(_workers.flavorName)
     _workerMachineTemplateImageName = str("ubuntu-2204-kube-${_workerMachineKubernetesVersion}")
     _workerMachineTemplateRootVolumeSize = int(_workers.rootVolumeSize)
@@ -128,7 +114,7 @@ clouds:
         _autoscalingMaxSize = _workers.autoscaling.maxSize
         _cluster = cluster
         _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
-        _configTemplateWrapper = workerKubeadmConfigTemplate
+        _configTemplateWrapper = workerConfigTemplate
         _machineTemplateWrapper = workerMachineTemplate
         _k8sVersion = _workerMachineKubernetesVersion
         _tenantNamespace = _tenantNamespace
@@ -140,8 +126,7 @@ clouds:
         _uses = [
             cluster.managedResource
             openstackCluster.managedResource
-            controlPlaneKubeadm.managedResource
-            controlPlaneMachineTemplate.managedResource
+            controlPlaneWrapper.managedResource
         ]
     }
     k8sCRDsBundle: K8sAppBundleCrds {
@@ -221,11 +206,10 @@ g, viewer, role:readonly
         applicationCredential.managedResource
         cluster.managedResource
         cloudConfig.managedResource
-        controlPlaneKubeadm.managedResource
-        controlPlaneMachineTemplate.managedResource
+        controlPlaneWrapper.managedResource
         keypair.managedResource
         openstackCluster.managedResource
-        workerKubeadmConfigTemplate.managedResource
+        workerConfigTemplate.managedResource
         workerMachineDeployment.managedResource
         workerMachineTemplate.managedResource
         providerConfig.managedResource
@@ -233,5 +217,5 @@ g, viewer, role:readonly
         kcArgoCdClientDefaultScopes.managedResource
     ] + k8sCRDsBundle.managedResources + k8sAppsInfrastructureOsBundle.managedResources + k8sAppsPlatformBundle.managedResources + k8sAppsOperationArgoCd.managedResources
 
-    usages: [core.Usage] = applicationCredential.usages + cluster.usages + cloudConfig.usages + controlPlaneKubeadm.usages + controlPlaneMachineTemplate.usages + keypair.usages + openstackCluster.usages + workerKubeadmConfigTemplate.usages + workerMachineDeployment.usages + workerMachineTemplate.usages + providerConfig.usages + k8sCRDsBundle.usages + k8sAppsInfrastructureOsBundle.usages + k8sAppsPlatformBundle.usages + k8sAppsOperationArgoCd.usages + kcArgoCdClient.usages + kcArgoCdClientDefaultScopes.usages
+    usages: [core.Usage] = applicationCredential.usages + cluster.usages + cloudConfig.usages + controlPlaneWrapper.usages + keypair.usages + openstackCluster.usages + workerConfigTemplate.usages + workerMachineDeployment.usages + workerMachineTemplate.usages + providerConfig.usages + k8sCRDsBundle.usages + k8sAppsInfrastructureOsBundle.usages + k8sAppsPlatformBundle.usages + k8sAppsOperationArgoCd.usages + kcArgoCdClient.usages + kcArgoCdClientDefaultScopes.usages
 
