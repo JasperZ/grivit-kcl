@@ -29,7 +29,7 @@ schema K8sCapiClusterWrapper:
                 infrastructureRef = {
                     apiVersion = _capiInfrastructureWrapper.managedResource.spec.forProvider.manifest.apiVersion
                     kind = _capiInfrastructureWrapper.managedResource.spec.forProvider.manifest.kind
-                    name = _capiInfrastructureWrapper.managedResource.metadata.spec.forProvider.manifest.name
+                    name = _capiInfrastructureWrapper.managedResource.spec.forProvider.manifest.metadata.name
                 }
             }
         }

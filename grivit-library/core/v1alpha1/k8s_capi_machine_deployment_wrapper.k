@@ -33,14 +33,14 @@ schema K8sCapiMachineDeploymentWrapper:
                     bootstrap.configRef = {
                         apiVersion = _configTemplateWrapper.managedResource.spec.forProvider.manifest.apiVersion
                         kind = _configTemplateWrapper.managedResource.spec.forProvider.manifest.kind
-                        name = _configTemplateWrapper.managedResource.metadata.spec.forProvider.manifest.name
+                        name = _configTemplateWrapper.managedResource.spec.forProvider.manifest.metadata.name
                     }
                     clusterName = _cluster.managedResource.metadata.name
                     failureDomain = "nova"
                     infrastructureRef = {
                         apiVersion = _machineTemplateWrapper.managedResource.spec.forProvider.manifest.apiVersion
                         kind = _machineTemplateWrapper.managedResource.spec.forProvider.manifest.kind
-                        name = _machineTemplateWrapper.managedResource.metadata.spec.forProvider.manifest.name
+                        name = _machineTemplateWrapper.managedResource.spec.forProvider.manifest.metadata.name
                     }
                     nodeDrainTimeout = "60s"
                     version = _k8sVersion
