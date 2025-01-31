@@ -61,6 +61,16 @@ schema K8sCapiOsClusterWrapper:
                         portRangeMin = 30000
                         protocol = "TCP"
                     }
+                    # ToDo: this is just for testing
+                    {
+                        description = "Allow all"
+                        direction = "ingress"
+                        etherType = "IPv4"
+                        name = "All"
+                        portRangeMax = 65535
+                        portRangeMin = 1
+                        protocol = "TCP"
+                    }
                 ]
                 managedSubnets = [{
                     cidr = "10.4.1.0/24"
