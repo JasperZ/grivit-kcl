@@ -95,7 +95,7 @@ clouds:
     }
     _workerMachineKubernetesVersion = _k8sVersion
     _workerMachineTemplateFlavorName = str(_workers.flavorName)
-    _workerMachineTemplateImageName = str("ubuntu-2204-kube-${_workerMachineKubernetesVersion}")
+    _workerMachineTemplateImageName = "ubuntu-24.04-20240821"
     _workerMachineTemplateRootVolumeSize = int(_workers.rootVolumeSize)
     _workerMachineTemplateHash = str(crypto.sha256("${_workerMachineTemplateFlavorName},${_workerMachineTemplateImageName},${_workerMachineTemplateRootVolumeSize}"))[:8:]
     workerMachineTemplate: core.K8sCapiOsMachineTemplateWrapper {
