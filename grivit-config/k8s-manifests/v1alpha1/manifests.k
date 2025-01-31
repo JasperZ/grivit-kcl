@@ -3,6 +3,8 @@ import manifests
 manifests.yaml_stream([
     k8sClusterOsStandaloneXr
     k8sClusterOsStandaloneXrd
+    k8sClusterOsK0smotronXr
+    k8sClusterOsK0smotronXrd
     osStageXr
     osStageXrd
 ], {

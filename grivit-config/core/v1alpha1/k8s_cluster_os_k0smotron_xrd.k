@@ -1,6 +1,6 @@
 import grivit_library.core.v1alpha1 as glcore
 
-schema k8sClusterOsStandaloneXrd(glcore.CompositeResourceDefinition):
+schema k8sClusterOsK0smotronXrd(glcore.CompositeResourceDefinition):
     _nameSingular: str
     _namePlural: str
     _apiGroup: str

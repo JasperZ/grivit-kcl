@@ -33,11 +33,11 @@ schema K8sCapiK0smotronControlPlaneWrapper:
                             }
                         }
                     }
-                    service = {
-                        type = "LoadBalancer"
-                        apiPort = 6443
-                        konnectivityPort = 8132
-                    }
+                }
+                service = {
+                    type = "LoadBalancer"
+                    apiPort = 6443
+                    konnectivityPort = 8132
                 }
                 replicas = _replicas
             }
