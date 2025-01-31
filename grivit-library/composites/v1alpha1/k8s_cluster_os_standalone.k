@@ -93,9 +93,6 @@ clouds:
         _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
         _externalNetworkName = _externalNetworkName
         _tenantNamespace = _tenantNamespace
-        managedResource.spec.forProvider.manifest.annotations = {
-            "cluster.x-k8s.io/managed-by" = "k0smotron"
-        }
     }
     cluster: core.K8sCapiClusterWrapper {
         _name = "${_name}-cluster"
