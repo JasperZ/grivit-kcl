@@ -1,7 +1,7 @@
 import core.v1alpha1 as core
 
-k8sAppOperationsKeycloakNameSingular: str = "AppOperationsKeycloak"
-k8sAppOperationsKeycloakNamePlural: str = "AppOperationsKeycloaks"
+k8sAppOperationsKeycloakNameSingular: str = "K8sAppOperationsKeycloak"
+k8sAppOperationsKeycloakNamePlural: str = "K8sAppOperationsKeycloaks"
 k8sAppOperationsKeycloakApiGroup: str = "k8s.grivit.cloud"
 k8sAppOperationsKeycloakApiVersion: str = "v1alpha1"
 
