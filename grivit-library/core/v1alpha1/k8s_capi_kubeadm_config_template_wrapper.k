@@ -64,7 +64,7 @@ override_path = true
                         joinConfiguration.nodeRegistration = {
                             kubeletExtraArgs = {
                                 "cloud-provider" = "external"
-                                "provider-id": "openstack:///'{{ instance_id }}'"
+                                "provider-id" = "openstack:///'{{ instance_id }}'"
                             }
                             name = "{{ local_hostname }}"
                         }
