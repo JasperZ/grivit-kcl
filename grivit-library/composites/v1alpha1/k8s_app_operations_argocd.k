@@ -1,6 +1,6 @@
 import core.v1alpha1 as core
 
-schema K8sAppOperationArgoCd:
+schema K8sAppOperationsArgoCd:
     _name: str
     _domain: str
     _fluxHelmReleaseDependencies?: [core.K8sFluxHelmReleaseWrapper]

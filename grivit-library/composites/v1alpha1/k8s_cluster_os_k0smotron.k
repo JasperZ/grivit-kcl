@@ -179,7 +179,7 @@ clouds:
         _name = "${_name}-argocd-client-default-scopes"
         _realmId = _realmId
     }
-    k8sAppsOperationArgoCd: K8sAppOperationArgoCd {
+    k8sAppsOperationArgoCd: K8sAppOperationsArgoCd {
         _name = "${_name}-oa-argocd"
         _domain = _argoCdDomain
         _fluxHelmReleaseDependencies = k8sAppsInfrastructureOsBundle.fluxHelmReleases

@@ -9,7 +9,7 @@ schema K8sAppBundleOperation:
     _argoCdDomain: str
     _headlampDomain: str
 
-    k8sAppsOperationArgoCd: K8sAppOperationArgoCd {
+    k8sAppsOperationArgoCd: K8sAppOperationsArgoCd {
         _name = "${_name}-argocd"
         _domain = _argoCdDomain
         _fluxHelmReleaseDependencies = _fluxHelmReleaseDependencies
@@ -17,7 +17,7 @@ schema K8sAppBundleOperation:
         _targetK8sProviderConfig = _targetK8sProviderConfig
         _tenantNamespace = _tenantNamespace
     }
-    k8sAppsOperationHeadlamp: K8sAppOperationHeadlamp {
+    k8sAppsOperationHeadlamp: K8sAppOperationsHeadlamp {
         _name = "${_name}-headlamp"
         _domain = _headlampDomain
         _fluxHelmReleaseDependencies = _fluxHelmReleaseDependencies
