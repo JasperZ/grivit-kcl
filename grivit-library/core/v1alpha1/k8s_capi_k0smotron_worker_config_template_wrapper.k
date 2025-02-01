@@ -1,4 +1,4 @@
-schema K8sCapiK0smotronConfigTemplateWrapper:
+schema K8sCapiK0smotronWorkerConfigTemplateWrapper:
     _name: str
     _controlPlaneK8sProviderConfigName: str
     _tenantNamespace: str

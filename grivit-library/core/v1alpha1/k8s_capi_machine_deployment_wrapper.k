@@ -4,7 +4,7 @@ schema K8sCapiMachineDeploymentWrapper:
     _autoscalingMinSize: int
     _autoscalingMaxSize: int
     _cluster: K8sCapiClusterWrapper
-    _configTemplateWrapper: K8sCapiKubeadmConfigTemplateWrapper | K8sCapiK0smotronConfigTemplateWrapper
+    _configTemplateWrapper: K8sCapiKubeadmWorkerConfigTemplateWrapper | K8sCapiK0smotronWorkerConfigTemplateWrapper
     _machineTemplateWrapper: K8sCapiOsMachineTemplateWrapper
     _k8sVersion: str
     _tenantNamespace: str

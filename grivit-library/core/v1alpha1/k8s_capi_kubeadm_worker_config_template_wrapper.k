@@ -1,4 +1,4 @@
-schema K8sCapiKubeadmConfigTemplateWrapper:
+schema K8sCapiKubeadmWorkerConfigTemplateWrapper:
     _name: str
     _controlPlaneK8sProviderConfigName: str
     _tenantNamespace: str
