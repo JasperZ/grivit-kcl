@@ -74,7 +74,7 @@ schema k8sClusterOsK0smotronXrd(glcore.CompositeResourceDefinition):
                                     }
                                     kubernetesVersion = {
                                         type = "string"
-                                        pattern = "^v(1\.30\.4)\+k0s\.0$"
+                                        pattern = "^v(1\.30\.4)$"
                                     }
                                     osStageClaimRef = {
                                         type = "object"

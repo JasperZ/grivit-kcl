@@ -19,7 +19,7 @@ schema K8sCapiK0smotronConfigTemplateWrapper:
                     metadata.name = _name
                     metadata.namespace = _tenantNamespace
                     spec.template.spec = {
-                        version = _k8sVersion
+                        version = "${_k8sVersion}+k0s.0"
                         args = [
                             "--enable-cloud-provider"
                             '--kubelet-extra-args="--cloud-provider=external --provider-id=openstack:///\'{{ instance_id }}\'"'
