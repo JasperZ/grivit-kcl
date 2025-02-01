@@ -1,10 +1,9 @@
-schema K8sFluxHelmReleaseWrapper:
+schema K8sFluxHelmOciReleaseWrapper:
     _name: str
     _helmChartName: str
-    _helmChartVersion: str
     _helmReleaseName: str
     _helmReleaseNamespace: str
-    _helmRepositoryWrapper: K8sFluxHelmRepositoryWrapper
+    _helmOciRepositoryWrapper: K8sFluxOciRepositoryWrapper
     _helmReleaseWrapperDependencies?: [K8sFluxHelmReleaseWrapper | K8sFluxHelmOciReleaseWrapper] = []
     _targetK8sProviderConfig: K8sProviderConfigWrapper
     _controlPlaneK8sProviderConfigName: str
@@ -30,10 +29,9 @@ schema K8sFluxHelmReleaseWrapper:
                 chart = {
                     spec = {
                         chart = _helmChartName
-                        version = _helmChartVersion
                         sourceRef = {
-                            kind = "HelmRepository"
-                            name = _helmRepositoryWrapper.managedResource.metadata.name
+                            kind = "OCIRepository"
+                            name = _helmOciRepositoryWrapper.managedResource.metadata.name
                             namespace = _tenantNamespace
                         }
                     }
