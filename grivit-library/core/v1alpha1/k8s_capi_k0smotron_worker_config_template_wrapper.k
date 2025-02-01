@@ -14,7 +14,7 @@ schema K8sCapiK0smotronWorkerConfigTemplateWrapper:
         spec = {
             forProvider = {
                 manifest = {
-                    # apiVersion = "bootstrap.cluster.x-k8s.io/v1beta1"
+                    apiVersion = "bootstrap.cluster.x-k8s.io/v1beta1"
                     kind = "K0sWorkerConfigTemplate"
                     metadata.name = _name
                     metadata.namespace = _tenantNamespace
