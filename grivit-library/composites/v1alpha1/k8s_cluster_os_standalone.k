@@ -41,6 +41,7 @@ schema K8sClusterOsStandalone:
     keypair: core.OsComputeKeypairWrapper {
         _name = "${_name}-keypair"
         _targetOsProviderConfigName = _targetOsProviderConfigName
+        _tenantNamespace = _tenantNamespace
     }
     cloudConfig: core.K8sObjectSecretWrapper {
         _name = "${_name}-cloud-config"
