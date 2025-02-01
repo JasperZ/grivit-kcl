@@ -22,7 +22,7 @@ schema K8sCapiK0smotronWorkerConfigTemplateWrapper:
                         # version = "${_k8sVersion}+k0s.0"
                         args = [
                             "--enable-cloud-provider"
-                            '--kubelet-extra-args="--cloud-provider=external --provider-id=openstack:///\'{{ instance_id }}\'"'
+                            '--kubelet-extra-args="--cloud-provider=external --provider-id=openstack:///{{ instance_id }}"'
                         ]
                     }
                 }
