@@ -90,11 +90,11 @@ clouds:
         _tenantNamespace = _tenantNamespace
         _uses = [cloudConfig.managedResource]
     }
-    workerConfigTemplate: core.K8sCapiK0smotronConfigTemplateWrapper {
+    workerConfigTemplate: core.K8sCapiK0smotronWorkerConfigTemplateWrapper {
         _name = "${_name}-worker-kubeadm-template"
         _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
         _tenantNamespace = _tenantNamespace
-        _k8sVersion = _k8sVersion
+        # _k8sVersion = _k8sVersion
     }
     _workerMachineKubernetesVersion = _k8sVersion
     _workerMachineTemplateFlavorName = str(_workers.flavorName)

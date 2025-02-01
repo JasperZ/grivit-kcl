@@ -2,7 +2,7 @@ schema K8sCapiK0smotronWorkerConfigTemplateWrapper:
     _name: str
     _controlPlaneK8sProviderConfigName: str
     _tenantNamespace: str
-    _k8sVersion: str
+    # _k8sVersion: str
 
     managedResource: ManagedResource {
         apiVersion = "kubernetes.crossplane.io/v1alpha2"
@@ -14,12 +14,12 @@ schema K8sCapiK0smotronWorkerConfigTemplateWrapper:
         spec = {
             forProvider = {
                 manifest = {
-                    apiVersion = "bootstrap.cluster.x-k8s.io/v1beta1"
+                    # apiVersion = "bootstrap.cluster.x-k8s.io/v1beta1"
                     kind = "K0sWorkerConfigTemplate"
                     metadata.name = _name
                     metadata.namespace = _tenantNamespace
                     spec.template.spec = {
-                        version = "${_k8sVersion}+k0s.0"
+                        # version = "${_k8sVersion}+k0s.0"
                         args = [
                             "--enable-cloud-provider"
                             '--kubelet-extra-args="--cloud-provider=external --provider-id=openstack:///\'{{ instance_id }}\'"'

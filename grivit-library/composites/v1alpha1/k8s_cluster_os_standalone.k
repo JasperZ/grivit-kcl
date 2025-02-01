@@ -102,7 +102,7 @@ clouds:
         _tenantNamespace = _tenantNamespace
         _uses = [cloudConfig.managedResource]
     }
-    workerKubeadmConfigTemplate: core.K8sCapiKubeadmConfigTemplateWrapper {
+    workerKubeadmConfigTemplate: core.K8sCapiKubeadmWorkerConfigTemplateWrapper {
         _name = "${_name}-worker-kubeadm-template"
         _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
         _tenantNamespace = _tenantNamespace
