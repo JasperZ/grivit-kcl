@@ -15,7 +15,7 @@ schema KcStage:
     }
 
     adminGroup = core.KcGroupWrapper {
-        _targetKcProviderConfigName = _targetKcProviderConfigName
+        _targetKcProviderConfigWrapper = _targetKcProviderConfigWrapper
         _groupName = "admin"
         _name = "${_name}-admin-group"
         _realmId = realm.managedResource.metadata.name
