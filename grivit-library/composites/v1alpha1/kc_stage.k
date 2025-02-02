@@ -64,7 +64,9 @@ schema KcStage:
 
         managedResource.spec.forProvider = {
             accessType = "CONFIDENTIAL"
+            clientId = "${_name}-crossplane"
             directAccessGrantsEnabled = False
+            name = realm.managedResource.spec.forProvider.realm
             realmId = realm.managedResource.spec.forProvider.realm
             serviceAccountsEnabled = True
             standardFlowEnabled = False
