@@ -1,7 +1,5 @@
-import core.v1alpha1 as core
-
 schema KcOpenIdClientScopeWrapper:
-    _targetKcProviderConfigWrapper: core.K8sProviderConfigWrapper
+    _targetKcProviderConfigWrapper: KcProviderConfigWrapper
     _name: str
     _realmId: str
     _scopeName: str

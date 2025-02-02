@@ -1,11 +1,9 @@
-import core.v1alpha1 as core
-
 schema KcOpenIdClientDefaultScopesWrapper:
     _additionalScopes: [str] = []
     _clientId: str
     _name: str
     _realmId: str
-    _targetKcProviderConfigWrapper: core.K8sProviderConfigWrapper
+    _targetKcProviderConfigWrapper: KcProviderConfigWrapper
 
     managedResource: ManagedResource {
         apiVersion = "openidclient.keycloak.crossplane.io/v1alpha1"

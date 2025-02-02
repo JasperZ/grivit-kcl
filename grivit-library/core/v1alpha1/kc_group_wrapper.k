@@ -1,7 +1,5 @@
-import core.v1alpha1 as core
-
 schema KcGroupWrapper:
-    _targetKcProviderConfigWrapper: core.K8sProviderConfigWrapper
+    _targetKcProviderConfigWrapper: KcProviderConfigWrapper
     _groupName: str
     _name: str
     _realmId: str

@@ -1,8 +1,7 @@
 import base64
-import core.v1alpha1 as core
 
 schema KcOpenIdClientWrapper:
-    _targetKcProviderConfigWrapper: core.K8sProviderConfigWrapper
+    _targetKcProviderConfigWrapper: KcProviderConfigWrapper
     _tenantNamespace: str
     _clientId: str
     _name: str

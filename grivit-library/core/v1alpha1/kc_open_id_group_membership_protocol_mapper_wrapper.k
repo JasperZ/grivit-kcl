@@ -1,7 +1,5 @@
-import core.v1alpha1 as core
-
 schema KcOpenIdGroupMembershipProtocolMapperWrapper:
-    _targetKcProviderConfigWrapper: core.K8sProviderConfigWrapper
+    _targetKcProviderConfigWrapper: KcProviderConfigWrapper
     _claimName: str
     _clientScopeId: str
     _name: str

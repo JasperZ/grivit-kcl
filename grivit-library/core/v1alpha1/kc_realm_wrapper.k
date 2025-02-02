@@ -1,7 +1,5 @@
-import core.v1alpha1 as core
-
 schema KcRealmWrapper:
-    _targetKcProviderConfigWrapper: core.K8sProviderConfigWrapper
+    _targetKcProviderConfigWrapper: KcProviderConfigWrapper
     _name: str
     _realmName: str
 
