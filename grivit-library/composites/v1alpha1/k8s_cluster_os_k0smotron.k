@@ -163,9 +163,7 @@ clouds:
         _tenantNamespace = _tenantNamespace
     }
     kcArgoCdClient: core.KcOpenIdClientWrapper {
-        _controlPlaneKcProviderConfigName = _controlPlaneKcProviderConfigName
-        _connectionSecretName = "${_name}-argocd-client-conn"
-        _connectionSecretNamespace = _tenantNamespace
+        _targetKcProviderConfigWrapper = _targetKcProviderConfigWrapper
         _clientId = "${_name}-argocd"
         _name = "${_name}-argocd-client"
         _realmId = _realmId
@@ -174,7 +172,7 @@ clouds:
     }
     kcArgoCdClientDefaultScopes: core.KcOpenIdClientDefaultScopesWrapper {
         _additionalScopes = ["groups"]
-        _controlPlaneKcProviderConfigName = _controlPlaneKcProviderConfigName
+        _targetKcProviderConfigWrapper = _targetKcProviderConfigWrapper
         _clientId = kcArgoCdClient.getClientId(_observedComposedResources)
         _name = "${_name}-argocd-client-default-scopes"
         _realmId = _realmId
