@@ -1,5 +1,5 @@
 schema KcGroupWrapper:
-    _controlPlaneKcProviderConfigName: str
+    _targetKcProviderConfigName: str
     _groupName: str
     _name: str
     _realmId: str
@@ -13,7 +13,7 @@ schema KcGroupWrapper:
         }
         spec.forProvider.name = _groupName
         spec.forProvider.realmId = _realmId
-        spec.providerConfigRef.name = _controlPlaneKcProviderConfigName
+        spec.providerConfigRef.name = _targetKcProviderConfigName
     }
     usages: [Usage] = []
 

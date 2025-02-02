@@ -1,5 +1,5 @@
 schema KcOpenIdClientScopeWrapper:
-    _controlPlaneKcProviderConfigName: str
+    _targetKcProviderConfigName: str
     _name: str
     _realmId: str
     _scopeName: str
@@ -14,7 +14,15 @@ schema KcOpenIdClientScopeWrapper:
         spec.forProvider.includeInTokenScope = True
         spec.forProvider.name = _scopeName
         spec.forProvider.realmId = _realmId
-        spec.providerConfigRef.name = _controlPlaneKcProviderConfigName
+        spec.providerConfigRef.name = _targetKcProviderConfigName
     }
     usages: [Usage] = []
+
+    getClientScopeId: (any) -> str = lambda observedComposedResources: any -> str {
+        _clientScopeId: str = ""
+        if managedResource.metadata.name in observedComposedResources:
+            _clientScopeId = str(observedComposedResources[managedResource.metadata.name].Resource?.status?.atProvider?.id or "")
+
+        _clientScopeId
+    }
 

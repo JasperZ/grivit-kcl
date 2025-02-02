@@ -1,5 +1,5 @@
 schema KcOpenIdGroupMembershipProtocolMapperWrapper:
-    _controlPlaneKcProviderConfigName: str
+    _targetKcProviderConfigName: str
     _claimName: str
     _clientScopeId: str
     _name: str
@@ -20,7 +20,7 @@ schema KcOpenIdGroupMembershipProtocolMapperWrapper:
         spec.forProvider.fullPath = False
         spec.forProvider.name = "groups"
         spec.forProvider.realmId = _realmId
-        spec.providerConfigRef.name = _controlPlaneKcProviderConfigName
+        spec.providerConfigRef.name = _targetKcProviderConfigName
     }
     usages: [Usage] = []
 

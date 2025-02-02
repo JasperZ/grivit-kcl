@@ -1,6 +1,7 @@
 schema KcRealmWrapper:
-    _controlPlaneKcProviderConfigName: str
+    _targetKcProviderConfigName: str
     _name: str
+    _realmName: str
 
     managedResource: ManagedResource {
         apiVersion = "realm.keycloak.crossplane.io/v1alpha1"
@@ -10,8 +11,8 @@ schema KcRealmWrapper:
             "krm.kcl.dev/composition-resource-name" = _name
         }
         spec.forProvider.enabled = True
-        spec.forProvider.realm = _name
-        spec.providerConfigRef.name = _controlPlaneKcProviderConfigName
+        spec.forProvider.realm = _realmName
+        spec.providerConfigRef.name = _targetKcProviderConfigName
     }
     usages: [Usage] = []
 
