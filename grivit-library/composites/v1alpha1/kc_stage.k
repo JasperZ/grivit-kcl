@@ -52,6 +52,10 @@ schema KcStage:
         _realmId = realm.managedResource.spec.forProvider.realm
         _redirectUri = ""
         _url = ""
+        
+        managedResource.spec.forProvider.standardFlowEnabled = False
+        managedResource.spec.forProvider.directAccessGrantsEnabled = False
+        managedResource.spec.forProvider.serviceAccountsEnabled = True
     }
     providerConfigCredentials: core.K8sObjectSecretWrapper {
         _targetK8sProviderConfigName = _controlPlaneK8sProviderConfigName
@@ -80,10 +84,6 @@ schema KcStage:
         _uses = [
             providerConfigCredentials.managedResource
         ]
-
-        managedResource.spec.forProvider.standardFlowEnabled = False
-        managedResource.spec.forProvider.directAccessGrantsEnabled = False
-        managedResource.spec.forProvider.serviceAccountsEnabled = True
     }
     testGroup = core.KcGroupWrapper {
         _targetKcProviderConfigWrapper = providerConfig
