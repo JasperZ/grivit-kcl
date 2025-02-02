@@ -19,20 +19,20 @@ schema KcStage:
         _targetKcProviderConfigWrapper = _targetKcProviderConfigWrapper
         _groupName = "admin"
         _name = "${_name}-admin-group"
-        _realmId = _realmName
+        _realmId = realm.managedResource.spec.forProvider.realm
     }
 
     viewerGroup = core.KcGroupWrapper {
         _targetKcProviderConfigWrapper = _targetKcProviderConfigWrapper
         _groupName = "viewer"
         _name = "${_name}-viewer-group"
-        _realmId = _realmName
+        _realmId = realm.managedResource.spec.forProvider.realm
     }
 
     groupClientScope = core.KcOpenIdClientScopeWrapper {
         _targetKcProviderConfigWrapper = _targetKcProviderConfigWrapper
         _name = "${_name}-group-client-scope"
-        _realmId = _realmName
+        _realmId = realm.managedResource.spec.forProvider.realm
         _scopeName = "groups"
     }
 
@@ -41,7 +41,7 @@ schema KcStage:
         _claimName = "groups"
         _clientScopeId = groupClientScope.getClientScopeId(_observedComposedResources)
         _name = "${_name}-groups-mapper"
-        _realmId = _realmName
+        _realmId = realm.managedResource.spec.forProvider.realm
     }
 
     crossplaneClient: core.KcOpenIdClientWrapper {
@@ -49,7 +49,7 @@ schema KcStage:
         _tenantNamespace = _tenantNamespace
         _clientId = "${_name}-crossplane"
         _name = "${_name}-crossplane-client"
-        _realmId = _realmName
+        _realmId = realm.managedResource.spec.forProvider.realm
         _redirectUri = ""
         _url = ""
     }
@@ -59,7 +59,7 @@ schema KcStage:
         _stringData = {
             value = """\
 {
-  "client_id": "${crossplaneClient.getClientId(_observedComposedResources)}",
+  "client_id": "${crossplaneClient.managedResource.spec.forProvider.clientId}",
   "client_secret": "${crossplaneClient.getClientSecret(_observedComposedResources)}",
   "url": "https://${_targetKcDomain}",
   "base_path": "/",
