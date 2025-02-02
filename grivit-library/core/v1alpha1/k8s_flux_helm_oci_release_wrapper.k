@@ -5,7 +5,7 @@ schema K8sFluxHelmOciReleaseWrapper:
     _helmReleaseNamespace: str
     _helmOciRepositoryWrapper: K8sFluxOciRepositoryWrapper
     _helmReleaseWrapperDependencies?: [K8sFluxHelmReleaseWrapper | K8sFluxHelmOciReleaseWrapper] = []
-    _targetK8sProviderConfig: K8sProviderConfigWrapper
+    _targetK8sProviderConfigWrapper: K8sProviderConfigWrapper
     _controlPlaneK8sProviderConfigName: str
     _tenantNamespace: str
 
@@ -47,7 +47,7 @@ schema K8sFluxHelmOciReleaseWrapper:
                 }
                 kubeConfig = {
                     secretRef = {
-                        name = _targetK8sProviderConfig.managedResource.spec.credentials.secretRef.name
+                        name = _targetK8sProviderConfigWrapper.managedResource.spec.credentials.secretRef.name
                     }
                 }
                 upgrade = {
@@ -70,16 +70,16 @@ schema K8sFluxHelmOciReleaseWrapper:
         spec.providerConfigRef.name = _controlPlaneK8sProviderConfigName
     }
     usages: [Usage] = [Usage {
-        metadata.name = "${_name}-uses-${_targetK8sProviderConfig.managedResource.metadata.name}"
+        metadata.name = "${_name}-uses-${_targetK8sProviderConfigWrapper.managedResource.metadata.name}"
         metadata.annotations = {
-            "krm.kcl.dev/composition-resource-name" = "${_name}-uses-${_targetK8sProviderConfig.managedResource.metadata.name}"
+            "krm.kcl.dev/composition-resource-name" = "${_name}-uses-${_targetK8sProviderConfigWrapper.managedResource.metadata.name}"
         }
         spec.by.apiVersion = managedResource.apiVersion
         spec.by.kind = managedResource.kind
         spec.by.resourceRef.name = managedResource.metadata.name
-        spec.of.apiVersion = _targetK8sProviderConfig.managedResource.apiVersion
-        spec.of.kind = _targetK8sProviderConfig.managedResource.kind
-        spec.of.resourceRef.name = _targetK8sProviderConfig.managedResource.metadata.name
+        spec.of.apiVersion = _targetK8sProviderConfigWrapper.managedResource.apiVersion
+        spec.of.kind = _targetK8sProviderConfigWrapper.managedResource.kind
+        spec.of.resourceRef.name = _targetK8sProviderConfigWrapper.managedResource.metadata.name
     }] + [Usage {
         metadata.name = "${_name}-uses-${k8sFluxHelmReleaseDependency.managedResource.metadata.name}"
         metadata.annotations = {

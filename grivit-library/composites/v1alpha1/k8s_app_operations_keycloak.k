@@ -6,7 +6,7 @@ schema K8sAppOperationsKeycloak:
     _domain: str
     _fluxHelmReleaseDependencies?: [core.K8sFluxHelmReleaseWrapper]
     _name: str
-    _targetK8sProviderConfig: core.K8sProviderConfigWrapper
+    _targetK8sProviderConfigWrapper: core.K8sProviderConfigWrapper
     _tenantNamespace: str
 
     repo: core.K8sFluxOciRepositoryWrapper {
@@ -23,7 +23,7 @@ schema K8sAppOperationsKeycloak:
         _helmReleaseNamespace = "keycloak"
         _helmOciRepositoryWrapper = repo
         _helmReleaseWrapperDependencies = _fluxHelmReleaseDependencies
-        _targetK8sProviderConfig = _targetK8sProviderConfig
+        _targetK8sProviderConfigWrapper = _targetK8sProviderConfigWrapper
         _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
         _tenantNamespace = _tenantNamespace
         managedResource.spec.forProvider.manifest.spec.values = {

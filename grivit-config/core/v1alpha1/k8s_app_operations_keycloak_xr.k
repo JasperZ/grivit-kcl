@@ -17,15 +17,21 @@ schema k8sAppOperationsKeycloakXr(glcore.Composition):
                 input.spec.dependencies = 'grivit-library = { git = "https://github.com/JasperZ/grivit-kcl.git", branch = "restructure", version = "0.0.1" }'
                 input.spec.source = """\
 import grivit_library.composites.v1alpha1 as glcomp
+import grivit_library.core.v1alpha1 as glcore
 
 observedComposedResources: any = option("params").ocds
 observedCompositeResource: any = option("params").oxr
 extraResources: any = option("params")?.extraResources
 
-_k8sClusterK8sProviderConfigName: str = ""
+_targetK8sProviderConfigWrapper: glcore.K8sProviderConfigWrapper = None
 if extraResources?.k8sClusterComposition:
-    name = extraResources?.k8sClusterComposition[0]?.Resource?.metadata?.name or ""
-    _k8sClusterK8sProviderConfigName = "\${name}-k8s-provider-config"
+    resource = extraResources?.k8sClusterComposition[0]?.Resource
+
+    _targetK8sProviderConfigWrapper = glcore.K8sProviderConfigWrapper {
+        _name = resource.metadata.name
+        _credentialsSecretName = resource.spec.credentials.secretRef.name
+        _credentialsSecretNamespace = resource.spec.credentials.secretRef.namespace
+    }
 
 claimName: str = observedCompositeResource.metadata.name
 claimNamespace: str = observedCompositeResource.metadata.labels["crossplane.io/claim-namespace"]
@@ -36,7 +42,7 @@ k8sAppOperationsKeycloak: glcomp.K8sAppOperationsKeycloak = glcomp.K8sAppOperati
     _controlPlaneK8sProviderConfigName = spec.controlPlaneK8sProviderConfigName
     _domain = spec.domain
     _name = claimName
-    _targetK8sProviderConfig = _k8sClusterK8sProviderConfigName
+    _targetK8sProviderConfigWrapper = _targetK8sProviderConfigWrapper
     _tenantNamespace = claimNamespace
 }
 
@@ -46,8 +52,8 @@ details = [
         kind: "ExtraResources"
         requirements = {
             k8sClusterComposition = {
-                apiVersion: "k8s.grivit.cloud/v1alpha1",
-                kind: spec.k8sClusterRef.name,
+                apiVersion: "kubernetes.crossplane.io/v1alpha1",
+                kind: "ProviderConfig",
                 matchLabels: {
                     "crossplane.io/claim-name": spec.k8sClusterRef.name
                     "crossplane.io/claim-namespace": claimNamespace
