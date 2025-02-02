@@ -68,7 +68,7 @@ schema KcStage:
         _targetKcProviderConfigWrapper = _targetKcProviderConfigWrapper
         _tenantNamespace = _tenantNamespace
         _clientId = "${_name}-crossplane"
-        _name = "${_name}-crossplane-client"
+        _name = "${_name}-realm-management"
         _realmId = realm.managedResource.spec.forProvider.realm
         _redirectUri = ""
         _url = ""
