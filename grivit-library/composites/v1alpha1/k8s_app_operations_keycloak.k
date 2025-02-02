@@ -4,7 +4,7 @@ schema K8sAppOperationsKeycloak:
     _adminPassword: str
     _controlPlaneK8sProviderConfigName: str
     _domain: str
-    _fluxHelmReleaseDependencies?: [core.K8sFluxHelmReleaseWrapper] = []
+    _fluxHelmReleaseDependencies?: [core.K8sFluxHelmReleaseWrapper | core.K8sFluxHelmOciReleaseWrapper] = []
     _name: str
     _targetK8sProviderConfigWrapper: core.K8sProviderConfigWrapper
     _tenantNamespace: str
@@ -18,7 +18,6 @@ schema K8sAppOperationsKeycloak:
     }
     release: core.K8sFluxHelmOciReleaseWrapper {
         _name = "${_name}-rel"
-        _helmChartName = "cilium"
         _helmReleaseName = "keycloak"
         _helmReleaseNamespace = "keycloak"
         _helmOciRepositoryWrapper = repo
