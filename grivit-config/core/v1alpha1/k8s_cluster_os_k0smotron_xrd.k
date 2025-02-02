@@ -72,6 +72,14 @@ schema k8sClusterOsK0smotronXrd(glcore.CompositeResourceDefinition):
                                     headlampDomain = {
                                         type = "string"
                                     }
+                                    kcStageClaimRef = {
+                                        type = "object"
+                                        properties = {
+                                            name = {
+                                                type  = "string"
+                                            }
+                                        }
+                                    }
                                     kubernetesVersion = {
                                         type = "string"
                                         pattern = "^v(1\.30\.4)$"

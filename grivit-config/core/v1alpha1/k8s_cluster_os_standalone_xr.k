@@ -22,6 +22,11 @@ observedComposedResources: any = option("params").ocds
 observedCompositeResource: any = option("params").oxr
 extraResources: any = option("params")?.extraResources
 
+_kcStageKcProviderConfigName: str = ""
+if extraResources?.kcStageComposition:
+    name = extraResources?.kcStageComposition[0]?.Resource?.metadata?.name or ""
+    _kcStageKcProviderConfigName = "\${name}-kc-provider-config"
+
 _osStageOsProviderConfigName: str = ""
 if extraResources?.osStageComposition:
     name = extraResources?.osStageComposition[0]?.Resource?.metadata?.name or ""
@@ -40,7 +45,6 @@ k8sClusterOsStandalone: glcomp.K8sClusterOsStandalone = glcomp.K8sClusterOsStand
     }
     _controlPlaneAwsProviderConfigName = spec.controlPlaneAwsProviderConfigName
     _controlPlaneHelmProviderConfigName = spec.controlPlaneHelmProviderConfigName
-    _controlPlaneKcProviderConfigName = spec.controlPlaneKcProviderConfigName
     _controlPlaneK8sProviderConfigName = spec.controlPlaneK8sProviderConfigName
     _domain = spec.domain
     _externalNetworkName = spec.externalNetworkName
@@ -49,6 +53,7 @@ k8sClusterOsStandalone: glcomp.K8sClusterOsStandalone = glcomp.K8sClusterOsStand
     _name = claimName
     _observedComposedResources = observedComposedResources
     _realmId = spec.realmId
+    _targetKcProviderConfigWrapper = _kcStageKcProviderConfigName
     _targetOsProviderConfigName = _osStageOsProviderConfigName
     _tenantNamespace = claimNamespace
     _workers = {
@@ -66,6 +71,14 @@ details = [
         apiVersion: "meta.krm.kcl.dev/v1alpha1"
         kind: "ExtraResources"
         requirements = {
+            kcStageComposition = {
+                apiVersion: "kc.grivit.cloud/v1alpha1",
+                kind: "xStage",
+                matchLabels: {
+                    "crossplane.io/claim-name": spec.kcStageClaimRef.name
+                    "crossplane.io/claim-namespace": claimNamespace
+                }
+            }
             osStageComposition = {
                 apiVersion: "os.grivit.cloud/v1alpha1",
                 kind: "xStage",
