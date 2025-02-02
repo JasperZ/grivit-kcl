@@ -21,6 +21,7 @@ import grivit_library.core.v1alpha1 as glcore
 
 observedComposedResources: any = option("params").ocds
 observedCompositeResource: any = option("params").oxr
+desiredCompositeResource: any = option("params").dxr
 extraResources: any = option("params")?.extraResources
 
 _targetK8sProviderConfigWrapper: glcore.K8sProviderConfigWrapper = glcore.K8sProviderConfigWrapper {
@@ -68,7 +69,9 @@ details = [
     }
 ]
 
-items = details + k8sAppOperationsKeycloak.managedResources + k8sAppOperationsKeycloak.usages
+desiredCompositeResource.status.dummy = "cool-status"
+
+items = [desiredCompositeResource] + details + k8sAppOperationsKeycloak.managedResources + k8sAppOperationsKeycloak.usages
 """
             }
             glcore.CompositionSpecPipelineStepAutoReady {
