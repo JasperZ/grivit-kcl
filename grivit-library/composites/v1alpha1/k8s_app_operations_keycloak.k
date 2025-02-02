@@ -59,7 +59,7 @@ schema K8sAppOperationsKeycloak:
   "base_path": "/",
   "realm": "master"
 }
-    """
+"""
         }
         _targetNamespace = _tenantNamespace
         _uses = [
