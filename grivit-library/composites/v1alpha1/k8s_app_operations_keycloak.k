@@ -46,10 +46,41 @@ schema K8sAppOperationsKeycloak:
             }
         }
     }
-    managedResources: [core.ManagedResource] = [
+    providerConfigCredentials: core.K8sObjectSecretWrapper {
+        _targetK8sProviderConfigName = _controlPlaneK8sProviderConfigName
+        _name = "${_name}-provider-config-credentials"
+        _stringData = {
+            value = """\
+{
+  "client_id":"admin-cli",
+  "username": "admin",
+  "password": "${_adminPassword}",
+  "url": "https://${_domain}",
+  "base_path": "/",
+  "realm": "master"
+}
+    """
+        }
+        _targetNamespace = _tenantNamespace
+        _uses = [
+            repo.managedResource
+            release.managedResource
+        ]
+    }
+    providerConfig: core.KcProviderConfigWrapper {
+        _name = "${_name}-kc-provider-config"
+        _credentialsSecretName = providerConfigCredentials.managedResource.spec.forProvider.manifest.metadata.name
+        _credentialsSecretNamespace = providerConfigCredentials.managedResource.spec.forProvider.manifest.metadata.namespace
+        _uses = [
+            providerConfigCredentials.managedResource
+        ]
+    }
+    managedResources: [core.ManagedResource | core.KcProviderConfig] = [
         repo.managedResource
         release.managedResource
+        providerConfigCredentials.managedResource
+        providerConfig.managedResource
     ]
 
-    usages: [core.Usage] = repo.usages + release.usages
+    usages: [core.Usage] = repo.usages + release.usages + providerConfigCredentials.usages + providerConfig.usages
 
