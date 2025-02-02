@@ -72,6 +72,13 @@ schema KcStage:
             standardFlowEnabled = False
         }
     }
+    crossplaneClientRealmAdminRole: core.KcOpenIdClientServiceAccountRole {
+        _clientId = crossplaneClient.managedResource.spec.forProvider.clientId
+        _name = "${_name}-crossplane-client-realm-admin"
+        _realmId = realm.managedResource.spec.forProvider.realm
+        _roleName = "realm-admin"
+        _targetKcProviderConfigWrapper = _targetKcProviderConfigWrapper
+    }
     providerConfigCredentials: core.K8sObjectSecretWrapper {
         _targetK8sProviderConfigName = _controlPlaneK8sProviderConfigName
         _name = "${_name}-provider-config-credentials"
@@ -114,10 +121,11 @@ schema KcStage:
         groupClientScope.managedResource
         groupsMapper.managedResource
         crossplaneClient.managedResource
+        crossplaneClientRealmAdminRole.managedResource
         providerConfigCredentials.managedResource
         providerConfig.managedResource
         testGroup.managedResource
     ]
 
-    usages: [core.Usage] = realm.usages + adminGroup.usages + viewerGroup.usages + groupClientScope.usages + groupsMapper.usages + crossplaneClient.usages + providerConfigCredentials.usages + providerConfig.usages + testGroup.usages
+    usages: [core.Usage] = realm.usages + adminGroup.usages + viewerGroup.usages + groupClientScope.usages + groupsMapper.usages + crossplaneClient.usages crossplaneClientRealmAdminRole.usages + providerConfigCredentials.usages + providerConfig.usages + testGroup.usages
 
