@@ -64,8 +64,24 @@ schema KcStage:
             standardFlowEnabled = False
         }
     }
+    realmManagementClientObserve: core.KcOpenIdClientWrapper {
+        _targetKcProviderConfigWrapper = _targetKcProviderConfigWrapper
+        _tenantNamespace = _tenantNamespace
+        _clientId = "${_name}-crossplane"
+        _name = "${_name}-crossplane-client"
+        _realmId = realm.managedResource.spec.forProvider.realm
+        _redirectUri = ""
+        _url = ""
+
+        # override defaults
+        managedResource.spec.forProvider = {
+            clientId = "realm-management"
+            realmId = realm.managedResource.spec.forProvider.realm
+        }
+        managedResource.spec.managementPolicies = ["Observe"]
+    }
     crossplaneClientRealmAdminRole: core.KcOpenIdClientServiceAccountRole {
-        _clientId = crossplaneClient.getId(_observedComposedResources)
+        _clientId = realmManagementClientObserve.getId(_observedComposedResources)
         _name = "${_name}-crossplane-client-realm-admin"
         _realmId = realm.getId(_observedComposedResources)
         _roleName = "realm-admin"
@@ -114,11 +130,12 @@ schema KcStage:
         groupClientScope.managedResource
         groupsMapper.managedResource
         crossplaneClient.managedResource
+        realmManagementClientObserve.managedResource
         crossplaneClientRealmAdminRole.managedResource
         providerConfigCredentials.managedResource
         providerConfig.managedResource
         testGroup.managedResource
     ]
 
-    usages: [core.Usage] = realm.usages + adminGroup.usages + viewerGroup.usages + groupClientScope.usages + groupsMapper.usages + crossplaneClient.usages crossplaneClientRealmAdminRole.usages + providerConfigCredentials.usages + providerConfig.usages + testGroup.usages
+    usages: [core.Usage] = realm.usages + adminGroup.usages + viewerGroup.usages + groupClientScope.usages + groupsMapper.usages + crossplaneClient.usages + realmManagementClientObserve.usages + crossplaneClientRealmAdminRole.usages + providerConfigCredentials.usages + providerConfig.usages + testGroup.usages
 
