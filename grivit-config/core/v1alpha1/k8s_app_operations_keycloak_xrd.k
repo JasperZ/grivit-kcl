@@ -37,12 +37,9 @@ schema k8sAppOperationsKeycloakXrd(glcore.CompositeResourceDefinition):
                                     domain = {
                                         type = "string"
                                     }
-                                    k8sClusterRef = {
+                                    k8sClusterClaimRef = {
                                         type = "object"
                                         properties = {
-                                            kind = {
-                                                type = "string"
-                                            }
                                             name = {
                                                 type = "string"
                                             }

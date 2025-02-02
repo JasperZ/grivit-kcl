@@ -60,7 +60,7 @@ details = [
                 apiVersion: "kubernetes.crossplane.io/v1alpha1",
                 kind: "ProviderConfig",
                 matchLabels: {
-                    "crossplane.io/claim-name": spec.k8sClusterRef.name
+                    "crossplane.io/claim-name": spec.k8sClusterClaimRef.name
                     "crossplane.io/claim-namespace": claimNamespace
                 }
             }
