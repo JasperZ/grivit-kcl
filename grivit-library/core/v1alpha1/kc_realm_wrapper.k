@@ -1,5 +1,7 @@
+import core.v1alpha1 as core
+
 schema KcRealmWrapper:
-    _targetKcProviderConfigName: str
+    _targetKcProviderConfigWrapper: core.K8sProviderConfigWrapper
     _name: str
     _realmName: str
 
@@ -12,7 +14,7 @@ schema KcRealmWrapper:
         }
         spec.forProvider.enabled = True
         spec.forProvider.realm = _realmName
-        spec.providerConfigRef.name = _targetKcProviderConfigName
+        spec.providerConfigRef.name = _targetKcProviderConfigWrapper.managedResource.metadata.name
     }
     usages: [Usage] = []
 

@@ -5,11 +5,11 @@ schema KcStage:
     _name: str
     _observedComposedResources: any
     _realmName: str
-    _targetKcProviderConfigName: str
+    _targetKcProviderConfigWrapper: core.K8sProviderConfigWrapper
     _tenantNamespace: str
 
     realm = core.KcRealmWrapper {
-        _targetKcProviderConfigName = _targetKcProviderConfigName
+        _targetKcProviderConfigWrapper = _targetKcProviderConfigWrapper
         _name = "${_name}-realm"
         _realmName = _realmName
     }
@@ -22,21 +22,21 @@ schema KcStage:
     }
 
     viewerGroup = core.KcGroupWrapper {
-        _targetKcProviderConfigName = _targetKcProviderConfigName
+        _targetKcProviderConfigWrapper = _targetKcProviderConfigWrapper
         _groupName = "viewer"
         _name = "${_name}-viewer-group"
         _realmId = realm.managedResource.metadata.name
     }
 
     groupClientScope = core.KcOpenIdClientScopeWrapper {
-        _targetKcProviderConfigName = _targetKcProviderConfigName
+        _targetKcProviderConfigWrapper = _targetKcProviderConfigWrapper
         _name = "${_name}-group-client-scope"
         _realmId = realm.managedResource.metadata.name
         _scopeName = "groups"
     }
 
     groupsMapper = core.KcOpenIdGroupMembershipProtocolMapperWrapper {
-        _targetKcProviderConfigName = _targetKcProviderConfigName
+        _targetKcProviderConfigWrapper = _targetKcProviderConfigWrapper
         _claimName = "groups"
         _clientScopeId = groupClientScope.getClientScopeId(_observedComposedResources)
         _name = "${_name}-groups-mapper"
@@ -44,7 +44,7 @@ schema KcStage:
     }
 
     crossplaneClient: core.KcOpenIdClientWrapper {
-        _targetKcProviderConfigName = _targetKcProviderConfigName
+        _targetKcProviderConfigWrapper = _targetKcProviderConfigWrapper
         _tenantNamespace = _tenantNamespace
         _clientId = "${_name}-crossplane"
         _name = "${_name}-crossplane-client"

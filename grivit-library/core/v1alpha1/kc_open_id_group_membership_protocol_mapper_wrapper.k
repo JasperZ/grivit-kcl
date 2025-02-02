@@ -1,5 +1,7 @@
+import core.v1alpha1 as core
+
 schema KcOpenIdGroupMembershipProtocolMapperWrapper:
-    _targetKcProviderConfigName: str
+    _targetKcProviderConfigWrapper: core.K8sProviderConfigWrapper
     _claimName: str
     _clientScopeId: str
     _name: str
@@ -20,7 +22,7 @@ schema KcOpenIdGroupMembershipProtocolMapperWrapper:
         spec.forProvider.fullPath = False
         spec.forProvider.name = "groups"
         spec.forProvider.realmId = _realmId
-        spec.providerConfigRef.name = _targetKcProviderConfigName
+        spec.providerConfigRef.name = _targetKcProviderConfigWrapper.managedResource.metadata.name
     }
     usages: [Usage] = []
 

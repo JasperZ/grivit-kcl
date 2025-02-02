@@ -1,7 +1,8 @@
 import base64
+import core.v1alpha1 as core
 
 schema KcOpenIdClientWrapper:
-    _targetKcProviderConfigName: str
+    _targetKcProviderConfigWrapper: core.K8sProviderConfigWrapper
     _tenantNamespace: str
     _clientId: str
     _name: str
@@ -29,7 +30,7 @@ schema KcOpenIdClientWrapper:
         spec.forProvider.webOrigins = [_url]
         spec.writeConnectionSecretToRef.name = "${_name}-conn"
         spec.writeConnectionSecretToRef.namespace = _tenantNamespace
-        spec.providerConfigRef.name = _targetKcProviderConfigName
+        spec.providerConfigRef.name = _targetKcProviderConfigWrapper.managedResource.metadata.name
     }
     usages: [Usage] = []
 

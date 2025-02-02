@@ -1,5 +1,7 @@
+import core.v1alpha1 as core
+
 schema KcGroupWrapper:
-    _targetKcProviderConfigName: str
+    _targetKcProviderConfigWrapper: core.K8sProviderConfigWrapper
     _groupName: str
     _name: str
     _realmId: str
@@ -13,7 +15,7 @@ schema KcGroupWrapper:
         }
         spec.forProvider.name = _groupName
         spec.forProvider.realmId = _realmId
-        spec.providerConfigRef.name = _targetKcProviderConfigName
+        spec.providerConfigRef.name = _targetKcProviderConfigWrapper.managedResource.metadata.name
     }
     usages: [Usage] = []
 
