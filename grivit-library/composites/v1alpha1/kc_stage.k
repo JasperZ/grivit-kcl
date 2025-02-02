@@ -80,6 +80,10 @@ schema KcStage:
         _uses = [
             providerConfigCredentials.managedResource
         ]
+
+        managedResource.spec.forProvider.standardFlowEnabled = False
+        managedResource.spec.forProvider.directAccessGrantsEnabled = False
+        managedResource.spec.forProvider.serviceAccountsEnabled = True
     }
     testGroup = core.KcGroupWrapper {
         _targetKcProviderConfigWrapper = providerConfig
