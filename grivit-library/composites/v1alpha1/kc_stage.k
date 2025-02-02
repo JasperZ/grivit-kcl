@@ -53,14 +53,21 @@ schema KcStage:
         _redirectUri = ""
         _url = ""
 
-        managedResource.spec.forProvider.adminUrl = None
-        managedResource.spec.forProvider.directAccessGrantsEnabled = False
-        managedResource.spec.forProvider.rootUrl = None
-        managedResource.spec.forProvider.serviceAccountsEnabled = True
-        managedResource.spec.forProvider.standardFlowEnabled = False
-        managedResource.spec.forProvider.validPostLogoutRedirectUris = []
-        managedResource.spec.forProvider.validRedirectUris = []
-        managedResource.spec.forProvider.webOrigins = None
+        # managedResource.spec.forProvider.adminUrl = None
+        # managedResource.spec.forProvider.directAccessGrantsEnabled = False
+        # managedResource.spec.forProvider.rootUrl = None
+        # managedResource.spec.forProvider.serviceAccountsEnabled = True
+        # managedResource.spec.forProvider.standardFlowEnabled = False
+        # managedResource.spec.forProvider.validPostLogoutRedirectUris = []
+        # managedResource.spec.forProvider.validRedirectUris = []
+        # managedResource.spec.forProvider.webOrigins = None
+
+        managedResource.spec.forProvider = {
+            accessType = "CONFIDENTIAL"
+            directAccessGrantsEnabled = False
+            serviceAccountsEnabled = True
+            standardFlowEnabled = False
+        }
     }
     providerConfigCredentials: core.K8sObjectSecretWrapper {
         _targetK8sProviderConfigName = _controlPlaneK8sProviderConfigName
