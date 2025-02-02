@@ -17,6 +17,7 @@ schema ManagedResourceMetadataLabels:
 
 schema ManagedResourceSpec:
     forProvider: any
+    managementPolicies?: [str]
     providerConfigRef: ManagedResourceSpecProviderConfigRef
     readiness?: ManagedResourceSpecReadiness
     writeConnectionSecretToRef?: ManagedResourceSpecWriteConnectionSecretToRef
