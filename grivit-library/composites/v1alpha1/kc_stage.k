@@ -18,20 +18,20 @@ schema KcStage:
         _targetKcProviderConfigWrapper = _targetKcProviderConfigWrapper
         _groupName = "admin"
         _name = "${_name}-admin-group"
-        _realmId = realm.managedResource.metadata.name
+        _realmId = _realmName
     }
 
     viewerGroup = core.KcGroupWrapper {
         _targetKcProviderConfigWrapper = _targetKcProviderConfigWrapper
         _groupName = "viewer"
         _name = "${_name}-viewer-group"
-        _realmId = realm.managedResource.metadata.name
+        _realmId = _realmName
     }
 
     groupClientScope = core.KcOpenIdClientScopeWrapper {
         _targetKcProviderConfigWrapper = _targetKcProviderConfigWrapper
         _name = "${_name}-group-client-scope"
-        _realmId = realm.managedResource.metadata.name
+        _realmId = _realmName
         _scopeName = "groups"
     }
 
@@ -40,7 +40,7 @@ schema KcStage:
         _claimName = "groups"
         _clientScopeId = groupClientScope.getClientScopeId(_observedComposedResources)
         _name = "${_name}-groups-mapper"
-        _realmId = realm.managedResource.metadata.name
+        _realmId = _realmName
     }
 
     crossplaneClient: core.KcOpenIdClientWrapper {
