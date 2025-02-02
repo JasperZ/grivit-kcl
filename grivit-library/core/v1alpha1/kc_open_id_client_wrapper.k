@@ -1,9 +1,8 @@
 import base64
 
 schema KcOpenIdClientWrapper:
-    _controlPlaneKcProviderConfigName: str
-    _connectionSecretName: str
-    _connectionSecretNamespace: str
+    _targetKcProviderConfigName: str
+    _tenantNamespace: str
     _clientId: str
     _name: str
     _realmId: str
@@ -28,9 +27,9 @@ schema KcOpenIdClientWrapper:
         spec.forProvider.validPostLogoutRedirectUris = [_url]
         spec.forProvider.validRedirectUris = [_redirectUri]
         spec.forProvider.webOrigins = [_url]
-        spec.writeConnectionSecretToRef.name = _connectionSecretName
-        spec.writeConnectionSecretToRef.namespace = _connectionSecretNamespace
-        spec.providerConfigRef.name = _controlPlaneKcProviderConfigName
+        spec.writeConnectionSecretToRef.name = "${_name}-conn"
+        spec.writeConnectionSecretToRef.namespace = _tenantNamespace
+        spec.providerConfigRef.name = _targetKcProviderConfigName
     }
     usages: [Usage] = []
 

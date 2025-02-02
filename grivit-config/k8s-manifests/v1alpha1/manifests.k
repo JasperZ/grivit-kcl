@@ -7,6 +7,8 @@ manifests.yaml_stream([
     k8sClusterOsStandaloneXrd
     k8sClusterOsK0smotronXr
     k8sClusterOsK0smotronXrd
+    kcStageXr
+    kcStageXrd
     osStageXr
     osStageXrd
 ], {
