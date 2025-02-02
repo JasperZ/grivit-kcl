@@ -5,6 +5,7 @@ schema KcStage:
     _name: str
     _observedComposedResources: any
     _realmName: str
+    _targetKcDomain: str
     _targetKcProviderConfigWrapper: core.KcProviderConfigWrapper
     _tenantNamespace: str
 
@@ -60,7 +61,7 @@ schema KcStage:
 {
   "client_id": "${crossplaneClient.getClientId(_observedComposedResources)}",
   "client_secret": "${crossplaneClient.getClientSecret(_observedComposedResources)}",
-  "url": "https://keycloak.nonprod-test1.test.grivit.com",
+  "url": "https://${_targetKcDomain}",
   "base_path": "/",
   "realm": "${_realmName}"
 }

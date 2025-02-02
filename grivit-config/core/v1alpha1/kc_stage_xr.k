@@ -24,6 +24,10 @@ observedComposedResources: any = option("params").ocds
 observedCompositeResource: any = option("params").oxr
 extraResources: any = option("params")?.extraResources
 
+_k8sAppOperationsKeycloak = None
+if extraResources?.k8sAppOperationsKeycloak:
+    _k8sAppOperationsKeycloak = extraResources?.k8sAppOperationsKeycloak[0]?.Resource
+
 _targetKcProviderConfigWrapper: glcore.KcProviderConfigWrapper = glcore.KcProviderConfigWrapper {
     _name = "dummy"
     _credentialsSecretName = "dummy"
@@ -48,22 +52,24 @@ kcStage: glcomp.KcStage = glcomp.KcStage {
     _name = claimName
     _observedComposedResources = observedComposedResources
     _realmName = spec.realmName
+    _targetKcDomain = _k8sAppOperationsKeycloak.spec.domain
     _targetKcProviderConfigWrapper = _targetKcProviderConfigWrapper
     _tenantNamespace = claimNamespace
 }
 
 details = [
-    # {
-    #     apiVersion: "meta.krm.kcl.dev/v1alpha1"
-    #     kind: "CompositeConnectionDetails"
-    #     data: {
-    #         kcProviderConfigName = base64.encode(kcStage.providerConfig.managedResource.metadata.name)
-    #     }
-    # }
     {
         apiVersion: "meta.krm.kcl.dev/v1alpha1"
         kind: "ExtraResources"
         requirements = {
+            k8sAppOperationsKeycloak = {
+                apiVersion: "k8s.grivit.cloud/v1alpha1",
+                kind: "xAppOperationsKeycloak",
+                matchLabels: {
+                    "crossplane.io/claim-name": spec.k8sAppOperationsKeycloakClaimRef.name
+                    "crossplane.io/claim-namespace": claimNamespace
+                }
+            }
             k8sAppOperationsKeycloakK8sProviderConfig = {
                 apiVersion: "keycloak.crossplane.io/v1beta1",
                 kind: "ProviderConfig",
