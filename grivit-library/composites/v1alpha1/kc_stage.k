@@ -58,8 +58,8 @@ schema KcStage:
         managedResource.spec.forProvider.rootUrl = None
         managedResource.spec.forProvider.serviceAccountsEnabled = True
         managedResource.spec.forProvider.standardFlowEnabled = False
-        managedResource.spec.forProvider.validPostLogoutRedirectUris = None
-        managedResource.spec.forProvider.validRedirectUris = None
+        managedResource.spec.forProvider.validPostLogoutRedirectUris = []
+        managedResource.spec.forProvider.validRedirectUris = []
         managedResource.spec.forProvider.webOrigins = None
     }
     providerConfigCredentials: core.K8sObjectSecretWrapper {
