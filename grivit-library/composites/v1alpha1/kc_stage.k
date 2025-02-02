@@ -5,7 +5,7 @@ schema KcStage:
     _name: str
     _observedComposedResources: any
     _realmName: str
-    _targetKcProviderConfigWrapper: core.K8sProviderConfigWrapper
+    _targetKcProviderConfigWrapper: core.KcProviderConfigWrapper
     _tenantNamespace: str
 
     realm = core.KcRealmWrapper {
