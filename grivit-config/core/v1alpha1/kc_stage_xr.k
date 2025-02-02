@@ -24,9 +24,9 @@ observedComposedResources: any = option("params").ocds
 observedCompositeResource: any = option("params").oxr
 extraResources: any = option("params")?.extraResources
 
-_k8sAppOperationsKeycloak = None
+_k8sAppOperationsKeycloakSpecDomain = ""
 if extraResources?.k8sAppOperationsKeycloak:
-    _k8sAppOperationsKeycloak = extraResources?.k8sAppOperationsKeycloak[0]?.Resource
+    _k8sAppOperationsKeycloakSpecDomain = extraResources?.k8sAppOperationsKeycloak[0]?.Resource?.spec?.domain or ""
 
 _targetKcProviderConfigWrapper: glcore.KcProviderConfigWrapper = glcore.KcProviderConfigWrapper {
     _name = "dummy"
@@ -52,7 +52,7 @@ kcStage: glcomp.KcStage = glcomp.KcStage {
     _name = claimName
     _observedComposedResources = observedComposedResources
     _realmName = spec.realmName
-    _targetKcDomain = _k8sAppOperationsKeycloak.spec.domain
+    _targetKcDomain = _k8sAppOperationsKeycloakSpecDomain
     _targetKcProviderConfigWrapper = _targetKcProviderConfigWrapper
     _tenantNamespace = claimNamespace
 }
