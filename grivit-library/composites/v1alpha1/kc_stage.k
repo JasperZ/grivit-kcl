@@ -81,6 +81,13 @@ schema KcStage:
             providerConfigCredentials.managedResource
         ]
     }
+    viewerGroup = core.KcGroupWrapper {
+        _targetKcProviderConfigWrapper = providerConfig
+        _groupName = "test"
+        _name = "${_name}-test-group"
+        _realmId = _realmName
+    }
+
     managedResources: [core.ManagedResource | core.KcProviderConfig] = [
         realm.managedResource
         adminGroup.managedResource
