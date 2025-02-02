@@ -16,3 +16,10 @@ schema KcRealmWrapper:
     }
     usages: [Usage] = []
 
+    getId: (any) -> str = lambda observedComposedResources: any -> str {
+        _id: str = ""
+        if managedResource.metadata.name in observedComposedResources:
+            _id = str(observedComposedResources[managedResource.metadata.name].Resource?.status?.atProvider?.id or "")
+
+        _id
+    }

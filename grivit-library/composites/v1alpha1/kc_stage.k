@@ -73,9 +73,9 @@ schema KcStage:
         }
     }
     crossplaneClientRealmAdminRole: core.KcOpenIdClientServiceAccountRole {
-        _clientId = crossplaneClient.managedResource.spec.forProvider.clientId
+        _clientId = crossplaneClient.getId(_observedComposedResources)
         _name = "${_name}-crossplane-client-realm-admin"
-        _realmId = realm.managedResource.spec.forProvider.realm
+        _realmId = realm.getId(_observedComposedResources)
         _roleName = "realm-admin"
         _targetKcProviderConfigWrapper = _targetKcProviderConfigWrapper
     }

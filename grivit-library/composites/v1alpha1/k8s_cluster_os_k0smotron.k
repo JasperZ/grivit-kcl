@@ -173,7 +173,7 @@ clouds:
     kcArgoCdClientDefaultScopes: core.KcOpenIdClientDefaultScopesWrapper {
         _additionalScopes = ["groups"]
         _targetKcProviderConfigWrapper = _targetKcProviderConfigWrapper
-        _clientId = kcArgoCdClient.getClientId(_observedComposedResources)
+        _clientId = kcArgoCdClient.getId(_observedComposedResources)
         _name = "${_name}-argocd-client-default-scopes"
         _realmId = _realmId
     }

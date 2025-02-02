@@ -33,12 +33,12 @@ schema KcOpenIdClientWrapper:
     }
     usages: [Usage] = []
 
-    getClientId: (any) -> str = lambda observedComposedResources: any -> str {
-        _clientId: str = ""
+    getId: (any) -> str = lambda observedComposedResources: any -> str {
+        _id: str = ""
         if managedResource.metadata.name in observedComposedResources:
-            _clientId = str(observedComposedResources[managedResource.metadata.name].Resource?.status?.atProvider?.id or "")
+            _id = str(observedComposedResources[managedResource.metadata.name].Resource?.status?.atProvider?.id or "")
 
-        _clientId
+        _id
     }
 
     getClientSecret: (any) -> str = lambda observedComposedResources: any -> str {
