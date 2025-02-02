@@ -75,10 +75,7 @@ schema KcStage:
 
         # override defaults
         managedResource.spec.forProvider = {
-            # clientId = "realm-management"
-            clientIdRef = {
-                name = "realm-management"
-            }
+            clientId = "realm-management"
             realmId = realm.managedResource.spec.forProvider.realm
         }
         managedResource.spec.managementPolicies = ["Observe"]
