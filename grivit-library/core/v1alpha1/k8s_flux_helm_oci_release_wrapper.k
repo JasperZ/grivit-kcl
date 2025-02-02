@@ -25,12 +25,10 @@ schema K8sFluxHelmOciReleaseWrapper:
             spec = {
                 interval = "1m"
                 timeout = "5m"
-                spec = {
-                    chartRef = {
-                        kind = "OCIRepository"
-                        name = _helmOciRepositoryWrapper.managedResource.metadata.name
-                        namespace = _tenantNamespace
-                    }
+                chartRef = {
+                    kind = "OCIRepository"
+                    name = _helmOciRepositoryWrapper.managedResource.metadata.name
+                    namespace = _tenantNamespace
                 }
                 releaseName = _helmReleaseName
                 targetNamespace = _helmReleaseNamespace
