@@ -53,15 +53,7 @@ schema KcStage:
         _redirectUri = ""
         _url = ""
 
-        # managedResource.spec.forProvider.adminUrl = None
-        # managedResource.spec.forProvider.directAccessGrantsEnabled = False
-        # managedResource.spec.forProvider.rootUrl = None
-        # managedResource.spec.forProvider.serviceAccountsEnabled = True
-        # managedResource.spec.forProvider.standardFlowEnabled = False
-        # managedResource.spec.forProvider.validPostLogoutRedirectUris = []
-        # managedResource.spec.forProvider.validRedirectUris = []
-        # managedResource.spec.forProvider.webOrigins = None
-
+        # override defaults
         managedResource.spec.forProvider = {
             accessType = "CONFIDENTIAL"
             clientId = "${_name}-crossplane"
@@ -77,6 +69,7 @@ schema KcStage:
         _name = "${_name}-crossplane-client-realm-admin"
         _realmId = realm.getId(_observedComposedResources)
         _roleName = "realm-admin"
+        _serviceAccountUserId = crossplaneClient.getServiceAccountUserId(_observedComposedResources)
         _targetKcProviderConfigWrapper = _targetKcProviderConfigWrapper
     }
     providerConfigCredentials: core.K8sObjectSecretWrapper {

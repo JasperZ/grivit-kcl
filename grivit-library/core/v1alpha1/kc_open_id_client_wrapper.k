@@ -48,4 +48,12 @@ schema KcOpenIdClientWrapper:
 
         _clientSecret
     }
+    
+    getServiceAccountUserId: (any) -> str = lambda observedComposedResources: any -> str {
+        _serviceAccountUserId: str = ""
+        if managedResource.metadata.name in observedComposedResources:
+            _serviceAccountUserId = str(observedComposedResources[managedResource.metadata.name].Resource?.status?.atProvider?.serviceAccountUserId or "")
+
+        _serviceAccountUserId
+    }
 
