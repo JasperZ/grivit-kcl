@@ -52,10 +52,15 @@ schema KcStage:
         _realmId = realm.managedResource.spec.forProvider.realm
         _redirectUri = ""
         _url = ""
-        
-        managedResource.spec.forProvider.standardFlowEnabled = False
+
+        managedResource.spec.forProvider.adminUrl = None
         managedResource.spec.forProvider.directAccessGrantsEnabled = False
+        managedResource.spec.forProvider.rootUrl = None
         managedResource.spec.forProvider.serviceAccountsEnabled = True
+        managedResource.spec.forProvider.standardFlowEnabled = False
+        managedResource.spec.forProvider.validPostLogoutRedirectUris = None
+        managedResource.spec.forProvider.validRedirectUris = None
+        managedResource.spec.forProvider.webOrigins = None
     }
     providerConfigCredentials: core.K8sObjectSecretWrapper {
         _targetK8sProviderConfigName = _controlPlaneK8sProviderConfigName
