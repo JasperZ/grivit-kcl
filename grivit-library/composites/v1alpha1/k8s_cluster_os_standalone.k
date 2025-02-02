@@ -20,7 +20,6 @@ schema K8sClusterOsStandalone:
     _controlPlane: K8sClusterOsStandaloneConfigControlPlane
     _controlPlaneAwsProviderConfigName: str
     _controlPlaneHelmProviderConfigName: str
-    _controlPlaneKcProviderConfigName: str
     _controlPlaneK8sProviderConfigName: str
     _domain: str
     _headlampDomain: str
@@ -29,6 +28,7 @@ schema K8sClusterOsStandalone:
     _name: str
     _observedComposedResources: any
     _realmId: str
+    _targetKcProviderConfigWrapper: core.KcProviderConfigWrapper
     _targetOsProviderConfigName: str
     _tenantNamespace: str
     _workers: K8sClusterOsStandaloneConfigWorkers
