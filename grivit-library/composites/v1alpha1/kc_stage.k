@@ -81,7 +81,7 @@ schema KcStage:
             providerConfigCredentials.managedResource
         ]
     }
-    viewerGroup = core.KcGroupWrapper {
+    testGroup = core.KcGroupWrapper {
         _targetKcProviderConfigWrapper = providerConfig
         _groupName = "test"
         _name = "${_name}-test-group"
@@ -97,7 +97,8 @@ schema KcStage:
         crossplaneClient.managedResource
         providerConfigCredentials.managedResource
         providerConfig.managedResource
+        testGroup.managedResource
     ]
 
-    usages: [core.Usage] = realm.usages + adminGroup.usages + viewerGroup.usages + groupClientScope.usages + groupsMapper.usages + crossplaneClient.usages + providerConfigCredentials.usages + providerConfig.usages
+    usages: [core.Usage] = realm.usages + adminGroup.usages + viewerGroup.usages + groupClientScope.usages + groupsMapper.usages + crossplaneClient.usages + providerConfigCredentials.usages + providerConfig.usages + testGroup.usages
 
