@@ -4,7 +4,7 @@ schema K8sAppOperationsKeycloak:
     _adminPassword: str
     _controlPlaneK8sProviderConfigName: str
     _domain: str
-    _fluxHelmReleaseDependencies?: [core.K8sFluxHelmReleaseWrapper]
+    _fluxHelmReleaseDependencies?: [core.K8sFluxHelmReleaseWrapper] = []
     _name: str
     _targetK8sProviderConfigWrapper: core.K8sProviderConfigWrapper
     _tenantNamespace: str

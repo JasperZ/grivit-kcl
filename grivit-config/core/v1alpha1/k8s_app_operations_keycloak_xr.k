@@ -23,14 +23,19 @@ observedComposedResources: any = option("params").ocds
 observedCompositeResource: any = option("params").oxr
 extraResources: any = option("params")?.extraResources
 
-_targetK8sProviderConfigWrapper: glcore.K8sProviderConfigWrapper = None
-if extraResources?.k8sClusterComposition:
-    resource = extraResources?.k8sClusterComposition[0]?.Resource
+_targetK8sProviderConfigWrapper: glcore.K8sProviderConfigWrapper = glcore.K8sProviderConfigWrapper {
+    _name = "dummy"
+    _credentialsSecretName = "dummy"
+    _credentialsSecretNamespace = "dummy"
+}
+
+if extraResources?.k8sClusterK8sProviderConfig:
+    resource = extraResources?.k8sClusterK8sProviderConfig[0]?.Resource
 
     _targetK8sProviderConfigWrapper = glcore.K8sProviderConfigWrapper {
-        _name = resource.metadata.name
-        _credentialsSecretName = resource.spec.credentials.secretRef.name
-        _credentialsSecretNamespace = resource.spec.credentials.secretRef.namespace
+        _name = resource?.metadata?.name or ""
+        _credentialsSecretName = resource?.spec?.credentials?.secretRef?.name or ""
+        _credentialsSecretNamespace = resource?.spec?.credentials?.secretRef?.namespace or ""
     }
 
 claimName: str = observedCompositeResource.metadata.name
@@ -51,7 +56,7 @@ details = [
         apiVersion: "meta.krm.kcl.dev/v1alpha1"
         kind: "ExtraResources"
         requirements = {
-            k8sClusterComposition = {
+            k8sClusterK8sProviderConfig = {
                 apiVersion: "kubernetes.crossplane.io/v1alpha1",
                 kind: "ProviderConfig",
                 matchLabels: {
