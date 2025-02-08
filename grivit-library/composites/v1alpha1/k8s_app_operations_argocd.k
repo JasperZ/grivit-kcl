@@ -6,7 +6,7 @@ schema K8sAppOperationsArgoCd:
     _fluxHelmReleaseDependencies?: [core.K8sFluxHelmReleaseWrapper] = []
     _name: str
     _observedComposedResources: any
-    # _realmId: str
+    _realmId: str
     _targetK8sProviderConfigWrapper: core.K8sProviderConfigWrapper
     _targetKcProviderConfigWrapper: core.KcProviderConfigWrapper
     _tenantNamespace: str
@@ -15,7 +15,7 @@ schema K8sAppOperationsArgoCd:
         _targetKcProviderConfigWrapper = _targetKcProviderConfigWrapper
         _clientId = "${_name}-argocd"
         _name = "${_name}-argocd-client"
-        # _realmId = _realmId
+        _realmId = _realmId
         _redirectUri = "https://${_domain}/auth/callback"
         _tenantNamespace = _tenantNamespace
         _url = "https://${_domain}"
@@ -25,7 +25,7 @@ schema K8sAppOperationsArgoCd:
         _targetKcProviderConfigWrapper = _targetKcProviderConfigWrapper
         _clientId = kcArgoCdClient.getId(_observedComposedResources)
         _name = "${_name}-argocd-client-default-scopes"
-        # _realmId = _realmId
+        _realmId = _realmId
     }
     helmRepo: core.K8sFluxHelmRepositoryWrapper {
         _name = "${_name}-repo"
@@ -57,7 +57,7 @@ schema K8sAppOperationsArgoCd:
             cm = {
                 "oidc.config" = """\
 name: Keycloak
-issuer: https://keycloak.hub.test.grivit.com/realms/${kcArgoCdClient.managedResource.spec.forProvider.realmId}
+issuer: https://keycloak.hub.test.grivit.com/realms/${_realmId}
 clientID: ${kcArgoCdClient.managedResource.spec.forProvider.clientId}
 clientSecret: ${kcArgoCdClient.getClientSecret(_observedComposedResources)}
 requestedScopes: ["openid", "profile", "email", "groups"]

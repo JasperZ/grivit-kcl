@@ -2,7 +2,7 @@ schema KcOpenIdClientDefaultScopesWrapper:
     _additionalScopes: [str] = []
     _clientId: str
     _name: str
-    _realmId?: str
+    _realmId: str
     _targetKcProviderConfigWrapper: KcProviderConfigWrapper
 
     managedResource: ManagedResource {
@@ -21,8 +21,7 @@ schema KcOpenIdClientDefaultScopesWrapper:
             "roles"
             "web-origins"
         ] + _additionalScopes
-        if _realmId:
-            spec.forProvider.realmId = _realmId
+        spec.forProvider.realmId = _realmId
         spec.providerConfigRef.name = _targetKcProviderConfigWrapper.managedResource.metadata.name
     }
     usages: [Usage] = []

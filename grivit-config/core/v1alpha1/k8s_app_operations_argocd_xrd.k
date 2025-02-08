@@ -50,6 +50,9 @@ schema k8sAppOperationsArgoCdXrd(glcore.CompositeResourceDefinition):
                                             }
                                         }
                                     }
+                                    realmName = {
+                                        type = "string"
+                                    }
                                 }
                             }
                         }

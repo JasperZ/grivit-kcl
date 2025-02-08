@@ -5,7 +5,7 @@ schema KcOpenIdClientWrapper:
     _tenantNamespace: str
     _clientId: str
     _name: str
-    _realmId?: str
+    _realmId: str
     _redirectUri: str
     _url: str
 
@@ -21,8 +21,7 @@ schema KcOpenIdClientWrapper:
         spec.forProvider.clientId = _clientId
         spec.forProvider.directAccessGrantsEnabled = True
         spec.forProvider.name = _clientId
-        if _realmId:
-            spec.forProvider.realmId = _realmId
+        spec.forProvider.realmId = _realmId
         spec.forProvider.rootUrl = _url
         spec.forProvider.standardFlowEnabled = True
         spec.forProvider.validPostLogoutRedirectUris = [_url]
@@ -49,7 +48,7 @@ schema KcOpenIdClientWrapper:
 
         _clientSecret
     }
-    
+
     getServiceAccountUserId: (any) -> str = lambda observedComposedResources: any -> str {
         _serviceAccountUserId: str = ""
         if managedResource.metadata.name in observedComposedResources:

@@ -1,12 +1,13 @@
 import core.v1alpha1 as core
 
 schema K8sAppBundleOperation:
+    _argoCdDomain: str
     _name: str
     _fluxHelmReleaseDependencies?: [core.K8sFluxHelmReleaseWrapper]
     _controlPlaneK8sProviderConfigName: str
+    _realmId: str
     _targetK8sProviderConfig: core.K8sProviderConfigWrapper
     _tenantNamespace: str
-    _argoCdDomain: str
     _headlampDomain: str
 
     k8sAppsOperationArgoCd: K8sAppOperationsArgoCd {
@@ -14,6 +15,7 @@ schema K8sAppBundleOperation:
         _domain = _argoCdDomain
         _fluxHelmReleaseDependencies = _fluxHelmReleaseDependencies
         _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
+        _realmId = _realmId
         _targetK8sProviderConfigWrapper = _targetK8sProviderConfig
         _tenantNamespace = _tenantNamespace
     }

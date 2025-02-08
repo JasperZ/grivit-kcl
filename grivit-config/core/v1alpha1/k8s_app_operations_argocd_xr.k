@@ -63,6 +63,7 @@ k8sAppOperationsArgoCd: glcomp.K8sAppOperationsArgoCd = glcomp.K8sAppOperationsA
     _domain = spec.domain
     _name = claimName
     _observedComposedResources = observedComposedResources
+    _realmId = spec.realmName
     _targetK8sProviderConfigWrapper = _targetK8sProviderConfigWrapper
     _targetKcProviderConfigWrapper = _targetKcProviderConfigWrapper
     _tenantNamespace = claimNamespace
