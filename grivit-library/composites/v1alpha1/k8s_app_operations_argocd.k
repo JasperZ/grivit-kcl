@@ -3,7 +3,7 @@ import core.v1alpha1 as core
 schema K8sAppOperationsArgoCd:
     _controlPlaneK8sProviderConfigName: str
     _domain: str
-    _fluxHelmReleaseDependencies?: [core.K8sFluxHelmReleaseWrapper]
+    _fluxHelmReleaseDependencies?: [core.K8sFluxHelmReleaseWrapper] = []
     _name: str
     _observedComposedResources: any
     # _realmId: str
