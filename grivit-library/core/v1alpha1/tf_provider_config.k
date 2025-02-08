@@ -1,6 +1,8 @@
 schema TfProviderConfig:
     _name: str
     _configuration: str
+    _credentialsSecretName: str
+    _credentialsSecretNamespace: str
 
     apiVersion: str = "tf.upbound.io/v1beta1"
     kind: str = "ProviderConfig"
@@ -12,6 +14,15 @@ schema TfProviderConfig:
     }
     spec: TfProviderConfigSpec {
         configuration = _configuration
+        credentials = [
+            {
+                secretRef = {
+                    key = "value"
+                    name = _credentialsSecretName
+                    namespace = _credentialsSecretNamespace
+                }
+            }
+        ]
     }
 
 schema TfProviderConfigMetadata:
@@ -24,4 +35,15 @@ schema TfProviderConfigMetadataAnnotations:
 
 schema TfProviderConfigSpec:
     configuration: str
+    credentials: [TfProviderConfigSpecCredentials]
+
+schema TfProviderConfigSpecCredentials:
+    filename: str = "terraform.tfvars.json"
+    secretRef: TfProviderConfigSpecCredentialsSecretRef
+    source: "Secret" = "Secret"
+
+schema TfProviderConfigSpecCredentialsSecretRef:
+    key: str
+    name: str
+    namespace: str
 

@@ -1,6 +1,8 @@
 schema TfProviderConfigWrapper:
     _name: str
     _configuration: str
+    _credentialsSecretName: str
+    _credentialsSecretNamespace: str
     _uses: [ManagedResource] = []
 
     managedResource: TfProviderConfig {

@@ -75,12 +75,32 @@ terraform {
   }
 }
 
+variable "client_id" {
+    type = string
+}
+
+variable "client_secret" {
+    type = string
+}
+
+variable "url" {
+    type = string
+}
+
+variable "base_path" {
+    type = string
+}
+
+variable "realm" {
+    type = string
+}
+
 provider "keycloak" {
-    client_id     = "${crossplaneClient.managedResource.spec.forProvider.clientId}"
-    client_secret = "${crossplaneClient.getClientSecret(_observedComposedResources)}"
-    url           = "https://${_targetKcDomain}"
-    base_path     = "/"
-    realm         = "${_realmName}"
+    client_id     = var.client_id
+    client_secret = var.client_secret
+    url           = var.url
+    base_path     = var.base_path
+    realm         = var.realm
 }
 """
         _uses = [crossplaneClient.managedResource]
