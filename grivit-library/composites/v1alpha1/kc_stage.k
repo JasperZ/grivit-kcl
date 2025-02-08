@@ -143,6 +143,10 @@ output "realm_management_client_id" {
         _roleName = "realm-admin"
         _serviceAccountUserId = crossplaneClient.getServiceAccountUserId(_observedComposedResources)
         _targetKcProviderConfigWrapper = _targetKcProviderConfigWrapper
+
+        _uses = [
+            realmManagementClientObserve.managedResource
+        ]
     }
     providerConfigCredentials: core.K8sObjectSecretWrapper {
         _targetK8sProviderConfigName = _controlPlaneK8sProviderConfigName
@@ -162,6 +166,7 @@ output "realm_management_client_id" {
         _uses = [
             realm.managedResource
             crossplaneClient.managedResource
+            crossplaneClientRealmAdminRole.managedResource
         ]
     }
     providerConfig: core.KcProviderConfigWrapper {
