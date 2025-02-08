@@ -1,8 +1,6 @@
 schema TfProviderConfig:
     _name: str
     _configuration: str
-    _credentialsSecretName: str
-    _credentialsSecretNamespace: str
 
     apiVersion: str = "tf.upbound.io/v1beta1"
     kind: str = "ProviderConfig"
