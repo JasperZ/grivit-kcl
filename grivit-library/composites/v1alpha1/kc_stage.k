@@ -143,7 +143,6 @@ output "realm_management_client_id" {
         _roleName = "realm-admin"
         _serviceAccountUserId = crossplaneClient.getServiceAccountUserId(_observedComposedResources)
         _targetKcProviderConfigWrapper = _targetKcProviderConfigWrapper
-
         _uses = [
             realmManagementClientObserve.managedResource
         ]
@@ -199,5 +198,18 @@ output "realm_management_client_id" {
         testGroup.managedResource
     ]
 
-    usages: [core.Usage] = realm.usages + adminGroup.usages + viewerGroup.usages + groupClientScope.usages + groupsMapper.usages + crossplaneClient.usages + kcTfProviderConfigWrapper.usages + realmManagementClientObserve.usages + crossplaneClientRealmAdminRole.usages + providerConfigCredentials.usages + providerConfig.usages + testGroup.usages
+    usages: [core.Usage] = sum([
+        realm.usages
+        adminGroup.usages
+        viewerGroup.usages
+        groupClientScope.usages
+        groupsMapper.usages
+        crossplaneClient.usages
+        kcTfProviderConfigWrapper.usages
+        realmManagementClientObserve.usages
+        crossplaneClientRealmAdminRole.usages
+        providerConfigCredentials.usages
+        providerConfig.usages
+        testGroup.usages
+    ], [])
 
