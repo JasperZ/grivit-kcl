@@ -58,7 +58,7 @@ schema K8sAppOperationsArgoCd:
                 cm = {
                     "oidc.config" = """\
 name: Keycloak
-issuer: https://keycloak.hub.test.grivit.com/realms/${_realmId}
+issuer: https://keycloak.nonprod-test1.test.grivit.com/realms/${_realmId}
 clientID: ${kcArgoCdClient.managedResource.spec.forProvider.clientId}
 clientSecret: ${kcArgoCdClient.getClientSecret(_observedComposedResources)}
 requestedScopes: ["openid", "profile", "email", "groups"]
