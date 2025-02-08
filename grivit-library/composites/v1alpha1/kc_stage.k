@@ -101,8 +101,8 @@ variable "realm" {
 
 provider "keycloak" {
     client_id = var.client_id
-    username  = var.client_secret
-    password  = var.client_secret
+    username  = var.username
+    password  = var.password
     url       = var.url
     base_path = var.base_path
     realm     = var.realm
