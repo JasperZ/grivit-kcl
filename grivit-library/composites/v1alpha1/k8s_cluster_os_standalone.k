@@ -235,7 +235,7 @@ clouds:
         k8sAppsInfrastructureOsBundle.managedResources
         k8sAppsPlatformBundle.managedResources
         # k8sAppsOperationArgoCd.managedResources
-    ])
+    ], [])
 
     usages: [core.Usage] = sum([
         applicationCredential.usages
@@ -255,5 +255,5 @@ clouds:
         # k8sAppsOperationArgoCd.usages
         # kcArgoCdClient.usages
         # kcArgoCdClientDefaultScopes.usages
-    ])
+    ], [])
 
