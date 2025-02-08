@@ -108,6 +108,8 @@ provider "keycloak" {
     realm     = var.realm
 }
 """
+        _credentialsSecretName = _targetKcProviderConfigWrapper.managedResource.spec.credentials.secretRef.name
+        _credentialsSecretNamespace = _targetKcProviderConfigWrapper.managedResource.spec.credentials.secretRef.namespace
         _uses = [crossplaneClient.managedResource]
     }
 
