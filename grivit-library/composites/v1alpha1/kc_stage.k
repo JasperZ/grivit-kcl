@@ -79,7 +79,11 @@ variable "client_id" {
     type = string
 }
 
-variable "client_secret" {
+variable "username" {
+    type = string
+}
+
+variable "password" {
     type = string
 }
 
@@ -96,11 +100,12 @@ variable "realm" {
 }
 
 provider "keycloak" {
-    client_id     = var.client_id
-    client_secret = var.client_secret
-    url           = var.url
-    base_path     = var.base_path
-    realm         = var.realm
+    client_id = var.client_id
+    username  = var.client_secret
+    password  = var.client_secret
+    url       = var.url
+    base_path = var.base_path
+    realm     = var.realm
 }
 """
         _uses = [crossplaneClient.managedResource]
