@@ -22,10 +22,10 @@ observedComposedResources: any = option("params").ocds
 observedCompositeResource: any = option("params").oxr
 extraResources: any = option("params")?.extraResources
 
-_kcStageKcProviderConfigName: str = ""
-if extraResources?.kcStageComposition:
-    _kcStageCompositionName = extraResources?.kcStageComposition[0]?.Resource?.metadata?.name or ""
-    _kcStageKcProviderConfigName = "\${_kcStageCompositionName}-kc-provider-config"
+# _kcStageKcProviderConfigName: str = ""
+# if extraResources?.kcStageComposition:
+#     _kcStageCompositionName = extraResources?.kcStageComposition[0]?.Resource?.metadata?.name or ""
+#     _kcStageKcProviderConfigName = "\${_kcStageCompositionName}-kc-provider-config"
 
 _osStageOsProviderConfigName: str = ""
 if extraResources?.osStageComposition:
@@ -71,14 +71,14 @@ details = [
         apiVersion: "meta.krm.kcl.dev/v1alpha1"
         kind: "ExtraResources"
         requirements = {
-            kcStageComposition = {
-                apiVersion: "kc.grivit.cloud/v1alpha1",
-                kind: "xStage",
-                matchLabels: {
-                    "crossplane.io/claim-name": spec.kcStageClaimRef.name
-                    "crossplane.io/claim-namespace": claimNamespace
-                }
-            }
+            # kcStageComposition = {
+            #     apiVersion: "kc.grivit.cloud/v1alpha1",
+            #     kind: "xStage",
+            #     matchLabels: {
+            #         "crossplane.io/claim-name": spec.kcStageClaimRef.name
+            #         "crossplane.io/claim-namespace": claimNamespace
+            #     }
+            # }
             osStageComposition = {
                 apiVersion: "os.grivit.cloud/v1alpha1",
                 kind: "xStage",
