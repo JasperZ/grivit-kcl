@@ -52,7 +52,6 @@ schema KcStage:
         _realmId = realm.managedResource.spec.forProvider.realm
         _redirectUri = ""
         _url = ""
-
         # override defaults
         managedResource.spec.forProvider = {
             accessType = "CONFIDENTIAL"
@@ -64,24 +63,46 @@ schema KcStage:
             standardFlowEnabled = False
         }
     }
-    realmManagementClientObserve: core.KcOpenIdClientWrapper {
-        _targetKcProviderConfigWrapper = _targetKcProviderConfigWrapper
-        _tenantNamespace = _tenantNamespace
-        _clientId = "${_name}-crossplane"
-        _name = "${_name}-realm-management"
-        _realmId = realm.managedResource.spec.forProvider.realm
-        _redirectUri = ""
-        _url = ""
+    kcTfProviderConfigWrapper: core.TfProviderConfigWrapper = {
+        _name = "${_name}-kc-tfprovider-config"
+        _configuration = """\
+terraform {
+  required_providers {
+    keycloak = {
+      source = "keycloak/keycloak"
+      version = "5.1.1"
+    }
+  }
+}
 
-        # override defaults
-        managedResource.spec.forProvider = {
-            clientId = "realm-management"
-            realmId = realm.managedResource.spec.forProvider.realm
-        }
-        managedResource.spec.managementPolicies = ["Observe"]
+provider "keycloak" {
+    client_id     = "${crossplaneClient.managedResource.spec.forProvider.clientId}"
+    client_secret = "${crossplaneClient.getClientSecret(_observedComposedResources)}"
+    url           = "https://${_targetKcDomain}"
+    base_path     = "/"
+    realm         = "${_realmName}"
+}
+"""
+        _uses = [crossplaneClient.managedResource]
+    }
+
+    realmManagementClientObserve: core.TfWorkspaceWrapper {
+        _moduleInlineCode = """\
+data "keycloak_openid_client" "realm_management" {
+  realm_id  = "${realm.managedResource.spec.forProvider.realm}"
+  client_id = "realm-management"
+}
+
+output "realm_management_client_id" {
+  value = keycloak_openid_client.realm_management.id
+}
+"""
+        _name = "${_name}-realm-management"
+        _targetTfProviderConfigName = kcTfProviderConfigWrapper.managedResource.metadata.name
+        _tenantNamespace = _tenantNamespace
     }
     crossplaneClientRealmAdminRole: core.KcOpenIdClientServiceAccountRole {
-        _clientId = realmManagementClientObserve.getId(_observedComposedResources)
+        _clientId = realmManagementClientObserve.getNonSensitiveOutput(_observedComposedResources, "realm_management_client_id")
         _name = "${_name}-crossplane-client-realm-admin"
         _realmId = realm.getId(_observedComposedResources)
         _roleName = "realm-admin"
