@@ -128,11 +128,15 @@ g, viewer, role:readonly
         }
     }
     managedResources: [core.ManagedResource] = [
+        kcArgoCdClient.managedResource
+        kcArgoCdClientDefaultScopes.managedResource
         helmRepo.managedResource
         helmRelease.managedResource
     ]
 
     usages: [core.Usage] = sum([
+        kcArgoCdClient.usages
+        kcArgoCdClientDefaultScopes.usages
         helmRepo.usages
         helmRelease.usages
     ], [])
