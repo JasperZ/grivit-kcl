@@ -1,3 +1,5 @@
+import base64
+
 schema TfWorkspaceWrapperVars:
     name: str
     value: str | int | bool
