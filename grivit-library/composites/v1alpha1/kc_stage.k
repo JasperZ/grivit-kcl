@@ -94,7 +94,7 @@ data "keycloak_openid_client" "realm_management" {
 }
 
 output "realm_management_client_id" {
-  value = keycloak_openid_client.realm_management.id
+  value = data.keycloak_openid_client.realm_management.id
 }
 """
         _name = "${_name}-realm-management"
