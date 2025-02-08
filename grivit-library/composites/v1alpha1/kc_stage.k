@@ -151,6 +151,7 @@ output "realm_management_client_id" {
         groupClientScope.managedResource
         groupsMapper.managedResource
         crossplaneClient.managedResource
+        kcTfProviderConfigWrapper.managedResource
         realmManagementClientObserve.managedResource
         crossplaneClientRealmAdminRole.managedResource
         providerConfigCredentials.managedResource
@@ -158,5 +159,5 @@ output "realm_management_client_id" {
         testGroup.managedResource
     ]
 
-    usages: [core.Usage] = realm.usages + adminGroup.usages + viewerGroup.usages + groupClientScope.usages + groupsMapper.usages + crossplaneClient.usages + realmManagementClientObserve.usages + crossplaneClientRealmAdminRole.usages + providerConfigCredentials.usages + providerConfig.usages + testGroup.usages
+    usages: [core.Usage] = realm.usages + adminGroup.usages + viewerGroup.usages + groupClientScope.usages + groupsMapper.usages + crossplaneClient.usages + kcTfProviderConfigWrapper.usages + realmManagementClientObserve.usages + crossplaneClientRealmAdminRole.usages + providerConfigCredentials.usages + providerConfig.usages + testGroup.usages
 
