@@ -8,6 +8,8 @@ schema TfProviderConfigWrapper:
     managedResource: TfProviderConfig {
         _name = _name
         _configuration = _configuration
+        _credentialsSecretName = _credentialsSecretName
+        _credentialsSecretNamespace = _credentialsSecretNamespace
     }
     usages: [Usage] = [Usage {
         metadata.name = "${_name}-uses-${ofResource.metadata.name}"
