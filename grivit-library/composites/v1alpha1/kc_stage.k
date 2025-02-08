@@ -63,6 +63,7 @@ schema KcStage:
             standardFlowEnabled = False
         }
     }
+    # START: Workaround to retrieve id of the realm-management client until crossplane keycloak is fixed
     kcTfProviderConfigWrapper: core.TfProviderConfigWrapper = {
         _name = "${_name}-kc-tfprovider-config"
         _configuration = """\
@@ -129,18 +130,14 @@ data "keycloak_openid_client" "realm_management" {
 output "realm_management_client_id" {
   value = data.keycloak_openid_client.realm_management.id
 }
-
-output "test" {
-  value = data.keycloak_openid_client.realm_management.id
-  sensitive = true
-}
 """
         _name = "${_name}-realm-management"
         _targetTfProviderConfigName = kcTfProviderConfigWrapper.managedResource.metadata.name
         _tenantNamespace = _tenantNamespace
     }
+    # END: Workaround
     crossplaneClientRealmAdminRole: core.KcOpenIdClientServiceAccountRole {
-        _clientId = realmManagementClientObserve.getNonSensitiveOutput(_observedComposedResources, "realm_management_client_id")
+        _clientId = realmManagementClientObserve.getOutput(_observedComposedResources, "realm_management_client_id")
         _name = "${_name}-crossplane-client-realm-admin"
         _realmId = realm.getId(_observedComposedResources)
         _roleName = "realm-admin"

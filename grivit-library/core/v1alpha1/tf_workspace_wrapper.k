@@ -24,15 +24,7 @@ schema TfWorkspaceWrapper:
     }
     usages: [Usage] = []
 
-    getNonSensitiveOutput: (any, str) -> str = lambda observedComposedResources: any, outputName: str -> str {
-        _outputValue: str = ""
-        if managedResource.metadata.name in observedComposedResources:
-            _outputValue = str(observedComposedResources[managedResource.metadata.name].Resource?.status?.atProvider?.outputs[outputName] or "")
-
-        _outputValue
-    }
-
-    getSensitiveOutput: (any, str) -> str = lambda observedComposedResources: any, outputName: str -> str {
+    getOutput: (any, str) -> str = lambda observedComposedResources: any, outputName: str -> str {
         _outputValue: str = ""
         if managedResource.metadata.name in observedComposedResources:
             _outputValue = base64.decode(observedComposedResources[managedResource.metadata.name].ConnectionDetails[outputName] or base64.encode("dummy"))
