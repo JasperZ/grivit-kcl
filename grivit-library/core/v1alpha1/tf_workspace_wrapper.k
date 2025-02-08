@@ -17,7 +17,6 @@ schema TfWorkspaceWrapper:
             "krm.kcl.dev/composition-resource-name" = _name
         }
         spec.forProvider.module = _moduleInlineCode
-        spec.forProvider.name = _name
         spec.forProvider.source = "Inline"
         spec.providerConfigRef.name = _targetTfProviderConfigName
         spec.writeConnectionSecretToRef.name = "${_name}-conn"
