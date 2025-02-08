@@ -54,17 +54,29 @@ schema K8sAppOperationsArgoCd:
                 }
                 replicas = 1
             }
-            cm = {
-                "oidc.config" = """\
+            configs = {
+                cm = {
+                    "oidc.config" = """\
 name: Keycloak
 issuer: https://keycloak.hub.test.grivit.com/realms/${_realmId}
 clientID: ${kcArgoCdClient.managedResource.spec.forProvider.clientId}
 clientSecret: ${kcArgoCdClient.getClientSecret(_observedComposedResources)}
 requestedScopes: ["openid", "profile", "email", "groups"]
 """
-            }
-            configs.params = {
-                "server.insecure" = True
+                }
+                params = {
+                    "server.insecure" = True
+                }
+                rbac = {
+                    "policy.csv" = """\
+p, role:authenticated, *, *, *, deny
+
+g, admin, role:admin
+g, viewer, role:readonly
+"""
+                    "policy.default" = "role:authenticated"
+                    scopes = "[groups]"
+                }
             }
             controller = {
                 metrics = {
@@ -76,16 +88,6 @@ requestedScopes: ["openid", "profile", "email", "groups"]
                 replicas = 1
             }
             dex.enabled = False
-            rbac = {
-                "policy.csv" = """\
-p, role:authenticated, *, *, *, deny
-
-g, admin, role:admin
-g, viewer, role:readonly
-"""
-                "policy.default" = "role:authenticated"
-                scopes = "[groups]"
-            }
             redi.metrics = {
                 enabled = True
                 serviceMonitor = {
@@ -127,14 +129,15 @@ g, viewer, role:readonly
             }
         }
     }
-    managedResources: [core.ManagedResource] = [
+    managedResources: [core.ManagedResource]
+    [
         kcArgoCdClient.managedResource
         kcArgoCdClientDefaultScopes.managedResource
         helmRepo.managedResource
         helmRelease.managedResource
     ]
-
-    usages: [core.Usage] = sum([
+    usages: [core.Usage]
+    sum([
         kcArgoCdClient.usages
         kcArgoCdClientDefaultScopes.usages
         helmRepo.usages
