@@ -41,7 +41,7 @@ schema K8sAppOperationsArgoCd:
         _helmRepositoryWrapper = helmRepo
         _helmReleaseWrapperDependencies = _fluxHelmReleaseDependencies
         _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
-        _targetK8sProviderConfig = _targetK8sProviderConfig
+        _targetK8sProviderConfig = _targetK8sProviderConfigWrapper
         _tenantNamespace = _tenantNamespace
         managedResource.spec.forProvider.manifest.spec.values = {
             applicationSet = {

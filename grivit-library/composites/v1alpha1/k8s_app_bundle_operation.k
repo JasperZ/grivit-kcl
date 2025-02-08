@@ -14,7 +14,7 @@ schema K8sAppBundleOperation:
         _domain = _argoCdDomain
         _fluxHelmReleaseDependencies = _fluxHelmReleaseDependencies
         _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
-        _targetK8sProviderConfig = _targetK8sProviderConfig
+        _targetK8sProviderConfigWrapper = _targetK8sProviderConfig
         _tenantNamespace = _tenantNamespace
     }
     k8sAppsOperationHeadlamp: K8sAppOperationsHeadlamp {

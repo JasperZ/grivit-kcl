@@ -42,6 +42,14 @@ schema k8sAppOperationsArgoCdXrd(glcore.CompositeResourceDefinition):
                                             }
                                         }
                                     }
+                                    kcStageClaimRef = {
+                                        type = "object"
+                                        properties = {
+                                            name = {
+                                                type = "string"
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }

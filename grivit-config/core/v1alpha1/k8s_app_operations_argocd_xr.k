@@ -31,12 +31,12 @@ _targetK8sProviderConfigWrapper: glcore.K8sProviderConfigWrapper = glcore.K8sPro
 }
 
 if extraResources?.k8sClusterK8sProviderConfig:
-    resource = extraResources?.k8sClusterK8sProviderConfig[0]?.Resource
+    _k8sClusterK8sProviderConfigResource = extraResources?.k8sClusterK8sProviderConfig[0]?.Resource
 
     _targetK8sProviderConfigWrapper = glcore.K8sProviderConfigWrapper {
-        _name = resource?.metadata?.name or ""
-        _credentialsSecretName = resource?.spec?.credentials?.secretRef?.name or ""
-        _credentialsSecretNamespace = resource?.spec?.credentials?.secretRef?.namespace or ""
+        _name = _k8sClusterK8sProviderConfigResource?.metadata?.name or ""
+        _credentialsSecretName = _k8sClusterK8sProviderConfigResource?.spec?.credentials?.secretRef?.name or ""
+        _credentialsSecretNamespace = _k8sClusterK8sProviderConfigResource?.spec?.credentials?.secretRef?.namespace or ""
     }
 
 _targetKcProviderConfigWrapper: glcore.KcProviderConfigWrapper = glcore.KcProviderConfigWrapper {
@@ -45,13 +45,13 @@ _targetKcProviderConfigWrapper: glcore.KcProviderConfigWrapper = glcore.KcProvid
     _credentialsSecretNamespace = "dummy"
 }
 
-if extraResources?.kcClusterK8sProviderConfig:
-    resource = extraResources?.kcClusterK8sProviderConfig[0]?.Resource
+if extraResources?.kcStageKcProviderConfig:
+    _kcStageKcProviderConfigResource = extraResources?.kcStageKcProviderConfig[0]?.Resource
 
     _targetKcProviderConfigWrapper = glcore.KcProviderConfigWrapper {
-        _name = resource?.metadata?.name or ""
-        _credentialsSecretName = resource?.spec?.credentials?.secretRef?.name or ""
-        _credentialsSecretNamespace = resource?.spec?.credentials?.secretRef?.namespace or ""
+        _name = _kcStageKcProviderConfigResource?.metadata?.name or ""
+        _credentialsSecretName = _kcStageKcProviderConfigResource?.spec?.credentials?.secretRef?.name or ""
+        _credentialsSecretNamespace = _kcStageKcProviderConfigResource?.spec?.credentials?.secretRef?.namespace or ""
     }
 
 claimName: str = observedCompositeResource.metadata.name
@@ -81,11 +81,11 @@ details = [
                     "crossplane.io/claim-namespace": claimNamespace
                 }
             }
-            kcClusterK8sProviderConfig = {
+            kcStageKcProviderConfig = {
                 apiVersion: "keycloak.crossplane.io/v1beta1",
                 kind: "ProviderConfig",
                 matchLabels: {
-                    "crossplane.io/claim-name": spec.kcClusterClaimRef.name
+                    "crossplane.io/claim-name": spec.kcStageClaimRef.name
                     "crossplane.io/claim-namespace": claimNamespace
                 }
             }
