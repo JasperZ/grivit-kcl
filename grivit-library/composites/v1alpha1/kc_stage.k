@@ -129,6 +129,11 @@ data "keycloak_openid_client" "realm_management" {
 output "realm_management_client_id" {
   value = data.keycloak_openid_client.realm_management.id
 }
+
+output "test" {
+  value = data.keycloak_openid_client.realm_management.id
+  sensitive = true
+}
 """
         _name = "${_name}-realm-management"
         _targetTfProviderConfigName = kcTfProviderConfigWrapper.managedResource.metadata.name
