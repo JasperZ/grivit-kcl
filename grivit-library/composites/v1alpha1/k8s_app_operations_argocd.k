@@ -17,6 +17,7 @@ schema K8sAppOperationsArgoCd:
         _name = "${_name}-argocd-client"
         # _realmId = _realmId
         _redirectUri = "https://${_domain}/auth/callback"
+        _tenantNamespace = _tenantNamespace
         _url = "https://${_domain}"
     }
     kcArgoCdClientDefaultScopes: core.KcOpenIdClientDefaultScopesWrapper {
