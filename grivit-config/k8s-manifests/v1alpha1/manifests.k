@@ -1,6 +1,8 @@
 import manifests
 
 manifests.yaml_stream([
+    k8sAppOperationsArgoCdXr
+    k8sAppOperationsArgoCdXrd
     k8sAppOperationsKeycloakXr
     k8sAppOperationsKeycloakXrd
     k8sClusterOsStandaloneXr

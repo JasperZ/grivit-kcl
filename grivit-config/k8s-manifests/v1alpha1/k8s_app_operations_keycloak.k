@@ -8,7 +8,7 @@ k8sAppOperationsKeycloakApiVersion: str = "v1alpha1"
 k8sAppOperationsKeycloakXr: core.k8sAppOperationsKeycloakXr = core.k8sAppOperationsKeycloakXr {
     _nameSingular = k8sAppOperationsKeycloakNameSingular
     _apiGroup = k8sAppOperationsKeycloakApiGroup
-    _apiVersion = k8sClusterOsStandaloneApiVersion
+    _apiVersion = k8sAppOperationsKeycloakApiVersion
 }
 
 k8sAppOperationsKeycloakXrd: core.k8sAppOperationsKeycloakXrd = core.k8sAppOperationsKeycloakXrd {

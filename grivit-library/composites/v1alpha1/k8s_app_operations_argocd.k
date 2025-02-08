@@ -1,13 +1,13 @@
 import core.v1alpha1 as core
 
 schema K8sAppOperationsArgoCd:
-    _name: str
+    _controlPlaneK8sProviderConfigName: str
     _domain: str
     _fluxHelmReleaseDependencies?: [core.K8sFluxHelmReleaseWrapper]
-    _controlPlaneK8sProviderConfigName: str
+    _name: str
     _observedComposedResources: any
     # _realmId: str
-    _targetK8sProviderConfig: core.K8sProviderConfigWrapper
+    _targetK8sProviderConfigWrapper: core.K8sProviderConfigWrapper
     _targetKcProviderConfigWrapper: core.KcProviderConfigWrapper
     _tenantNamespace: str
 
