@@ -131,5 +131,8 @@ g, viewer, role:readonly
         helmRelease.managedResource
     ]
 
-    usages: [core.Usage] = helmRepo.usages + helmRelease.usages
+    usages: [core.Usage] = sum([
+        helmRepo.usages
+        helmRelease.usages
+    ], [])
 

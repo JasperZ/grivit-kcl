@@ -93,7 +93,11 @@ details = [
     }
 ]
 
-items = details + k8sAppOperationsKeycloak.managedResources + k8sAppOperationsKeycloak.usages
+items = sum([
+    details
+    k8sAppOperationsArgoCd.managedResources
+    k8sAppOperationsArgoCd.usages
+], [])
 """
             }
             glcore.CompositionSpecPipelineStepAutoReady {
