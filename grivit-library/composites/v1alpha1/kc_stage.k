@@ -144,7 +144,7 @@ output "realm_management_client_id" {
         _realmId = _realmName
     }
 
-    managedResources: [core.ManagedResource | core.KcProviderConfig] = [
+    managedResources: [core.ManagedResource | core.KcProviderConfig | core.TfProviderConfig] = [
         realm.managedResource
         adminGroup.managedResource
         viewerGroup.managedResource
