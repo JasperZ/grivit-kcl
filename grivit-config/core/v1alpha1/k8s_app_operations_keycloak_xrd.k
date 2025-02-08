@@ -45,6 +45,14 @@ schema k8sAppOperationsKeycloakXrd(glcore.CompositeResourceDefinition):
                                             }
                                         }
                                     }
+                                    kcStageClaimRef = {
+                                        type = "object"
+                                        properties = {
+                                            name = {
+                                                type = "string"
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }

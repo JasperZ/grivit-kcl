@@ -5,9 +5,26 @@ schema K8sAppOperationsArgoCd:
     _domain: str
     _fluxHelmReleaseDependencies?: [core.K8sFluxHelmReleaseWrapper]
     _controlPlaneK8sProviderConfigName: str
+    _observedComposedResources: any
     _targetK8sProviderConfig: core.K8sProviderConfigWrapper
+    _targetKcProviderConfigWrapper: core.KcProviderConfigWrapper
     _tenantNamespace: str
 
+    kcArgoCdClient: core.KcOpenIdClientWrapper {
+        _targetKcProviderConfigWrapper = _targetKcProviderConfigWrapper
+        _clientId = "${_name}-argocd"
+        _name = "${_name}-argocd-client"
+        # _realmId = _realmId
+        _redirectUri = "https://${_domain}/auth/callback"
+        _url = "https://${_domain}"
+    }
+    kcArgoCdClientDefaultScopes: core.KcOpenIdClientDefaultScopesWrapper {
+        _additionalScopes = ["groups"]
+        _targetKcProviderConfigWrapper = _targetKcProviderConfigWrapper
+        _clientId = kcArgoCdClient.getId(_observedComposedResources)
+        _name = "${_name}-argocd-client-default-scopes"
+        # _realmId = _realmId
+    }
     helmRepo: core.K8sFluxHelmRepositoryWrapper {
         _name = "${_name}-repo"
         _helmRepoUrl = "https://argoproj.github.io/argo-helm"
@@ -35,6 +52,15 @@ schema K8sAppOperationsArgoCd:
                 }
                 replicas = 1
             }
+            cm = {
+                "oidc.config" = """\
+name: Keycloak
+issuer: https://keycloak.hub.test.grivit.com/realms/${_realmId}
+clientID: ${kcArgoCdClient.managedResource.spec.forProvider.clientId}
+clientSecret: ${kcArgoCdClient.getClientSecret(_observedComposedResources)}
+requestedScopes: ["openid", "profile", "email", "groups"]
+"""
+            }
             configs.params = {
                 "server.insecure" = True
             }
@@ -48,6 +74,16 @@ schema K8sAppOperationsArgoCd:
                 replicas = 1
             }
             dex.enabled = False
+            rbac = {
+                "policy.csv" = """\
+p, role:authenticated, *, *, *, deny
+
+g, admin, role:admin
+g, viewer, role:readonly
+"""
+                "policy.default" = "role:authenticated"
+                scopes = "[groups]"
+            }
             redi.metrics = {
                 enabled = True
                 serviceMonitor = {
