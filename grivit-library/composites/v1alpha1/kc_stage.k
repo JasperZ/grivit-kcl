@@ -73,6 +73,10 @@ terraform {
       version = "5.1.1"
     }
   }
+
+  backend "local" {
+    path = "terraform.tfstate"
+  }
 }
 
 variable "client_id" {
