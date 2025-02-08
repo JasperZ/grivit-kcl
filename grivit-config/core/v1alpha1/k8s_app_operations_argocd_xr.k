@@ -58,7 +58,7 @@ claimName: str = observedCompositeResource.metadata.name
 claimNamespace: str = observedCompositeResource.metadata.labels["crossplane.io/claim-namespace"]
 spec: any = observedCompositeResource.spec
 
-k8sAppOperationsArgocd: glcomp.K8sAppOperationsArgocd = glcomp.K8sAppOperationsArgocd {
+k8sAppOperationsArgocd: glcomp.K8sAppOperationsArgoCd = glcomp.K8sAppOperationsArgoCd {
     _controlPlaneK8sProviderConfigName = spec.controlPlaneK8sProviderConfigName
     _domain = spec.domain
     _name = claimName
