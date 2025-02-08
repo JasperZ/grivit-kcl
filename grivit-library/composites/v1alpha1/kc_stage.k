@@ -74,8 +74,10 @@ terraform {
     }
   }
 
-  backend "local" {
-    path = "terraform.tfstate"
+  backend "kubernetes" {
+    secret_suffix     = "${_name}-kc-tfprovider-config-state"
+    namespace         = "${_tenantNamespace}"
+    in_cluster_config = true
   }
 }
 
