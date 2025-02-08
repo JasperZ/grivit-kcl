@@ -27,7 +27,7 @@ schema TfWorkspaceWrapper:
     getNonSensitiveOutput: (any, str) -> str = lambda observedComposedResources: any, outputName: str -> str {
         _outputValue: str = ""
         if managedResource.metadata.name in observedComposedResources:
-            _outputValue = str(observedComposedResources[managedResource.metadata.name].Resource?.status?.atProvider[outputName] or "")
+            _outputValue = str(observedComposedResources[managedResource.metadata.name].Resource?.status?.atProvider?.outputs[outputName] or "")
 
         _outputValue
     }
