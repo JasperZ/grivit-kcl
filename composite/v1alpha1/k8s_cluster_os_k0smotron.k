@@ -22,6 +22,7 @@ schema K8sClusterOsK0smotron:
     _controlPlaneHelmProviderConfigName: str
     _controlPlaneK8sProviderConfigName: str
     _domain: str
+    _email: str
     _headlampDomain: str
     _externalNetworkName: str
     _k8sVersion: str
@@ -156,6 +157,7 @@ clouds:
     k8sAppsPlatformBundle: K8sAppBundlePlatform {
         _controlPlaneAwsProviderConfigName = _controlPlaneAwsProviderConfigName
         _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
+        _email = _email
         _fluxHelmReleaseDependencies = k8sAppsInfrastructureOsBundle.fluxHelmReleases
         _name = "${_name}-pa"
         _observedComposedResources = _observedComposedResources

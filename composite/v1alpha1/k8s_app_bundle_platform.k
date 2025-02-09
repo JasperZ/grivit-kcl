@@ -3,6 +3,7 @@ import core.v1alpha1 as core
 schema K8sAppBundlePlatform:
     _controlPlaneAwsProviderConfigName: str
     _controlPlaneK8sProviderConfigName: str
+    _email: str
     _fluxHelmReleaseDependencies?: [core.K8sFluxHelmReleaseWrapper]
     _name: str
     _observedComposedResources: any
@@ -10,10 +11,11 @@ schema K8sAppBundlePlatform:
     _tenantNamespace: str
 
     k8sAppsPlatformCertManager: K8sAppPlatformCertManager {
-        _name = "${_name}-certmanager"
-        _fluxHelmReleaseDependencies = _fluxHelmReleaseDependencies
         _controlPlaneAwsProviderConfigName = _controlPlaneAwsProviderConfigName
         _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
+        _email: _email
+        _fluxHelmReleaseDependencies = _fluxHelmReleaseDependencies
+        _name = "${_name}-certmanager"
         _observedComposedResources = _observedComposedResources
         _targetK8sProviderConfig = _targetK8sProviderConfig
         _tenantNamespace = _tenantNamespace

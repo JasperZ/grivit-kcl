@@ -66,6 +66,9 @@ schema Xrd(core.CompositeResourceDefinition):
                                     domain = {
                                         type = "string"
                                     }
+                                    email = {
+                                        type = "string"
+                                    }
                                     externalNetworkName = {
                                         type = "string"
                                     }

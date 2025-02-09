@@ -29,6 +29,7 @@ k8sClusterOsStandalone: composite.K8sClusterOsStandalone = composite.K8sClusterO
     _controlPlaneHelmProviderConfigName = spec.controlPlaneHelmProviderConfigName
     _controlPlaneK8sProviderConfigName = spec.controlPlaneK8sProviderConfigName
     _domain = spec.domain
+    _email = spec.email
     _externalNetworkName = spec.externalNetworkName
     _headlampDomain = spec.headlampDomain
     _k8sVersion = spec.kubernetesVersion

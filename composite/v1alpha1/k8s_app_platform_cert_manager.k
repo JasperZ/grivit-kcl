@@ -1,13 +1,14 @@
 import core.v1alpha1 as core
 
 schema K8sAppPlatformCertManager:
-    _name: str
-    _fluxHelmReleaseDependencies?: [core.K8sFluxHelmReleaseWrapper]
     _controlPlaneAwsProviderConfigName: str
     _controlPlaneK8sProviderConfigName: str
+    _email: str
+    _fluxHelmReleaseDependencies?: [core.K8sFluxHelmReleaseWrapper]
+    _name: str
+    _observedComposedResources: any
     _targetK8sProviderConfig: core.K8sProviderConfigWrapper
     _tenantNamespace: str
-    _observedComposedResources: any
 
     awsUser: core.AwsIamUserWrapper {
         _controlPlaneAwsProviderConfigName = _controlPlaneAwsProviderConfigName
@@ -101,7 +102,7 @@ schema K8sAppPlatformCertManager:
             spec.acme = {
                 server = "https://acme-v02.api.letsencrypt.org/directory"
                 # ToDo: hard coded email
-                email = "jasper.z@posteo.de"
+                email = _email
                 privateKeySecretRef = {
                     name = "letsencrypt-cluster-issuer-private-key"
                 }
