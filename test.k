@@ -1,0 +1,1 @@
+import compositeresource.v1alpha1.os.stage.functioncode
