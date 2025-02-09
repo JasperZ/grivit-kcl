@@ -1,6 +1,6 @@
 import grivit_library.core.v1alpha1 as glcore
 
-schema k8sClusterOsK0smotronXr(glcore.Composition):
+schema K8sClusterOsK0smotronXr(glcore.Composition):
     _nameSingular: str
     _apiGroup: str
     _apiVersion: str

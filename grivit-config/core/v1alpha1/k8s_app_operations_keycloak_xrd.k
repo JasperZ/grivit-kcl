@@ -1,6 +1,6 @@
 import grivit_library.core.v1alpha1 as glcore
 
-schema k8sAppOperationsKeycloakXrd(glcore.CompositeResourceDefinition):
+schema K8sAppOperationsKeycloakXrd(glcore.CompositeResourceDefinition):
     _nameSingular: str
     _namePlural: str
     _apiGroup: str

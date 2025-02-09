@@ -1,6 +1,6 @@
 import grivit_library.core.v1alpha1 as glcore
 
-schema k8sAppOperationsArgoCdXrd(glcore.CompositeResourceDefinition):
+schema K8sAppOperationsArgoCdXrd(glcore.CompositeResourceDefinition):
     _nameSingular: str
     _namePlural: str
     _apiGroup: str
