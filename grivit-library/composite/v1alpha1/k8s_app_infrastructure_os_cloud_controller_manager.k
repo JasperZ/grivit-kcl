@@ -58,8 +58,8 @@ schema K8sAppInfrastructureOsCloudControllerManager:
                 "node-role.kubernetes.io/control-plane" = ""
             }
             resources = {
-                limit.cpu = "150m"
-                limit.memory = "128Mi"
+                limits.cpu = "150m"
+                limits.memory = "128Mi"
                 requests.cpu = "150m"
                 requests.memory = "128Mi"
             }

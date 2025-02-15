@@ -35,45 +35,45 @@ schema K8sAppInfrastructureOsCsiDriver:
         managedResource.spec.forProvider.manifest.spec.values = {
             csi = {
                 attacher.resources = {
-                    limit.cpu = "50m"
-                    limit.memory = "64Mi"
+                    limits.cpu = "50m"
+                    limits.memory = "64Mi"
                     requests.cpu = "50m"
                     requests.memory = "64Mi"
                 }
                 provisioner.resources = {
-                    limit.cpu = "50m"
-                    limit.memory = "64Mi"
+                    limits.cpu = "50m"
+                    limits.memory = "64Mi"
                     requests.cpu = "50m"
                     requests.memory = "64Mi"
                 }
                 snapshotter.resources = {
-                    limit.cpu = "50m"
-                    limit.memory = "64Mi"
+                    limits.cpu = "50m"
+                    limits.memory = "64Mi"
                     requests.cpu = "50m"
                     requests.memory = "64Mi"
                 }
                 resizer.resources = {
-                    limit.cpu = "50m"
-                    limit.memory = "64Mi"
+                    limits.cpu = "50m"
+                    limits.memory = "64Mi"
                     requests.cpu = "50m"
                     requests.memory = "64Mi"
                 }
                 livenessprobe.resources = {
-                    limit.cpu = "50m"
-                    limit.memory = "64Mi"
+                    limits.cpu = "50m"
+                    limits.memory = "64Mi"
                     requests.cpu = "50m"
                     requests.memory = "64Mi"
                 }
                 nodeDriverRegistrar.resources = {
-                    limit.cpu = "50m"
-                    limit.memory = "64Mi"
+                    limits.cpu = "50m"
+                    limits.memory = "64Mi"
                     requests.cpu = "50m"
                     requests.memory = "64Mi"
                 }
                 plugin = {
                     resources = {
-                        limit.cpu = "50m"
-                        limit.memory = "64Mi"
+                        limits.cpu = "50m"
+                        limits.memory = "64Mi"
                         requests.cpu = "50m"
                         requests.memory = "64Mi"
                     }

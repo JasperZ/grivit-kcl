@@ -54,8 +54,8 @@ schema K8sAppOperationsArgoCd:
                 }
                 replicas = 1
                 resources = {
-                    limit.cpu = "100m"
-                    limit.memory = "128Mi"
+                    limits.cpu = "100m"
+                    limits.memory = "128Mi"
                     requests.cpu = "100m"
                     requests.memory = "128Mi"
                 }
@@ -93,8 +93,8 @@ g, viewer, role:readonly
                 }
                 replicas = 1
                 resources = {
-                    limit.cpu = "150m"
-                    limit.memory = "512Mi"
+                    limits.cpu = "150m"
+                    limits.memory = "512Mi"
                     requests.cpu = "150m"
                     requests.memory = "512Mi"
                 }
@@ -107,8 +107,8 @@ g, viewer, role:readonly
                 }
             }
             redis.resources = {
-                limit.cpu = "100m"
-                limit.memory = "128Mi"
+                limits.cpu = "100m"
+                limits.memory = "128Mi"
                 requests.cpu = "100m"
                 requests.memory = "128Mi"
             }
@@ -129,8 +129,8 @@ g, viewer, role:readonly
                 }
                 replicas = 1
                 resources = {
-                    limit.cpu = "100m"
-                    limit.memory = "128Mi"
+                    limits.cpu = "100m"
+                    limits.memory = "128Mi"
                     requests.cpu = "100m"
                     requests.memory = "128Mi"
                 }
@@ -152,8 +152,8 @@ g, viewer, role:readonly
                 }
                 replicas = 1
                 resources = {
-                    limit.cpu = "100m"
-                    limit.memory = "128Mi"
+                    limits.cpu = "100m"
+                    limits.memory = "128Mi"
                     requests.cpu = "100m"
                     requests.memory = "128Mi"
                 }

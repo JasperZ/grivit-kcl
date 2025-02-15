@@ -59,8 +59,8 @@ schema K8sAppInfrastructureOsExternalDNS:
             policy = "sync"
             provider = "designate"
             resources = {
-                limit.cpu = "100m"
-                limit.memory = "128Mi"
+                limits.cpu = "100m"
+                limits.memory = "128Mi"
                 requests.cpu = "100m"
                 requests.memory = "128Mi"
             }

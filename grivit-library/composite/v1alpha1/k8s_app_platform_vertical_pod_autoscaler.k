@@ -27,23 +27,23 @@ schema K8sAppPlatformVerticalPodAutoscaler:
         managedResource.spec.forProvider.manifest.spec.values = {
             crds = {
                 resources = {
-                    limit.cpu = "50m"
-                    limit.memory = "64Mi"
+                    limits.cpu = "50m"
+                    limits.memory = "64Mi"
                     requests.cpu = "50m"
                     requests.memory = "64Mi"
                 }
             }
             recommender = {
                 resources = {
-                    limit.cpu = "50m"
-                    limit.memory = "64Mi"
+                    limits.cpu = "50m"
+                    limits.memory = "64Mi"
                     requests.cpu = "50m"
                     requests.memory = "64Mi"
                 }
             }
             resources = {
-                limit.cpu = "50m"
-                limit.memory = "64Mi"
+                limits.cpu = "50m"
+                limits.memory = "64Mi"
                 requests.cpu = "50m"
                 requests.memory = "64Mi"
             }

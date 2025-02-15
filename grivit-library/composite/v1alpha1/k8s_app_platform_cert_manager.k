@@ -76,8 +76,8 @@ schema K8sAppPlatformCertManager:
         managedResource.spec.forProvider.manifest.spec.values = {
             cainjector = {
                 resources = {
-                    limit.cpu = "50m"
-                    limit.memory = "64Mi"
+                    limits.cpu = "50m"
+                    limits.memory = "64Mi"
                     requests.cpu = "50m"
                     requests.memory = "64Mi"
                 }
@@ -90,23 +90,23 @@ schema K8sAppPlatformCertManager:
                 "--dns01-recursive-nameservers=8.8.8.8:53,1.1.1.1:53"
             ]
             resources = {
-                limit.cpu = "50m"
-                    limit.memory = "64Mi"
+                limits.cpu = "50m"
+                    limits.memory = "64Mi"
                     requests.cpu = "50m"
                     requests.memory = "64Mi"
             }
             startupapicheck = {
                 resources = {
-                    limit.cpu = "50m"
-                    limit.memory = "64Mi"
+                    limits.cpu = "50m"
+                    limits.memory = "64Mi"
                     requests.cpu = "50m"
                     requests.memory = "64Mi"
                 }
             }
             webhook = {
                 resources = {
-                    limit.cpu = "50m"
-                    limit.memory = "64Mi"
+                    limits.cpu = "50m"
+                    limits.memory = "64Mi"
                     requests.cpu = "50m"
                     requests.memory = "64Mi"
                 }

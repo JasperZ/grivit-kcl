@@ -27,8 +27,8 @@ schema K8sAppPlatformMetricsServer:
         managedResource.spec.forProvider.manifest.spec.values = {
             args = ["--kubelet-insecure-tls"]
             resources = {
-                limit.cpu = "100m"
-                limit.memory = "256Mi"
+                limits.cpu = "100m"
+                limits.memory = "256Mi"
                 requests.cpu = "100m"
                 requests.memory = "256Mi"
             }

@@ -33,12 +33,12 @@ schema K8sAppPlatformIngressNginx:
                 replicaCount = 3
                 service.type = "LoadBalancer"
                 service.externalTrafficPolicy = "Local"
-                resources.limit.cpu = "150m"
-                resources.limit.memory = "256Mi"
+                resources.limits.cpu = "150m"
+                resources.limits.memory = "256Mi"
                 resources.requests.cpu = "150m"
                 resources.requests.memory = "256Mi"
-                admissionWebhooks.patchWebhookJob.resources.limit.cpu = "200m"
-                admissionWebhooks.patchWebhookJob.resources.limit.memory = "128Mi"
+                admissionWebhooks.patchWebhookJob.resources.limits.cpu = "200m"
+                admissionWebhooks.patchWebhookJob.resources.limits.memory = "128Mi"
                 admissionWebhooks.patchWebhookJob.resources.requests.cpu = "100m"
                 admissionWebhooks.patchWebhookJob.resources.requests.memory = "64Mi"
             }
