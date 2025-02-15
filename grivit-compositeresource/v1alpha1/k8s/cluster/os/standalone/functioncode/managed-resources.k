@@ -1,4 +1,4 @@
-import composite.v1alpha1 as composite
+import grivit_library.composite.v1alpha1 as composite
 
 observedComposedResources: any = option("params").ocds
 observedCompositeResource: any = option("params").oxr

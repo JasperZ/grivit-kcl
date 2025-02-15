@@ -1,4 +1,4 @@
-import core.v1alpha1 as core
+import grivit_library.core.v1alpha1 as core
 import file
 
 schema Xr(core.Composition):

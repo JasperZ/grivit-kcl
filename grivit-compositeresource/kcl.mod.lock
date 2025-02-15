@@ -1,0 +1,7 @@
+[dependencies]
+  [dependencies.grivit-library]
+    name = "grivit-library"
+    full_name = "grivit-library_0.0.2"
+    version = "0.0.2"
+    url = "https://github.com/JasperZ/grivit-kcl.git"
+    branch = "main"
