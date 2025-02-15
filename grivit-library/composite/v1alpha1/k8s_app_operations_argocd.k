@@ -94,9 +94,9 @@ g, viewer, role:readonly
                 replicas = 1
                 resources = {
                     limits.cpu = "300m"
-                    limits.memory = "512Mi"
+                    limits.memory = "1024Mi"
                     requests.cpu = "300m"
-                    requests.memory = "512Mi"
+                    requests.memory = "1024Mi"
                 }
             }
             dex.enabled = False
