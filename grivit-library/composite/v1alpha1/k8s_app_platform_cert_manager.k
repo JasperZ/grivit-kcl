@@ -73,6 +73,14 @@ schema K8sAppPlatformCertManager:
         _targetK8sProviderConfig = _targetK8sProviderConfig
         _tenantNamespace = _tenantNamespace
         managedResource.spec.forProvider.manifest.spec.values = {
+            cainjector = {
+                resources = {
+                    limit.cpu = "50m"
+                    limit.memory = "64Mi"
+                    requests.cpu = "50m"
+                    requests.memory = "64Mi"
+                }
+            }
             crds = {
                 enabled = True
             }
@@ -80,6 +88,28 @@ schema K8sAppPlatformCertManager:
                 "--dns01-recursive-nameservers-only"
                 "--dns01-recursive-nameservers=8.8.8.8:53,1.1.1.1:53"
             ]
+            resources = {
+                limit.cpu = "50m"
+                    limit.memory = "64Mi"
+                    requests.cpu = "50m"
+                    requests.memory = "64Mi"
+            }
+            startupapicheck = {
+                resources = {
+                    limit.cpu = "50m"
+                    limit.memory = "64Mi"
+                    requests.cpu = "50m"
+                    requests.memory = "64Mi"
+                }
+            }
+            webhook = {
+                resources = {
+                    limit.cpu = "50m"
+                    limit.memory = "64Mi"
+                    requests.cpu = "50m"
+                    requests.memory = "64Mi"
+                }
+            }
         }
     }
     clusterIssuerCredentials: core.K8sObjectSecretWrapper {

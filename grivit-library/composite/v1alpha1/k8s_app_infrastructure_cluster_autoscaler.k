@@ -23,6 +23,12 @@ schema K8sAppInfrastructureClusterAutoscaler:
             cloudProvider = "clusterapi"
             clusterAPIMode = "kubeconfig-incluster"
             clusterAPIKubeconfigSecret = _clusterKubeconfigSecretName
+            resources = {
+                limit.cpu = "100m"
+                limit.memory = "128Mi"
+                requests.cpu = "100m"
+                requests.memory = "128Mi"
+            }
             rbac = {
                 clusterScoped = False
             }

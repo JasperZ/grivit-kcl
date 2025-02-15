@@ -24,6 +24,30 @@ schema K8sAppPlatformVerticalPodAutoscaler:
         _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
         _targetK8sProviderConfig = _targetK8sProviderConfig
         _tenantNamespace = _tenantNamespace
+        managedResource.spec.forProvider.manifest.spec.values = {
+            crds = {
+                resources = {
+                    limit.cpu = "50m"
+                    limit.memory = "64Mi"
+                    requests.cpu = "50m"
+                    requests.memory = "64Mi"
+                }
+            }
+            recommender = {
+                resources = {
+                    limit.cpu = "50m"
+                    limit.memory = "64Mi"
+                    requests.cpu = "50m"
+                    requests.memory = "64Mi"
+                }
+            }
+            resources = {
+                limit.cpu = "50m"
+                limit.memory = "64Mi"
+                requests.cpu = "50m"
+                requests.memory = "64Mi"
+            }
+        }
         managedResource.spec.forProvider.manifest.spec.install.createNamespace = False
     }
     managedResources: [core.ManagedResource] = [

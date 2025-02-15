@@ -53,6 +53,12 @@ schema K8sAppOperationsArgoCd:
                     }
                 }
                 replicas = 1
+                resources = {
+                    limit.cpu = "100m"
+                    limit.memory = "128Mi"
+                    requests.cpu = "100m"
+                    requests.memory = "128Mi"
+                }
             }
             configs = {
                 cm = {
@@ -86,15 +92,28 @@ g, viewer, role:readonly
                     }
                 }
                 replicas = 1
+                resources = {
+                    limit.cpu = "150m"
+                    limit.memory = "512Mi"
+                    requests.cpu = "150m"
+                    requests.memory = "512Mi"
+                }
             }
             dex.enabled = False
-            redi.metrics = {
+            redis.metrics = {
                 enabled = True
                 serviceMonitor = {
                     enabled = True
                 }
             }
+            redis.resources = {
+                limit.cpu = "100m"
+                limit.memory = "128Mi"
+                requests.cpu = "100m"
+                requests.memory = "128Mi"
+            }
             global.domain = _domain
+            notifications.enabled = False
             notifications.metrics = {
                 enabled = True
                 serviceMonitor = {
@@ -109,6 +128,12 @@ g, viewer, role:readonly
                     }
                 }
                 replicas = 1
+                resources = {
+                    limit.cpu = "100m"
+                    limit.memory = "128Mi"
+                    requests.cpu = "100m"
+                    requests.memory = "128Mi"
+                }
             }
             server = {
                 ingress = {
@@ -126,6 +151,12 @@ g, viewer, role:readonly
                     }
                 }
                 replicas = 1
+                resources = {
+                    limit.cpu = "100m"
+                    limit.memory = "128Mi"
+                    requests.cpu = "100m"
+                    requests.memory = "128Mi"
+                }
             }
         }
     }

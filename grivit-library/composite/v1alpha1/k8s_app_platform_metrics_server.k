@@ -26,6 +26,12 @@ schema K8sAppPlatformMetricsServer:
         _tenantNamespace = _tenantNamespace
         managedResource.spec.forProvider.manifest.spec.values = {
             args = ["--kubelet-insecure-tls"]
+            resources = {
+                limit.cpu = "100m"
+                limit.memory = "256Mi"
+                requests.cpu = "100m"
+                requests.memory = "256Mi"
+            }
         }
         managedResource.spec.forProvider.manifest.spec.install.createNamespace = False
     }

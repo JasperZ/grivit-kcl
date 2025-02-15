@@ -57,6 +57,12 @@ schema K8sAppInfrastructureOsCloudControllerManager:
             nodeSelector = {
                 "node-role.kubernetes.io/control-plane" = ""
             }
+            resources = {
+                limit.cpu = "150m"
+                limit.memory = "128Mi"
+                requests.cpu = "150m"
+                requests.memory = "128Mi"
+            }
             tolerations = [
                 {
                     key = "node.cloudprovider.kubernetes.io/uninitialized"
