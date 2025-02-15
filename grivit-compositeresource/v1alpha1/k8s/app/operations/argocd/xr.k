@@ -1,5 +1,5 @@
-import grivit_library.core.v1alpha1 as core
 import file
+import grivit_library.core.v1alpha1 as core
 
 schema Xr(core.Composition):
     _nameSingular: str
@@ -15,8 +15,8 @@ schema Xr(core.Composition):
         pipeline: [
             core.CompositionSpecPipelineStepKcl {
                 step = "managed-resources"
-                input.spec.dependencies = 'grivit = { git = "https://github.com/JasperZ/grivit-kcl.git", branch = "main", version = "0.0.1" }'
-                input.spec.source = "import grivit.compositeresource.v1alpha1.k8s.app.operations.argocd.functioncode"
+                input.spec.dependencies = 'grivit-library = { git = "https://github.com/JasperZ/grivit-kcl.git", branch = "main", version = "0.0.2" }'
+                input.spec.source = file.read(filepath="${file.modpath()}/v1alpha1/k8s/app/operations/argocd/functioncode/managed-resources.k")
             }
             core.CompositionSpecPipelineStepAutoReady {
                 step = "automatically-detect-readiness"
