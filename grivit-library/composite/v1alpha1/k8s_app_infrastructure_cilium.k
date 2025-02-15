@@ -25,11 +25,41 @@ schema K8sAppInfrastructureCilium:
         _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
         _tenantNamespace = _tenantNamespace
         managedResource.spec.forProvider.manifest.spec.values = {
+            cni = {
+                resources = {
+                    limits.cpu = "50m"
+                    limits.memory = "64Mi"
+                    requests.cpu = "50m"
+                    requests.memory = "64Mi"
+                }
+            }
+            envoy = {
+                resources = {
+                    limits.cpu = "50m"
+                    limits.memory = "128Mi"
+                    requests.cpu = "50m"
+                    requests.memory = "128Mi"
+                }
+            }
             ipam = {
                 operator = {
                     clusterPoolIPv4MaskSize = 24
                     clusterPoolIPv4PodCIDRList = ["192.168.0.0/16"]
                 }
+            }
+            operator = {
+                resources = {
+                    limits.cpu = "100m"
+                    limits.memory = "128Mi"
+                    requests.cpu = "100m"
+                    requests.memory = "128Mi"
+                }
+            }
+            resources = {
+                limits.cpu = "50m"
+                limits.memory = "256Mi"
+                requests.cpu = "50m"
+                requests.memory = "256Mi"
             }
         }
         managedResource.spec.forProvider.manifest.spec.install.createNamespace = False
