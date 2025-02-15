@@ -33,6 +33,60 @@ schema K8sAppInfrastructureOsCsiDriver:
         _targetK8sProviderConfig = _targetK8sProviderConfig
         _tenantNamespace = _tenantNamespace
         managedResource.spec.forProvider.manifest.spec.values = {
+            csi = {
+                attacher.resources = {
+                    limit.cpu = "50m"
+                    limit.memory = "64Mi"
+                    requests.cpu = "50m"
+                    requests.memory = "64Mi"
+                }
+                provisioner.resources = {
+                    limit.cpu = "50m"
+                    limit.memory = "64Mi"
+                    requests.cpu = "50m"
+                    requests.memory = "64Mi"
+                }
+                snapshotter.resources = {
+                    limit.cpu = "50m"
+                    limit.memory = "64Mi"
+                    requests.cpu = "50m"
+                    requests.memory = "64Mi"
+                }
+                resizer.resources = {
+                    limit.cpu = "50m"
+                    limit.memory = "64Mi"
+                    requests.cpu = "50m"
+                    requests.memory = "64Mi"
+                }
+                livenessprobe.resources = {
+                    limit.cpu = "50m"
+                    limit.memory = "64Mi"
+                    requests.cpu = "50m"
+                    requests.memory = "64Mi"
+                }
+                nodeDriverRegistrar.resources = {
+                    limit.cpu = "50m"
+                    limit.memory = "64Mi"
+                    requests.cpu = "50m"
+                    requests.memory = "64Mi"
+                }
+                plugin = {
+                    resources = {
+                        limit.cpu = "50m"
+                        limit.memory = "64Mi"
+                        requests.cpu = "50m"
+                        requests.memory = "64Mi"
+                    }
+                    volumes = []
+                    volumeMounts = [
+                        {
+                            name = "cloud-config"
+                            mountPath = "/etc/kubernetes"
+                            readOnly = True
+                        }
+                    ]
+                }
+            }
             secret = {
                 enabled = True
                 create = True
@@ -55,18 +109,6 @@ application-credential-secret=${applicationCredential.getApplicationCredentialSe
                 }
             }
             clusterID = _clusterName
-            csi = {
-                plugin = {
-                    volumes = []
-                    volumeMounts = [
-                        {
-                            name = "cloud-config"
-                            mountPath = "/etc/kubernetes"
-                            readOnly = True
-                        }
-                    ]
-                }
-            }
         }
         managedResource.spec.forProvider.manifest.spec.install.createNamespace = False
     }
