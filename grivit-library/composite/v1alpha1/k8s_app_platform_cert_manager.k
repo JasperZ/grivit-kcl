@@ -77,9 +77,9 @@ schema K8sAppPlatformCertManager:
             cainjector = {
                 resources = {
                     limits.cpu = "50m"
-                    limits.memory = "64Mi"
+                    limits.memory = "128Mi"
                     requests.cpu = "50m"
-                    requests.memory = "64Mi"
+                    requests.memory = "128Mi"
                 }
             }
             crds = {
