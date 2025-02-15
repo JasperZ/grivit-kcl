@@ -93,9 +93,9 @@ g, viewer, role:readonly
                 }
                 replicas = 1
                 resources = {
-                    limits.cpu = "150m"
+                    limits.cpu = "300m"
                     limits.memory = "512Mi"
-                    requests.cpu = "150m"
+                    requests.cpu = "300m"
                     requests.memory = "512Mi"
                 }
             }
