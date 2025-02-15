@@ -56,9 +56,9 @@ schema K8sAppInfrastructureCilium:
                 }
             }
             resources = {
-                limits.cpu = "50m"
+                limits.cpu = "150m"
                 limits.memory = "256Mi"
-                requests.cpu = "50m"
+                requests.cpu = "150m"
                 requests.memory = "256Mi"
             }
         }
