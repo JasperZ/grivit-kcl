@@ -7,12 +7,12 @@ extraResources: any = option("params")?.extraResources
 _kcStageKcProviderConfigName: str = ""
 if extraResources?.kcStageComposition:
     _kcStageCompositionResourceName = extraResources?.kcStageComposition[0]?.Resource?.metadata?.name or ""
-    _kcStageKcProviderConfigName = "\${_kcStageCompositionResourceName}-kc-provider-config"
+    _kcStageKcProviderConfigName = "${_kcStageCompositionResourceName}-kc-provider-config"
 
 _osStageOsProviderConfigName: str = ""
 if extraResources?.osStageComposition:
     _osStageCompositionResourceName = extraResources?.osStageComposition[0]?.Resource?.metadata?.name or ""
-    _osStageOsProviderConfigName = "\${_osStageCompositionResourceName}-os-provider-config"
+    _osStageOsProviderConfigName = "${_osStageCompositionResourceName}-os-provider-config"
 
 claimName: str = observedCompositeResource.metadata.name
 claimNamespace: str = observedCompositeResource.metadata.labels["crossplane.io/claim-namespace"]
