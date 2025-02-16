@@ -189,7 +189,6 @@ output "realm_management_client_id" {
         crossplaneClientRealmAdminRole.managedResource
         providerConfigCredentials.managedResource
         providerConfig.managedResource
-        testGroup.managedResource
     ]
 
     usages: [core.Usage] = sum([
@@ -204,6 +203,5 @@ output "realm_management_client_id" {
         crossplaneClientRealmAdminRole.usages
         providerConfigCredentials.usages
         providerConfig.usages
-        testGroup.usages
     ], [])
 
