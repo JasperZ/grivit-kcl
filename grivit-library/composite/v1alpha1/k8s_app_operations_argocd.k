@@ -23,7 +23,7 @@ schema K8sAppOperationsArgoCd:
     kcArgoCdClientDefaultScopes: core.KcOpenIdClientDefaultScopesWrapper {
         _additionalScopes = ["groups"]
         _targetKcProviderConfigWrapper = _targetKcProviderConfigWrapper
-        _clientId = kcArgoCdClient.getId(_observedComposedResources)
+        _clientId = kcArgoCdClient.getAtProviderId(_observedComposedResources)
         _name = "${_name}-argocd-client-default-scopes"
         _realmId = _realmId
     }

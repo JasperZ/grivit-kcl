@@ -22,7 +22,7 @@ schema KcClientArgoCd:
     kcClientDefaultScopes: core.KcOpenIdClientDefaultScopesWrapper {
         _additionalScopes = ["groups"]
         _targetKcProviderConfigWrapper = _targetKcProviderConfigWrapper
-        _clientId = kcClient.getId(_observedComposedResources)
+        _clientId = kcClient.getAtProviderId(_observedComposedResources)
         _name = "${_name}-client-default-scopes"
         _realmId = _realmId
     }

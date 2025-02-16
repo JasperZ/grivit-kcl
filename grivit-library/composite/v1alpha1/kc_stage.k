@@ -139,7 +139,7 @@ output "realm_management_client_id" {
     crossplaneClientRealmAdminRole: core.KcOpenIdClientServiceAccountRole {
         _clientId = realmManagementClientObserve.getOutput(_observedComposedResources, "realm_management_client_id")
         _name = "${_name}-crossplane-client-realm-admin"
-        _realmId = realm.getId(_observedComposedResources)
+        _realmId = realm.getAtProviderId(_observedComposedResources)
         _roleName = "realm-admin"
         _serviceAccountUserId = crossplaneClient.getServiceAccountUserId(_observedComposedResources)
         _targetKcProviderConfigWrapper = _targetKcProviderConfigWrapper
