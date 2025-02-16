@@ -33,8 +33,7 @@ schema KcClientArgoCd:
             clientSecret = kcClient.getClientSecret(_observedComposedResources)
         }
         _targetK8sProviderConfigName = _targetK8sProviderConfigWrapper.managedResource.metadata.name
-        # ToDo: think about a better place
-        _targetNamespace = "default"
+        _targetNamespace = "crossplane-secrets"
     }
     managedResources: [core.ManagedResource | core.KcProviderConfig] = [
         kcClient.managedResource
