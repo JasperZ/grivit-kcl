@@ -10,6 +10,7 @@ schema ManagedResourceMetadata:
     name: str
 
 schema ManagedResourceMetadataAnnotations:
+    [str]: str
     "krm.kcl.dev/composition-resource-name": str
 
 schema ManagedResourceMetadataLabels:
