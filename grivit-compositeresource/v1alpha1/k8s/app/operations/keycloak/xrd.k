@@ -45,14 +45,6 @@ schema Xrd(core.CompositeResourceDefinition):
                                             }
                                         }
                                     }
-                                    kcStageClaimRef = {
-                                        type = "object"
-                                        properties = {
-                                            name = {
-                                                type = "string"
-                                            }
-                                        }
-                                    }
                                 }
                             }
                         }

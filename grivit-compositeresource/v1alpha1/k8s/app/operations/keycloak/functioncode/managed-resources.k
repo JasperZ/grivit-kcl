@@ -21,21 +21,6 @@ if extraResources?.k8sClusterK8sProviderConfig:
         _credentialsSecretNamespace = k8sProviderConfigWrapperResource?.spec?.credentials?.secretRef?.namespace or ""
     }
 
-_targetKcProviderConfigWrapper: core.KcProviderConfigWrapper = core.KcProviderConfigWrapper {
-    _name = "dummy"
-    _credentialsSecretName = "dummy"
-    _credentialsSecretNamespace = "dummy"
-}
-
-if extraResources?.kcClusterK8sProviderConfig:
-    kcProviderConfigWrapperResource = extraResources?.kcClusterK8sProviderConfig[0]?.Resource
-
-    _targetKcProviderConfigWrapper = core.KcProviderConfigWrapper {
-        _name = kcProviderConfigWrapperResource?.metadata?.name or ""
-        _credentialsSecretName = kcProviderConfigWrapperResource?.spec?.credentials?.secretRef?.name or ""
-        _credentialsSecretNamespace = kcProviderConfigWrapperResource?.spec?.credentials?.secretRef?.namespace or ""
-    }
-
 claimName: str = observedCompositeResource.metadata.name
 claimNamespace: str = observedCompositeResource.metadata.labels["crossplane.io/claim-namespace"]
 spec: any = observedCompositeResource.spec
@@ -59,14 +44,6 @@ details = [
                 kind: "ProviderConfig",
                 matchLabels: {
                     "crossplane.io/claim-name": spec.k8sClusterClaimRef.name
-                    "crossplane.io/claim-namespace": claimNamespace
-                }
-            }
-            kcClusterK8sProviderConfig = {
-                apiVersion: "keycloak.crossplane.io/v1beta1",
-                kind: "ProviderConfig",
-                matchLabels: {
-                    "crossplane.io/claim-name": spec.kcClusterClaimRef.name
                     "crossplane.io/claim-namespace": claimNamespace
                 }
             }
