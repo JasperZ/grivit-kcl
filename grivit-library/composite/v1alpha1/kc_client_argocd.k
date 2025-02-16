@@ -25,7 +25,7 @@ schema KcClientArgoCd:
         _clientId = kcClient.getAtProviderId(_observedComposedResources)
         _name = "${_name}-client-default-scopes"
         _realmId = _realmId
-        managedResource.metadata.annotations.test = kcClient.getAtProviderId(_observedComposedResources)
+        managedResource.metadata.annotations.test = kcClient.getServiceAccountUserId(_observedComposedResources)
     }
     k8sClientCredentialsSecret: core.K8sObjectSecretWrapper {
         _name = "${_name}-client"
