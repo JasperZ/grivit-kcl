@@ -176,6 +176,11 @@ clouds:
         _targetK8sProviderConfig = providerConfig
         _tenantNamespace = _tenantNamespace
     }
+    k8sCrossplaneSecretsNamespace: core.K8sObjectNamespaceWrapper {
+        _name = "${_name}-crossplane-secrets-ns"
+        _namespaceName = "crossplane-secrets"
+        _targetK8sProviderConfigWrapper = providerConfig
+    }
 #     kcArgoCdClient: core.KcOpenIdClientWrapper {
 #         _targetKcProviderConfigWrapper = _targetKcProviderConfigWrapper
 #         _clientId = "${_name}-argocd"
@@ -230,6 +235,7 @@ clouds:
         workerMachineDeployment.managedResource
         workerMachineTemplate.managedResource
         providerConfig.managedResource
+        k8sCrossplaneSecretsNamespace.managedResource
         # kcArgoCdClient.managedResource
         # kcArgoCdClientDefaultScopes.managedResource
     ] + sum([
@@ -254,6 +260,7 @@ clouds:
         k8sCRDsBundle.usages
         k8sAppsInfrastructureOsBundle.usages
         k8sAppsPlatformBundle.usages
+        k8sCrossplaneSecretsNamespace.usages
         # k8sAppsOperationArgoCd.usages
         # kcArgoCdClient.usages
         # kcArgoCdClientDefaultScopes.usages
