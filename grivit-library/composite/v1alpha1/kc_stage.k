@@ -176,12 +176,6 @@ output "realm_management_client_id" {
             providerConfigCredentials.managedResource
         ]
     }
-    testGroup = core.KcGroupWrapper {
-        _targetKcProviderConfigWrapper = providerConfig
-        _groupName = "test"
-        _name = "${_name}-test-group"
-        _realmId = _realmName
-    }
 
     managedResources: [core.ManagedResource | core.KcProviderConfig | core.TfProviderConfig] = [
         realm.managedResource
