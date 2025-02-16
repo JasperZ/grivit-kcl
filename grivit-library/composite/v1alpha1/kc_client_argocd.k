@@ -27,7 +27,7 @@ schema KcClientArgoCd:
         _realmId = _realmId
     }
     k8sClientCredentialsSecret: core.K8sObjectSecretWrapper {
-        _name = "${_realmId}-${_clientId}"
+        _name = _clientId
         _stringData = {
             clientId = _clientId
             clientSecret = kcClient.getClientSecret(_observedComposedResources)
