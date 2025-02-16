@@ -49,6 +49,7 @@ schema K8sAppOperationsKeycloak:
     providerConfigCredentials: core.K8sObjectSecretWrapper {
         _targetK8sProviderConfigName = _controlPlaneK8sProviderConfigName
         _name = "${_name}-provider-config-credentials"
+        _secretName = "${_name}-provider-config-credentials"
         _stringData = {
             value = """\
 {

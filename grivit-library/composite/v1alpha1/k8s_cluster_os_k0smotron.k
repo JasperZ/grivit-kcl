@@ -46,6 +46,7 @@ schema K8sClusterOsK0smotron:
     }
     cloudConfig: core.K8sObjectSecretWrapper {
         _name = "${_name}-cloud-config"
+        _secretName = "${_name}-cloud-config"
         _targetK8sProviderConfigName = _controlPlaneK8sProviderConfigName
         _stringData = {
             "clouds.yaml": """\

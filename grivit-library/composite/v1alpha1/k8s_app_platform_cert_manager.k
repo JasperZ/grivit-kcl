@@ -115,6 +115,7 @@ schema K8sAppPlatformCertManager:
     }
     clusterIssuerCredentials: core.K8sObjectSecretWrapper {
         _name = "${_name}-cluster-issuer-credentials"
+        _secretName = "${_name}-cluster-issuer-credentials"
         _targetK8sProviderConfigName = _targetK8sProviderConfig.managedResource.metadata.name
         _stringData = {
             accessKeyId = awsAccessKey.getAccessKeyId(_observedComposedResources)

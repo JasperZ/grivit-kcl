@@ -1,5 +1,6 @@
 schema K8sObjectSecretWrapper:
     _name: str
+    _secretName: str
     _stringData: {str:str}
     _targetNamespace: str
     _uses: [ManagedResource] = []
@@ -16,7 +17,7 @@ schema K8sObjectSecretWrapper:
         spec.forProvider.manifest = {
             apiVersion = "v1"
             kind = "Secret"
-            metadata.name = _name
+            metadata.name = _secretName
             metadata.namespace = _targetNamespace
             type = "Opaque"
             stringData = _stringData

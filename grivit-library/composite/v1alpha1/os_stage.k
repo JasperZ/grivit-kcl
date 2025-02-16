@@ -13,6 +13,7 @@ schema OsStage:
     password: core.K8sObjectSecretWrapper {
         _targetK8sProviderConfigName = _controlPlaneK8sProviderConfigName
         _name = "${_name}-password"
+        _secretName = "${_name}-password"
         _stringData = {
             # ToDo: hard coded password
             password = "gfjhgfjgfjgfjhg"
@@ -42,6 +43,7 @@ schema OsStage:
     cloudConfig: core.K8sObjectSecretWrapper {
         _targetK8sProviderConfigName = _controlPlaneK8sProviderConfigName
         _name = "${_name}-cloud-config"
+        _secretName = "${_name}-cloud-config"
         _stringData = {
             # ToDo: Hard coded url
             value = """\
