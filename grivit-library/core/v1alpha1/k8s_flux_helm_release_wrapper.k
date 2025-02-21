@@ -1,4 +1,5 @@
 schema K8sFluxHelmReleaseWrapper:
+    _clusterName: str
     _name: str
     _helmChartName: str
     _helmChartVersion: str
@@ -6,9 +7,7 @@ schema K8sFluxHelmReleaseWrapper:
     _helmReleaseNamespace: str
     _helmRepositoryWrapper: K8sFluxHelmRepositoryWrapper
     _helmReleaseWrapperDependencies: [K8sFluxHelmReleaseWrapper | K8sFluxHelmOciReleaseWrapper] = []
-    _targetK8sProviderConfig: K8sProviderConfigWrapper
-    _controlPlaneK8sProviderConfigName: str
-    _tenantNamespace: str
+    _projectNamespace: str
 
     managedResource: ManagedResource {
         apiVersion = "kubernetes.crossplane.io/v1alpha2"
@@ -22,7 +21,7 @@ schema K8sFluxHelmReleaseWrapper:
             kind = "HelmRelease"
             metadata = {
                 name = _name
-                namespace = _tenantNamespace
+                namespace = _projectNamespace
             }
             spec = {
                 interval = "1m"
@@ -34,7 +33,7 @@ schema K8sFluxHelmReleaseWrapper:
                         sourceRef = {
                             kind = "HelmRepository"
                             name = _helmRepositoryWrapper.managedResource.metadata.name
-                            namespace = _tenantNamespace
+                            namespace = _projectNamespace
                         }
                     }
                 }
@@ -49,7 +48,7 @@ schema K8sFluxHelmReleaseWrapper:
                 }
                 kubeConfig = {
                     secretRef = {
-                        name = _targetK8sProviderConfig.managedResource.spec.credentials.secretRef.name
+                        name = "${_projectNamespace}-${_clusterName}-k8s-provider"
                     }
                 }
                 upgrade = {
@@ -69,19 +68,19 @@ schema K8sFluxHelmReleaseWrapper:
             }
         }
         spec.readiness.policy = "AllTrue"
-        spec.providerConfigRef.name = _controlPlaneK8sProviderConfigName
+        spec.providerConfigRef.name = "${_projectNamespace}-ctrl-k8s"
     }
     usages: [Usage] = [Usage {
-        metadata.name = "${_name}-uses-${_targetK8sProviderConfig.managedResource.metadata.name}"
+        metadata.name = "${_name}-uses-${_projectNamespace}-${_clusterName}-k8s-provider"
         metadata.annotations = {
-            "krm.kcl.dev/composition-resource-name" = "${_name}-uses-${_targetK8sProviderConfig.managedResource.metadata.name}"
+            "krm.kcl.dev/composition-resource-name" = "${_name}-uses-${_projectNamespace}-${_clusterName}-k8s-provider"
         }
         spec.by.apiVersion = managedResource.apiVersion
         spec.by.kind = managedResource.kind
         spec.by.resourceRef.name = managedResource.metadata.name
-        spec.of.apiVersion = _targetK8sProviderConfig.managedResource.apiVersion
-        spec.of.kind = _targetK8sProviderConfig.managedResource.kind
-        spec.of.resourceRef.name = _targetK8sProviderConfig.managedResource.metadata.name
+        spec.of.apiVersion = "kubernetes.crossplane.io/v1alpha1"
+        spec.of.kind = "ProviderConfig"
+        spec.of.resourceRef.name = "${_projectNamespace}-${_clusterName}-k8s-provider"
     }] + [Usage {
         metadata.name = "${_name}-uses-${k8sFluxHelmReleaseDependency.managedResource.metadata.name}"
         metadata.annotations = {

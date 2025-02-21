@@ -1,8 +1,7 @@
 schema K8sFluxHelmRepositoryWrapper:
     _name: str
     _helmRepoUrl: str
-    _controlPlaneK8sProviderConfigName: str
-    _tenantNamespace: str
+    _projectNamespace: str
 
     managedResource: ManagedResource {
         apiVersion = "kubernetes.crossplane.io/v1alpha2"
@@ -18,7 +17,7 @@ schema K8sFluxHelmRepositoryWrapper:
                     kind = "HelmRepository"
                     metadata = {
                         name = _name
-                        namespace = _tenantNamespace
+                        namespace = _projectNamespace
                     }
                     spec = {
                         interval = "1h"
@@ -26,7 +25,7 @@ schema K8sFluxHelmRepositoryWrapper:
                     }
                 }
             }
-            providerConfigRef.name = _controlPlaneK8sProviderConfigName
+            providerConfigRef.name = "${_projectNamespace}-ctrl-k8s"
         }
     }
     usages: [Usage] = []
