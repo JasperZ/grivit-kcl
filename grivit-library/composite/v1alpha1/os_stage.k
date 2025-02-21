@@ -8,41 +8,44 @@ schema OsStage:
     _name: str
     _observedComposedResources: any
     _projectName: str
-    _tenantNamespace: str
+    _projectNamespace: str
 
     password: core.K8sObjectSecretWrapper {
-        _targetK8sProviderConfigName = _controlPlaneK8sProviderConfigName
+        _clusterName = "ctrl"
         _name = "${_name}-password"
+        _namespace = _projectNamespace
+        _projectNamespace = _projectNamespace
         _secretName = "${_name}-password"
         _stringData = {
             # ToDo: hard coded password
             password = "gfjhgfjgfjgfjhg"
         }
-        _targetNamespace = _tenantNamespace
     }
     project: core.OsIdentityProjectWrapper {
-        _controlPlaneOsProviderConfigName = _controlPlaneOsProviderConfigName
         _projectName = _projectName
+        _projectNamespace = _projectNamespace
     }
     user: core.OsIdentityUserWrapper {
-        _controlPlaneOsProviderConfigName = _controlPlaneOsProviderConfigName
         _name = "${_name}-user"
-        _projectId = project.getProjectId(_observedComposedResources)
-        _projectName = project.managedResource.metadata.name
         _passwordSecret = password
         _passwordSecretKey = "password"
+        _projectId = project.getProjectId(_observedComposedResources)
+        _projectName = project.managedResource.metadata.name
+        _projectNamespace = _projectNamespace
         _userName = "${_projectName}-crossplane"
         _uses = [password.managedResource]
     }
     userRoleAssignment: core.OsIdentityRoleAssignmentWrapper {
-        _controlPlaneOsProviderConfigName = _controlPlaneOsProviderConfigName
         _name = "${_name}-user-role-assignment"
         _projectId = project.getProjectId(_observedComposedResources)
+        _projectNamespace = _projectNamespace
         _userId = user.getUserId(_observedComposedResources)
     }
     cloudConfig: core.K8sObjectSecretWrapper {
-        _targetK8sProviderConfigName = _controlPlaneK8sProviderConfigName
+        _clusterName = "ctrl"
         _name = "${_name}-cloud-config"
+        _namespace = _projectNamespace
+        _projectNamespace = _projectNamespace
         _secretName = "${_name}-cloud-config"
         _stringData = {
             # ToDo: Hard coded url
@@ -58,7 +61,6 @@ schema OsStage:
     }
     """
         }
-        _targetNamespace = _tenantNamespace
         _uses = [
             project.managedResource
             user.managedResource
@@ -66,7 +68,7 @@ schema OsStage:
         ]
     }
     providerConfig: core.OsProviderConfigWrapper {
-        _name = "${_name}-os-provider-config"
+        _name = _projectNamespace
         _credentialsSecretName = cloudConfig.managedResource.spec.forProvider.manifest.metadata.name
         _credentialsSecretNamespace = cloudConfig.managedResource.spec.forProvider.manifest.metadata.namespace
         _uses = [
@@ -77,7 +79,7 @@ schema OsStage:
         _domain = _domain
         _email = _email
         _name = "${_name}-zone"
-        _targetOsProviderConfig = providerConfig
+        _projectNamespace = _projectNamespace
         _uses = [providerConfig.managedResource]
     }
     managedResources: [core.ManagedResource | core.OsProviderConfig] = [

@@ -1,5 +1,4 @@
 import core.v1alpha1 as core
-import composite.v1alpha1 as composite
 
 schema XpControlPlaneProject:
     _k8sClusterName: str

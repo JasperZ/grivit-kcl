@@ -1,7 +1,6 @@
 schema OsIdentityProjectWrapper:
     _projectName: str
     _projectNamespace: str
-    _providerConfigName: str
 
     managedResource: ManagedResource {
         apiVersion = "identity.openstack.crossplane.io/v1alpha1"
