@@ -1,8 +1,10 @@
 schema K8sObjectSecretWrapper:
+    _clusterName: str
     _name: str
+    _namespace: str
+    _projectNamespace: str
     _secretName: str
     _stringData: {str:str}
-    _targetNamespace: str
     _uses: [ManagedResource] = []
 
     _targetK8sProviderConfigName: str
@@ -18,11 +20,11 @@ schema K8sObjectSecretWrapper:
             apiVersion = "v1"
             kind = "Secret"
             metadata.name = _secretName
-            metadata.namespace = _targetNamespace
+            metadata.namespace = _namespace
             type = "Opaque"
             stringData = _stringData
         }
-        spec.providerConfigRef.name = _targetK8sProviderConfigName
+        spec.providerConfigRef.name = "${_projectNamespace}-${_clusterName}-k8s"
     }
     usages: [Usage] = [Usage {
         metadata.name = "${_name}-uses-${ofResource.metadata.name}"
