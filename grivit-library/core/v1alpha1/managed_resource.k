@@ -21,6 +21,7 @@ schema ManagedResourceSpec:
     managementPolicies?: [str]
     providerConfigRef: ManagedResourceSpecProviderConfigRef
     readiness?: ManagedResourceSpecReadiness
+    references?: any
     writeConnectionSecretToRef?: ManagedResourceSpecWriteConnectionSecretToRef
 
 schema ManagedResourceSpecProviderConfigRef:

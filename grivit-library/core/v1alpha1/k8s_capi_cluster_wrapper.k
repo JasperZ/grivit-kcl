@@ -1,9 +1,8 @@
 schema K8sCapiClusterWrapper:
-    _name: str
-    _controlPlaneK8sProviderConfigName: str
     _capiControlPlaneWrapper: K8sCapiKubeadmControlPlaneWrapper | K8sCapiK0smotronControlPlaneWrapper
     _capiInfrastructureWrapper: K8sCapiOsClusterWrapper
-    _tenantNamespace: str
+    _name: str
+    _projectNamespace: str
     _uses: [ManagedResource] = []
 
     managedResource: ManagedResource {
@@ -17,7 +16,7 @@ schema K8sCapiClusterWrapper:
             apiVersion = "cluster.x-k8s.io/v1beta1"
             kind = "Cluster"
             metadata.name = _name
-            metadata.namespace = _tenantNamespace
+            metadata.namespace = _projectNamespace
             spec = {
                 clusterNetwork.pods.cidrBlocks = ["192.168.0.0/16"]
                 clusterNetwork.serviceDomain = "cluster.local"
@@ -34,7 +33,7 @@ schema K8sCapiClusterWrapper:
             }
         }
         spec.readiness.policy = "AllTrue"
-        spec.providerConfigRef.name = _controlPlaneK8sProviderConfigName
+        spec.providerConfigRef.name = "ctrl-${_projectNamespace}-k8s"
     }
     usages: [Usage] = [Usage {
         metadata.name = "${_name}-uses-${ofResource.metadata.name}"

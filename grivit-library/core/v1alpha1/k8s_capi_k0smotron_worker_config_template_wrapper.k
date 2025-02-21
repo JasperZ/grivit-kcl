@@ -1,7 +1,6 @@
 schema K8sCapiK0smotronWorkerConfigTemplateWrapper:
     _name: str
-    _controlPlaneK8sProviderConfigName: str
-    _tenantNamespace: str
+    _projectNamespace: str
     # _k8sVersion: str
 
     managedResource: ManagedResource {
@@ -17,7 +16,7 @@ schema K8sCapiK0smotronWorkerConfigTemplateWrapper:
                     apiVersion = "bootstrap.cluster.x-k8s.io/v1beta1"
                     kind = "K0sWorkerConfigTemplate"
                     metadata.name = _name
-                    metadata.namespace = _tenantNamespace
+                    metadata.namespace = _projectNamespace
                     spec.template.spec = {
                         # version = "${_k8sVersion}+k0s.0"
                         args = [
@@ -28,7 +27,7 @@ schema K8sCapiK0smotronWorkerConfigTemplateWrapper:
                 }
             }
         }
-        spec.providerConfigRef.name = _controlPlaneK8sProviderConfigName
+        spec.providerConfigRef.name = "ctrl-${_projectNamespace}-k8s"
     }
     usages: [Usage] = []
 

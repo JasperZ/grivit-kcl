@@ -1,10 +1,8 @@
 schema K8sCapiK0smotronControlPlaneWrapper:
-    _name: str
-
     _k8sVersion: str
-    _controlPlaneK8sProviderConfigName: str
+    _name: str
+    _projectNamespace: str
     _replicas: int
-    _tenantNamespace: str
 
     managedResource: ManagedResource {
         apiVersion = "kubernetes.crossplane.io/v1alpha2"
@@ -17,7 +15,7 @@ schema K8sCapiK0smotronControlPlaneWrapper:
             apiVersion = "controlplane.cluster.x-k8s.io/v1beta1"
             kind = "K0smotronControlPlane"
             metadata.name = _name
-            metadata.namespace = _tenantNamespace
+            metadata.namespace = _projectNamespace
             spec = {
                 version = _k8sVersion
                 persistence = {
@@ -43,7 +41,7 @@ schema K8sCapiK0smotronControlPlaneWrapper:
             }
         }
         spec.readiness.policy = "AllTrue"
-        spec.providerConfigRef.name = _controlPlaneK8sProviderConfigName
+        spec.providerConfigRef.name = "ctrl-${_projectNamespace}-k8s"
     }
     usages: [Usage] = []
 

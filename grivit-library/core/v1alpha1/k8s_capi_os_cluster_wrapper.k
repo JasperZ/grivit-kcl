@@ -1,10 +1,8 @@
 schema K8sCapiOsClusterWrapper:
-    _name: str
-
     _cloudConfigName: str
     _externalNetworkName: str
-    _controlPlaneK8sProviderConfigName: str
-    _tenantNamespace: str
+    _name: str
+    _projectNamespace: str
 
     managedResource: ManagedResource {
         apiVersion = "kubernetes.crossplane.io/v1alpha2"
@@ -17,7 +15,7 @@ schema K8sCapiOsClusterWrapper:
             apiVersion = "infrastructure.cluster.x-k8s.io/v1beta1"
             kind = "OpenStackCluster"
             metadata.name = _name
-            metadata.namespace = _tenantNamespace
+            metadata.namespace = _projectNamespace
             spec = {
                 apiServerLoadBalancer.provider = "ovn"
                 externalNetwork.filter.name = _externalNetworkName
@@ -80,7 +78,7 @@ schema K8sCapiOsClusterWrapper:
         }
         spec.readiness.celQuery = "object.status.ready == true"
         spec.readiness.policy = "DeriveFromCelQuery"
-        spec.providerConfigRef.name = _controlPlaneK8sProviderConfigName
+        spec.providerConfigRef.name = "ctrl-${_projectNamespace}-k8s"
     }
     usages: [Usage] = []
 

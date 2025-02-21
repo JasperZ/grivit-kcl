@@ -1,8 +1,8 @@
 schema AwsIamPolicyWrapper:
-    _controlPlaneAwsProviderConfigName: str
     _description: str
     _name: str
     _policy: str
+    _projectNamespace: str
 
     managedResource: ManagedResource {
         apiVersion = "iam.aws.upbound.io/v1beta1"
@@ -13,7 +13,7 @@ schema AwsIamPolicyWrapper:
         }
         spec.forProvider.description = _description
         spec.forProvider.policy = _policy
-        spec.providerConfigRef.name = _controlPlaneAwsProviderConfigName
+        spec.providerConfigRef.name = "${_projectNamespace}-aws"
     }
     usages: [Usage] = []
 

@@ -1,7 +1,6 @@
 schema K8sCapiKubeadmWorkerConfigTemplateWrapper:
     _name: str
-    _controlPlaneK8sProviderConfigName: str
-    _tenantNamespace: str
+    _projectNamespace: str
 
     managedResource: ManagedResource {
         apiVersion = "kubernetes.crossplane.io/v1alpha2"
@@ -16,7 +15,7 @@ schema K8sCapiKubeadmWorkerConfigTemplateWrapper:
                     apiVersion = "bootstrap.cluster.x-k8s.io/v1beta1"
                     kind = "KubeadmConfigTemplate"
                     metadata.name = _name
-                    metadata.namespace = _tenantNamespace
+                    metadata.namespace = _projectNamespace
                     spec.template.spec = {
                         files = [
                             {
@@ -72,7 +71,7 @@ override_path = true
                 }
             }
         }
-        spec.providerConfigRef.name = _controlPlaneK8sProviderConfigName
+        spec.providerConfigRef.name = "ctrl-${_projectNamespace}-k8s"
     }
     usages: [Usage] = []
 

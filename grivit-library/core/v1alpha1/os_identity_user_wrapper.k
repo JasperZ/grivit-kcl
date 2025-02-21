@@ -1,10 +1,10 @@
 schema OsIdentityUserWrapper:
-    _controlPlaneOsProviderConfigName: str
     _name: str
     _passwordSecret: K8sObjectSecretWrapper
     _passwordSecretKey: str
     _projectId: str
     _projectName: str
+    _projectNamespace: str
     _userName: str
     _uses: [ManagedResource] = []
 
@@ -23,7 +23,7 @@ schema OsIdentityUserWrapper:
             name = _passwordSecret.managedResource.spec.forProvider.manifest.metadata.name
             namespace = _passwordSecret.managedResource.spec.forProvider.manifest.metadata.namespace
         }
-        spec.providerConfigRef.name = _controlPlaneOsProviderConfigName
+        spec.providerConfigRef.name = "${_projectNamespace}-os"
     }
     usages: [Usage] = [Usage {
         metadata.name = "${_name}-uses-${ofResource.metadata.name}"

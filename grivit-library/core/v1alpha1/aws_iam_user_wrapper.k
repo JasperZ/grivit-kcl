@@ -1,6 +1,6 @@
 schema AwsIamUserWrapper:
-    _controlPlaneAwsProviderConfigName: str
     _name: str
+    _projectNamespace: str
 
     managedResource: ManagedResource {
         apiVersion = "iam.aws.upbound.io/v1beta1"
@@ -10,7 +10,7 @@ schema AwsIamUserWrapper:
             "krm.kcl.dev/composition-resource-name" = _name
         }
         spec.forProvider = {}
-        spec.providerConfigRef.name = _controlPlaneAwsProviderConfigName
+        spec.providerConfigRef.name = "${_projectNamespace}-aws"
     }
     usages: [Usage] = []
 

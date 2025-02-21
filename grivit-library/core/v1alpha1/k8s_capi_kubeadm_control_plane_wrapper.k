@@ -1,11 +1,9 @@
 schema K8sCapiKubeadmControlPlaneWrapper:
-    _name: str
-
     _controlPlaneMachineTemplate: K8sCapiOsMachineTemplateWrapper
-    _replicas: int
     _k8sVersion: str
-    _controlPlaneK8sProviderConfigName: str
-    _tenantNamespace: str
+    _name: str
+    _projectNamespace: str
+    _replicas: int
 
     managedResource: ManagedResource {
         apiVersion = "kubernetes.crossplane.io/v1alpha2"
@@ -18,7 +16,7 @@ schema K8sCapiKubeadmControlPlaneWrapper:
             apiVersion = "controlplane.cluster.x-k8s.io/v1beta1"
             kind = "KubeadmControlPlane"
             metadata.name = _name
-            metadata.namespace = _tenantNamespace
+            metadata.namespace = _projectNamespace
             spec = {
                 kubeadmConfigSpec = {
                     clusterConfiguration.apiServer.extraArgs = {
@@ -92,7 +90,7 @@ override_path = true
             }
         }
         spec.readiness.policy = "AllTrue"
-        spec.providerConfigRef.name = _controlPlaneK8sProviderConfigName
+        spec.providerConfigRef.name = "ctrl-${_projectNamespace}-k8s"
     }
     usages: [Usage] = []
 

@@ -1,10 +1,9 @@
 import base64
 
 schema AwsIamAccessKeyWrapper:
-    _controlPlaneAwsProviderConfigName: str
-    _name: str
     _awsIamUserName: str
-    _tenantNamespace: str
+    _name: str
+    _projectNamespace: str
 
     managedResource: ManagedResource {
         apiVersion = "iam.aws.upbound.io/v1beta1"
@@ -14,9 +13,9 @@ schema AwsIamAccessKeyWrapper:
             "krm.kcl.dev/composition-resource-name" = _name
         }
         spec.forProvider.user = _awsIamUserName
-        spec.providerConfigRef.name = _controlPlaneAwsProviderConfigName
+        spec.providerConfigRef.name = "${_projectNamespace}-aws"
         spec.writeConnectionSecretToRef.name = _name
-        spec.writeConnectionSecretToRef.namespace = _tenantNamespace
+        spec.writeConnectionSecretToRef.namespace = _projectNamespace
     }
     usages: [Usage] = []
 

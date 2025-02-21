@@ -2,8 +2,8 @@ import base64
 
 schema OsIdentityApplicationCredentialWrapper:
     _name: str
-    _tenantNamespace: str
-    _targetOsProviderConfigName: str
+    _projectNamespace: str
+    _providerConfigName: str
 
     managedResource: ManagedResource {
         apiVersion = "identity.openstack.crossplane.io/v1alpha1"
@@ -14,9 +14,9 @@ schema OsIdentityApplicationCredentialWrapper:
         }
         spec.forProvider.name = _name
         spec.forProvider.roles = ["admin"]
-        spec.providerConfigRef.name = _targetOsProviderConfigName
+        spec.providerConfigRef.name = "${_projectNamespace}-os"
         spec.writeConnectionSecretToRef.name = _name + "-conn"
-        spec.writeConnectionSecretToRef.namespace = _tenantNamespace
+        spec.writeConnectionSecretToRef.namespace = _projectNamespace
     }
     usages: [Usage] = []
 

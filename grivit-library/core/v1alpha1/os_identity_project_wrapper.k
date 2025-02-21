@@ -1,6 +1,7 @@
 schema OsIdentityProjectWrapper:
-    _controlPlaneOsProviderConfigName: str
     _projectName: str
+    _projectNamespace: str
+    _providerConfigName: str
 
     managedResource: ManagedResource {
         apiVersion = "identity.openstack.crossplane.io/v1alpha1"
@@ -11,7 +12,7 @@ schema OsIdentityProjectWrapper:
         }
         spec.forProvider.description = "Project '${_projectName}' manged by Crossplane"
         spec.forProvider.name = _projectName
-        spec.providerConfigRef.name = _controlPlaneOsProviderConfigName
+        spec.providerConfigRef.name = "${_projectNamespace}-os"
     }
     usages: [Usage] = []
 

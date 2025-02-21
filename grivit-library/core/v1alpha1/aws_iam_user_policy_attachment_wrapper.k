@@ -1,7 +1,7 @@
 schema AwsIamUserPolicyAttachmentWrapper:
-    _controlPlaneAwsProviderConfigName: str
     _name: str
     _policyArn: str
+    _projectNamespace: str
     _userName: str
 
     managedResource: ManagedResource {
@@ -13,7 +13,7 @@ schema AwsIamUserPolicyAttachmentWrapper:
         }
         spec.forProvider.policyArn = _policyArn
         spec.forProvider.user = _userName
-        spec.providerConfigRef.name = _controlPlaneAwsProviderConfigName
+        spec.providerConfigRef.name = "${_projectNamespace}-aws"
     }
     usages: [Usage] = []
 

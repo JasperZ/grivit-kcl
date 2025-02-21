@@ -1,8 +1,8 @@
 schema OsDnsZoneWrapper:
-    _targetOsProviderConfig: OsProviderConfigWrapper
-    _name: str
     _domain: str
     _email: str
+    _name: str
+    _projectNamespace: str
     _uses: [ManagedResource | OsProviderConfig] = []
 
     managedResource: ManagedResource {
@@ -17,7 +17,7 @@ schema OsDnsZoneWrapper:
         spec.forProvider.name = "${_domain}."
         spec.forProvider.ttl = 30
         spec.forProvider.type = "PRIMARY"
-        spec.providerConfigRef.name = _targetOsProviderConfig.managedResource.metadata.name
+        spec.providerConfigRef.name = "${_projectNamespace}-os"
     }
     usages: [Usage] = []
 

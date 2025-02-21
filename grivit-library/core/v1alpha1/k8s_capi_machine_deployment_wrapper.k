@@ -1,14 +1,12 @@
 schema K8sCapiMachineDeploymentWrapper:
-    _name: str
-
-    _autoscalingMinSize: int
     _autoscalingMaxSize: int
+    _autoscalingMinSize: int
     _cluster: K8sCapiClusterWrapper
     _configTemplateWrapper: K8sCapiKubeadmWorkerConfigTemplateWrapper | K8sCapiK0smotronWorkerConfigTemplateWrapper
-    _machineTemplateWrapper: K8sCapiOsMachineTemplateWrapper
     _k8sVersion: str
-    _tenantNamespace: str
-    _controlPlaneK8sProviderConfigName: str
+    _machineTemplateWrapper: K8sCapiOsMachineTemplateWrapper
+    _name: str
+    _projectNamespace: str
 
     managedResource: ManagedResource {
         apiVersion = "kubernetes.crossplane.io/v1alpha2"
@@ -25,7 +23,7 @@ schema K8sCapiMachineDeploymentWrapper:
                 "cluster.x-k8s.io/cluster-api-autoscaler-node-group-max-size" = str(_autoscalingMaxSize)
             }
             metadata.name = _name
-            metadata.namespace = _tenantNamespace
+            metadata.namespace = _projectNamespace
             spec = {
                 clusterName = _cluster.managedResource.metadata.name
                 selector.matchLabels = None
@@ -48,7 +46,7 @@ schema K8sCapiMachineDeploymentWrapper:
             }
         }
         spec.readiness.policy = "AllTrue"
-        spec.providerConfigRef.name = _controlPlaneK8sProviderConfigName
+        spec.providerConfigRef.name = "ctrl-${_projectNamespace}-k8s"
     }
     usages: [Usage] = []
 
