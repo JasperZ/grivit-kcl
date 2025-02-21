@@ -120,6 +120,6 @@ schema XpControlPlaneProject:
         helmProviderConfig.usages
         k8sProviderConfig.usages
         osProviderConfig.usages
-        k8sAppBundleCrds.usages
+        # k8sAppBundleCrds.usages
     ], [])
 
