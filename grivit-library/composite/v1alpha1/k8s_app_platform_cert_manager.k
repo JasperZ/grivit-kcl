@@ -86,9 +86,9 @@ schema K8sAppPlatformCertManager:
             ]
             resources = {
                 limits.cpu = "50m"
-                    limits.memory = "64Mi"
-                    requests.cpu = "50m"
-                    requests.memory = "64Mi"
+                limits.memory = "64Mi"
+                requests.cpu = "50m"
+                requests.memory = "64Mi"
             }
             startupapicheck = {
                 resources = {
