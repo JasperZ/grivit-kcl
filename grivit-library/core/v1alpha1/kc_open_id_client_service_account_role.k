@@ -1,10 +1,11 @@
 schema KcOpenIdClientServiceAccountRole:
     _clientId: str
+    _instanceName: str
     _name: str
-    _serviceAccountUserId: str
+    _projectNamespace: str
     _realmId: str
     _roleName: str
-    _targetKcProviderConfigWrapper: KcProviderConfigWrapper
+    _serviceAccountUserId: str
     _uses: [ManagedResource] = []
 
     managedResource: ManagedResource {
@@ -18,7 +19,7 @@ schema KcOpenIdClientServiceAccountRole:
         spec.forProvider.serviceAccountUserId = _serviceAccountUserId
         spec.forProvider.realmId = _realmId
         spec.forProvider.role = _roleName
-        spec.providerConfigRef.name = _targetKcProviderConfigWrapper.managedResource.metadata.name
+        spec.providerConfigRef.name = "${_projectNamespace}-${_instanceName}-kc"
     }
     usages: [Usage] = [Usage {
         metadata.name = "${_name}-uses-${ofResource.metadata.name}"

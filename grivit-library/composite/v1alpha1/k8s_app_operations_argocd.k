@@ -1,39 +1,38 @@
 import core.v1alpha1 as core
 
 schema K8sAppOperationsArgoCd:
-    _controlPlaneK8sProviderConfigName: str
+    _clusterName: str
     _domain: str
     _fluxHelmReleaseDependencies?: [core.K8sFluxHelmReleaseWrapper] = []
+    _kcInstanceName: str
+    _kcRealmId: str
     _name: str
     _observedComposedResources: any
-    _realmId: str
-    _targetK8sProviderConfigWrapper: core.K8sProviderConfigWrapper
-    _targetKcProviderConfigWrapper: core.KcProviderConfigWrapper
-    _tenantNamespace: str
+    _projectNamespace: str
 
     kcArgoCdClient: core.KcOpenIdClientWrapper {
-        _targetKcProviderConfigWrapper = _targetKcProviderConfigWrapper
         _clientId = "${_name}-argocd"
+        _instanceName = _kcInstanceName
         _name = "${_name}-argocd-client"
-        _realmId = _realmId
+        _realmId = _kcRealmId
         _redirectUri = "https://${_domain}/auth/callback"
-        _tenantNamespace = _tenantNamespace
+        _projectNamespace = _projectNamespace
         _url = "https://${_domain}"
     }
     kcArgoCdClientDefaultScopes: core.KcOpenIdClientDefaultScopesWrapper {
         _additionalScopes = ["groups"]
-        _targetKcProviderConfigWrapper = _targetKcProviderConfigWrapper
         _clientId = kcArgoCdClient.getAtProviderId(_observedComposedResources)
+        _instanceName = _kcInstanceName
         _name = "${_name}-argocd-client-default-scopes"
-        _realmId = _realmId
+        _realmId = _kcRealmId
     }
     helmRepo: core.K8sFluxHelmRepositoryWrapper {
         _name = "${_name}-repo"
         _helmRepoUrl = "https://argoproj.github.io/argo-helm"
-        _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
-        _tenantNamespace = _tenantNamespace
+        _projectNamespace = _projectNamespace
     }
     helmRelease: core.K8sFluxHelmReleaseWrapper {
+        _clusterName = _clusterName
         _name = "${_name}-rel"
         _helmChartName = "argo-cd"
         _helmChartVersion = "7.7.10"
@@ -41,9 +40,7 @@ schema K8sAppOperationsArgoCd:
         _helmReleaseNamespace = "argocd"
         _helmRepositoryWrapper = helmRepo
         _helmReleaseWrapperDependencies = _fluxHelmReleaseDependencies
-        _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
-        _targetK8sProviderConfig = _targetK8sProviderConfigWrapper
-        _tenantNamespace = _tenantNamespace
+        _projectNamespace = _projectNamespace
         managedResource.spec.forProvider.manifest.spec.values = {
             applicationSet = {
                 metrics = {
@@ -64,7 +61,7 @@ schema K8sAppOperationsArgoCd:
                 cm = {
                     "oidc.config" = """\
 name: Keycloak
-issuer: https://keycloak.nonprod-test1.test.grivit.com/realms/${_realmId}
+issuer: https://keycloak.nonprod-test1.test.grivit.com/realms/${_kcRealmId}
 clientID: ${kcArgoCdClient.managedResource.spec.forProvider.clientId}
 clientSecret: ${kcArgoCdClient.getClientSecret(_observedComposedResources)}
 requestedScopes: ["openid", "profile", "email", "groups"]

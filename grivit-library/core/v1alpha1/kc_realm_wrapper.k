@@ -1,6 +1,7 @@
 schema KcRealmWrapper:
-    _targetKcProviderConfigWrapper: KcProviderConfigWrapper
+    _instanceName: str
     _name: str
+    _projectNamespace: str
     _realmName: str
 
     managedResource: ManagedResource {
@@ -12,7 +13,7 @@ schema KcRealmWrapper:
         }
         spec.forProvider.enabled = True
         spec.forProvider.realm = _realmName
-        spec.providerConfigRef.name = _targetKcProviderConfigWrapper.managedResource.metadata.name
+        spec.providerConfigRef.name = "${_projectNamespace}-${_instanceName}-kc"
     }
     usages: [Usage] = []
 

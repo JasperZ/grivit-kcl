@@ -1,9 +1,8 @@
 schema K8sFluxGitRepositoryWrapper:
-    _name: str
-    _gitUrl: str
     _gitTag: str
-    _controlPlaneK8sProviderConfigName: str
-    _tenantNamespace: str
+    _gitUrl: str
+    _name: str
+    _projectNamespace: str
 
     managedResource: ManagedResource {
         apiVersion = "kubernetes.crossplane.io/v1alpha2"
@@ -19,7 +18,7 @@ schema K8sFluxGitRepositoryWrapper:
                     kind = "GitRepository"
                     metadata = {
                         name = _name
-                        namespace = _tenantNamespace
+                        namespace = _projectNamespace
                     }
                     spec = {
                         interval = "1h"
@@ -30,7 +29,7 @@ schema K8sFluxGitRepositoryWrapper:
                     }
                 }
             }
-            providerConfigRef.name = _controlPlaneK8sProviderConfigName
+            providerConfigRef.name = "${_projectNamespace}-ctrl-k8s"
         }
     }
     usages: [Usage] = []

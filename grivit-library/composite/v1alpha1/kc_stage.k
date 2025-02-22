@@ -7,48 +7,53 @@ schema KcStage:
     _realmName: str
     _targetKcDomain: str
     _targetKcProviderConfigWrapper: core.KcProviderConfigWrapper
-    _tenantNamespace: str
+    _projectNamespace: str
+    _instanceName: str
 
     realm = core.KcRealmWrapper {
-        _targetKcProviderConfigWrapper = _targetKcProviderConfigWrapper
+        _instanceName = _instanceName
         _name = "${_name}-realm"
+        _projectNamespace = _projectNamespace
         _realmName = _realmName
     }
 
     adminGroup = core.KcGroupWrapper {
-        _targetKcProviderConfigWrapper = _targetKcProviderConfigWrapper
         _groupName = "admin"
+        _instanceName = _instanceName
         _name = "${_name}-admin-group"
         _realmId = realm.managedResource.spec.forProvider.realm
     }
 
     viewerGroup = core.KcGroupWrapper {
-        _targetKcProviderConfigWrapper = _targetKcProviderConfigWrapper
         _groupName = "viewer"
+        _instanceName = _instanceName
         _name = "${_name}-viewer-group"
+        _projectNamespace = _projectNamespace
         _realmId = realm.managedResource.spec.forProvider.realm
     }
 
     groupClientScope = core.KcOpenIdClientScopeWrapper {
-        _targetKcProviderConfigWrapper = _targetKcProviderConfigWrapper
+        _instanceName = _instanceName
         _name = "${_name}-group-client-scope"
+        _projectNamespace = _projectNamespace
         _realmId = realm.managedResource.spec.forProvider.realm
         _scopeName = "groups"
     }
 
     groupsMapper = core.KcOpenIdGroupMembershipProtocolMapperWrapper {
-        _targetKcProviderConfigWrapper = _targetKcProviderConfigWrapper
         _claimName = "groups"
         _clientScopeId = groupClientScope.getClientScopeId(_observedComposedResources)
+        _instanceName = _instanceName
         _name = "${_name}-groups-mapper"
+        _projectNamespace = _projectNamespace
         _realmId = realm.managedResource.spec.forProvider.realm
     }
 
     crossplaneClient: core.KcOpenIdClientWrapper {
-        _targetKcProviderConfigWrapper = _targetKcProviderConfigWrapper
-        _tenantNamespace = _tenantNamespace
         _clientId = "${_name}-crossplane"
+        _instanceName = _instanceName
         _name = "${_name}-crossplane-client"
+        _projectNamespace = _projectNamespace
         _realmId = realm.managedResource.spec.forProvider.realm
         _redirectUri = ""
         _url = ""
@@ -77,7 +82,7 @@ terraform {
 
   backend "kubernetes" {
     secret_suffix     = "${_name}-kc-tfprovider-config-state"
-    namespace         = "${_tenantNamespace}"
+    namespace         = "${_projectNamespace}"
     in_cluster_config = true
   }
 }
@@ -132,24 +137,27 @@ output "realm_management_client_id" {
 }
 """
         _name = "${_name}-realm-management"
-        _targetTfProviderConfigName = kcTfProviderConfigWrapper.managedResource.metadata.name
-        _tenantNamespace = _tenantNamespace
+        _projectNamespace = _projectNamespace
+        _providerConfigName = kcTfProviderConfigWrapper.managedResource.metadata.name
     }
     # END: Workaround
     crossplaneClientRealmAdminRole: core.KcOpenIdClientServiceAccountRole {
         _clientId = realmManagementClientObserve.getOutput(_observedComposedResources, "realm_management_client_id")
+        _instanceName = _instanceName
         _name = "${_name}-crossplane-client-realm-admin"
+        _projectNamespace = _projectNamespace
         _realmId = realm.getAtProviderId(_observedComposedResources)
         _roleName = "realm-admin"
         _serviceAccountUserId = crossplaneClient.getServiceAccountUserId(_observedComposedResources)
-        _targetKcProviderConfigWrapper = _targetKcProviderConfigWrapper
         _uses = [
             realmManagementClientObserve.managedResource
         ]
     }
     providerConfigCredentials: core.K8sObjectSecretWrapper {
-        _targetK8sProviderConfigName = _controlPlaneK8sProviderConfigName
+        _clusterName = "ctrl"
         _name = "${_name}-provider-config-credentials"
+        _namespace = _projectNamespace
+        _projectNamespace = _projectNamespace
         _secretName = "${_name}-provider-config-credentials"
         _stringData = {
             value = """\
@@ -162,7 +170,6 @@ output "realm_management_client_id" {
 }
 """
         }
-        _targetNamespace = _tenantNamespace
         _uses = [
             realm.managedResource
             crossplaneClient.managedResource
@@ -177,7 +184,6 @@ output "realm_management_client_id" {
             providerConfigCredentials.managedResource
         ]
     }
-
     managedResources: [core.ManagedResource | core.KcProviderConfig | core.TfProviderConfig] = [
         realm.managedResource
         adminGroup.managedResource

@@ -35,7 +35,7 @@ kcStage: composite.KcStage = composite.KcStage {
     _realmName = spec.realmName
     _targetKcDomain = _k8sAppOperationsKeycloakSpecDomain
     _targetKcProviderConfigWrapper = _targetKcProviderConfigWrapper
-    _tenantNamespace = claimNamespace
+    _projectNamespace = claimNamespace
 }
 
 details = [

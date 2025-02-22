@@ -1,9 +1,8 @@
 schema K8sFluxOciRepositoryWrapper:
     _name: str
-    _url: str
-    _controlPlaneK8sProviderConfigName: str
+    _projectNamespace: str
     _tag: str
-    _tenantNamespace: str
+    _url: str
 
     managedResource: ManagedResource {
         apiVersion = "kubernetes.crossplane.io/v1alpha2"
@@ -19,7 +18,7 @@ schema K8sFluxOciRepositoryWrapper:
                     kind = "OCIRepository"
                     metadata = {
                         name = _name
-                        namespace = _tenantNamespace
+                        namespace = _projectNamespace
                     }
                     spec = {
                         interval = "1h"
@@ -30,7 +29,7 @@ schema K8sFluxOciRepositoryWrapper:
                     }
                 }
             }
-            providerConfigRef.name = _controlPlaneK8sProviderConfigName
+            providerConfigRef.name = "${_projectNamespace}-ctrl-k8s"
         }
     }
     usages: [Usage] = []

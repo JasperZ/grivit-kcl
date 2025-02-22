@@ -31,7 +31,7 @@ k8sAppOperationsKeycloak: composite.K8sAppOperationsKeycloak = composite.K8sAppO
     _domain = spec.domain
     _name = claimName
     _targetK8sProviderConfigWrapper = _targetK8sProviderConfigWrapper
-    _tenantNamespace = claimNamespace
+    _projectNamespace = claimNamespace
 }
 
 details = [

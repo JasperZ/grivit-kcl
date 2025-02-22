@@ -1,19 +1,18 @@
 import core.v1alpha1 as core
 
 schema K8sAppInfrastructureCilium:
-    _name: str
+    _clusterName: str
     _fluxHelmReleaseDependencies?: [core.K8sFluxHelmReleaseWrapper]
-    _controlPlaneK8sProviderConfigName: str
-    _targetK8sProviderConfig: core.K8sProviderConfigWrapper
-    _tenantNamespace: str
+    _name: str
+    _projectNamespace: str
 
     helmRepo: core.K8sFluxHelmRepositoryWrapper {
         _name = "${_name}-repo"
         _helmRepoUrl = "https://helm.cilium.io"
-        _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
-        _tenantNamespace = _tenantNamespace
+        _projectNamespace = _projectNamespace
     }
     helmRelease: core.K8sFluxHelmReleaseWrapper {
+        _clusterName = _clusterName
         _name = "${_name}-rel"
         _helmChartName = "cilium"
         _helmChartVersion = "1.16.2"
@@ -21,9 +20,7 @@ schema K8sAppInfrastructureCilium:
         _helmReleaseNamespace = "kube-system"
         _helmRepositoryWrapper = helmRepo
         _helmReleaseWrapperDependencies = _fluxHelmReleaseDependencies
-        _targetK8sProviderConfig = _targetK8sProviderConfig
-        _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
-        _tenantNamespace = _tenantNamespace
+        _projectNamespace = _projectNamespace
         managedResource.spec.forProvider.manifest.spec.values = {
             cni = {
                 resources = {

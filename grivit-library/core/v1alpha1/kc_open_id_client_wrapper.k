@@ -1,10 +1,10 @@
 import base64
 
 schema KcOpenIdClientWrapper:
-    _targetKcProviderConfigWrapper: KcProviderConfigWrapper
-    _tenantNamespace: str
     _clientId: str
+    _instanceName: str
     _name: str
+    _projectNamespace: str
     _realmId: str
     _redirectUri: str
     _url: str
@@ -28,8 +28,8 @@ schema KcOpenIdClientWrapper:
         spec.forProvider.validRedirectUris = [_redirectUri]
         spec.forProvider.webOrigins = [_url]
         spec.writeConnectionSecretToRef.name = "${_name}-conn"
-        spec.writeConnectionSecretToRef.namespace = _tenantNamespace
-        spec.providerConfigRef.name = _targetKcProviderConfigWrapper.managedResource.metadata.name
+        spec.writeConnectionSecretToRef.namespace = _projectNamespace
+        spec.providerConfigRef.name = "${_projectNamespace}-${_instanceName}-kc"
     }
     usages: [Usage] = []
 

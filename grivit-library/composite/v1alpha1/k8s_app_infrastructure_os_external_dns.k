@@ -1,28 +1,24 @@
 import core.v1alpha1 as core
 
 schema K8sAppInfrastructureOsExternalDNS:
-    _name: str
     _clusterName: str
-    _controlPlaneK8sProviderConfigName: str
     _domainFilters: [str]
     _fluxHelmReleaseDependencies?: [core.K8sFluxHelmReleaseWrapper]
-    _targetK8sProviderConfig: core.K8sProviderConfigWrapper
-    _targetOsProviderConfigName: str
-    _tenantNamespace: str
+    _name: str
+    _projectNamespace: str
     _observedComposedResources: any
 
     applicationCredential: core.OsIdentityApplicationCredentialWrapper {
         _name = "${_name}-application-credential"
-        _targetOsProviderConfigName = _targetOsProviderConfigName
-        _tenantNamespace = _tenantNamespace
+        _projectNamespace = _projectNamespace
     }
     helmRepo: core.K8sFluxHelmRepositoryWrapper {
         _name = "${_name}-repo"
         _helmRepoUrl = "https://kubernetes-sigs.github.io/external-dns"
-        _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
-        _tenantNamespace = _tenantNamespace
+        _projectNamespace = _projectNamespace
     }
     helmRelease: core.K8sFluxHelmReleaseWrapper {
+        _clusterName = _clusterName
         _name = "${_name}-rel"
         _helmChartName = "external-dns"
         _helmChartVersion = "1.14.5"
@@ -30,9 +26,7 @@ schema K8sAppInfrastructureOsExternalDNS:
         _helmReleaseNamespace = "kube-system"
         _helmRepositoryWrapper = helmRepo
         _helmReleaseWrapperDependencies = _fluxHelmReleaseDependencies
-        _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
-        _targetK8sProviderConfig = _targetK8sProviderConfig
-        _tenantNamespace = _tenantNamespace
+        _projectNamespace = _projectNamespace
         managedResource.spec.forProvider.manifest.spec.values = {
             domainFilters = _domainFilters
             env = [

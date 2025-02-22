@@ -12,54 +12,42 @@ schema K8sAppBundleOsInfrastructure:
     _observedComposedResources: any
     _targetK8sProviderConfig: core.K8sProviderConfigWrapper
     _targetOsProviderConfigName: str
-    _tenantNamespace: str
+    _projectNamespace: str
 
     k8sAppsInfrastructureCilium: K8sAppInfrastructureCilium {
-        _name = "${_name}-cilium"
-        _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
+        _clusterName = _clusterName
         _fluxHelmReleaseDependencies = _fluxHelmReleaseDependencies
-        _targetK8sProviderConfig = _targetK8sProviderConfig
-        _tenantNamespace = _tenantNamespace
+        _name = "${_name}-cilium"
+        _projectNamespace = _projectNamespace
     }
     k8sAppsInfrastructureOsCloudControllerManager: K8sAppInfrastructureOsCloudControllerManager {
-        _name = "${_name}-occm"
         _clusterName = _clusterName
         _clusterSubnetId = _clusterSubnetId
-        _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
         _externalNetworkId = _externalNetworkId
         _fluxHelmReleaseDependencies = _fluxHelmReleaseDependencies
-        _targetK8sProviderConfig = _targetK8sProviderConfig
-        _targetOsProviderConfigName = _targetOsProviderConfigName
-        _tenantNamespace = _tenantNamespace
+        _name = "${_name}-occm"
         _observedComposedResources = _observedComposedResources
+        _projectNamespace = _projectNamespace
     }
     k8sAppsInfrastructureOsCSIDriver: K8sAppInfrastructureOsCsiDriver {
-        _name = "${_name}-ocsi"
         _clusterName = _clusterName
-        _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
+        _name = "${_name}-ocsi"
         _fluxHelmReleaseDependencies = _fluxHelmReleaseDependencies
         _observedComposedResources = _observedComposedResources
-        _targetK8sProviderConfig = _targetK8sProviderConfig
-        _targetOsProviderConfigName = _targetOsProviderConfigName
-        _tenantNamespace = _tenantNamespace
+        _projectNamespace = _projectNamespace
     }
     k8sAppsInfrastructureOsExternalDNS: K8sAppInfrastructureOsExternalDNS {
-        _name = "${_name}-oexdns"
         _clusterName = _clusterName
-        _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
         _domainFilters = _domainFilters
         _fluxHelmReleaseDependencies = _fluxHelmReleaseDependencies
+        _name = "${_name}-oexdns"
         _observedComposedResources = _observedComposedResources
-        _targetK8sProviderConfig = _targetK8sProviderConfig
-        _targetOsProviderConfigName = _targetOsProviderConfigName
-        _tenantNamespace = _tenantNamespace
+        _projectNamespace = _projectNamespace
     }
     k8sAppsInfrastructureClusterAutoscaler: K8sAppInfrastructureClusterAutoscaler {
-        _name = "${_name}-ca"
         _clusterName = _clusterName
-        _clusterKubeconfigSecretName = _targetK8sProviderConfig.managedResource.spec.credentials.secretRef.name
-        _controlPlaneHelmProviderConfigName = _controlPlaneHelmProviderConfigName
-        _tenantNamespace = _tenantNamespace
+        _name = "${_name}-ca"
+        _projectNamespace = _projectNamespace
     }
     fluxHelmReleases: [core.K8sFluxHelmReleaseWrapper] = [
         k8sAppsInfrastructureCilium.helmRelease

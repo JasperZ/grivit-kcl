@@ -1,7 +1,8 @@
 schema K8sObjectNamespaceWrapper:
+    _clusterName: str
     _name: str
     _namespaceName: str
-    _targetK8sProviderConfigWrapper: K8sProviderConfigWrapper
+    _projectNamespace: str
     _uses: [ManagedResource] = []
 
     managedResource: ManagedResource {
@@ -16,7 +17,7 @@ schema K8sObjectNamespaceWrapper:
             kind = "Namespace"
             metadata.name = _namespaceName
         }
-        spec.providerConfigRef.name = _targetK8sProviderConfigWrapper.managedResource.metadata.name
+        spec.providerConfigRef.name = "${_projectNamespace}-${_clusterName}-k8s"
     }
     usages: [Usage] = [Usage {
         metadata.name = "${_name}-uses-${ofResource.metadata.name}"

@@ -16,7 +16,7 @@ osStage: composite.OsStage = composite.OsStage {
     _name = claimName
     _observedComposedResources = observedComposedResources
     _projectName = spec.projectName
-    _tenantNamespace = claimNamespace
+    _projectNamespace = claimNamespace
 }
 
 details = [

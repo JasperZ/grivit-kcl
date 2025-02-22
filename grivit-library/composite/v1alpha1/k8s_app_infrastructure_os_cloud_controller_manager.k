@@ -1,29 +1,25 @@
 import core.v1alpha1 as core
 
 schema K8sAppInfrastructureOsCloudControllerManager:
-    _name: str
-    _fluxHelmReleaseDependencies?: [core.K8sFluxHelmReleaseWrapper]
     _clusterName: str
-    _controlPlaneK8sProviderConfigName: str
-    _tenantNamespace: str
-    _targetK8sProviderConfig: core.K8sProviderConfigWrapper
-    _targetOsProviderConfigName: str
-    _observedComposedResources: any
     _clusterSubnetId: str
     _externalNetworkId: str
+    _fluxHelmReleaseDependencies?: [core.K8sFluxHelmReleaseWrapper]
+    _name: str
+    _observedComposedResources: any
+    _projectNamespace: str
 
     applicationCredential: core.OsIdentityApplicationCredentialWrapper {
         _name = "${_name}-application-credential"
-        _tenantNamespace = _tenantNamespace
-        _targetOsProviderConfigName = _targetOsProviderConfigName
+        _projectNamespace = _projectNamespace
     }
     helmRepo: core.K8sFluxHelmRepositoryWrapper {
         _name = "${_name}-repo"
         _helmRepoUrl = "https://kubernetes.github.io/cloud-provider-openstack"
-        _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
-        _tenantNamespace = _tenantNamespace
+        _projectNamespace = _projectNamespace
     }
     helmRelease: core.K8sFluxHelmReleaseWrapper {
+        _clusterName = _clusterName
         _name = "${_name}-rel"
         _helmChartName = "openstack-cloud-controller-manager"
         _helmChartVersion = "2.30.2"
@@ -31,9 +27,7 @@ schema K8sAppInfrastructureOsCloudControllerManager:
         _helmReleaseNamespace = "kube-system"
         _helmRepositoryWrapper = helmRepo
         _helmReleaseWrapperDependencies = _fluxHelmReleaseDependencies
-        _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
-        _targetK8sProviderConfig = _targetK8sProviderConfig
-        _tenantNamespace = _tenantNamespace
+        _projectNamespace = _projectNamespace
         managedResource.spec.forProvider.manifest.spec.values = {
             cloudConfig = {
                 name = "occm-cloud-config"

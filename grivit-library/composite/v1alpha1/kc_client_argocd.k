@@ -2,39 +2,41 @@ import core.v1alpha1 as core
 
 schema KcClientArgoCd:
     _clientId: str
+    _clusterName: str
     _domain: str
     _name: str
     _observedComposedResources: any
     _realmId: str
-    _targetK8sProviderConfigWrapper: core.K8sProviderConfigWrapper
-    _targetKcProviderConfigWrapper: core.KcProviderConfigWrapper
-    _tenantNamespace: str
+    _projectNamespace: str
+    _instanceName: str
 
     kcClient: core.KcOpenIdClientWrapper {
-        _targetKcProviderConfigWrapper = _targetKcProviderConfigWrapper
         _clientId = _clientId
+        _instanceName = _instanceName
         _name = "${_name}-client"
+        _projectNamespace = _projectNamespace
         _realmId = _realmId
         _redirectUri = "https://${_domain}/auth/callback"
-        _tenantNamespace = _tenantNamespace
         _url = "https://${_domain}"
     }
     kcClientDefaultScopes: core.KcOpenIdClientDefaultScopesWrapper {
         _additionalScopes = ["groups"]
-        _targetKcProviderConfigWrapper = _targetKcProviderConfigWrapper
         _clientId = kcClient.getAtProviderId(_observedComposedResources)
+        _instanceName = _instanceName
         _name = "${_name}-client-default-scopes"
+        _projectNamespace = _projectNamespace
         _realmId = _realmId
     }
     k8sClientCredentialsSecret: core.K8sObjectSecretWrapper {
+        _clusterName = _clusterName
         _name = "${_name}-client-credentials"
+        _namespace = "crossplane-secrets"
+        _projectNamespace = _projectNamespace
         _secretName = _clientId
         _stringData = {
             clientId = _clientId
             clientSecret = kcClient.getClientSecret(_observedComposedResources)
         }
-        _targetK8sProviderConfigName = _targetK8sProviderConfigWrapper.managedResource.metadata.name
-        _targetNamespace = "crossplane-secrets"
     }
     managedResources: [core.ManagedResource | core.KcProviderConfig] = [
         kcClient.managedResource

@@ -1,12 +1,11 @@
 schema K8sFluxKustomizationWrapper:
-    _name: str
-    _path: str
+    _clusterName: str
     _k8sFluxGitRepository: K8sFluxGitRepositoryWrapper
     _kustomizationDependencies?: [K8sFluxKustomizationWrapper] = []
-    _targetK8sProviderConfig: K8sProviderConfigWrapper
+    _name: str
+    _path: str
+    _projectNamespace: str
     _targetNamespace: str
-    _controlPlaneK8sProviderConfigName: str
-    _tenantNamespace: str
 
     managedResource: ManagedResource {
         apiVersion = "kubernetes.crossplane.io/v1alpha2"
@@ -20,14 +19,14 @@ schema K8sFluxKustomizationWrapper:
             kind = "Kustomization"
             metadata = {
                 name = _name
-                namespace = _tenantNamespace
+                namespace = _projectNamespace
             }
             spec = {
                 interval = "1m"
                 sourceRef = {
                     kind = "GitRepository"
                     name = _k8sFluxGitRepository.managedResource.metadata.name
-                    namespace = _tenantNamespace
+                    namespace = _projectNamespace
                 }
                 path = _path
                 prune = True
@@ -35,7 +34,7 @@ schema K8sFluxKustomizationWrapper:
                 timeout = "1m"
                 kubeConfig = {
                     secretRef = {
-                        name = _targetK8sProviderConfig.managedResource.spec.credentials.secretRef.name
+                        name = "${_projectNamespace}-${_clusterName}-k8s-provider"
                     }
                 }
                 dependsOn = [{
@@ -44,7 +43,7 @@ schema K8sFluxKustomizationWrapper:
             }
         }
         spec.readiness.policy = "AllTrue"
-        spec.providerConfigRef.name = _controlPlaneK8sProviderConfigName
+        spec.providerConfigRef.name = "${_projectNamespace}-ctrl-k8s"
     }
     usages: [Usage] = []
 

@@ -1,27 +1,23 @@
 import core.v1alpha1 as core
 
 schema K8sAppInfrastructureOsCsiDriver:
+    _clusterName: str
     _name: str
     _fluxHelmReleaseDependencies?: [core.K8sFluxHelmReleaseWrapper]
-    _clusterName: str
-    _tenantNamespace: str
-    _controlPlaneK8sProviderConfigName: str
-    _targetK8sProviderConfig: core.K8sProviderConfigWrapper
-    _targetOsProviderConfigName: str
     _observedComposedResources: any
+    _projectNamespace: str
 
     applicationCredential: core.OsIdentityApplicationCredentialWrapper {
         _name = "${_name}-application-credential"
-        _tenantNamespace = _tenantNamespace
-        _targetOsProviderConfigName = _targetOsProviderConfigName
+        _projectNamespace = _projectNamespace
     }
     helmRepo: core.K8sFluxHelmRepositoryWrapper {
         _name = "${_name}-repo"
         _helmRepoUrl = "https://kubernetes.github.io/cloud-provider-openstack"
-        _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
-        _tenantNamespace = _tenantNamespace
+        _projectNamespace = _projectNamespace
     }
     helmRelease: core.K8sFluxHelmReleaseWrapper {
+        _clusterName = _clusterName
         _name = "${_name}-rel"
         _helmChartName = "openstack-cinder-csi"
         _helmChartVersion = "2.31.2"
@@ -29,9 +25,7 @@ schema K8sAppInfrastructureOsCsiDriver:
         _helmReleaseNamespace = "kube-system"
         _helmRepositoryWrapper = helmRepo
         _helmReleaseWrapperDependencies = _fluxHelmReleaseDependencies
-        _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
-        _targetK8sProviderConfig = _targetK8sProviderConfig
-        _tenantNamespace = _tenantNamespace
+        _projectNamespace = _projectNamespace
         managedResource.spec.forProvider.manifest.spec.values = {
             csi = {
                 attacher.resources = {

@@ -1,9 +1,10 @@
 schema KcOpenIdClientDefaultScopesWrapper:
     _additionalScopes: [str] = []
     _clientId: str
+    _instanceName: str
     _name: str
+    _projectNamespace: str
     _realmId: str
-    _targetKcProviderConfigWrapper: KcProviderConfigWrapper
 
     managedResource: ManagedResource {
         apiVersion = "openidclient.keycloak.crossplane.io/v1alpha1"
@@ -22,7 +23,7 @@ schema KcOpenIdClientDefaultScopesWrapper:
             "web-origins"
         ] + _additionalScopes
         spec.forProvider.realmId = _realmId
-        spec.providerConfigRef.name = _targetKcProviderConfigWrapper.managedResource.metadata.name
+        spec.providerConfigRef.name = "${_projectNamespace}-${_instanceName}-kc"
     }
     usages: [Usage] = []
 

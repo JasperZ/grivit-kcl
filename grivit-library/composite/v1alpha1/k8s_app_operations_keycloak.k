@@ -2,29 +2,27 @@ import core.v1alpha1 as core
 
 schema K8sAppOperationsKeycloak:
     _adminPassword: str
-    _controlPlaneK8sProviderConfigName: str
+    _clusterName: str
     _domain: str
     _fluxHelmReleaseDependencies?: [core.K8sFluxHelmReleaseWrapper | core.K8sFluxHelmOciReleaseWrapper] = []
+    _instanceName: str
     _name: str
-    _targetK8sProviderConfigWrapper: core.K8sProviderConfigWrapper
-    _tenantNamespace: str
+    _projectNamespace: str
 
     repo: core.K8sFluxOciRepositoryWrapper {
         _name = "${_name}-repo"
-        _url = "oci://registry-1.docker.io/bitnamicharts/keycloak"
         _tag = "24.2.2"
-        _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
-        _tenantNamespace = _tenantNamespace
+        _url = "oci://registry-1.docker.io/bitnamicharts/keycloak"
+        _projectNamespace = _projectNamespace
     }
     release: core.K8sFluxHelmOciReleaseWrapper {
+        _clusterName = _clusterName
         _name = "${_name}-rel"
         _helmReleaseName = "keycloak"
         _helmReleaseNamespace = "keycloak"
         _helmOciRepositoryWrapper = repo
         _helmReleaseWrapperDependencies = _fluxHelmReleaseDependencies
-        _targetK8sProviderConfigWrapper = _targetK8sProviderConfigWrapper
-        _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
-        _tenantNamespace = _tenantNamespace
+        _projectNamespace = _projectNamespace
         managedResource.spec.forProvider.manifest.spec.values = {
             auth = {
                 adminUser = "admin"
@@ -47,9 +45,11 @@ schema K8sAppOperationsKeycloak:
         }
     }
     providerConfigCredentials: core.K8sObjectSecretWrapper {
-        _targetK8sProviderConfigName = _controlPlaneK8sProviderConfigName
-        _name = "${_name}-provider-config-credentials"
-        _secretName = "${_name}-provider-config-credentials"
+        _clusterName = "ctrl"
+        _name = "${_projectNamespace}-${_instanceName}-kc-provider"
+        _namespace = _projectNamespace
+        _projectNamespace = _projectNamespace
+        _secretName = "${_projectNamespace}-${_instanceName}-kc-provider"
         _stringData = {
             value = """\
 {
@@ -62,14 +62,13 @@ schema K8sAppOperationsKeycloak:
 }
 """
         }
-        _targetNamespace = _tenantNamespace
         _uses = [
             repo.managedResource
             release.managedResource
         ]
     }
     providerConfig: core.KcProviderConfigWrapper {
-        _name = "${_name}-kc-provider-config"
+        _name = "${_projectNamespace}-${_instanceName}-kc"
         _credentialsSecretName = providerConfigCredentials.managedResource.spec.forProvider.manifest.metadata.name
         _credentialsSecretNamespace = providerConfigCredentials.managedResource.spec.forProvider.manifest.metadata.namespace
         _uses = [

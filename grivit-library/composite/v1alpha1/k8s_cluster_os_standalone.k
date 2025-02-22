@@ -31,23 +31,23 @@ schema K8sClusterOsStandalone:
     # _realmId: str
     # _targetKcProviderConfigWrapper: core.KcProviderConfigWrapper
     _targetOsProviderConfigName: str
-    _tenantNamespace: str
+    _projectNamespace: str
     _workers: K8sClusterOsStandaloneConfigWorkers
 
     applicationCredential: core.OsIdentityApplicationCredentialWrapper {
         _name = "${_name}-application-credential"
-        _tenantNamespace = _tenantNamespace
-        _targetOsProviderConfigName = _targetOsProviderConfigName
+        _projectNamespace = _projectNamespace
     }
     keypair: core.OsComputeKeypairWrapper {
         _name = "${_name}-keypair"
-        _targetOsProviderConfigName = _targetOsProviderConfigName
-        _tenantNamespace = _tenantNamespace
+        _projectNamespace = _projectNamespace
     }
     cloudConfig: core.K8sObjectSecretWrapper {
+        _clusterName = "ctrl"
         _name = "${_name}-cloud-config"
+        _namespace = _projectNamespace
+        _projectNamespace = _projectNamespace
         _secretName = "${_name}-cloud-config"
-        _targetK8sProviderConfigName = _controlPlaneK8sProviderConfigName
         _stringData = {
             "clouds.yaml": """\
 clouds:
@@ -65,7 +65,6 @@ clouds:
       identity_api_version: 3
 """
         }
-        _targetNamespace = _tenantNamespace
         _uses = [applicationCredential.managedResource]
     }
     _controlPlaneMachineTemplateFlavorName = str(_controlPlane.flavorName)
@@ -73,42 +72,37 @@ clouds:
     _controlPlaneMachineTemplateRootVolumeSize = int(_controlPlane.rootVolumeSize)
     _controlPlaneMachineTemplateHash = str(crypto.sha256("${_controlPlaneMachineTemplateFlavorName},${_controlPlaneMachineTemplateImageName},${_controlPlaneMachineTemplateRootVolumeSize}"))[:8:]
     controlPlaneMachineTemplate: core.K8sCapiOsMachineTemplateWrapper {
-        _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
         _flavor = _controlPlaneMachineTemplateFlavorName
-        _name = "${_name}-ctl-plane-machine-template-${_controlPlaneMachineTemplateHash}"
         _imageName = _controlPlaneMachineTemplateImageName
         _keypairName = keypair.managedResource.metadata.name
+        _name = "${_name}-ctl-plane-machine-template-${_controlPlaneMachineTemplateHash}"
+        _projectNamespace = _projectNamespace
         _rootVolumeSize = _controlPlaneMachineTemplateRootVolumeSize
-        _tenantNamespace = _tenantNamespace
         _uses = [keypair.managedResource]
     }
     controlPlaneKubeadm: core.K8sCapiKubeadmControlPlaneWrapper {
-        _name = "${_name}-ctl-plane-kubeadm"
-        _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
         _controlPlaneMachineTemplate = controlPlaneMachineTemplate
         _k8sVersion = _k8sVersion
+        _name = "${_name}-ctl-plane-kubeadm"
+        _projectNamespace = _projectNamespace
         _replicas = _controlPlane.replicas
-        _tenantNamespace = _tenantNamespace
     }
     openstackCluster: core.K8sCapiOsClusterWrapper {
-        _name = "${_name}-os-cluster"
         _cloudConfigName = cloudConfig.managedResource.metadata.name
-        _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
         _externalNetworkName = _externalNetworkName
-        _tenantNamespace = _tenantNamespace
+        _name = "${_name}-os-cluster"
+        _projectNamespace = _projectNamespace
     }
     cluster: core.K8sCapiClusterWrapper {
-        _name = "${_name}-cluster"
-        _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
         _capiControlPlaneWrapper = controlPlaneKubeadm
         _capiInfrastructureWrapper = openstackCluster
-        _tenantNamespace = _tenantNamespace
+        _name = "${_name}-cluster"
+        _projectNamespace = _projectNamespace
         _uses = [cloudConfig.managedResource]
     }
     workerKubeadmConfigTemplate: core.K8sCapiKubeadmWorkerConfigTemplateWrapper {
         _name = "${_name}-worker-kubeadm-template"
-        _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
-        _tenantNamespace = _tenantNamespace
+        _projectNamespace = _projectNamespace
     }
     _workerMachineKubernetesVersion = controlPlaneKubeadm.getKubernetesVersion(_observedComposedResources)
     _workerMachineTemplateFlavorName = str(_workers.flavorName)
@@ -116,30 +110,28 @@ clouds:
     _workerMachineTemplateRootVolumeSize = int(_workers.rootVolumeSize)
     _workerMachineTemplateHash = str(crypto.sha256("${_workerMachineTemplateFlavorName},${_workerMachineTemplateImageName},${_workerMachineTemplateRootVolumeSize}"))[:8:]
     workerMachineTemplate: core.K8sCapiOsMachineTemplateWrapper {
-        _name = "${_name}-worker-machine-template-${_workerMachineTemplateHash}"
-        _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
         _flavor = _workerMachineTemplateFlavorName
         _imageName = _workerMachineTemplateImageName
         _keypairName = keypair.managedResource.metadata.name
+        _name = "${_name}-worker-machine-template-${_workerMachineTemplateHash}"
+        _projectNamespace = _projectNamespace
         _rootVolumeSize = _workerMachineTemplateRootVolumeSize
-        _tenantNamespace = _tenantNamespace
         _uses = [keypair.managedResource]
     }
     workerMachineDeployment: core.K8sCapiMachineDeploymentWrapper {
-        _name = "${_name}-worker-machine-deployment"
-        _autoscalingMinSize = _workers.autoscaling.minSize
         _autoscalingMaxSize = _workers.autoscaling.maxSize
+        _autoscalingMinSize = _workers.autoscaling.minSize
         _cluster = cluster
-        _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
         _configTemplateWrapper = workerKubeadmConfigTemplate
-        _machineTemplateWrapper = workerMachineTemplate
         _k8sVersion = _workerMachineKubernetesVersion
-        _tenantNamespace = _tenantNamespace
+        _machineTemplateWrapper = workerMachineTemplate
+        _name = "${_name}-worker-machine-deployment"
+        _projectNamespace = _projectNamespace
     }
     providerConfig: core.K8sProviderConfigWrapper {
-        _name = "${_name}-provider-config"
+        _name = "${_projectNamespace}-${_name}-k8s"
         _credentialsSecretName = "${cluster.managedResource.metadata.name}-kubeconfig"
-        _credentialsSecretNamespace = _tenantNamespace
+        _credentialsSecretNamespace = _projectNamespace
         _uses = [
             cluster.managedResource
             openstackCluster.managedResource
@@ -149,9 +141,7 @@ clouds:
     }
     k8sCRDsBundle: K8sAppBundleCrds {
         _clusterName = _name
-        _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
-        _targetK8sProviderConfig = providerConfig
-        _tenantNamespace = _tenantNamespace
+        _projectNamespace = _projectNamespace
     }
     k8sAppsInfrastructureOsBundle: K8sAppBundleOsInfrastructure {
         _clusterName = cluster.managedResource.metadata.name
@@ -165,7 +155,7 @@ clouds:
         _observedComposedResources = _observedComposedResources
         _targetK8sProviderConfig = providerConfig
         _targetOsProviderConfigName = _targetOsProviderConfigName
-        _tenantNamespace = _tenantNamespace
+        _projectNamespace = _projectNamespace
     }
     k8sAppsPlatformBundle: K8sAppBundlePlatform {
         _controlPlaneAwsProviderConfigName = _controlPlaneAwsProviderConfigName
@@ -175,12 +165,13 @@ clouds:
         _name = "${_name}-pa"
         _observedComposedResources = _observedComposedResources
         _targetK8sProviderConfig = providerConfig
-        _tenantNamespace = _tenantNamespace
+        _projectNamespace = _projectNamespace
     }
     k8sCrossplaneSecretsNamespace: core.K8sObjectNamespaceWrapper {
+        _clusterName = _name
         _name = "${_name}-crossplane-secrets-ns"
         _namespaceName = "crossplane-secrets"
-        _targetK8sProviderConfigWrapper = providerConfig
+        _projectNamespace = _projectNamespace
     }
 #     kcArgoCdClient: core.KcOpenIdClientWrapper {
 #         _targetKcProviderConfigWrapper = _targetKcProviderConfigWrapper
@@ -203,7 +194,7 @@ clouds:
 #         _fluxHelmReleaseDependencies = k8sAppsInfrastructureOsBundle.fluxHelmReleases
 #         _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
 #         _targetK8sProviderConfig = providerConfig
-#         _tenantNamespace = _tenantNamespace
+#         _projectNamespace = _projectNamespace
 #         helmRelease.managedResource.spec.forProvider.manifest.spec.values.configs.cm = {
 #             "oidc.config" = """\
 # name: Keycloak

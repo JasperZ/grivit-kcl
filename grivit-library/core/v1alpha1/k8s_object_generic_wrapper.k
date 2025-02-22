@@ -1,5 +1,7 @@
 schema K8sObjectGenericWrapper:
+    _clusterName: str
     _name: str
+    _projectNamespace: str
     _uses: [ManagedResource] = []
 
     _targetK8sProviderConfigName: str
@@ -11,7 +13,7 @@ schema K8sObjectGenericWrapper:
         metadata.annotations = {
             "krm.kcl.dev/composition-resource-name" = _name
         }
-        spec.providerConfigRef.name = _targetK8sProviderConfigName
+        spec.providerConfigRef.name = "${_projectNamespace}-${_clusterName}-k8s"
     }
     usages: [Usage] = [Usage {
         metadata.name = "${_name}-uses-${ofResource.metadata.name}"

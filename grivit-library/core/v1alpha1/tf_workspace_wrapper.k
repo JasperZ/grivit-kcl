@@ -7,8 +7,8 @@ schema TfWorkspaceWrapperVars:
 schema TfWorkspaceWrapper:
     _moduleInlineCode: str
     _name: str
-    _targetTfProviderConfigName: str
-    _tenantNamespace: str
+    _projectNamespace: str
+    _providerConfigName: str
     _uses: [ManagedResource] = []
     _vars: [TfWorkspaceWrapperVars] = []
 
@@ -21,9 +21,9 @@ schema TfWorkspaceWrapper:
         }
         spec.forProvider.module = _moduleInlineCode
         spec.forProvider.source = "Inline"
-        spec.providerConfigRef.name = _targetTfProviderConfigName
+        spec.providerConfigRef.name = _providerConfigName
         spec.writeConnectionSecretToRef.name = "${_name}-conn"
-        spec.writeConnectionSecretToRef.namespace = _tenantNamespace
+        spec.writeConnectionSecretToRef.namespace = _projectNamespace
     }
     usages: [Usage] = [Usage {
         metadata.name = "${_name}-uses-${ofResource.metadata.name}"

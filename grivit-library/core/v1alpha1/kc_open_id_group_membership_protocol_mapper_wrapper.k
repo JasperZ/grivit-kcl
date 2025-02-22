@@ -1,8 +1,9 @@
 schema KcOpenIdGroupMembershipProtocolMapperWrapper:
-    _targetKcProviderConfigWrapper: KcProviderConfigWrapper
     _claimName: str
     _clientScopeId: str
+    _instanceName: str
     _name: str
+    _projectNamespace: str
     _realmId: str
 
     managedResource: ManagedResource {
@@ -20,7 +21,7 @@ schema KcOpenIdGroupMembershipProtocolMapperWrapper:
         spec.forProvider.fullPath = False
         spec.forProvider.name = "groups"
         spec.forProvider.realmId = _realmId
-        spec.providerConfigRef.name = _targetKcProviderConfigWrapper.managedResource.metadata.name
+        spec.providerConfigRef.name = "${_projectNamespace}-${_instanceName}-kc"
     }
     usages: [Usage] = []
 

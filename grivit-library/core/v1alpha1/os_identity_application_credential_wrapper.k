@@ -3,7 +3,6 @@ import base64
 schema OsIdentityApplicationCredentialWrapper:
     _name: str
     _projectNamespace: str
-    _providerConfigName: str
 
     managedResource: ManagedResource {
         apiVersion = "identity.openstack.crossplane.io/v1alpha1"

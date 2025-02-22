@@ -48,7 +48,7 @@ kcStage: composite.KcClientArgoCd = composite.KcClientArgoCd {
     _realmId = spec.realmId
     _targetK8sProviderConfigWrapper = _targetK8sProviderConfigWrapper
     _targetKcProviderConfigWrapper = _targetKcProviderConfigWrapper
-    _tenantNamespace = claimNamespace
+    _projectNamespace = claimNamespace
 }
 
 details = [

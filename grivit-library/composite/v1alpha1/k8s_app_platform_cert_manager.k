@@ -1,27 +1,23 @@
 import core.v1alpha1 as core
 
 schema K8sAppPlatformCertManager:
-    _controlPlaneAwsProviderConfigName: str
-    _controlPlaneK8sProviderConfigName: str
+    _clusterName: str
     _email: str
     _fluxHelmReleaseDependencies?: [core.K8sFluxHelmReleaseWrapper]
     _name: str
     _observedComposedResources: any
-    _targetK8sProviderConfig: core.K8sProviderConfigWrapper
-    _tenantNamespace: str
+    _projectNamespace: str
 
     awsUser: core.AwsIamUserWrapper {
-        _controlPlaneAwsProviderConfigName = _controlPlaneAwsProviderConfigName
         _name = "${_name}-aws-user"
+        _projectNamespace = _projectNamespace
     }
     awsAccessKey: core.AwsIamAccessKeyWrapper {
-        _controlPlaneAwsProviderConfigName = _controlPlaneAwsProviderConfigName
         _name = "${_name}-aws-access-key"
         _awsIamUserName = awsUser.managedResource.metadata.name
-        _tenantNamespace = _tenantNamespace
+        _projectNamespace = _projectNamespace
     }
     awsPolicy: core.AwsIamPolicyWrapper {
-        _controlPlaneAwsProviderConfigName = _controlPlaneAwsProviderConfigName
         _name = "${_name}-aws-policy"
         _description = "Allow ${_name} to access Route53"
         _policy = """\
@@ -49,20 +45,21 @@ schema K8sAppPlatformCertManager:
     ]
 }
 """
+        _projectNamespace = _projectNamespace
     }
     awsUserPolicyAttachment: core.AwsIamUserPolicyAttachmentWrapper {
-        _controlPlaneAwsProviderConfigName = _controlPlaneAwsProviderConfigName
         _name = "${_name}-aws-user-policy-attachment"
         _userName = awsUser.managedResource.metadata.name
         _policyArn = awsPolicy.getPolicyArn(_observedComposedResources)
+        _projectNamespace = _projectNamespace
     }
     helmRepo: core.K8sFluxHelmRepositoryWrapper {
         _name = "${_name}-repo"
         _helmRepoUrl = "https://charts.jetstack.io"
-        _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
-        _tenantNamespace = _tenantNamespace
+        _projectNamespace = _projectNamespace
     }
     helmRelease: core.K8sFluxHelmReleaseWrapper {
+        _clusterName = _clusterName
         _name = "${_name}-rel"
         _helmChartName = "cert-manager"
         _helmChartVersion = "1.15.3"
@@ -70,9 +67,7 @@ schema K8sAppPlatformCertManager:
         _helmReleaseNamespace = "cert-manager"
         _helmRepositoryWrapper = helmRepo
         _helmReleaseWrapperDependencies = _fluxHelmReleaseDependencies
-        _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
-        _targetK8sProviderConfig = _targetK8sProviderConfig
-        _tenantNamespace = _tenantNamespace
+        _projectNamespace = _projectNamespace
         managedResource.spec.forProvider.manifest.spec.values = {
             cainjector = {
                 resources = {
@@ -114,18 +109,20 @@ schema K8sAppPlatformCertManager:
         }
     }
     clusterIssuerCredentials: core.K8sObjectSecretWrapper {
+        _clusterName = _clusterName
         _name = "${_name}-cluster-issuer-credentials"
+        _namespace = "cert-manager"
+        _projectNamespace = _projectNamespace
         _secretName = "${_name}-cluster-issuer-credentials"
-        _targetK8sProviderConfigName = _targetK8sProviderConfig.managedResource.metadata.name
         _stringData = {
             accessKeyId = awsAccessKey.getAccessKeyId(_observedComposedResources)
             accessKeySecret = awsAccessKey.getAccessKeySecret(_observedComposedResources)
         }
-        _targetNamespace = "cert-manager"
     }
     clusterIssuer: core.K8sObjectGenericWrapper {
+        _clusterName = _clusterName
         _name = "${_name}-cluster-issuer"
-        _targetK8sProviderConfigName = _targetK8sProviderConfig.managedResource.metadata.name
+        _projectNamespace = _projectNamespace
         managedResource.spec.forProvider.manifest = {
             apiVersion = "cert-manager.io/v1"
             kind = "ClusterIssuer"

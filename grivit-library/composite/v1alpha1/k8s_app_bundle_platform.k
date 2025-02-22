@@ -1,6 +1,7 @@
 import core.v1alpha1 as core
 
 schema K8sAppBundlePlatform:
+    _clusterName: str
     _controlPlaneAwsProviderConfigName: str
     _controlPlaneK8sProviderConfigName: str
     _email: str
@@ -8,45 +9,38 @@ schema K8sAppBundlePlatform:
     _name: str
     _observedComposedResources: any
     _targetK8sProviderConfig: core.K8sProviderConfigWrapper
-    _tenantNamespace: str
+    _projectNamespace: str
 
     k8sAppsPlatformCertManager: K8sAppPlatformCertManager {
-        _controlPlaneAwsProviderConfigName = _controlPlaneAwsProviderConfigName
-        _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
+        _clusterName = _clusterName
         _email: _email
         _fluxHelmReleaseDependencies = _fluxHelmReleaseDependencies
         _name = "${_name}-certmanager"
         _observedComposedResources = _observedComposedResources
-        _targetK8sProviderConfig = _targetK8sProviderConfig
-        _tenantNamespace = _tenantNamespace
+        _projectNamespace = _projectNamespace
     }
     k8sAppsPlatformIngressNginx: K8sAppPlatformIngressNginx {
+        _clusterName = _clusterName
         _name = "${_name}-ingress"
         _fluxHelmReleaseDependencies = _fluxHelmReleaseDependencies
-        _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
-        _targetK8sProviderConfig = _targetK8sProviderConfig
-        _tenantNamespace = _tenantNamespace
+        _projectNamespace = _projectNamespace
     }
     k8sAppsPlatformMetricsServer: K8sAppPlatformMetricsServer {
+        _clusterName = _clusterName
         _name = "${_name}-metrics"
         _fluxHelmReleaseDependencies = _fluxHelmReleaseDependencies
-        _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
-        _targetK8sProviderConfig = _targetK8sProviderConfig
-        _tenantNamespace = _tenantNamespace
+        _projectNamespace = _projectNamespace
     }
     k8sAppsPlatformSnapshotController: K8sAppPlatformSnapshotController {
+        _clusterName = _clusterName
         _name = "${_name}-sc"
-        _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
-        _targetK8sProviderConfig = _targetK8sProviderConfig
-        _tenantNamespace = _tenantNamespace
+        _projectNamespace = _projectNamespace
     }
     # ToDo: Velero
     k8sAppsPlatformVerticalPodAutoscaler: K8sAppPlatformVerticalPodAutoscaler {
         _name = "${_name}-vpa"
         _fluxHelmReleaseDependencies = _fluxHelmReleaseDependencies
-        _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
-        _targetK8sProviderConfig = _targetK8sProviderConfig
-        _tenantNamespace = _tenantNamespace
+        _projectNamespace = _projectNamespace
     }
     fluxHelmReleases: [core.K8sFluxHelmReleaseWrapper] = [
         k8sAppsPlatformIngressNginx.helmRelease

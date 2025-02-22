@@ -1,11 +1,11 @@
 schema HelmReleaseWrapper:
-    _name: str
     _chartName: str
-    _chartVersion: str
     _chartRepoUrl: str
-    _releaseNamespace: str
-
-    _targetHelmProviderConfigName: str
+    _chartVersion: str
+    _clusterName: str
+    _name: str
+    _projectNamespace: str
+    _targetNamespace: str
 
     managedResource: ManagedResource {
         apiVersion = "helm.crossplane.io/v1beta1"
@@ -20,10 +20,10 @@ schema HelmReleaseWrapper:
                 repository = _chartRepoUrl
                 version = _chartVersion
             }
-            namespace = _releaseNamespace
+            namespace = _targetNamespace
             skipCreateNamespace = False
         }
-        spec.providerConfigRef.name = _targetHelmProviderConfigName
+        spec.providerConfigRef.name = "${_projectNamespace}-${_clusterName}-k8s"
     }
     usages: [Usage] = []
 
