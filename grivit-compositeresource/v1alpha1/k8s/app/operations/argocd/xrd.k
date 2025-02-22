@@ -28,29 +28,22 @@ schema Xrd(core.CompositeResourceDefinition):
                                 type = "object"
                                 default = {}
                                 properties = {
-                                    controlPlaneK8sProviderConfigName = {
-                                        type = "string"
-                                    }
                                     domain = {
                                         type = "string"
                                     }
-                                    k8sClusterClaimRef = {
-                                        type = "object"
-                                        properties = {
-                                            name = {
-                                                type = "string"
-                                            }
-                                        }
+                                    instanceName = {
+                                        type = "string"
                                     }
-                                    kcStageClaimRef = {
-                                        type = "object"
-                                        properties = {
-                                            name = {
-                                                type = "string"
-                                            }
-                                        }
+                                    k8sClusterName = {
+                                        type = "string"
                                     }
-                                    realmName = {
+                                    kcDomain = {
+                                        type = "string"
+                                    }
+                                    kcInstanceName = {
+                                        type = "string"
+                                    }
+                                    kcRealmId = {
                                         type = "string"
                                     }
                                 }

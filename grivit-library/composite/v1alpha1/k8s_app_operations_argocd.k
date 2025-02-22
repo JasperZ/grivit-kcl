@@ -4,6 +4,8 @@ schema K8sAppOperationsArgoCd:
     _clusterName: str
     _domain: str
     _fluxHelmReleaseDependencies?: [core.K8sFluxHelmReleaseWrapper] = []
+    _instanceName: str
+    _kcDomain: str
     _kcInstanceName: str
     _kcRealmId: str
     _name: str
@@ -61,7 +63,7 @@ schema K8sAppOperationsArgoCd:
                 cm = {
                     "oidc.config" = """\
 name: Keycloak
-issuer: https://keycloak.nonprod-test1.test.grivit.com/realms/${_kcRealmId}
+issuer: https://${_kcDomain}/realms/${_kcRealmId}
 clientID: ${kcArgoCdClient.managedResource.spec.forProvider.clientId}
 clientSecret: ${kcArgoCdClient.getClientSecret(_observedComposedResources)}
 requestedScopes: ["openid", "profile", "email", "groups"]

@@ -15,7 +15,7 @@ schema Xr(core.Composition):
         pipeline: [
             core.CompositionSpecPipelineStepKcl {
                 step = "managed-resources"
-                input.spec.dependencies = 'grivit-library = { git = "https://github.com/JasperZ/grivit-kcl.git", branch = "main", version = "0.0.2" }'
+                input.spec.dependencies = 'grivit-library = { git = "https://github.com/JasperZ/grivit-kcl.git", branch = "unify-provider-naming", version = "0.0.2" }'
                 input.spec.source = file.read(filepath="${file.modpath()}/v1alpha1/k8s/app/operations/argocd/functioncode/managed-resources.k")
             }
             core.CompositionSpecPipelineStepAutoReady {
