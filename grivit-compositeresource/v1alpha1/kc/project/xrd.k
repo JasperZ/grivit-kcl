@@ -28,18 +28,13 @@ schema Xrd(core.CompositeResourceDefinition):
                                 type = "object"
                                 default = {}
                                 properties = {
-                                    controlPlaneK8sProviderConfigName = {
+                                    domain = {
                                         type = "string"
                                     }
-                                    k8sAppOperationsKeycloakClaimRef = {
-                                        type = "object"
-                                        properties = {
-                                            name = {
-                                                type = "string"
-                                            }
-                                        }
+                                    instanceName = {
+                                        type = "string"
                                     }
-                                    realmName = {
+                                    realmId = {
                                         type = "string"
                                     }
                                 }

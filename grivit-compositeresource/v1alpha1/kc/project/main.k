@@ -1,7 +1,7 @@
 import manifests
 
-nameSingular: str = "Stage"
-namePlural: str = "Stages"
+nameSingular: str = "Project"
+namePlural: str = "Projects"
 apiGroup: str = "kc.grivit.cloud"
 apiVersion: str = "v1alpha1"
 

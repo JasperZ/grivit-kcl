@@ -6,13 +6,13 @@ schema KcProject:
     _name: str
     _observedComposedResources: any
     _projectNamespace: str
-    _realmName: str
+    _realmId: str
 
     realm = core.KcRealmWrapper {
         _instanceName = _instanceName
         _name = "${_name}-realm"
         _projectNamespace = _projectNamespace
-        _realmName = _realmName
+        _realmId = _realmId
     }
 
     adminGroup = core.KcGroupWrapper {
@@ -153,7 +153,7 @@ output "realm_management_client_id" {
     }
     providerConfigCredentials: core.K8sObjectSecretWrapper {
         _clusterName = "ctrl"
-        _name = "${_projectNamespace}-${_instanceName}-${_realmName}-kc-provider"
+        _name = "${_projectNamespace}-${_instanceName}-${_realmId}-kc-provider"
         _namespace = _projectNamespace
         _projectNamespace = _projectNamespace
         _secretName = "${_name}-provider"
@@ -164,7 +164,7 @@ output "realm_management_client_id" {
   "client_secret": "${crossplaneClient.getClientSecret(_observedComposedResources)}",
   "url": "https://${_domain}",
   "base_path": "/",
-  "realm": "${_realmName}"
+  "realm": "${_realmId}"
 }
 """
         }
@@ -175,7 +175,7 @@ output "realm_management_client_id" {
         ]
     }
     providerConfig: core.KcProviderConfigWrapper {
-        _name = "${_projectNamespace}-${_instanceName}-${_realmName}-kc"
+        _name = "${_projectNamespace}-${_instanceName}-${_realmId}-kc"
         _credentialsSecretName = providerConfigCredentials.managedResource.spec.forProvider.manifest.metadata.name
         _credentialsSecretNamespace = providerConfigCredentials.managedResource.spec.forProvider.manifest.metadata.namespace
         _uses = [
