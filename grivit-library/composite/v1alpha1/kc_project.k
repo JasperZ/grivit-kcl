@@ -66,7 +66,7 @@ schema KcProject:
             serviceAccountsEnabled = True
             standardFlowEnabled = False
         }
-        # Use provider for master realm to create crossplane client
+        # Use provider for master realm to setup crossplane client
         managedResource.spec.providerConfigRef.name = "${_projectNamespace}-${_instanceName}-master-kc"
     }
     # START: Workaround to retrieve id of the realm-management client until crossplane keycloak is fixed
@@ -150,6 +150,8 @@ output "realm_management_client_id" {
         _realmId = realm.getAtProviderId(_observedComposedResources)
         _roleName = "realm-admin"
         _serviceAccountUserId = crossplaneClient.getServiceAccountUserId(_observedComposedResources)
+        # Use provider for master realm to setup crossplane client
+        managedResource.spec.providerConfigRef.name = "${_projectNamespace}-${_instanceName}-master-kc"
         _uses = [
             realmManagementClientObserve.managedResource
         ]
