@@ -35,6 +35,7 @@ schema K8sAppBundlePlatform:
     }
     # ToDo: Velero
     k8sAppsPlatformVerticalPodAutoscaler: K8sAppPlatformVerticalPodAutoscaler {
+        _clusterName = _clusterName
         _name = "${_name}-vpa"
         _fluxHelmReleaseDependencies = _fluxHelmReleaseDependencies
         _projectNamespace = _projectNamespace
