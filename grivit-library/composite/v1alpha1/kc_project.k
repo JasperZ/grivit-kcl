@@ -157,7 +157,7 @@ output "realm_management_client_id" {
         _name = "${_projectNamespace}-${_instanceName}-${_realmId}-kc-provider"
         _namespace = _projectNamespace
         _projectNamespace = _projectNamespace
-        _secretName = "${_name}-provider"
+        _secretName = "${_projectNamespace}-${_instanceName}-${_realmId}-kc-provider"
         _stringData = {
             value = """\
 {

@@ -13,7 +13,7 @@ schema KcRealmWrapper:
         }
         spec.forProvider.enabled = True
         spec.forProvider.realm = _realmId
-        spec.providerConfigRef.name = "${_projectNamespace}-${_instanceName}-kc"
+        spec.providerConfigRef.name = "${_projectNamespace}-${_instanceName}-master-kc"
     }
     usages: [Usage] = []
 

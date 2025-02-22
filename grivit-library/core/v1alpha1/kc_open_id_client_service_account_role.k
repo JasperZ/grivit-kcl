@@ -19,7 +19,7 @@ schema KcOpenIdClientServiceAccountRole:
         spec.forProvider.serviceAccountUserId = _serviceAccountUserId
         spec.forProvider.realmId = _realmId
         spec.forProvider.role = _roleName
-        spec.providerConfigRef.name = "${_projectNamespace}-${_instanceName}-kc"
+        spec.providerConfigRef.name = "${_projectNamespace}-${_instanceName}-${_realmId}-kc"
     }
     usages: [Usage] = [Usage {
         metadata.name = "${_name}-uses-${ofResource.metadata.name}"
