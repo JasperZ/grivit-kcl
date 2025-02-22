@@ -1,13 +1,12 @@
 import core.v1alpha1 as core
 
-schema KcStage:
+schema KcProject:
+    _domain: str
+    _instanceName: str
     _name: str
     _observedComposedResources: any
-    _realmName: str
-    _targetKcDomain: str
-    _targetKcProviderConfigWrapper: core.KcProviderConfigWrapper
     _projectNamespace: str
-    _instanceName: str
+    _realmName: str
 
     realm = core.KcRealmWrapper {
         _instanceName = _instanceName
@@ -119,8 +118,8 @@ provider "keycloak" {
     realm     = var.realm
 }
 """
-        _credentialsSecretName = _targetKcProviderConfigWrapper.managedResource.spec.credentials.secretRef.name
-        _credentialsSecretNamespace = _targetKcProviderConfigWrapper.managedResource.spec.credentials.secretRef.namespace
+        _credentialsSecretName = "${_projectNamespace}-${_instanceName}-master-kc-provider"
+        _credentialsSecretNamespace = _projectNamespace
         _uses = [crossplaneClient.managedResource]
     }
 
@@ -154,16 +153,16 @@ output "realm_management_client_id" {
     }
     providerConfigCredentials: core.K8sObjectSecretWrapper {
         _clusterName = "ctrl"
-        _name = "${_name}-provider-config-credentials"
+        _name = "${_projectNamespace}-${_instanceName}-${_realmName}-kc-provider"
         _namespace = _projectNamespace
         _projectNamespace = _projectNamespace
-        _secretName = "${_name}-provider-config-credentials"
+        _secretName = "${_name}-provider"
         _stringData = {
             value = """\
 {
   "client_id": "${crossplaneClient.managedResource.spec.forProvider.clientId}",
   "client_secret": "${crossplaneClient.getClientSecret(_observedComposedResources)}",
-  "url": "https://${_targetKcDomain}",
+  "url": "https://${_domain}",
   "base_path": "/",
   "realm": "${_realmName}"
 }
@@ -176,7 +175,7 @@ output "realm_management_client_id" {
         ]
     }
     providerConfig: core.KcProviderConfigWrapper {
-        _name = "${_name}-kc-provider-config"
+        _name = "${_projectNamespace}-${_instanceName}-${_realmName}-kc"
         _credentialsSecretName = providerConfigCredentials.managedResource.spec.forProvider.manifest.metadata.name
         _credentialsSecretNamespace = providerConfigCredentials.managedResource.spec.forProvider.manifest.metadata.namespace
         _uses = [
