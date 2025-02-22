@@ -26,6 +26,7 @@ schema K8sAppOperationsArgoCd:
         _clientId = kcArgoCdClient.getAtProviderId(_observedComposedResources)
         _instanceName = _kcInstanceName
         _name = "${_name}-argocd-client-default-scopes"
+        _projectNamespace = _projectNamespace
         _realmId = _kcRealmId
     }
     helmRepo: core.K8sFluxHelmRepositoryWrapper {
