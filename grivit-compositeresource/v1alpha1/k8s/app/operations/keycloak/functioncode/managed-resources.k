@@ -6,49 +6,19 @@ observedCompositeResource: any = option("params").oxr
 desiredCompositeResource: any = option("params").dxr
 extraResources: any = option("params")?.extraResources
 
-_targetK8sProviderConfigWrapper: core.K8sProviderConfigWrapper = core.K8sProviderConfigWrapper {
-    _name = "dummy"
-    _credentialsSecretName = "dummy"
-    _credentialsSecretNamespace = "dummy"
-}
-
-if extraResources?.k8sClusterK8sProviderConfig:
-    k8sProviderConfigWrapperResource = extraResources?.k8sClusterK8sProviderConfig[0]?.Resource
-
-    _targetK8sProviderConfigWrapper = core.K8sProviderConfigWrapper {
-        _name = k8sProviderConfigWrapperResource?.metadata?.name or ""
-        _credentialsSecretName = k8sProviderConfigWrapperResource?.spec?.credentials?.secretRef?.name or ""
-        _credentialsSecretNamespace = k8sProviderConfigWrapperResource?.spec?.credentials?.secretRef?.namespace or ""
-    }
-
 claimName: str = observedCompositeResource.metadata.name
 claimNamespace: str = observedCompositeResource.metadata.labels["crossplane.io/claim-namespace"]
 spec: any = observedCompositeResource.spec
 
 k8sAppOperationsKeycloak: composite.K8sAppOperationsKeycloak = composite.K8sAppOperationsKeycloak {
     _adminPassword = spec.adminPassword
-    _controlPlaneK8sProviderConfigName = spec.controlPlaneK8sProviderConfigName
+    _clusterName = spec.k8sClusterName
     _domain = spec.domain
+    _instanceName = spec.instanceName
     _name = claimName
-    _targetK8sProviderConfigWrapper = _targetK8sProviderConfigWrapper
     _projectNamespace = claimNamespace
 }
 
-details = [
-    {
-        apiVersion: "meta.krm.kcl.dev/v1alpha1"
-        kind: "ExtraResources"
-        requirements = {
-            k8sClusterK8sProviderConfig = {
-                apiVersion: "kubernetes.crossplane.io/v1alpha1",
-                kind: "ProviderConfig",
-                matchLabels: {
-                    "crossplane.io/claim-name": spec.k8sClusterClaimRef.name
-                    "crossplane.io/claim-namespace": claimNamespace
-                }
-            }
-        }
-    }
-]
+details = []
 
 items = details + k8sAppOperationsKeycloak.managedResources + k8sAppOperationsKeycloak.usages

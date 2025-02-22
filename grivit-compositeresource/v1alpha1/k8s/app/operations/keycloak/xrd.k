@@ -31,19 +31,14 @@ schema Xrd(core.CompositeResourceDefinition):
                                     adminPassword = {
                                         type = "string"
                                     }
-                                    controlPlaneK8sProviderConfigName = {
+                                    k8sClusterName = {
                                         type = "string"
                                     }
                                     domain = {
                                         type = "string"
                                     }
-                                    k8sClusterClaimRef = {
-                                        type = "object"
-                                        properties = {
-                                            name = {
-                                                type = "string"
-                                            }
-                                        }
+                                    instanceName = {
+                                        type = "string"
                                     }
                                 }
                             }
