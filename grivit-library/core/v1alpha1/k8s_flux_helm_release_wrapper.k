@@ -71,16 +71,16 @@ schema K8sFluxHelmReleaseWrapper:
         spec.providerConfigRef.name = "${_projectNamespace}-ctrl-k8s"
     }
     usages: [Usage] = [Usage {
-        metadata.name = "${_name}-uses-${_projectNamespace}-${_clusterName}-k8s-provider"
+        metadata.name = "${_name}-uses-${_projectNamespace}-${_clusterName}-k8s"
         metadata.annotations = {
-            "krm.kcl.dev/composition-resource-name" = "${_name}-uses-${_projectNamespace}-${_clusterName}-k8s-provider"
+            "krm.kcl.dev/composition-resource-name" = "${_name}-uses-${_projectNamespace}-${_clusterName}-k8s"
         }
         spec.by.apiVersion = managedResource.apiVersion
         spec.by.kind = managedResource.kind
         spec.by.resourceRef.name = managedResource.metadata.name
         spec.of.apiVersion = "kubernetes.crossplane.io/v1alpha1"
         spec.of.kind = "ProviderConfig"
-        spec.of.resourceRef.name = "${_projectNamespace}-${_clusterName}-k8s-provider"
+        spec.of.resourceRef.name = "${_projectNamespace}-${_clusterName}-k8s"
     }] + [Usage {
         metadata.name = "${_name}-uses-${k8sFluxHelmReleaseDependency.managedResource.metadata.name}"
         metadata.annotations = {
