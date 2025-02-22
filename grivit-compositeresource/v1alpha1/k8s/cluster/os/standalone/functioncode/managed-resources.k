@@ -19,25 +19,17 @@ claimNamespace: str = observedCompositeResource.metadata.labels["crossplane.io/c
 spec: any = observedCompositeResource.spec
 
 k8sClusterOsStandalone: composite.K8sClusterOsStandalone = composite.K8sClusterOsStandalone {
-    # _argoCdDomain = spec.argoCdDomain
     _controlPlane = {
         flavorName = spec.controlPlane.flavor
         rootVolumeSize = spec.controlPlane.rootVolumeSize
         replicas = spec.controlPlane.replicas
     }
-    _controlPlaneAwsProviderConfigName = spec.controlPlaneAwsProviderConfigName
-    _controlPlaneHelmProviderConfigName = spec.controlPlaneHelmProviderConfigName
-    _controlPlaneK8sProviderConfigName = spec.controlPlaneK8sProviderConfigName
     _domain = spec.domain
     _email = spec.email
     _externalNetworkName = spec.externalNetworkName
-    _headlampDomain = spec.headlampDomain
     _k8sVersion = spec.kubernetesVersion
     _name = claimName
     _observedComposedResources = observedComposedResources
-    # _realmId = spec.realmId
-    # _targetKcProviderConfigWrapper = _kcStageKcProviderConfigName
-    _targetOsProviderConfigName = _osStageOsProviderConfigName
     _projectNamespace = claimNamespace
     _workers = {
         flavorName = spec.workers.flavor

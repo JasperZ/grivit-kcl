@@ -1,7 +1,6 @@
 import core.v1alpha1 as core
 
 schema KcStage:
-    _controlPlaneK8sProviderConfigName: str
     _name: str
     _observedComposedResources: any
     _realmName: str

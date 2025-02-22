@@ -24,17 +24,12 @@ k8sClusterOsK0smotron: composite.K8sClusterOsK0smotron = composite.K8sClusterOsK
         rootVolumeSize = spec.controlPlane.rootVolumeSize
         replicas = spec.controlPlane.replicas
     }
-    _controlPlaneAwsProviderConfigName = spec.controlPlaneAwsProviderConfigName
-    _controlPlaneHelmProviderConfigName = spec.controlPlaneHelmProviderConfigName
-    _controlPlaneK8sProviderConfigName = spec.controlPlaneK8sProviderConfigName
     _domain = spec.domain
     _email = spec.email
     _externalNetworkName = spec.externalNetworkName
-    _headlampDomain = spec.headlampDomain
     _k8sVersion = spec.kubernetesVersion
     _name = claimName
     _observedComposedResources = observedComposedResources
-    _targetOsProviderConfigName = _osStageOsProviderConfigName
     _projectNamespace = claimNamespace
     _workers = {
         flavorName = spec.workers.flavor

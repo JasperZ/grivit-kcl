@@ -1,8 +1,6 @@
 import core.v1alpha1 as core
 
 schema OsStage:
-    _controlPlaneK8sProviderConfigName: str
-    _controlPlaneOsProviderConfigName: str
     _domain: str
     _email: str
     _name: str

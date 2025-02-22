@@ -16,21 +16,13 @@ schema K8sClusterOsStandaloneConfigControlPlane:
     replicas: int
 
 schema K8sClusterOsStandalone:
-    # _argoCdDomain: str
     _controlPlane: K8sClusterOsStandaloneConfigControlPlane
-    _controlPlaneAwsProviderConfigName: str
-    _controlPlaneHelmProviderConfigName: str
-    _controlPlaneK8sProviderConfigName: str
     _domain: str
     _email: str
-    _headlampDomain: str
     _externalNetworkName: str
     _k8sVersion: str
     _name: str
     _observedComposedResources: any
-    # _realmId: str
-    # _targetKcProviderConfigWrapper: core.KcProviderConfigWrapper
-    _targetOsProviderConfigName: str
     _projectNamespace: str
     _workers: K8sClusterOsStandaloneConfigWorkers
 
@@ -167,48 +159,6 @@ clouds:
         _namespaceName = "crossplane-secrets"
         _projectNamespace = _projectNamespace
     }
-#     kcArgoCdClient: core.KcOpenIdClientWrapper {
-#         _targetKcProviderConfigWrapper = _targetKcProviderConfigWrapper
-#         _clientId = "${_name}-argocd"
-#         _name = "${_name}-argocd-client"
-#         _realmId = _realmId
-#         _redirectUri = "https://${_argoCdDomain}/auth/callback"
-#         _url = "https://${_argoCdDomain}"
-#     }
-#     kcArgoCdClientDefaultScopes: core.KcOpenIdClientDefaultScopesWrapper {
-#         _additionalScopes = ["groups"]
-#         _targetKcProviderConfigWrapper = _targetKcProviderConfigWrapper
-#         _clientId = kcArgoCdClient.getAtProviderId(_observedComposedResources)
-#         _name = "${_name}-argocd-client-default-scopes"
-#         _realmId = _realmId
-#     }
-#     k8sAppsOperationArgoCd: K8sAppOperationsArgoCd {
-#         _name = "${_name}-oa-argocd"
-#         _domain = _argoCdDomain
-#         _fluxHelmReleaseDependencies = k8sAppsInfrastructureOsBundle.fluxHelmReleases
-#         _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
-#         _targetK8sProviderConfig = providerConfig
-#         _projectNamespace = _projectNamespace
-#         helmRelease.managedResource.spec.forProvider.manifest.spec.values.configs.cm = {
-#             "oidc.config" = """\
-# name: Keycloak
-# issuer: https://keycloak.hub.test.grivit.com/realms/${_realmId}
-# clientID: ${kcArgoCdClient.managedResource.spec.forProvider.clientId}
-# clientSecret: ${kcArgoCdClient.getClientSecret(_observedComposedResources)}
-# requestedScopes: ["openid", "profile", "email", "groups"]
-# """
-#         }
-#         helmRelease.managedResource.spec.forProvider.manifest.spec.values.configs.rbac = {
-#             "policy.csv" = """\
-# p, role:authenticated, *, *, *, deny
-
-# g, admin, role:admin
-# g, viewer, role:readonly
-# """
-#             "policy.default" = "role:authenticated"
-#             scopes = "[groups]"
-#         }
-#     }
     managedResources: [core.K8sProviderConfig | core.ManagedResource] = [
         applicationCredential.managedResource
         cluster.managedResource
@@ -222,15 +172,11 @@ clouds:
         workerMachineTemplate.managedResource
         providerConfig.managedResource
         k8sCrossplaneSecretsNamespace.managedResource
-        # kcArgoCdClient.managedResource
-        # kcArgoCdClientDefaultScopes.managedResource
     ] + sum([
         k8sCRDsBundle.managedResources
         k8sAppsInfrastructureOsBundle.managedResources
         k8sAppsPlatformBundle.managedResources
-        # k8sAppsOperationArgoCd.managedResources
     ], [])
-
     usages: [core.Usage] = sum([
         applicationCredential.usages
         cluster.usages
@@ -247,8 +193,4 @@ clouds:
         k8sAppsInfrastructureOsBundle.usages
         k8sAppsPlatformBundle.usages
         k8sCrossplaneSecretsNamespace.usages
-        # k8sAppsOperationArgoCd.usages
-        # kcArgoCdClient.usages
-        # kcArgoCdClientDefaultScopes.usages
     ], [])
-
