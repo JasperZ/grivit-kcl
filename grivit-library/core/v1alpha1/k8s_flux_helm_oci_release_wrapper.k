@@ -60,7 +60,7 @@ schema K8sFluxHelmOciReleaseWrapper:
             }
         }
         spec.readiness.policy = "AllTrue"
-        spec.providerConfigRef.name = "ctrl-${_projectNamespace}"
+        spec.providerConfigRef.name = "${_projectNamespace}-ctrl-k8s"
     }
     usages: [Usage] = [Usage {
         metadata.name = "${_name}-uses-${_projectNamespace}-${_clusterName}-k8s"
