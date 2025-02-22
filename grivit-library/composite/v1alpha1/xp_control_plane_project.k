@@ -13,6 +13,7 @@ schema XpControlPlaneProject:
     }
     k8sAppsInfrastructureOsCSIDriver: K8sAppInfrastructureOsCsiDriver {
         _clusterName = _k8sClusterName
+        _fluxHelmReleaseDependencies = k8sAppBundleCrds.fluxHelmReleases
         _name = "${_projectNamespace}-${_k8sClusterName}-ia-ocsi"
         _observedComposedResources = _observedComposedResources
         _projectNamespace = _projectNamespace
@@ -20,6 +21,7 @@ schema XpControlPlaneProject:
     k8sAppsInfrastructureOsExternalDNS: K8sAppInfrastructureOsExternalDNS {
         _clusterName = _k8sClusterName
         _domainFilters = [_domain]
+        _fluxHelmReleaseDependencies = k8sAppBundleCrds.fluxHelmReleases
         _name = "${_projectNamespace}-${_k8sClusterName}-ia-oexdns"
         _observedComposedResources = _observedComposedResources
         _projectNamespace = _projectNamespace
