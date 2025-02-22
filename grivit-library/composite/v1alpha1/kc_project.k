@@ -19,6 +19,7 @@ schema KcProject:
         _groupName = "admin"
         _instanceName = _instanceName
         _name = "${_name}-admin-group"
+        _projectNamespace = _projectNamespace
         _realmId = realm.managedResource.spec.forProvider.realm
     }
 
