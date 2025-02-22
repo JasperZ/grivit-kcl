@@ -4,8 +4,6 @@ schema K8sObjectGenericWrapper:
     _projectNamespace: str
     _uses: [ManagedResource] = []
 
-    _targetK8sProviderConfigName: str
-
     managedResource: ManagedResource {
         apiVersion = "kubernetes.crossplane.io/v1alpha2"
         kind = "Object"
