@@ -66,6 +66,8 @@ schema KcProject:
             serviceAccountsEnabled = True
             standardFlowEnabled = False
         }
+        # Use provider for master realm to create crossplane client
+        managedResource.spec.providerConfigRef.name = "${_projectNamespace}-${_instanceName}-master-kc"
     }
     # START: Workaround to retrieve id of the realm-management client until crossplane keycloak is fixed
     kcTfProviderConfigWrapper: core.TfProviderConfigWrapper = {
