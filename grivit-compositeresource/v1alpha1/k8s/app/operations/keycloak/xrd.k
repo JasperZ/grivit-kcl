@@ -31,13 +31,13 @@ schema Xrd(core.CompositeResourceDefinition):
                                     adminPassword = {
                                         type = "string"
                                     }
-                                    k8sClusterName = {
-                                        type = "string"
-                                    }
                                     domain = {
                                         type = "string"
                                     }
                                     instanceName = {
+                                        type = "string"
+                                    }
+                                    k8sClusterName = {
                                         type = "string"
                                     }
                                 }
