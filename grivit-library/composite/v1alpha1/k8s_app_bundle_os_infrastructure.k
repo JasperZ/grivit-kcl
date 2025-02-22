@@ -3,15 +3,11 @@ import core.v1alpha1 as core
 schema K8sAppBundleOsInfrastructure:
     _clusterName: str
     _clusterSubnetId: str
-    _controlPlaneHelmProviderConfigName: str
-    _controlPlaneK8sProviderConfigName: str
     _domainFilters: [str]
     _externalNetworkId: str
     _fluxHelmReleaseDependencies?: [core.K8sFluxHelmReleaseWrapper]
     _name: str
     _observedComposedResources: any
-    _targetK8sProviderConfig: core.K8sProviderConfigWrapper
-    _targetOsProviderConfigName: str
     _projectNamespace: str
 
     k8sAppsInfrastructureCilium: K8sAppInfrastructureCilium {

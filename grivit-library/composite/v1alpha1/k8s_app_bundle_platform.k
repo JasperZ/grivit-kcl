@@ -2,13 +2,10 @@ import core.v1alpha1 as core
 
 schema K8sAppBundlePlatform:
     _clusterName: str
-    _controlPlaneAwsProviderConfigName: str
-    _controlPlaneK8sProviderConfigName: str
     _email: str
     _fluxHelmReleaseDependencies?: [core.K8sFluxHelmReleaseWrapper]
     _name: str
     _observedComposedResources: any
-    _targetK8sProviderConfig: core.K8sProviderConfigWrapper
     _projectNamespace: str
 
     k8sAppsPlatformCertManager: K8sAppPlatformCertManager {

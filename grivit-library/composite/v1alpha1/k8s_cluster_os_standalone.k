@@ -146,25 +146,19 @@ clouds:
     k8sAppsInfrastructureOsBundle: K8sAppBundleOsInfrastructure {
         _clusterName = cluster.managedResource.metadata.name
         _clusterSubnetId = openstackCluster.getSubnetId(_observedComposedResources)
-        _controlPlaneHelmProviderConfigName = _controlPlaneHelmProviderConfigName
-        _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
         _domainFilters = [_domain]
         _externalNetworkId = openstackCluster.getExternalNetworkId(_observedComposedResources)
         _fluxHelmReleaseDependencies = k8sCRDsBundle.fluxHelmReleases
         _name = "${_name}-ia"
         _observedComposedResources = _observedComposedResources
-        _targetK8sProviderConfig = providerConfig
-        _targetOsProviderConfigName = _targetOsProviderConfigName
         _projectNamespace = _projectNamespace
     }
     k8sAppsPlatformBundle: K8sAppBundlePlatform {
-        _controlPlaneAwsProviderConfigName = _controlPlaneAwsProviderConfigName
-        _controlPlaneK8sProviderConfigName = _controlPlaneK8sProviderConfigName
+        _clusterName = _name
         _email = _email
         _fluxHelmReleaseDependencies = k8sAppsInfrastructureOsBundle.fluxHelmReleases
         _name = "${_name}-pa"
         _observedComposedResources = _observedComposedResources
-        _targetK8sProviderConfig = providerConfig
         _projectNamespace = _projectNamespace
     }
     k8sCrossplaneSecretsNamespace: core.K8sObjectNamespaceWrapper {
