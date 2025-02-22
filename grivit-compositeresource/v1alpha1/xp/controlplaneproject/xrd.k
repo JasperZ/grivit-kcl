@@ -28,6 +28,12 @@ schema Xrd(core.CompositeResourceDefinition):
                                 type = "object"
                                 default = {}
                                 properties = {
+                                    contactEmail = {
+                                        type = "string"
+                                    }
+                                    domain = {
+                                        type = "string"
+                                    }
                                     k8sClusterName = {
                                         type = "string"
                                     }

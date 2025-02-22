@@ -8,7 +8,10 @@ claimNamespace: str = observedCompositeResource.metadata.labels["crossplane.io/c
 spec: any = observedCompositeResource.spec
 
 xpControlPlaneProject: composite.XpControlPlaneProject = composite.XpControlPlaneProject {
+    _contactEmail = spec.contactEmail
+    _domain = spec.domain
     _k8sClusterName = spec.k8sClusterName
+    _observedComposedResources = observedComposedResources
     _projectNamespace = claimNamespace
 }
 
