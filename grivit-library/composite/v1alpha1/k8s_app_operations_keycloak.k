@@ -46,10 +46,10 @@ schema K8sAppOperationsKeycloak:
     }
     providerConfigCredentials: core.K8sObjectSecretWrapper {
         _clusterName = "ctrl"
-        _name = "${_projectNamespace}-${_instanceName}-kc-provider"
+        _name = "${_projectNamespace}-${_instanceName}-master-kc-provider"
         _namespace = _projectNamespace
         _projectNamespace = _projectNamespace
-        _secretName = "${_projectNamespace}-${_instanceName}-kc-provider"
+        _secretName = "${_projectNamespace}-${_instanceName}-master-kc-provider"
         _stringData = {
             value = """\
 {
@@ -68,7 +68,7 @@ schema K8sAppOperationsKeycloak:
         ]
     }
     providerConfig: core.KcProviderConfigWrapper {
-        _name = "${_projectNamespace}-${_instanceName}-kc"
+        _name = "${_projectNamespace}-${_instanceName}-master-kc"
         _credentialsSecretName = providerConfigCredentials.managedResource.spec.forProvider.manifest.metadata.name
         _credentialsSecretNamespace = providerConfigCredentials.managedResource.spec.forProvider.manifest.metadata.namespace
         _uses = [
