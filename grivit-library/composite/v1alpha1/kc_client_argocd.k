@@ -16,7 +16,10 @@ schema KcClientArgoCd:
         _name = "${_name}-client"
         _projectNamespace = _projectNamespace
         _realmId = _realmId
-        _redirectUri = "https://${_domain}/auth/callback"
+        _validRedirectUris = [
+            "http://localhost:8085/auth/callback"
+            "https://${_domain}/auth/callback"
+        ]
         _url = "https://${_domain}"
     }
     kcClientDefaultScopes: core.KcOpenIdClientDefaultScopesWrapper {

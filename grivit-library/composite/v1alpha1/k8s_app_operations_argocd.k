@@ -17,7 +17,10 @@ schema K8sAppOperationsArgoCd:
         _instanceName = _kcInstanceName
         _name = "${_name}-argocd-client"
         _realmId = _kcRealmId
-        _redirectUri = "https://${_domain}/auth/callback"
+        _validRedirectUris = [
+            "http://localhost:8085/auth/callback"
+            "https://${_domain}/auth/callback"
+        ]
         _projectNamespace = _projectNamespace
         _url = "https://${_domain}"
     }

@@ -6,7 +6,7 @@ schema KcOpenIdClientWrapper:
     _name: str
     _projectNamespace: str
     _realmId: str
-    _redirectUri: str
+    _validRedirectUris: [str]
     _url: str
 
     managedResource: ManagedResource {
@@ -25,7 +25,7 @@ schema KcOpenIdClientWrapper:
         spec.forProvider.rootUrl = _url
         spec.forProvider.standardFlowEnabled = True
         spec.forProvider.validPostLogoutRedirectUris = [_url]
-        spec.forProvider.validRedirectUris = [_redirectUri]
+        spec.forProvider.validRedirectUris = _validRedirectUris
         spec.forProvider.webOrigins = [_url]
         spec.writeConnectionSecretToRef.name = "${_name}-conn"
         spec.writeConnectionSecretToRef.namespace = _projectNamespace
