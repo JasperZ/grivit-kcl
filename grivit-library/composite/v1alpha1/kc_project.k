@@ -54,7 +54,7 @@ schema KcProject:
         _name = "${_name}-crossplane-client"
         _projectNamespace = _projectNamespace
         _realmId = realm.managedResource.spec.forProvider.realm
-        _redirectUri = ""
+        _validRedirectUris = [""]
         _url = ""
         # override defaults
         managedResource.spec.forProvider = {
