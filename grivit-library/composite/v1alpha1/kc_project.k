@@ -47,29 +47,34 @@ schema KcProject:
         _projectNamespace = _projectNamespace
         _realmId = realm.managedResource.spec.forProvider.realm
     }
-
-    crossplaneClient: core.KcOpenIdClientWrapper {
-        _clientId = "admin-xp-provider"
-        _description = "Keycloak Crossplane provider client with admin permissions for realm '${realm.managedResource.spec.forProvider.realm}' (managed by Crossplane)."
+    crossplaneClient: core.KcOpenIdClientKcXpProviderWrapper {
         _instanceName = _instanceName
-        _name = "admin-xp-provider"
         _projectNamespace = _projectNamespace
         _realmId = realm.managedResource.spec.forProvider.realm
-        _validRedirectUris = [""]
-        _url = ""
-        # override defaults
-        managedResource.spec.forProvider = {
-            accessType = "CONFIDENTIAL"
-            clientId = "admin-xp-provider"
-            directAccessGrantsEnabled = False
-            name = "admin-xp-provider"
-            realmId = realm.managedResource.spec.forProvider.realm
-            serviceAccountsEnabled = True
-            standardFlowEnabled = False
-        }
-        # Use provider for master realm to setup crossplane client
-        managedResource.spec.providerConfigRef.name = "${_projectNamespace}-${_instanceName}-master-kc"
     }
+    # crossplaneClient: core.KcOpenIdClientWrapper {
+    #     # _clientId = "admin-xp-provider"
+    #     # _description = "Keycloak Crossplane provider client with admin permissions for realm '${realm.managedResource.spec.forProvider.realm}' (managed by Crossplane)."
+    #     _instanceName = _instanceName
+    #     _name = "admin-xp-provider"
+    #     _projectNamespace = _projectNamespace
+    #     _realmId = realm.managedResource.spec.forProvider.realm
+    #     # _validRedirectUris = [""]
+    #     # _url = ""
+    #     # override defaults
+    #     managedResource.spec.forProvider = {
+    #         accessType = "CONFIDENTIAL"
+    #         clientId = "admin-xp-provider"
+    #         description = "Keycloak Crossplane provider client with admin permissions for realm '${realm.managedResource.spec.forProvider.realm}' (managed by Crossplane)."
+    #         directAccessGrantsEnabled = False
+    #         name = "admin-xp-provider"
+    #         realmId = realm.managedResource.spec.forProvider.realm
+    #         serviceAccountsEnabled = True
+    #         standardFlowEnabled = False
+    #     }
+    #     # Use provider for master realm to setup crossplane client
+    #     managedResource.spec.providerConfigRef.name = "${_projectNamespace}-${_instanceName}-master-kc"
+    # }
     # START: Workaround to retrieve id of the realm-management client until crossplane keycloak is fixed
     kcTfProviderConfigWrapper: core.TfProviderConfigWrapper = {
         _name = "${_name}-kc-tfprovider-config"

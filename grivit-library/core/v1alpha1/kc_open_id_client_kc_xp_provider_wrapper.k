@@ -1,12 +1,11 @@
 import base64
 
-schema KcOpenIdClientArgoCdXpProviderWrapper:
+schema KcOpenIdClientKcXpProviderWrapper:
     _instanceName: str
-    _projectName: str
     _projectNamespace: str
     _realmId: str
 
-    _clientId: str = "argocd-${_instanceName}-${_projectName}-xp-provider"
+    _clientId: str = "kc-${_instanceName}-${_realmId}-xp-provider"
     _resourceName: str = "${_projectNamespace}-${_clientId}"
 
     managedResource: ManagedResource {
@@ -19,13 +18,14 @@ schema KcOpenIdClientArgoCdXpProviderWrapper:
         spec.forProvider.accessType = "CONFIDENTIAL"
         spec.forProvider.clientId = _clientId
         spec.forProvider.directAccessGrantsEnabled = False
-        spec.forProvider.description = "Crossplane ArgoCD provider client for project '${_projectName}' of instance '${_instanceName}' (managed by Crossplane)."
+        spec.forProvider.description = "Crossplane Keycloak provider client for realm '${_realmId}' of instance '${_instanceName}' (managed by Crossplane)."
         spec.forProvider.name = _clientId
         spec.forProvider.realmId = _realmId
+        spec.forProvider.serviceAccountsEnabled = True
         spec.forProvider.standardFlowEnabled = False
         spec.writeConnectionSecretToRef.name = "${_resourceName}-conn"
         spec.writeConnectionSecretToRef.namespace = _projectNamespace
-        spec.providerConfigRef.name = "${_projectNamespace}-${_instanceName}-${_realmId}-kc"
+        spec.providerConfigRef.name = "${_projectNamespace}-${_instanceName}-master-kc"
     }
     usages: [Usage] = []
 
