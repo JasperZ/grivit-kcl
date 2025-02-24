@@ -1,5 +1,4 @@
 import core.v1alpha1 as core
-import json
 
 schema K8sAppOperationsArgoCd:
     _clusterName: str
@@ -222,22 +221,13 @@ g, viewer, role:readonly
     #         }
     #     }
     # }
-    providerConfigHttpJwtToken: core.HttpDisposableRequestWrapper {
+    providerConfigHttpJwtToken: core.KcOpenIdClientJwtWrapper {
+        _clientId = providerConfigKcClient.managedResource.spec.forProvider.clientId
+        _clientSecret = providerConfigKcClient.getClientSecret(_observedComposedResources)
+        _domain = _kcDomain
         _name = "${_projectNamespace}-argocd-${_instanceName}-admin-token"
+        _realmId = _kcRealmId
         _projectNamespace = _projectNamespace
-        managedResource.spec.forProvider = {
-            body = "grant_type=client_credentials&client_id=${providerConfigKcClient.managedResource.spec.forProvider.clientId}&client_secret=${providerConfigKcClient.getClientSecret(_observedComposedResources)}&scope=openid"
-            expectedResponse = ".statusCode == 200"
-            headers = {
-                "Content-Type" = ["application/x-www-form-urlencoded"]
-                "Accept" = ["application/json"]
-            }
-            method = "POST"
-            nextReconcile: "4m"
-            shouldLoopInfinitely = True
-            url = "https://${_kcDomain}/realms/${_kcRealmId}/protocol/openid-connect/token"
-        }
-        managedResource.spec.deletionPolicy = "Orphan"
     }
     providerConfigCredentialsSecret: core.K8sObjectSecretWrapper {
         _clusterName = "ctrl"
@@ -246,7 +236,7 @@ g, viewer, role:readonly
         _projectNamespace = _projectNamespace
         _secretName = "${_projectNamespace}-argocd-${_instanceName}-admin-provider"
         _stringData = {
-            value = str(json.decode(providerConfigHttpJwtToken.getResponseBody(_observedComposedResources)).access_token or "")
+            value = providerConfigHttpJwtToken.getAccessToken(_observedComposedResources)
         }
         _uses = [
             providerConfigKcClient.managedResource
