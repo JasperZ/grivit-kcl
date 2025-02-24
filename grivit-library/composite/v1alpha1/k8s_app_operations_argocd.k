@@ -26,6 +26,18 @@ schema K8sAppOperationsArgoCd:
         _projectNamespace = _projectNamespace
         _realmId = _kcRealmId
     }
+    kcArgoCdAdminsGroup = core.KcGroupArgoCdWrapper {
+        _groupType = "admins"
+        _instanceName = _instanceName
+        _projectNamespace = _projectNamespace
+        _realmId = _kcRealmId
+    }
+    kcArgoCdViewersGroup = core.KcGroupArgoCdWrapper {
+        _groupType = "viewers"
+        _instanceName = _instanceName
+        _projectNamespace = _projectNamespace
+        _realmId = _kcRealmId
+    }
     helmRepo: core.K8sFluxHelmRepositoryWrapper {
         _name = "${_name}-repo"
         _helmRepoUrl = "https://argoproj.github.io/argo-helm"
@@ -74,8 +86,8 @@ requestedScopes: ["openid", "profile", "email", "groups"]
                     "policy.csv" = """\
 p, role:authenticated, *, *, *, deny
 
-g, admin, role:admin
-g, viewer, role:readonly
+g, ${kcArgoCdAdminsGroup.managedResource.spec.forProvider.name}, role:admin
+g, ${kcArgoCdViewersGroup.managedResource.spec.forProvider.name}, role:readonly
 """
                     "policy.default" = "role:authenticated"
                     scopes = "[groups]"
@@ -207,6 +219,8 @@ g, viewer, role:readonly
     managedResources: [core.ManagedResource | core.ArgoCdProviderConfig] = [
         kcArgoCdClient.managedResource
         kcArgoCdClientDefaultScopes.managedResource
+        kcArgoCdAdminsGroup.managedResource
+        kcArgoCdViewersGroup.managedResource
         helmRepo.managedResource
         helmRelease.managedResource
         providerConfigKcClient.managedResource
@@ -218,6 +232,8 @@ g, viewer, role:readonly
     usages: [core.Usage] = sum([
         kcArgoCdClient.usages
         kcArgoCdClientDefaultScopes.usages
+        kcArgoCdAdminsGroup.usages
+        kcArgoCdViewersGroup.usages
         helmRepo.usages
         helmRelease.usages
         providerConfigKcClient.usages
