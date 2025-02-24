@@ -192,14 +192,13 @@ g, viewer, role:readonly
                     body = "grant_type=client_credentials&client_id=${kcProviderClient.managedResource.spec.forProvider.clientId}&client_secret=${kcProviderClient.getClientSecret(_observedComposedResources)}&scope=openid"
                     headers = {
                         "Content-Type" = ["application/x-www-form-urlencoded"]
+                        "Accept" = ["application/json"]
                     }
                     method = "POST"
-                    url = ".payload.baseUrl"
+                    url = "https://${_kcDomain}/realms/${_kcRealmId}/protocol/openid-connect/token"
                 }
             ]
-            payload = {
-                baseUrl = "https://${_kcDomain}/realms/${_kcRealmId}/protocol/openid-connect/token"
-            }
+            payload = {}
         }
     }
     managedResources: [core.ManagedResource] = [
