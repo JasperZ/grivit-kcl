@@ -22,6 +22,7 @@ schema KcOpenIdClientArgoCdXpProviderWrapper:
         spec.forProvider.description = "Crossplane ArgoCD provider client for project '${_projectName}' of instance '${_instanceName}' (managed by Crossplane)."
         spec.forProvider.name = _clientId
         spec.forProvider.realmId = _realmId
+        spec.forProvider.serviceAccountsEnabled = True
         spec.forProvider.standardFlowEnabled = False
         spec.writeConnectionSecretToRef.name = "${_resourceName}-conn"
         spec.writeConnectionSecretToRef.namespace = _projectNamespace
