@@ -13,7 +13,7 @@ schema K8sAppOperationsArgoCd:
     _projectNamespace: str
 
     kcArgoCdClient: core.KcOpenIdClientWrapper {
-        _clientId = "argocd-${_instanceName}"
+        _clientId = "argocd-${_instanceName}-client"
         _instanceName = _kcInstanceName
         _name = "${_projectNamespace}-argocd-${_instanceName}-client"
         _realmId = _kcRealmId
