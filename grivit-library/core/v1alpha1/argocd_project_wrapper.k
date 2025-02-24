@@ -11,7 +11,7 @@ schema ArgoCdProjectWrapper:
             "krm.kcl.dev/composition-resource-name" = _name
         }
         spec.forProvider = {}
-        spec.providerConfigRef.name = "${_projectNamespace}-argocd-${_instanceName}-admin"
+        spec.providerConfigRef.name = "${_projectNamespace}-argocd-${_instanceName}-global"
     }
     usages: [Usage] = []
 
