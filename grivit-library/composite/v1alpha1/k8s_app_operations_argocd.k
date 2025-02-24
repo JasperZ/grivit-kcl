@@ -229,7 +229,7 @@ g, ${kcArgoCdViewersGroup.managedResource.spec.forProvider.name}, role:readonly
         providerConfigHttpJwtToken.managedResource
         providerConfigCredentialsSecret.managedResource
         providerConfig.managedResource
-        argoCdTestProject.managedResource
+        argoCdGlobalProject.managedResource
     ]
     usages: [core.Usage] = sum([
         kcArgoCdClient.usages
@@ -242,6 +242,6 @@ g, ${kcArgoCdViewersGroup.managedResource.spec.forProvider.name}, role:readonly
         providerConfigHttpJwtToken.usages
         providerConfigCredentialsSecret.usages
         providerConfig.usages
-        argoCdTestProject.usages
+        argoCdGlobalProject.usages
     ], [])
 
