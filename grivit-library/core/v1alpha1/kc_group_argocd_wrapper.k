@@ -21,3 +21,10 @@ schema KcGroupArgoCdWrapper:
     }
     usages: [Usage] = []
 
+    getAtProviderId: (any) -> str = lambda observedComposedResources: any -> str {
+        _atProviderId: str = ""
+        if managedResource.metadata.name in observedComposedResources:
+            _atProviderId = str(observedComposedResources[managedResource.metadata.name].Resource?.status?.atProvider?.id or "")
+
+        _atProviderId
+    }
