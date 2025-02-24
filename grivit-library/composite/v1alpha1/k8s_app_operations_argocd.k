@@ -197,6 +197,16 @@ g, viewer, role:readonly
                     method = "POST"
                     url = "(.payload.baseUrl)"
                 }
+                {
+                    action = "OBSERVE"
+                    body = '("grant_type=client_credentials&client_id=${kcProviderClient.managedResource.spec.forProvider.clientId}&client_secret=${kcProviderClient.getClientSecret(_observedComposedResources)}&scope=openid")'
+                    headers = {
+                        "Authorization" = ['("Bearer" + " " + (.response.body.id | tostring))']
+                        "Accept" = ["application/json"]
+                    }
+                    method = "GET"
+                    url = "https://${_domain}/api/v1/session/userinfo"
+                }
             ]
             payload = {
                 baseUrl = "https://${_kcDomain}/realms/${_kcRealmId}/protocol/openid-connect/token"
