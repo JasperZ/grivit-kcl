@@ -16,7 +16,7 @@ schema KcOpenIdClientJwtWrapper:
         kind = "DisposableRequest"
         metadata.name = "${_name}-${_configMd5}"
         metadata.annotations = {
-            "krm.kcl.dev/composition-resource-name" = _name
+            "krm.kcl.dev/composition-resource-name" = "${_name}-${_configMd5}"
         }
         spec.deletionPolicy = "Orphan"
         spec.forProvider = {
