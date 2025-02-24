@@ -191,7 +191,7 @@ g, viewer, role:readonly
                     action = "CREATE"
                     body = "grant_type=client_credentials&client_id=${kcProviderClient.managedResource.spec.forProvider.clientId}&client_secret=${kcProviderClient.getClientSecret(_observedComposedResources)}&scope=openid"
                     headers = {
-                        "Content-Type" = "application/x-www-form-urlencoded"
+                        "Content-Type" = ["application/x-www-form-urlencoded"]
                     }
                     method = "POST"
                     url = "https://${_kcDomain}/realms/${_kcRealmId}/protocol/openid-connect/token"
