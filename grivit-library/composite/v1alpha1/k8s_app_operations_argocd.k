@@ -15,7 +15,7 @@ schema K8sAppOperationsArgoCd:
     kcArgoCdClient: core.KcOpenIdClientWrapper {
         _clientId = "argocd-${_instanceName}-client"
         _instanceName = _kcInstanceName
-        _name = "${_projectNamespace}-argocd-${_instanceName}-client"
+        _name = "argocd-${_instanceName}-client"
         _realmId = _kcRealmId
         _validRedirectUris = [
             "http://localhost:8085/auth/callback"
@@ -166,7 +166,7 @@ g, viewer, role:readonly
     providerConfigKcClient: core.KcOpenIdClientWrapper {
         _clientId = "argocd-${_instanceName}-admin-xp-provider"
         _instanceName = _instanceName
-        _name = "${_projectNamespace}-argocd-${_instanceName}-admin-client"
+        _name = "argocd-${_instanceName}-admin-xp-provider"
         _projectNamespace = _projectNamespace
         _realmId = _kcRealmId
         _validRedirectUris = []
@@ -176,7 +176,7 @@ g, viewer, role:readonly
             accessType = "CONFIDENTIAL"
             clientId = "argocd-${_instanceName}-admin-xp-provider"
             directAccessGrantsEnabled = False
-            name = "${_projectNamespace}-argocd-${_instanceName}-admin-client"
+            name = "argocd-${_instanceName}-admin-xp-provider"
             realmId = _kcRealmId
             serviceAccountsEnabled = True
             standardFlowEnabled = False

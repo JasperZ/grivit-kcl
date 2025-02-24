@@ -61,7 +61,7 @@ schema KcProject:
             accessType = "CONFIDENTIAL"
             clientId = "admin-xp-provider"
             directAccessGrantsEnabled = False
-            name = realm.managedResource.spec.forProvider.realm
+            name = "admin-xp-provider"
             realmId = realm.managedResource.spec.forProvider.realm
             serviceAccountsEnabled = True
             standardFlowEnabled = False
