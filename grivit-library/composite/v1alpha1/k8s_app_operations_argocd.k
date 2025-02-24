@@ -177,6 +177,14 @@ g, ${kcArgoCdViewersGroup.managedResource.spec.forProvider.name}, role:readonly
         _projectNamespace = _projectNamespace
         _realmId = _kcRealmId
     }
+    providerConfigKcClientDefaultScopes: core.KcOpenIdClientDefaultScopesWrapper {
+        _additionalScopes = ["groups"]
+        _clientId = providerConfigKcClient.getAtProviderId(_observedComposedResources)
+        _instanceName = _kcInstanceName
+        _name = "${providerConfigKcClient.managedResource.spec.forProvider.name}-client-default-scopes"
+        _projectNamespace = _projectNamespace
+        _realmId = _kcRealmId
+    }
     kcUserGroupsWrapper: core.KcUserGroupsWrapper {
         _groupIds = [kcArgoCdAdminsGroup.getAtProviderId(_observedComposedResources)]
         _instanceName = _instanceName
@@ -233,6 +241,7 @@ g, ${kcArgoCdViewersGroup.managedResource.spec.forProvider.name}, role:readonly
         helmRepo.managedResource
         helmRelease.managedResource
         providerConfigKcClient.managedResource
+        providerConfigKcClientDefaultScopes.managedResource
         kcUserGroupsWrapper.managedResource
         providerConfigHttpJwtToken.managedResource
         providerConfigCredentialsSecret.managedResource
@@ -247,6 +256,7 @@ g, ${kcArgoCdViewersGroup.managedResource.spec.forProvider.name}, role:readonly
         helmRepo.usages
         helmRelease.usages
         providerConfigKcClient.usages
+        providerConfigKcClientDefaultScopes.usages
         kcUserGroupsWrapper.usages
         providerConfigHttpJwtToken.usages
         providerConfigCredentialsSecret.usages
