@@ -188,14 +188,7 @@ g, viewer, role:readonly
         _projectNamespace = _projectNamespace
         managedResource.spec.forProvider = {
             expectedResponseCheck = {
-                logic = """\
-if .response.body.loggedIn == true and .response.headers."Content-Type" == ["application/json"]
-then 
-    true 
-else
-    false 
-end
-"""
+                logic = 'if .response.body.loggedIn == true and .response.headers."Content-Type" == ["application/json"] then true else false end'
                 type = "CUSTOM"
             }
             mappings = [
