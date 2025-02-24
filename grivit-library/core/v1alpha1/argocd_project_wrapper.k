@@ -4,7 +4,7 @@ schema ArgoCdProjectWrapper:
     _projectNamespace: str
 
     managedResource: ManagedResource {
-        apiVersion = "argoproj.io/v1alpha1"
+        apiVersion = "projects.argocd.crossplane.io/v1alpha1"
         kind = "Project"
         metadata.name = _name
         metadata.annotations = {
