@@ -11,8 +11,14 @@ schema HttpDisposableRequestWrapper:
         }
         spec.forProvider = {}
         spec.providerConfigRef.name = "${_projectNamespace}-http"
-        spec.writeConnectionSecretToRef.name = "${_name}-conn"
-        spec.writeConnectionSecretToRef.namespace = _projectNamespace
     }
     usages: [Usage] = []
 
+    getResponseBody: (any) -> str = lambda observedComposedResources: any -> str {
+        _body: str = ""
+
+        if managedResource.metadata.name in observedComposedResources:
+            _body = str(observedComposedResources[managedResource.metadata.name].Resource?.status?.response?.body or "")
+
+        _body
+    }
