@@ -1,3 +1,4 @@
+import crypto
 import json
 
 schema KcOpenIdClientJwtWrapper:
@@ -8,16 +9,18 @@ schema KcOpenIdClientJwtWrapper:
     _realmId: str
     _projectNamespace: str
 
+    _configMd5 = crypto.md5("${_clientId}${_clientSecret}")
+
     managedResource: ManagedResource {
         apiVersion = "http.crossplane.io/v1alpha2"
         kind = "DisposableRequest"
-        metadata.name = _name
+        metadata.name = "${_name}-${_configMd5}"
         metadata.annotations = {
             "krm.kcl.dev/composition-resource-name" = _name
         }
         spec.deletionPolicy = "Orphan"
         spec.forProvider = {
-            # body = "grant_type=client_credentials&client_id=${_clientId}&client_secret=${_clientSecret}&scope=openid"
+            body = "grant_type=client_credentials&client_id=${_clientId}&client_secret=${_clientSecret}&scope=openid"
             expectedResponse = ".statusCode == 200"
             headers = {
                 "Content-Type" = ["application/x-www-form-urlencoded"]
@@ -26,7 +29,7 @@ schema KcOpenIdClientJwtWrapper:
             method = "POST"
             nextReconcile: "4m"
             shouldLoopInfinitely = True
-            url = "https://${_domain}/realms/${_realmId}/protocol/openid-connect/token?grant_type=client_credentials&client_id=${_clientId}&client_secret=${_clientSecret}&scope=openid"
+            url = "https://${_domain}/realms/${_realmId}/protocol/openid-connect/token"
         }
         spec.providerConfigRef.name = "${_projectNamespace}-http"
     }
