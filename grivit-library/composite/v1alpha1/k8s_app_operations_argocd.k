@@ -201,7 +201,7 @@ end
             mappings = [
                 {
                     action = "CREATE"
-                    body = '("grant_type=" + .payload.body.grantType + "&client_id=" + .payload.body.clientId + "&client_secret=" + .payload.body.clientId)'
+                    body = '("grant_type=" + .payload.body.grantType + "&client_id=" + .payload.body.clientId + "&client_secret=" + .payload.body.clientSecret)'
                     headers = {
                         "Content-Type" = ["application/x-www-form-urlencoded"]
                         "Accept" = ["application/json"]
