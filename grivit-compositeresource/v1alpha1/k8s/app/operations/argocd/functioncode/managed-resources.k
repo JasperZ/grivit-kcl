@@ -1,5 +1,4 @@
 import grivit_library.composite.v1alpha1 as composite
-import grivit_library.core.v1alpha1 as core
 
 observedComposedResources: any = option("params").ocds
 observedCompositeResource: any = option("params").oxr
@@ -22,10 +21,7 @@ k8sAppOperationsArgoCd: composite.K8sAppOperationsArgoCd = composite.K8sAppOpera
     _projectNamespace = claimNamespace
 }
 
-details = []
-
 items = sum([
-    details
     k8sAppOperationsArgoCd.managedResources
     k8sAppOperationsArgoCd.usages
 ], [])
