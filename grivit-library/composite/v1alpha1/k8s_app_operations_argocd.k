@@ -164,7 +164,7 @@ g, viewer, role:readonly
         }
     }
     providerConfigKcClient: core.KcOpenIdClientWrapper {
-        _clientId = "argocd-${_instanceName}-admin-provider"
+        _clientId = "argocd-${_instanceName}-admin-xp-provider"
         _instanceName = _instanceName
         _name = "${_projectNamespace}-argocd-${_instanceName}-admin-client"
         _projectNamespace = _projectNamespace
@@ -174,7 +174,7 @@ g, viewer, role:readonly
         # override defaults
         managedResource.spec.forProvider = {
             accessType = "CONFIDENTIAL"
-            clientId = "argocd-${_instanceName}-admin-provider"
+            clientId = "argocd-${_instanceName}-admin-xp-provider"
             directAccessGrantsEnabled = False
             name = "${_projectNamespace}-argocd-${_instanceName}-admin-client"
             realmId = _kcRealmId

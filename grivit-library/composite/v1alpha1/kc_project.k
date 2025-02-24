@@ -49,9 +49,9 @@ schema KcProject:
     }
 
     crossplaneClient: core.KcOpenIdClientWrapper {
-        _clientId = "${_name}-crossplane"
+        _clientId = "admin-xp-provider"
         _instanceName = _instanceName
-        _name = "${_name}-crossplane-client"
+        _name = "admin-xp-provider"
         _projectNamespace = _projectNamespace
         _realmId = realm.managedResource.spec.forProvider.realm
         _validRedirectUris = [""]
