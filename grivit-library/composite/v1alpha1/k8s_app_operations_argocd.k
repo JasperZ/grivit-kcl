@@ -189,8 +189,7 @@ g, viewer, role:readonly
             mappings = [
                 {
                     action = "CREATE"
-                    # body = "grant_type=client_credentials&client_id=${kcProviderClient.managedResource.spec.forProvider.clientId}&client_secret=${kcProviderClient.getClientSecret(_observedComposedResources)}&scope=openid"
-                    body = '("grant_type=client_credentials")'
+                    body = '("grant_type=client_credentials&client_id=${kcProviderClient.managedResource.spec.forProvider.clientId}&client_secret=${kcProviderClient.getClientSecret(_observedComposedResources)}&scope=openid")'
                     headers = {
                         "Content-Type" = ["application/x-www-form-urlencoded"]
                         "Accept" = ["application/json"]
