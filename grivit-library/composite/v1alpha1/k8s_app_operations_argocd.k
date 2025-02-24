@@ -157,25 +157,11 @@ g, viewer, role:readonly
             }
         }
     }
-    providerConfigKcClient: core.KcOpenIdClientWrapper {
-        _clientId = "argocd-${_instanceName}-admin-xp-provider"
-        _description = "ArgoCD Crossplane provider client with admin permissions for instance '${_instanceName}' (managed by Crossplane)."
+    providerConfigKcClient: core.KcOpenIdClientArgoCdXpProviderWrapper {
         _instanceName = _instanceName
-        _name = "argocd-${_instanceName}-admin-xp-provider"
+        _projectName = "global"
         _projectNamespace = _projectNamespace
         _realmId = _kcRealmId
-        _validRedirectUris = []
-        _url: ""
-        # override defaults
-        managedResource.spec.forProvider = {
-            accessType = "CONFIDENTIAL"
-            clientId = "argocd-${_instanceName}-admin-xp-provider"
-            directAccessGrantsEnabled = False
-            name = "argocd-${_instanceName}-admin-xp-provider"
-            realmId = _kcRealmId
-            serviceAccountsEnabled = True
-            standardFlowEnabled = False
-        }
     }
     providerConfigHttpJwtToken: core.KcOpenIdClientJwtWrapper {
         _clientId = providerConfigKcClient.managedResource.spec.forProvider.clientId
