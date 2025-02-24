@@ -59,7 +59,7 @@ schema KcProject:
         # override defaults
         managedResource.spec.forProvider = {
             accessType = "CONFIDENTIAL"
-            clientId = "${_name}-crossplane"
+            clientId = "admin-xp-provider"
             directAccessGrantsEnabled = False
             name = realm.managedResource.spec.forProvider.realm
             realmId = realm.managedResource.spec.forProvider.realm
