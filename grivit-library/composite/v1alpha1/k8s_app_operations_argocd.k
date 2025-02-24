@@ -195,11 +195,11 @@ g, viewer, role:readonly
                         "Accept" = ["application/json"]
                     }
                     method = "POST"
-                    url = "(.payload.baseUrl + '/realms/${_kcRealmId}/protocol/openid-connect/token')"
+                    url = "(.payload.baseUrl)"
                 }
             ]
             payload = {
-                baseUrl = "https://${_kcDomain}"
+                baseUrl = "https://${_kcDomain}/realms/${_kcRealmId}/protocol/openid-connect/token"
             }
         }
     }
