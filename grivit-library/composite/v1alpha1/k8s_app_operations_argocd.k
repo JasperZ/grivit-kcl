@@ -194,7 +194,7 @@ g, viewer, role:readonly
                         "Content-Type" = ["application/x-www-form-urlencoded"]
                     }
                     method = "POST"
-                    url = "(.payload.baseUrl)"
+                    url = ".payload.baseUrl"
                 }
             ]
             payload = {
