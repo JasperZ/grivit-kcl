@@ -1,4 +1,5 @@
 import core.v1alpha1 as core
+import json
 
 schema K8sAppOperationsArgoCd:
     _clusterName: str
@@ -163,7 +164,7 @@ g, viewer, role:readonly
             }
         }
     }
-    kcProviderClient: core.KcOpenIdClientWrapper {
+    providerConfigKcClient: core.KcOpenIdClientWrapper {
         _clientId = "${_projectNamespace}-argocd-${_instanceName}-admin"
         _instanceName = _instanceName
         _name = "${_projectNamespace}-argocd-${_instanceName}-admin-client"
@@ -221,11 +222,11 @@ g, viewer, role:readonly
     #         }
     #     }
     # }
-    httpProviderClientJwtToken: core.HttpDisposableRequestWrapper {
+    providerConfigHttpJwtToken: core.HttpDisposableRequestWrapper {
         _name = "${_projectNamespace}-argocd-${_instanceName}-admin-token"
         _projectNamespace = _projectNamespace
         managedResource.spec.forProvider = {
-            body = "grant_type=client_credentials&client_id=${kcProviderClient.managedResource.spec.forProvider.clientId}&client_secret=${kcProviderClient.getClientSecret(_observedComposedResources)}&scope=openid"
+            body = "grant_type=client_credentials&client_id=${providerConfigKcClient.managedResource.spec.forProvider.clientId}&client_secret=${providerConfigKcClient.getClientSecret(_observedComposedResources)}&scope=openid"
             expectedResponse = ".statusCode == 200"
             headers = {
                 "Content-Type" = ["application/x-www-form-urlencoded"]
@@ -238,20 +239,48 @@ g, viewer, role:readonly
         }
         managedResource.spec.deletionPolicy = "Orphan"
     }
-    managedResources: [core.ManagedResource] = [
+    providerConfigCredentialsSecret: core.K8sObjectSecretWrapper {
+        _clusterName = "ctrl"
+        _name = "${_projectNamespace}-argocd-${_instanceName}-admin-provider"
+        _namespace = _projectNamespace
+        _projectNamespace = _projectNamespace
+        _secretName = "${_projectNamespace}-argocd-${_instanceName}-admin-provider"
+        _stringData = {
+            value = str(json.decode(providerConfigHttpJwtToken.getResponseBody(_observedComposedResources)).access_token or "")
+        }
+        _uses = [
+            providerConfigKcClient.managedResource
+            providerConfigHttpJwtToken.managedResource
+        ]
+    }
+    providerConfig: core.ArgoCdProviderConfigWrapper {
+        _name = "${_projectNamespace}-argocd-${_instanceName}-admin"
+        _credentialsSecretName = providerConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.name
+        _credentialsSecretNamespace = providerConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.namespace
+        _domain = _domain
+        _uses = [
+            providerConfigCredentialsSecret.managedResource
+        ]
+    }
+    # create provider
+    managedResources: [core.ManagedResource | core.ArgoCdProviderConfig] = [
         kcArgoCdClient.managedResource
         kcArgoCdClientDefaultScopes.managedResource
         helmRepo.managedResource
         helmRelease.managedResource
-        kcProviderClient.managedResource
-        httpProviderClientJwtToken.managedResource
+        providerConfigKcClient.managedResource
+        providerConfigHttpJwtToken.managedResource
+        providerConfigCredentialsSecret.managedResource
+        providerConfig.managedResource
     ]
     usages: [core.Usage] = sum([
         kcArgoCdClient.usages
         kcArgoCdClientDefaultScopes.usages
         helmRepo.usages
         helmRelease.usages
-        kcProviderClient.usages
-        httpProviderClientJwtToken.usages
+        providerConfigKcClient.usages
+        providerConfigHttpJwtToken.usages
+        providerConfigCredentialsSecret.usages
+        providerConfig.usages
     ], [])
 
