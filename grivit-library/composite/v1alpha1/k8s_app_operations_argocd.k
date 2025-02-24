@@ -1,4 +1,5 @@
 import core.v1alpha1 as core
+import json
 
 schema K8sAppOperationsArgoCd:
     _clusterName: str
@@ -199,7 +200,7 @@ g, viewer, role:readonly
                 }
                 {
                     action = "OBSERVE"
-                    body = '("grant_type=client_credentials&client_id=${kcProviderClient.managedResource.spec.forProvider.clientId}&client_secret=${kcProviderClient.getClientSecret(_observedComposedResources)}&scope=openid")'
+                    body = '("grant_type=" + .payload.body.grantType + "&client_id=" + .payload.body.clientId + "&client_secret=" + .payload.body.clientId)'
                     headers = {
                         "Authorization" = ['("Bearer" + " " + (.response.body.id | tostring))']
                         "Accept" = ["application/json"]
@@ -210,6 +211,11 @@ g, viewer, role:readonly
             ]
             payload = {
                 baseUrl = "https://${_kcDomain}/realms/${_kcRealmId}/protocol/openid-connect/token"
+                body = json.encode({
+                    grantType = "client_credentials"
+                    clientId = kcProviderClient.managedResource.spec.forProvider.clientId
+                    clientSecret = kcProviderClient.getClientSecret(_observedComposedResources)
+                })
             }
         }
     }
