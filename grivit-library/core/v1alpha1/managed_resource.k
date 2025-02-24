@@ -17,8 +17,9 @@ schema ManagedResourceMetadataLabels:
     [str]: str
 
 schema ManagedResourceSpec:
+    deletionPolicy?: "Delete" | "Orphan"
     forProvider: any
-    managementPolicies?: [str]
+    managementPolicies?: ["Create" | "Delete" | "LateInitialize" | "Observe" | "Update"]
     providerConfigRef: ManagedResourceSpecProviderConfigRef
     readiness?: ManagedResourceSpecReadiness
     references?: any
