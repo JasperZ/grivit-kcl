@@ -12,18 +12,11 @@ schema K8sAppOperationsArgoCd:
     _observedComposedResources: any
     _projectNamespace: str
 
-    kcArgoCdClient: core.KcOpenIdClientWrapper {
-        _clientId = "argocd-${_instanceName}-client"
-        _description = "ArgoCD client for instance '${_instanceName}' to authenticate users (managed by Crossplane)."
+    kcArgoCdClient: core.KcOpenIdClientArgoCdWrapper {
+        _argoCdDomain = _domain
         _instanceName = _kcInstanceName
-        _name = "argocd-${_instanceName}-client"
-        _realmId = _kcRealmId
-        _validRedirectUris = [
-            "http://localhost:8085/auth/callback"
-            "https://${_domain}/auth/callback"
-        ]
         _projectNamespace = _projectNamespace
-        _url = "https://${_domain}"
+        _realmId = _kcRealmId
     }
     kcArgoCdClientDefaultScopes: core.KcOpenIdClientDefaultScopesWrapper {
         _additionalScopes = ["groups"]
