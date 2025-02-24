@@ -29,12 +29,14 @@ schema K8sAppOperationsArgoCd:
     kcArgoCdAdminsGroup = core.KcGroupArgoCdWrapper {
         _groupType = "admins"
         _instanceName = _instanceName
+        _projectName = "global"
         _projectNamespace = _projectNamespace
         _realmId = _kcRealmId
     }
     kcArgoCdViewersGroup = core.KcGroupArgoCdWrapper {
         _groupType = "viewers"
         _instanceName = _instanceName
+        _projectName = "global"
         _projectNamespace = _projectNamespace
         _realmId = _kcRealmId
     }
@@ -171,7 +173,7 @@ g, ${kcArgoCdViewersGroup.managedResource.spec.forProvider.name}, role:readonly
     }
     providerConfigKcClient: core.KcOpenIdClientArgoCdXpProviderWrapper {
         _instanceName = _instanceName
-        _projectName = "admin"
+        _projectName = "global"
         _projectNamespace = _projectNamespace
         _realmId = _kcRealmId
     }
@@ -179,16 +181,16 @@ g, ${kcArgoCdViewersGroup.managedResource.spec.forProvider.name}, role:readonly
         _clientId = providerConfigKcClient.managedResource.spec.forProvider.clientId
         _clientSecret = providerConfigKcClient.getClientSecret(_observedComposedResources)
         _domain = _kcDomain
-        _name = "${_projectNamespace}-argocd-${_instanceName}-admin-token"
+        _name = "${_projectNamespace}-argocd-${_instanceName}-global-token"
         _realmId = _kcRealmId
         _projectNamespace = _projectNamespace
     }
     providerConfigCredentialsSecret: core.K8sObjectSecretWrapper {
         _clusterName = "ctrl"
-        _name = "${_projectNamespace}-argocd-${_instanceName}-admin-provider"
+        _name = "${_projectNamespace}-argocd-${_instanceName}-global-provider"
         _namespace = _projectNamespace
         _projectNamespace = _projectNamespace
-        _secretName = "${_projectNamespace}-argocd-${_instanceName}-admin-provider"
+        _secretName = "${_projectNamespace}-argocd-${_instanceName}-global-provider"
         _stringData = {
             value = providerConfigHttpJwtToken.getAccessToken(_observedComposedResources)
         }
@@ -198,7 +200,7 @@ g, ${kcArgoCdViewersGroup.managedResource.spec.forProvider.name}, role:readonly
         ]
     }
     providerConfig: core.ArgoCdProviderConfigWrapper {
-        _name = "${_projectNamespace}-argocd-${_instanceName}-admin"
+        _name = "${_projectNamespace}-argocd-${_instanceName}-global"
         _credentialsSecretName = providerConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.name
         _credentialsSecretNamespace = providerConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.namespace
         _domain = _domain
@@ -206,9 +208,9 @@ g, ${kcArgoCdViewersGroup.managedResource.spec.forProvider.name}, role:readonly
             providerConfigCredentialsSecret.managedResource
         ]
     }
-    argoCdTestProject: core.ArgoCdProjectWrapper {
+    argoCdGlobalProject: core.ArgoCdProjectWrapper {
         _instanceName = _instanceName
-        _name = "${_projectNamespace}-argocd-${_instanceName}-admin-project"
+        _name = "${_projectNamespace}-argocd-${_instanceName}-global-project"
         _projectNamespace = _projectNamespace
         managedResource.spec.forProvider = {
             projectLabels = {

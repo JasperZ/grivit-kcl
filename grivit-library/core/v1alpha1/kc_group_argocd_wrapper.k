@@ -1,11 +1,12 @@
 schema KcGroupArgoCdWrapper:
     _groupType: "admins" | "viewers"
     _instanceName: str
+    _projectName: str
     _projectNamespace: str
     _realmId: str
 
-    _groupName: str = "argocd-${_instanceName}-${_groupType}"
-    _resourceName: str = "${_projectNamespace}-${_instanceName}-${_realmId}-argocd-${_groupType}-group"
+    _groupName: str = "argocd-${_instanceName}-${_projectName}-${_groupType}"
+    _resourceName: str = "${_projectNamespace}-${_instanceName}-${_realmId}-argocd-${_projectName}-${_groupType}-group"
 
     managedResource: ManagedResource {
         apiVersion = "group.keycloak.crossplane.io/v1alpha1"
