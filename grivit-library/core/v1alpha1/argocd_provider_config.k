@@ -4,7 +4,7 @@ schema ArgoCdProviderConfig:
     _name: str
     _domain: str
 
-    apiVersion: str = "openstack.crossplane.io/v1beta1"
+    apiVersion: str = "argocd.crossplane.io/v1alpha1"
     kind: str = "ProviderConfig"
     metadata: ArgoCdProviderConfigMetadata {
         annotations = {
