@@ -236,6 +236,7 @@ g, viewer, role:readonly
             shouldLoopInfinitely = True
             url = "https://${_kcDomain}/realms/${_kcRealmId}/protocol/openid-connect/token"
         }
+        managedResource.spec.managementPolicies = ["Create", "LateInitialize", "Observe", "Update"]
     }
     managedResources: [core.ManagedResource] = [
         kcArgoCdClient.managedResource
