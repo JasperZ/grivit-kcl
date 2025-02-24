@@ -187,6 +187,17 @@ g, viewer, role:readonly
         _name = "${_projectNamespace}-argocd-${_instanceName}-admin-token"
         _projectNamespace = _projectNamespace
         managedResource.spec.forProvider = {
+            expectedResponseCheck = {
+                logic = """\
+if .response.body.loggedIn == true and .response.headers."Content-Type" == ["application/json"]
+then 
+    true 
+else
+    false 
+end
+"""
+                type = "CUSTOM"
+            }
             mappings = [
                 {
                     action = "CREATE"
@@ -202,7 +213,7 @@ g, viewer, role:readonly
                     action = "OBSERVE"
                     body = '("grant_type=" + .payload.body.grantType + "&client_id=" + .payload.body.clientId + "&client_secret=" + .payload.body.clientId)'
                     headers = {
-                        "Authorization" = ['("Bearer" + " " + (.response.body.id | tostring))']
+                        "Authorization" = ['("Bearer " + (.response.body.id | tostring))']
                         "Accept" = ["application/json"]
                     }
                     method = "GET"
