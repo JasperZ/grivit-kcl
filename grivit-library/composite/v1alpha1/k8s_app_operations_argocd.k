@@ -262,7 +262,16 @@ g, viewer, role:readonly
             providerConfigCredentialsSecret.managedResource
         ]
     }
-    # create provider
+    argoCdTestProject: core.ArgoCdProjectWrapper {
+        _instanceName = _instanceName
+        _name = "${_projectNamespace}-argocd-${_instanceName}-admin-project"
+        _projectNamespace = _projectNamespace
+        managedResource.spec.forProvider = {
+            projectLabels = {
+                "argocd.crossplane.io/global-project" = "true"
+            }
+        }
+    }
     managedResources: [core.ManagedResource | core.ArgoCdProviderConfig] = [
         kcArgoCdClient.managedResource
         kcArgoCdClientDefaultScopes.managedResource
@@ -272,6 +281,7 @@ g, viewer, role:readonly
         providerConfigHttpJwtToken.managedResource
         providerConfigCredentialsSecret.managedResource
         providerConfig.managedResource
+        argoCdTestProject.managedResource
     ]
     usages: [core.Usage] = sum([
         kcArgoCdClient.usages
@@ -282,5 +292,6 @@ g, viewer, role:readonly
         providerConfigHttpJwtToken.usages
         providerConfigCredentialsSecret.usages
         providerConfig.usages
+        argoCdTestProject.usages
     ], [])
 
