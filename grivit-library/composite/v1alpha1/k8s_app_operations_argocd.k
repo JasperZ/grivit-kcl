@@ -159,7 +159,7 @@ g, viewer, role:readonly
     }
     providerConfigKcClient: core.KcOpenIdClientArgoCdXpProviderWrapper {
         _instanceName = _instanceName
-        _projectName = "global"
+        _projectName = "admin"
         _projectNamespace = _projectNamespace
         _realmId = _kcRealmId
     }
