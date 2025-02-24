@@ -174,7 +174,7 @@ g, viewer, role:readonly
         # override defaults
         managedResource.spec.forProvider = {
             accessType = "CONFIDENTIAL"
-            clientId = "${_projectNamespace}-argocd-${_instanceName}-admin"
+            clientId = "argocd-${_instanceName}-admin-provider"
             directAccessGrantsEnabled = False
             name = "${_projectNamespace}-argocd-${_instanceName}-admin-client"
             realmId = _kcRealmId
