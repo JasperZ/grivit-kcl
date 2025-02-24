@@ -82,6 +82,7 @@ requestedScopes: ["openid", "profile", "email", "groups"]
 
 #ToDo: Workaround until it's easier to set the client id as audience in the crossplane keycloak provider
 allowedAudiences:
+  - ${kcArgoCdClient.managedResource.spec.forProvider.clientId}
   - account
 """
                 }
