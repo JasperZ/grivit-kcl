@@ -5,7 +5,7 @@ schema ArgoCdProjectWrapper:
 
     managedResource: ManagedResource {
         apiVersion = "argoproj.io/v1alpha1"
-        kind = "AppProject"
+        kind = "Project"
         metadata.name = _name
         metadata.annotations = {
             "krm.kcl.dev/composition-resource-name" = _name
