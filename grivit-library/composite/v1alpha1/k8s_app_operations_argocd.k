@@ -13,9 +13,9 @@ schema K8sAppOperationsArgoCd:
     _projectNamespace: str
 
     kcArgoCdClient: core.KcOpenIdClientWrapper {
-        _clientId = "${_name}-argocd"
+        _clientId = "${_projectNamespace}-argocd-${_instanceName}"
         _instanceName = _kcInstanceName
-        _name = "${_name}-argocd-client"
+        _name = "${_projectNamespace}-argocd-${_instanceName}-client"
         _realmId = _kcRealmId
         _validRedirectUris = [
             "http://localhost:8085/auth/callback"
@@ -163,16 +163,56 @@ g, viewer, role:readonly
             }
         }
     }
+    kcProviderClient: core.KcOpenIdClientWrapper {
+        _clientId = "${_projectNamespace}-argocd-${_instanceName}-admin"
+        _instanceName = _instanceName
+        _name = "${_projectNamespace}-argocd-${_instanceName}-admin-client"
+        _projectNamespace = _projectNamespace
+        _realmId = _kcRealmId
+        _validRedirectUris = []
+        _url: ""
+        # override defaults
+        managedResource.spec.forProvider = {
+            accessType = "CONFIDENTIAL"
+            clientId = "${_projectNamespace}-argocd-${_instanceName}-admin"
+            directAccessGrantsEnabled = False
+            name = "${_projectNamespace}-argocd-${_instanceName}-admin-client"
+            realmId = _kcRealmId
+            serviceAccountsEnabled = True
+            standardFlowEnabled = False
+        }
+    }
+    httpProviderClientJwtToken: core.HttpRequestWrapper {
+        _name = "${_projectNamespace}-argocd-${_instanceName}-admin-token"
+        _projectNamespace = _projectNamespace
+        managedResource.spec.forProvider = {
+            mappings = [
+                {
+                    action = "CREATE"
+                    body = "grant_type=client_credentials&client_id=${kcProviderClient.managedResource.spec.forProvider.clientId}&client_secret=${kcProviderClient.getClientSecret(_observedComposedResources)}&scope=openid"
+                    headers = {
+                        "Content-Type" = "application/x-www-form-urlencoded"
+                    }
+                    method = "POST"
+                    url = "https://${_kcDomain}/realms/${_kcRealmId}/protocol/openid-connect/token"
+                }
+            ]
+        }
+    }
     managedResources: [core.ManagedResource] = [
         kcArgoCdClient.managedResource
         kcArgoCdClientDefaultScopes.managedResource
         helmRepo.managedResource
         helmRelease.managedResource
+        kcProviderClient.managedResource
+        httpProviderClientJwtToken.managedResource
     ]
     usages: [core.Usage] = sum([
         kcArgoCdClient.usages
         kcArgoCdClientDefaultScopes.usages
         helmRepo.usages
         helmRelease.usages
+        kcProviderClient.usages
+        httpProviderClientJwtToken.usages
     ], [])
 
