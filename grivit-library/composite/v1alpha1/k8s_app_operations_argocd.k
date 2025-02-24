@@ -1,5 +1,4 @@
 import core.v1alpha1 as core
-import json
 
 schema K8sAppOperationsArgoCd:
     _clusterName: str
@@ -183,43 +182,59 @@ g, viewer, role:readonly
             standardFlowEnabled = False
         }
     }
-    httpProviderClientJwtToken: core.HttpRequestWrapper {
+    # httpProviderClientJwtToken: core.HttpRequestWrapper {
+    #     _name = "${_projectNamespace}-argocd-${_instanceName}-admin-token"
+    #     _projectNamespace = _projectNamespace
+    #     managedResource.spec.forProvider = {
+    #         expectedResponseCheck = {
+    #             logic = 'if .response.body.loggedIn == true and .response.headers."Content-Type" == ["application/json"] then true else false end'
+    #             type = "CUSTOM"
+    #         }
+    #         mappings = [
+    #             {
+    #                 action = "CREATE"
+    #                 body = '("grant_type=" + .payload.body.grantType + "&client_id=" + .payload.body.clientId + "&client_secret=" + .payload.body.clientSecret)'
+    #                 headers = {
+    #                     "Content-Type" = ["application/x-www-form-urlencoded"]
+    #                     "Accept" = ["application/json"]
+    #                 }
+    #                 method = "POST"
+    #                 url = "(.payload.baseUrl)"
+    #             }
+    #             {
+    #                 action = "OBSERVE"
+    #                 headers = {
+    #                     "Authorization" = ['("Bearer " + (.response.body.id | tostring))']
+    #                     "Accept" = ["application/json"]
+    #                 }
+    #                 method = "GET"
+    #                 url = "https://${_domain}/api/v1/session/userinfo"
+    #             }
+    #         ]
+    #         payload = {
+    #             baseUrl = "https://${_kcDomain}/realms/${_kcRealmId}/protocol/openid-connect/token"
+    #             body = json.encode({
+    #                 grantType = "client_credentials"
+    #                 clientId = kcProviderClient.managedResource.spec.forProvider.clientId
+    #                 clientSecret = kcProviderClient.getClientSecret(_observedComposedResources)
+    #             })
+    #         }
+    #     }
+    # }
+    httpProviderClientJwtToken: core.HttpDisposableRequestWrapper {
         _name = "${_projectNamespace}-argocd-${_instanceName}-admin-token"
         _projectNamespace = _projectNamespace
         managedResource.spec.forProvider = {
-            expectedResponseCheck = {
-                logic = 'if .response.body.loggedIn == true and .response.headers."Content-Type" == ["application/json"] then true else false end'
-                type = "CUSTOM"
+            body = "grant_type=client_credentials&client_id=${kcProviderClient.managedResource.spec.forProvider.clientId}&client_secret=${kcProviderClient.getClientSecret(_observedComposedResources)}&scope=openid"
+            expectedResponse = ".statusCode == 200"
+            headers = {
+                "Content-Type" = ["application/x-www-form-urlencoded"]
+                "Accept" = ["application/json"]
             }
-            mappings = [
-                {
-                    action = "CREATE"
-                    body = '("grant_type=" + .payload.body.grantType + "&client_id=" + .payload.body.clientId + "&client_secret=" + .payload.body.clientSecret)'
-                    headers = {
-                        "Content-Type" = ["application/x-www-form-urlencoded"]
-                        "Accept" = ["application/json"]
-                    }
-                    method = "POST"
-                    url = "(.payload.baseUrl)"
-                }
-                {
-                    action = "OBSERVE"
-                    headers = {
-                        "Authorization" = ['("Bearer " + (.response.body.id | tostring))']
-                        "Accept" = ["application/json"]
-                    }
-                    method = "GET"
-                    url = "https://${_domain}/api/v1/session/userinfo"
-                }
-            ]
-            payload = {
-                baseUrl = "https://${_kcDomain}/realms/${_kcRealmId}/protocol/openid-connect/token"
-                body = json.encode({
-                    grantType = "client_credentials"
-                    clientId = kcProviderClient.managedResource.spec.forProvider.clientId
-                    clientSecret = kcProviderClient.getClientSecret(_observedComposedResources)
-                })
-            }
+            method = "POST"
+            nextReconcile: "4m"
+            shouldLoopInfinitely = True
+            url = "https://${_kcDomain}/realms/${_kcRealmId}/protocol/openid-connect/token"
         }
     }
     managedResources: [core.ManagedResource] = [
