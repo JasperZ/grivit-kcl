@@ -17,7 +17,7 @@ schema KcOpenIdClientJwtWrapper:
         }
         spec.deletionPolicy = "Orphan"
         spec.forProvider = {
-            body = "grant_type=client_credentials&client_id=${_clientId}&client_secret=${_clientSecret}&scope=openid"
+            # body = "grant_type=client_credentials&client_id=${_clientId}&client_secret=${_clientSecret}&scope=openid"
             expectedResponse = ".statusCode == 200"
             headers = {
                 "Content-Type" = ["application/x-www-form-urlencoded"]
@@ -26,7 +26,7 @@ schema KcOpenIdClientJwtWrapper:
             method = "POST"
             nextReconcile: "4m"
             shouldLoopInfinitely = True
-            url = "https://${_domain}/realms/${_realmId}/protocol/openid-connect/token"
+            url = "https://${_domain}/realms/${_realmId}/protocol/openid-connect/token?grant_type=client_credentials&client_id=${_clientId}&client_secret=${_clientSecret}&scope=openid"
         }
         spec.providerConfigRef.name = "${_projectNamespace}-http"
     }
