@@ -194,9 +194,12 @@ g, viewer, role:readonly
                         "Content-Type" = ["application/x-www-form-urlencoded"]
                     }
                     method = "POST"
-                    url = "https://${_kcDomain}/realms/${_kcRealmId}/protocol/openid-connect/token"
+                    url = "(.payload.baseUrl)"
                 }
             ]
+            payload = {
+                baseUrl = "https://${_kcDomain}/realms/${_kcRealmId}/protocol/openid-connect/token"
+            }
         }
     }
     managedResources: [core.ManagedResource] = [
