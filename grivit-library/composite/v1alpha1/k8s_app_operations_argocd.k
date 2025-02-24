@@ -14,6 +14,7 @@ schema K8sAppOperationsArgoCd:
 
     kcArgoCdClient: core.KcOpenIdClientWrapper {
         _clientId = "argocd-${_instanceName}-client"
+        _description = "ArgoCD client for instance '${_instanceName}' to authenticate users (managed by Crossplane)."
         _instanceName = _kcInstanceName
         _name = "argocd-${_instanceName}-client"
         _realmId = _kcRealmId
@@ -165,6 +166,7 @@ g, viewer, role:readonly
     }
     providerConfigKcClient: core.KcOpenIdClientWrapper {
         _clientId = "argocd-${_instanceName}-admin-xp-provider"
+        _description = "ArgoCD Crossplane provider client with admin permissions for instance '${_instanceName}' (managed by Crossplane)."
         _instanceName = _instanceName
         _name = "argocd-${_instanceName}-admin-xp-provider"
         _projectNamespace = _projectNamespace

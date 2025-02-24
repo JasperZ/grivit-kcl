@@ -50,6 +50,7 @@ schema KcProject:
 
     crossplaneClient: core.KcOpenIdClientWrapper {
         _clientId = "admin-xp-provider"
+        _description = "Keycloak Crossplane provider client with admin permissions for realm '${realm.managedResource.spec.forProvider.realm}' (managed by Crossplane)."
         _instanceName = _instanceName
         _name = "admin-xp-provider"
         _projectNamespace = _projectNamespace

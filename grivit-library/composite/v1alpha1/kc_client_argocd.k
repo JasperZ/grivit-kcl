@@ -12,6 +12,7 @@ schema KcClientArgoCd:
 
     kcClient: core.KcOpenIdClientWrapper {
         _clientId = _clientId
+        _description = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX."
         _instanceName = _instanceName
         _name = "${_name}-client"
         _projectNamespace = _projectNamespace

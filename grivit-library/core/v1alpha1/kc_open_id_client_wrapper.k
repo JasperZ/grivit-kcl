@@ -2,6 +2,7 @@ import base64
 
 schema KcOpenIdClientWrapper:
     _clientId: str
+    _description: str
     _instanceName: str
     _name: str
     _projectNamespace: str
@@ -20,6 +21,7 @@ schema KcOpenIdClientWrapper:
         spec.forProvider.adminUrl = _url
         spec.forProvider.clientId = _clientId
         spec.forProvider.directAccessGrantsEnabled = True
+        spec.forProvider.description = _description
         spec.forProvider.name = _clientId
         spec.forProvider.realmId = _realmId
         spec.forProvider.rootUrl = _url
