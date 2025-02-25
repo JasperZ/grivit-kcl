@@ -43,6 +43,9 @@ schema Xrd(core.CompositeResourceDefinition):
                                     kcRealmId = {
                                         type = "string"
                                     }
+                                    projectName = {
+                                        type = "string"
+                                    }
                                 }
                             }
                         }
