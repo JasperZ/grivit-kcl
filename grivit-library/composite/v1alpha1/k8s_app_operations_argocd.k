@@ -185,6 +185,7 @@ g, ${kcArgoCdViewersGroup.managedResource.spec.forProvider.name}, role:readonly
             }
         }
         _uses = [
+            kcArgoCdAdminsGroup.managedResource
             kcArgoCdViewersGroup.managedResource
         ]
     }
