@@ -90,10 +90,11 @@ schema ArgoCdProject:
         ]
     }
     argoCdProject: core.ArgoCdProjectWrapper {
+        _adminGroupName = kcArgoCdAdminsGroup.managedResource.spec.forProvider.name
         _instanceName = _argoCdInstanceName
         _projectName = _projectName
         _projectNamespace = _projectNamespace
-        managedResource.spec.forProvider = {}
+        _viewerGroupName = kcArgoCdViewersGroup.managedResource.spec.forProvider.name
     }
     managedResources: [core.ManagedResource | core.ArgoCdProviderConfig] = [
         kcArgoCdAdminsGroup.managedResource

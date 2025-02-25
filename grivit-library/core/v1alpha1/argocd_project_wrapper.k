@@ -1,7 +1,9 @@
 schema ArgoCdProjectWrapper:
+    _adminGroupName: str
     _instanceName: str
     _projectName: str
     _projectNamespace: str
+    _viewerGroupName: str
 
     _resourceName: str = "${_projectNamespace}-argocd-${_instanceName}-${_projectName}-project"
 
@@ -16,7 +18,7 @@ schema ArgoCdProjectWrapper:
             roles = [
                 {
                     description = "Project admin"
-                    groups = [""]
+                    groups = [_adminGroupName]
                     name = "admin"
                     policies = [
                         "p, proj:${_resourceName}:admin, *, *, *, allow"
@@ -24,7 +26,7 @@ schema ArgoCdProjectWrapper:
                 }
                 {
                     description = "Project viewer"
-                    groups = [""]
+                    groups = [_viewerGroupName]
                     name = "viewer"
                     policies = [
                         "p, proj:${_resourceName}:viewer, *, get, *, allow"
