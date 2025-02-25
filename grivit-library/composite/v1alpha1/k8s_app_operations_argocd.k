@@ -32,17 +32,7 @@ schema K8sAppOperationsArgoCd:
     kcArgoCdAdminsGroup = core.KcGroupArgoCdWrapper {
         _groupType = "admins"
         _instanceName = _instanceName
-        _projectName = "global"
-        _projectNamespace = _projectNamespace
-        _realmId = _kcRealmId
-        _uses = [
-            kcArgoCdClientDefaultScopes.managedResource
-        ]
-    }
-    kcArgoCdViewersGroup = core.KcGroupArgoCdWrapper {
-        _groupType = "viewers"
-        _instanceName = _instanceName
-        _projectName = "global"
+        _projectName = "admin"
         _projectNamespace = _projectNamespace
         _realmId = _kcRealmId
         _uses = [
@@ -103,7 +93,6 @@ allowedAudiences:
 p, role:authenticated, *, *, *, deny
 
 g, ${kcArgoCdAdminsGroup.managedResource.spec.forProvider.name}, role:admin
-g, ${kcArgoCdViewersGroup.managedResource.spec.forProvider.name}, role:readonly
 """
                     "policy.default" = "role:authenticated"
                     scopes = "[groups]"
@@ -186,7 +175,6 @@ g, ${kcArgoCdViewersGroup.managedResource.spec.forProvider.name}, role:readonly
         }
         _uses = [
             kcArgoCdAdminsGroup.managedResource
-            kcArgoCdViewersGroup.managedResource
         ]
     }
     providerConfigKcClient: core.KcOpenIdClientArgoCdXpProviderWrapper {
@@ -223,7 +211,7 @@ g, ${kcArgoCdViewersGroup.managedResource.spec.forProvider.name}, role:readonly
         _clientId = providerConfigKcClient.managedResource.spec.forProvider.clientId
         _clientSecret = providerConfigKcClient.getClientSecret(_observedComposedResources)
         _domain = _kcDomain
-        _name = "${_projectNamespace}-argocd-${_instanceName}-global-token"
+        _name = "${_projectNamespace}-argocd-${_instanceName}-admin-token"
         _realmId = _kcRealmId
         _projectNamespace = _projectNamespace
         _uses = [
@@ -233,10 +221,10 @@ g, ${kcArgoCdViewersGroup.managedResource.spec.forProvider.name}, role:readonly
     }
     providerConfigCredentialsSecret: core.K8sObjectSecretWrapper {
         _clusterName = "ctrl"
-        _name = "${_projectNamespace}-argocd-${_instanceName}-global-provider"
+        _name = "${_projectNamespace}-argocd-${_instanceName}-admin-provider"
         _namespace = _projectNamespace
         _projectNamespace = _projectNamespace
-        _secretName = "${_projectNamespace}-argocd-${_instanceName}-global-provider"
+        _secretName = "${_projectNamespace}-argocd-${_instanceName}-admin-provider"
         _stringData = {
             value = providerConfigHttpJwtToken.getAccessToken(_observedComposedResources)
         }
@@ -245,7 +233,7 @@ g, ${kcArgoCdViewersGroup.managedResource.spec.forProvider.name}, role:readonly
         ]
     }
     providerConfig: core.ArgoCdProviderConfigWrapper {
-        _name = "${_projectNamespace}-argocd-${_instanceName}-global"
+        _name = "${_projectNamespace}-argocd-${_instanceName}-admin"
         _credentialsSecretName = providerConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.name
         _credentialsSecretNamespace = providerConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.namespace
         _domain = _domain
@@ -253,21 +241,10 @@ g, ${kcArgoCdViewersGroup.managedResource.spec.forProvider.name}, role:readonly
             providerConfigCredentialsSecret.managedResource
         ]
     }
-    argoCdGlobalProject: core.ArgoCdProjectWrapper {
-        _instanceName = _instanceName
-        _projectName = "global"
-        _projectNamespace = _projectNamespace
-        managedResource.spec.forProvider = {
-            projectLabels = {
-                "argocd.crossplane.io/global-project" = "true"
-            }
-        }
-    }
     managedResources: [core.ManagedResource | core.ArgoCdProviderConfig] = [
         kcArgoCdClient.managedResource
         kcArgoCdClientDefaultScopes.managedResource
         kcArgoCdAdminsGroup.managedResource
-        kcArgoCdViewersGroup.managedResource
         helmRepo.managedResource
         helmRelease.managedResource
         providerConfigKcClient.managedResource
@@ -276,13 +253,11 @@ g, ${kcArgoCdViewersGroup.managedResource.spec.forProvider.name}, role:readonly
         providerConfigHttpJwtToken.managedResource
         providerConfigCredentialsSecret.managedResource
         providerConfig.managedResource
-        argoCdGlobalProject.managedResource
     ]
     usages: [core.Usage] = sum([
         kcArgoCdClient.usages
         kcArgoCdClientDefaultScopes.usages
         kcArgoCdAdminsGroup.usages
-        kcArgoCdViewersGroup.usages
         helmRepo.usages
         helmRelease.usages
         providerConfigKcClient.usages
@@ -291,6 +266,5 @@ g, ${kcArgoCdViewersGroup.managedResource.spec.forProvider.name}, role:readonly
         providerConfigHttpJwtToken.usages
         providerConfigCredentialsSecret.usages
         providerConfig.usages
-        argoCdGlobalProject.usages
     ], [])
 
