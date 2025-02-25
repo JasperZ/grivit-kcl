@@ -8,6 +8,7 @@ schema K8sFluxHelmReleaseWrapper:
     _helmRepositoryWrapper: K8sFluxHelmRepositoryWrapper
     _helmReleaseWrapperDependencies: [K8sFluxHelmReleaseWrapper | K8sFluxHelmOciReleaseWrapper] = []
     _projectNamespace: str
+    _uses: [ManagedResource] = []
 
     managedResource: ManagedResource {
         apiVersion = "kubernetes.crossplane.io/v1alpha2"
@@ -92,5 +93,16 @@ schema K8sFluxHelmReleaseWrapper:
         spec.of.apiVersion = k8sFluxHelmReleaseDependency.managedResource.apiVersion
         spec.of.kind = k8sFluxHelmReleaseDependency.managedResource.kind
         spec.of.resourceRef.name = k8sFluxHelmReleaseDependency.managedResource.metadata.name
-    } for k8sFluxHelmReleaseDependency in _helmReleaseWrapperDependencies]
+    } for k8sFluxHelmReleaseDependency in _helmReleaseWrapperDependencies] + [Usage {
+        metadata.name = "${_name}-uses-${ofResource.metadata.name}"
+        metadata.annotations = {
+            "krm.kcl.dev/composition-resource-name" = "${_name}-uses-${ofResource.metadata.name}"
+        }
+        spec.by.apiVersion = managedResource.apiVersion
+        spec.by.kind = managedResource.kind
+        spec.by.resourceRef.name = managedResource.metadata.name
+        spec.of.apiVersion = ofResource.apiVersion
+        spec.of.kind = ofResource.kind
+        spec.of.resourceRef.name = ofResource.metadata.name
+    } for ofResource in _uses]
 

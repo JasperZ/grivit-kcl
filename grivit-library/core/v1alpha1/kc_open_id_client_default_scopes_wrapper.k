@@ -5,6 +5,7 @@ schema KcOpenIdClientDefaultScopesWrapper:
     _name: str
     _projectNamespace: str
     _realmId: str
+    _uses: [ManagedResource] = []
 
     managedResource: ManagedResource {
         apiVersion = "openidclient.keycloak.crossplane.io/v1alpha1"
@@ -25,5 +26,16 @@ schema KcOpenIdClientDefaultScopesWrapper:
         spec.forProvider.realmId = _realmId
         spec.providerConfigRef.name = "${_projectNamespace}-${_instanceName}-${_realmId}-kc"
     }
-    usages: [Usage] = []
+    usages: [Usage] = [Usage {
+        metadata.name = "${_name}-uses-${ofResource.metadata.name}"
+        metadata.annotations = {
+            "krm.kcl.dev/composition-resource-name" = "${_name}-uses-${ofResource.metadata.name}"
+        }
+        spec.by.apiVersion = managedResource.apiVersion
+        spec.by.kind = managedResource.kind
+        spec.by.resourceRef.name = managedResource.metadata.name
+        spec.of.apiVersion = ofResource.apiVersion
+        spec.of.kind = ofResource.kind
+        spec.of.resourceRef.name = ofResource.metadata.name
+    } for ofResource in _uses]
 

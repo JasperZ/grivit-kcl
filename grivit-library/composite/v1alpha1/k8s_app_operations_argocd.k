@@ -25,6 +25,9 @@ schema K8sAppOperationsArgoCd:
         _name = "${_name}-argocd-client-default-scopes"
         _projectNamespace = _projectNamespace
         _realmId = _kcRealmId
+        _uses = [
+            kcArgoCdClient.managedResource
+        ]
     }
     kcArgoCdAdminsGroup = core.KcGroupArgoCdWrapper {
         _groupType = "admins"
@@ -32,6 +35,9 @@ schema K8sAppOperationsArgoCd:
         _projectName = "global"
         _projectNamespace = _projectNamespace
         _realmId = _kcRealmId
+        _uses = [
+            kcArgoCdClientDefaultScopes.managedResource
+        ]
     }
     kcArgoCdViewersGroup = core.KcGroupArgoCdWrapper {
         _groupType = "viewers"
@@ -39,6 +45,9 @@ schema K8sAppOperationsArgoCd:
         _projectName = "global"
         _projectNamespace = _projectNamespace
         _realmId = _kcRealmId
+        _uses = [
+            kcArgoCdClientDefaultScopes.managedResource
+        ]
     }
     helmRepo: core.K8sFluxHelmRepositoryWrapper {
         _name = "${_name}-repo"
@@ -175,12 +184,18 @@ g, ${kcArgoCdViewersGroup.managedResource.spec.forProvider.name}, role:readonly
                 }
             }
         }
+        _uses = [
+            kcArgoCdViewersGroup.managedResource
+        ]
     }
     providerConfigKcClient: core.KcOpenIdClientArgoCdXpProviderWrapper {
         _instanceName = _instanceName
         _projectName = "global"
         _projectNamespace = _projectNamespace
         _realmId = _kcRealmId
+        _uses = [
+            helmRelease.managedResource
+        ]
     }
     providerConfigKcClientDefaultScopes: core.KcOpenIdClientDefaultScopesWrapper {
         _additionalScopes = ["groups"]
@@ -189,6 +204,9 @@ g, ${kcArgoCdViewersGroup.managedResource.spec.forProvider.name}, role:readonly
         _name = "${providerConfigKcClient.managedResource.spec.forProvider.name}-client-default-scopes"
         _projectNamespace = _projectNamespace
         _realmId = _kcRealmId
+        _uses = [
+            providerConfigKcClient.managedResource
+        ]
     }
     kcUserGroupsWrapper: core.KcUserGroupsWrapper {
         _groupIds = [kcArgoCdAdminsGroup.getAtProviderId(_observedComposedResources)]
@@ -196,6 +214,9 @@ g, ${kcArgoCdViewersGroup.managedResource.spec.forProvider.name}, role:readonly
         _projectNamespace = _projectNamespace
         _realmId = _kcRealmId
         _userId = providerConfigKcClient.getServiceAccountUserId(_observedComposedResources)
+        _uses = [
+            providerConfigKcClientDefaultScopes.managedResource
+        ]
     }
     providerConfigHttpJwtToken: core.KcOpenIdClientJwtWrapper {
         _clientId = providerConfigKcClient.managedResource.spec.forProvider.clientId
@@ -204,6 +225,9 @@ g, ${kcArgoCdViewersGroup.managedResource.spec.forProvider.name}, role:readonly
         _name = "${_projectNamespace}-argocd-${_instanceName}-global-token"
         _realmId = _kcRealmId
         _projectNamespace = _projectNamespace
+        _uses = [
+            kcUserGroupsWrapper.managedResource
+        ]
     }
     providerConfigCredentialsSecret: core.K8sObjectSecretWrapper {
         _clusterName = "ctrl"
@@ -215,7 +239,6 @@ g, ${kcArgoCdViewersGroup.managedResource.spec.forProvider.name}, role:readonly
             value = providerConfigHttpJwtToken.getAccessToken(_observedComposedResources)
         }
         _uses = [
-            providerConfigKcClient.managedResource
             providerConfigHttpJwtToken.managedResource
         ]
     }

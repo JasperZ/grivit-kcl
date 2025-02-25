@@ -5,6 +5,7 @@ schema KcOpenIdClientArgoCdXpProviderWrapper:
     _projectName: str
     _projectNamespace: str
     _realmId: str
+    _uses: [ManagedResource] = []
 
     _clientId: str = "argocd-${_instanceName}-${_projectName}-xp-provider"
     _resourceName: str = "${_projectNamespace}-${_clientId}"
@@ -28,7 +29,18 @@ schema KcOpenIdClientArgoCdXpProviderWrapper:
         spec.writeConnectionSecretToRef.namespace = _projectNamespace
         spec.providerConfigRef.name = "${_projectNamespace}-${_instanceName}-${_realmId}-kc"
     }
-    usages: [Usage] = []
+    usages: [Usage] = [Usage {
+        metadata.name = "${_resourceName}-uses-${ofResource.metadata.name}"
+        metadata.annotations = {
+            "krm.kcl.dev/composition-resource-name" = "${_resourceName}-uses-${ofResource.metadata.name}"
+        }
+        spec.by.apiVersion = managedResource.apiVersion
+        spec.by.kind = managedResource.kind
+        spec.by.resourceRef.name = managedResource.metadata.name
+        spec.of.apiVersion = ofResource.apiVersion
+        spec.of.kind = ofResource.kind
+        spec.of.resourceRef.name = ofResource.metadata.name
+    } for ofResource in _uses]
 
     getAtProviderId: (any) -> str = lambda observedComposedResources: any -> str {
         _id: str = ""

@@ -8,6 +8,7 @@ schema KcOpenIdClientJwtWrapper:
     _name: str
     _realmId: str
     _projectNamespace: str
+    _uses: [ManagedResource] = []
 
     _configMd5 = crypto.md5("${_clientId}${_clientSecret}")
 
@@ -33,7 +34,18 @@ schema KcOpenIdClientJwtWrapper:
         }
         spec.providerConfigRef.name = "${_projectNamespace}-http"
     }
-    usages: [Usage] = []
+    usages: [Usage] = [Usage {
+        metadata.name = "${_name}-uses-${ofResource.metadata.name}"
+        metadata.annotations = {
+            "krm.kcl.dev/composition-resource-name" = "${_name}-uses-${ofResource.metadata.name}"
+        }
+        spec.by.apiVersion = managedResource.apiVersion
+        spec.by.kind = managedResource.kind
+        spec.by.resourceRef.name = managedResource.metadata.name
+        spec.of.apiVersion = ofResource.apiVersion
+        spec.of.kind = ofResource.kind
+        spec.of.resourceRef.name = ofResource.metadata.name
+    } for ofResource in _uses]
 
     getAccessToken: (any) -> str = lambda observedComposedResources: any -> str {
         _accessToken: str = ""
@@ -42,6 +54,7 @@ schema KcOpenIdClientJwtWrapper:
             if observedComposedResources[managedResource.metadata.name].Resource?.status?.response?.body:
                 _body = str(observedComposedResources[managedResource.metadata.name].Resource?.status?.response?.body or "")
                 _accessToken = json.decode(_body).access_token
+
 
         _accessToken
     }
