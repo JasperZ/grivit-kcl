@@ -21,7 +21,9 @@ schema ArgoCdProjectWrapper:
                     groups = [_adminGroupName]
                     name = "admin"
                     policies = [
-                        "p, proj:${_resourceName}:admin, *, *, *, allow"
+                        "p, proj:${_resourceName}:admin, applications, *, *, allow"
+                        "p, proj:${_resourceName}:admin, clusters, *, *, allow"
+                        "p, proj:${_resourceName}:admin, repositories, *, *, allow"
                     ]
                 }
                 {
@@ -29,7 +31,9 @@ schema ArgoCdProjectWrapper:
                     groups = [_viewerGroupName]
                     name = "viewer"
                     policies = [
-                        "p, proj:${_resourceName}:viewer, *, get, *, allow"
+                        "p, proj:${_resourceName}:viewer, applications, get, *, allow"
+                        "p, proj:${_resourceName}:viewer, clusters, get, *, allow"
+                        "p, proj:${_resourceName}:viewer, repositories, get, *, allow"
                     ]
                 }
             ]
