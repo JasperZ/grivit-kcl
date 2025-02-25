@@ -255,7 +255,7 @@ g, ${kcArgoCdViewersGroup.managedResource.spec.forProvider.name}, role:readonly
     }
     argoCdGlobalProject: core.ArgoCdProjectWrapper {
         _instanceName = _instanceName
-        _name = "${_projectNamespace}-argocd-${_instanceName}-global-project"
+        _projectName = "global"
         _projectNamespace = _projectNamespace
         managedResource.spec.forProvider = {
             projectLabels = {
