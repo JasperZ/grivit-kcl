@@ -12,7 +12,26 @@ schema ArgoCdProjectWrapper:
         metadata.annotations = {
             "krm.kcl.dev/composition-resource-name" = _resourceName
         }
-        spec.forProvider = {}
+        spec.forProvider = {
+            roles = [
+                {
+                    description = "Project admin"
+                    groups = [""]
+                    name = "admin"
+                    policies = [
+                        "p, proj:${_resourceName}:admin, *, *, *, allow"
+                    ]
+                }
+                {
+                    description = "Project viewer"
+                    groups = [""]
+                    name = "viewer"
+                    policies = [
+                        "p, proj:${_resourceName}:viewer, *, get, *, allow"
+                    ]
+                }
+            ]
+        }
         spec.providerConfigRef.name = "${_projectNamespace}-argocd-${_instanceName}-admin"
     }
     usages: [Usage] = []
