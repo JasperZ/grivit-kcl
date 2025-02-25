@@ -13,8 +13,8 @@ argoCdProject: composite.ArgoCdProject = composite.ArgoCdProject {
     _kcDomain = spec.kcDomain
     _kcInstanceName = spec.kcInstanceName
     _kcRealmId = spec.kcRealmId
-    _name = claimName
     _observedComposedResources = observedComposedResources
+    _projectName = spec.projectName
     _projectNamespace = claimNamespace
 }
 
