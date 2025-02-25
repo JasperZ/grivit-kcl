@@ -216,7 +216,7 @@ g, ${kcArgoCdViewersGroup.managedResource.spec.forProvider.name}, role:readonly
         _realmId = _kcRealmId
         _userId = providerConfigKcClient.getServiceAccountUserId(_observedComposedResources)
         _uses = [
-            providerConfigKcClientDefaultScopes.managedResource
+            kcArgoCdAdminsGroup.managedResource
         ]
     }
     providerConfigHttpJwtToken: core.KcOpenIdClientJwtWrapper {
@@ -228,6 +228,7 @@ g, ${kcArgoCdViewersGroup.managedResource.spec.forProvider.name}, role:readonly
         _projectNamespace = _projectNamespace
         _uses = [
             kcUserGroupsWrapper.managedResource
+            providerConfigKcClientDefaultScopes.managedResource
         ]
     }
     providerConfigCredentialsSecret: core.K8sObjectSecretWrapper {
