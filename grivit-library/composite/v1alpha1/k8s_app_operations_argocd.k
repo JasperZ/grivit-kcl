@@ -179,7 +179,7 @@ g, ${kcArgoCdAdminsGroup.managedResource.spec.forProvider.name}, role:admin
     }
     providerConfigKcClient: core.KcOpenIdClientArgoCdXpProviderWrapper {
         _instanceName = _instanceName
-        _projectName = "global"
+        _projectName = "admin"
         _projectNamespace = _projectNamespace
         _realmId = _kcRealmId
         _uses = [
