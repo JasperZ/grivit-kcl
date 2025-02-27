@@ -3,7 +3,7 @@ import core.v1alpha1 as core
 schema KcProject:
     _domain: str
     _instanceName: str
-    _instanceOwnerProjectName: str = _projectNamespace
+    _instanceOwnerProjectName: str
     _name: str
     _observedComposedResources: any
     _projectNamespace: str
