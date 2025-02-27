@@ -10,6 +10,7 @@ spec: any = observedCompositeResource.spec
 kcProject: composite.KcProject = composite.KcProject {
     _domain = spec.domain
     _instanceName = spec.instanceName
+    _instanceOwnerProjectName = spec.instanceOwnerProjectName
     _name = claimName
     _observedComposedResources = observedComposedResources
     _projectNamespace = claimNamespace

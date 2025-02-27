@@ -34,6 +34,9 @@ schema Xrd(core.CompositeResourceDefinition):
                                     instanceName = {
                                         type = "string"
                                     }
+                                    instanceOwnerProjectName = {
+                                        type = "string"
+                                    }
                                     realmId = {
                                         type = "string"
                                     }
