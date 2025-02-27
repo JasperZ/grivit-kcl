@@ -1,4 +1,5 @@
 import core.v1alpha1 as core
+import core.v1alpha1.kc_utils as kcUtils
 
 schema KcProject:
     _domain: str
@@ -111,7 +112,7 @@ provider "keycloak" {
     realm     = var.realm
 }
 """
-        _credentialsSecretName = "${_projectNamespace}-kc-${_instanceOwnerProjectName}-${_instanceName}-master-provider"
+        _credentialsSecretName = kcUtils.kcProviderConfigSecretName(_projectNamespace, _instanceOwnerProjectName, _instanceName, "master")
         _credentialsSecretNamespace = _projectNamespace
         _uses = [crossplaneClient.managedResource]
     }
@@ -142,17 +143,17 @@ output "realm_management_client_id" {
         _roleName = "realm-admin"
         _serviceAccountUserId = crossplaneClient.getServiceAccountUserId(_observedComposedResources)
         # Use provider for master realm to setup crossplane client
-        managedResource.spec.providerConfigRef.name = "${_projectNamespace}-kc-${_instanceOwnerProjectName}-${_instanceName}-master"
+        managedResource.spec.providerConfigRef.name = kcUtils.kcProviderConfigSecretName(_projectNamespace, _instanceOwnerProjectName, _instanceName, "master")
         _uses = [
             realmManagementClientObserve.managedResource
         ]
     }
     providerConfigCredentials: core.K8sObjectSecretWrapper {
         _clusterName = "ctrl"
-        _name = "${_projectNamespace}-kc-${_instanceOwnerProjectName}-${_instanceName}-${_realmId}-provider"
+        _name = kcUtils.kcProviderConfigSecretName(_projectNamespace, _instanceOwnerProjectName, _instanceName, _realmId)
         _namespace = _projectNamespace
         _projectNamespace = _projectNamespace
-        _secretName = "${_projectNamespace}-kc-${_instanceOwnerProjectName}-${_instanceName}-${_realmId}-provider"
+        _secretName = kcUtils.kcProviderConfigSecretName(_projectNamespace, _instanceOwnerProjectName, _instanceName, _realmId)
         _stringData = {
             value = """\
 {

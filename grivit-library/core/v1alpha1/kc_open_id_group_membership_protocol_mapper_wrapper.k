@@ -28,7 +28,7 @@ schema KcOpenIdGroupMembershipProtocolMapperWrapper:
         spec.forProvider.fullPath = False
         spec.forProvider.name = "groups"
         spec.forProvider.realmId = _realmId
-        spec.providerConfigRef.name = "${_projectNamespace}-kc-${_instanceOwnerProjectName}-${_instanceName}-${_realmId}"
+        spec.providerConfigRef.name = kcProviderConfigSecretName(_projectNamespace, _instanceOwnerProjectName, _instanceName, _realmId)
     }
     usages: [Usage] = []
 

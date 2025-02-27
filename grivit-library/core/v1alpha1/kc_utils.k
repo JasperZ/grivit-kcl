@@ -9,3 +9,10 @@ kcProviderConfigName: (str, str, str, str) -> str = lambda projectName: str, kcI
 
     _name = _hashedName
 }
+
+kcProviderConfigSecretName: (str, str, str, str) -> str = lambda projectName: str, kcInstanceName: str, kcInstanceOwnerProjectName: str, kcRealmId: str -> str {
+    _providerConfigName = kcProviderConfigName(projectName, kcInstanceName, kcInstanceOwnerProjectName, kcRealmId)
+    _providerConfigSecretName = "${_providerConfigName}-provider"
+
+    _name = _providerConfigSecretName
+}
