@@ -27,7 +27,7 @@ schema KcOpenIdClientArgoCdXpProviderWrapper:
         spec.forProvider.standardFlowEnabled = False
         spec.writeConnectionSecretToRef.name = "${_resourceName}-conn"
         spec.writeConnectionSecretToRef.namespace = _projectNamespace
-        spec.providerConfigRef.name = "${_projectNamespace}-${_instanceName}-${_realmId}-kc"
+        spec.providerConfigRef.name = "${_projectNamespace}-kc-${_instanceName}-${_realmId}"
     }
     usages: [Usage] = [Usage {
         metadata.name = "${_resourceName}-uses-${ofResource.metadata.name}"

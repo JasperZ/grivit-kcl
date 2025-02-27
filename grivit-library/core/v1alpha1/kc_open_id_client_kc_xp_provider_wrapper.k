@@ -25,7 +25,7 @@ schema KcOpenIdClientKcXpProviderWrapper:
         spec.forProvider.standardFlowEnabled = False
         spec.writeConnectionSecretToRef.name = "${_resourceName}-conn"
         spec.writeConnectionSecretToRef.namespace = _projectNamespace
-        spec.providerConfigRef.name = "${_projectNamespace}-${_instanceName}-master-kc"
+        spec.providerConfigRef.name = "${_projectNamespace}-kc-${_instanceName}-master"
     }
     usages: [Usage] = []
 

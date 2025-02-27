@@ -18,7 +18,7 @@ schema KcGroupArgoCdWrapper:
         }
         spec.forProvider.name = _groupName
         spec.forProvider.realmId = _realmId
-        spec.providerConfigRef.name = "${_projectNamespace}-${_instanceName}-${_realmId}-kc"
+        spec.providerConfigRef.name = "${_projectNamespace}-kc-${_instanceName}-${_realmId}"
     }
     usages: [Usage] = [Usage {
         metadata.name = "${_resourceName}-uses-${ofResource.metadata.name}"

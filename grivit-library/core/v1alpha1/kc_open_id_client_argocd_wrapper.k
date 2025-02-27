@@ -31,7 +31,7 @@ schema KcOpenIdClientArgoCdWrapper:
         spec.forProvider.webOrigins = [_baseUrl]
         spec.writeConnectionSecretToRef.name = "${_resourceName}-conn"
         spec.writeConnectionSecretToRef.namespace = _projectNamespace
-        spec.providerConfigRef.name = "${_projectNamespace}-${_instanceName}-${_realmId}-kc"
+        spec.providerConfigRef.name = "${_projectNamespace}-kc-${_instanceName}-${_realmId}"
     }
     usages: [Usage] = []
 
