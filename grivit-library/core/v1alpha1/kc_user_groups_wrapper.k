@@ -7,7 +7,7 @@ schema KcUserGroupsWrapper:
     _userId: str
     _uses: [ManagedResource] = []
 
-    _resourceName: str = "-${_realmId}-${_userId}-groups"
+    _resourceName: str = "${_projectNamespace}-${_instanceName}-${_realmId}-${_userId}-groups"
 
     managedResource: ManagedResource {
         apiVersion = "user.keycloak.crossplane.io/v1alpha1"
