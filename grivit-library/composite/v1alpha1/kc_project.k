@@ -135,7 +135,7 @@ output "realm_management_client_id" {
         _roleName = "realm-admin"
         _serviceAccountUserId = crossplaneClient.getServiceAccountUserId(_observedComposedResources)
         # Use provider for master realm to setup crossplane client
-        managedResource.spec.providerConfigRef.name = "${_projectNamespace}-kc-${_instanceName}-master"
+        managedResource.spec.providerConfigRef.name = "${_projectNamespace}-kc-${_instanceOwnerProjectName}-${_instanceName}-master"
         _uses = [
             realmManagementClientObserve.managedResource
         ]
