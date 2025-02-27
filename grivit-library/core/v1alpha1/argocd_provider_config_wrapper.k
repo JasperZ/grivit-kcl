@@ -8,13 +8,13 @@ schema ArgoCdProviderConfigWrapper:
     _projectNamespace: str
     _uses: [ManagedResource] = []
 
-    _resourceName: str = "${_projectNamespace}-argocd-${_argoCdInstanceOwnerProjectName}-${_argoCdInstanceName}-${_argoCdProjectName}"
+    _resourceName: str = argoCdProviderConfigName(_projectNamespace, _argoCdInstanceOwnerProjectName, _argoCdInstanceName, _argoCdProjectName)
 
     managedResource: ArgoCdProviderConfig {
         _name = _resourceName
         _credentialsSecretName = _credentialsSecretName
         _credentialsSecretNamespace = _credentialsSecretNamespace
-        _domain = _argoCdDomain
+        _argoCdDomain = _argoCdDomain
     }
     usages: [Usage] = [Usage {
         metadata.name = "${_resourceName}-uses-${ofResource.metadata.name}"

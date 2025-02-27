@@ -1,8 +1,8 @@
 schema ArgoCdProviderConfig:
+    _argoCdDomain: str
     _credentialsSecretName: str
     _credentialsSecretNamespace: str
     _name: str
-    _domain: str
 
     apiVersion: str = "argocd.crossplane.io/v1alpha1"
     kind: str = "ProviderConfig"
@@ -20,7 +20,7 @@ schema ArgoCdProviderConfig:
                 namespace = _credentialsSecretNamespace
             }
         }
-        serverAddr = "${_domain}:443"
+        serverAddr = "${_argoCdDomain}:443"
     }
 
 schema ArgoCdProviderConfigMetadata:

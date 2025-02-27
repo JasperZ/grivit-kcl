@@ -1,4 +1,5 @@
 import core.v1alpha1 as core
+import core.v1alpha1.argocd_utils as argoCdUtils
 
 schema K8sAppOperationsArgoCd:
     _clusterName: str
@@ -217,7 +218,7 @@ g, ${kcArgoCdAdminsGroup.managedResource.spec.forProvider.name}, role:admin
         _clientId = providerConfigKcClient.managedResource.spec.forProvider.clientId
         _clientSecret = providerConfigKcClient.getClientSecret(_observedComposedResources)
         _domain = _kcDomain
-        _name = "${_projectNamespace}-argocd-${_projectNamespace}-${_instanceName}-admin-token"
+        _name = "${argoCdUtils.argoCdProviderConfigName(_projectNamespace, _projectNamespace, _instanceName, 'admin')}-token"
         _realmId = _kcRealmId
         _projectNamespace = _projectNamespace
         _uses = [
@@ -225,15 +226,12 @@ g, ${kcArgoCdAdminsGroup.managedResource.spec.forProvider.name}, role:admin
             providerConfigKcClientDefaultScopes.managedResource
         ]
     }
-    providerConfigCredentialsSecret: core.K8sObjectSecretWrapper {
-        _clusterName = "ctrl"
-        _name = "${_projectNamespace}-argocd-${_projectNamespace}-${_instanceName}-admin-provider"
-        _namespace = _projectNamespace
+    providerConfigCredentialsSecret: core.ArgoCdProviderConfigK8sCredentialsSecretWrapper {
+        _argoCdProjectName = "admin"
+        _argoCdInstanceName = _instanceName
+        _argoCdInstanceOwnerProjectName = _projectNamespace
+        _jwtToken = providerConfigHttpJwtToken.getAccessToken(_observedComposedResources)
         _projectNamespace = _projectNamespace
-        _secretName = "${_projectNamespace}-argocd-${_projectNamespace}-${_instanceName}-admin-provider"
-        _stringData = {
-            value = providerConfigHttpJwtToken.getAccessToken(_observedComposedResources)
-        }
         _uses = [
             providerConfigHttpJwtToken.managedResource
         ]
