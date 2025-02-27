@@ -1,18 +1,21 @@
 schema K8sProviderConfigWrapper:
-    _name: str
+    _clusterName: str
     _credentialsSecretName: str
     _credentialsSecretNamespace: str
+    _projectNamespace: str
     _uses: [ManagedResource] = []
 
+    _resourceName: str = k8sProviderConfigName(_projectNamespace, _clusterName)
+
     managedResource: K8sProviderConfig {
-        _name = _name
+        _name = _resourceName
         _credentialsSecretName = _credentialsSecretName
         _credentialsSecretNamespace = _credentialsSecretNamespace
     }
     usages: [Usage] = [Usage {
-        metadata.name = "${_name}-uses-${ofResource.metadata.name}"
+        metadata.name = "${_resourceName}-uses-${ofResource.metadata.name}"
         metadata.annotations = {
-            "krm.kcl.dev/composition-resource-name" = "${_name}-uses-${ofResource.metadata.name}"
+            "krm.kcl.dev/composition-resource-name" = "${_resourceName}-uses-${ofResource.metadata.name}"
         }
         spec.by.apiVersion = managedResource.apiVersion
         spec.by.kind = managedResource.kind

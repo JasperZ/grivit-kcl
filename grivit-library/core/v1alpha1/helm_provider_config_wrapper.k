@@ -1,8 +1,12 @@
 schema HelmProviderConfigWrapper:
-    _name: str
+    _clusterName: str
     _credentialsSecretName: str
     _credentialsSecretNamespace: str
+    _name: str
+    _projectNamespace: str
     _uses: [ManagedResource] = []
+
+    resourceName = helmProviderConfigName(_projectNamespace, _clusterName)
 
     managedResource: HelmProviderConfig {
         _name = _name

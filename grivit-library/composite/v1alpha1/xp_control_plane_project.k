@@ -1,4 +1,5 @@
 import core.v1alpha1 as core
+import core.v1alpha1.k8s_utils as k8sUtils
 
 schema XpControlPlaneProject:
     _contactEmail: str
@@ -7,6 +8,30 @@ schema XpControlPlaneProject:
     _observedComposedResources: any
     _projectNamespace: str
 
+    k8sProviderConfigCredentialsSecret: core.K8sObjectSecretWrapper {
+        _clusterName = _k8sClusterName
+        _name = k8sUtils.k8sProviderConfigSecretName(_projectNamespace, _k8sClusterName)
+        _namespace = _projectNamespace
+        _projectNamespace = _projectNamespace
+        _secretName = k8sUtils.k8sProviderConfigSecretName(_projectNamespace, _k8sClusterName)
+        _stringData = {}
+        managedResource.spec.references = {
+            patchesFrom = {
+                apiVersion = "v1"
+                fieldPath = "data.value"
+                kind = "Secret"
+                name = "bootstrap-k8s-ctrl"
+                namespace = "bootstrap"
+            }
+            toFieldPath = "data.value"
+        }
+    }
+    k8sProviderConfig: core.K8sProviderConfigWrapper {
+        _clusterName = _k8sClusterName
+        _credentialsSecretName = k8sProviderConfigCredentialsSecret.managedResource.spec.forProvider.metadata.name
+        _credentialsSecretNamespace = k8sProviderConfigCredentialsSecret.managedResource.spec.forProvider.metadata.namespace
+        _projectNamespace = _projectNamespace
+    }
     k8sAppBundleCrds: K8sAppBundleCrds {
         _clusterName = _k8sClusterName
         _projectNamespace = _projectNamespace
@@ -42,12 +67,18 @@ schema XpControlPlaneProject:
         k8sAppsInfrastructureOsCSIDriver.managedResources
         k8sAppsInfrastructureOsExternalDNS.managedResources
         k8sAppsPlatformBundle.managedResources
-    ], [])
+    ], [
+        k8sProviderConfigCredentialsSecret.managedResource
+        k8sProviderConfig.managedResource
+    ])
 
     usages: [core.Usage] = sum([
         k8sAppBundleCrds.usages
         k8sAppsInfrastructureOsCSIDriver.usages
         k8sAppsInfrastructureOsExternalDNS.usages
         k8sAppsPlatformBundle.usages
-    ], [])
+    ], [
+        k8sProviderConfigCredentialsSecret.usages
+        k8sProviderConfig.usages
+    ])
 

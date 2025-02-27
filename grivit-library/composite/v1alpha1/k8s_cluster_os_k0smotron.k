@@ -110,14 +110,36 @@ clouds:
         _name = "${_name}-worker-machine-deployment"
         _projectNamespace = _projectNamespace
     }
-    providerConfig: core.K8sProviderConfigWrapper {
-        _name = "${_projectNamespace}-${_name}-config"
-        _credentialsSecretName = "${cluster.managedResource.metadata.name}-kubeconfig"
-        _credentialsSecretNamespace = _projectNamespace
+    k8sProviderConfigCredentialsSecret: core.K8sObjectSecretWrapper {
+        _clusterName = _name
+        _name = k8sUtils.k8sProviderConfigSecretName(_projectNamespace, _name)
+        _namespace = _projectNamespace
+        _projectNamespace = _projectNamespace
+        _secretName = k8sUtils.k8sProviderConfigSecretName(_projectNamespace, _name)
+        _stringData = {}
+        managedResource.spec.references = {
+            patchesFrom = {
+                apiVersion = "v1"
+                fieldPath = "data.value"
+                kind = "Secret"
+                name = "${cluster.managedResource.metadata.name}-kubeconfig"
+                namespace = _projectNamespace
+            }
+            toFieldPath = "data.value"
+        }
         _uses = [
             cluster.managedResource
             openstackCluster.managedResource
             controlPlaneWrapper.managedResource
+        ]
+    }
+    providerConfig: core.K8sProviderConfigWrapper {
+        _clusterName = _name
+        _credentialsSecretName = k8sProviderConfigCredentialsSecret.managedResource.spec.forProvider.metadata.name
+        _credentialsSecretNamespace = k8sProviderConfigCredentialsSecret.managedResource.spec.forProvider.metadata.namespace
+        _projectNamespace = _projectNamespace
+        _uses = [
+            k8sProviderConfigCredentialsSecret.managedResource
         ]
     }
     k8sCRDsBundle: K8sAppBundleCrds {
@@ -153,6 +175,7 @@ clouds:
         workerConfigTemplate.managedResource
         workerMachineDeployment.managedResource
         workerMachineTemplate.managedResource
+        k8sProviderConfigCredentialsSecret.managedResource
         providerConfig.managedResource
     ] + sum([
         k8sCRDsBundle.managedResources
@@ -170,6 +193,7 @@ clouds:
         workerConfigTemplate.usages
         workerMachineDeployment.usages
         workerMachineTemplate.usages
+        k8sProviderConfigCredentialsSecret.usages
         providerConfig.usages
         k8sCRDsBundle.usages
         k8sAppsInfrastructureOsBundle.usages
