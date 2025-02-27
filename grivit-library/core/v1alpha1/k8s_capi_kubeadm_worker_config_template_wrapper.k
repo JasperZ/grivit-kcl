@@ -71,7 +71,7 @@ override_path = true
                 }
             }
         }
-        spec.providerConfigRef.name = "${_projectNamespace}-k8s-ctrl"
+        spec.providerConfigRef.name = k8sProviderConfigName(_projectNamespace, "ctrl")
     }
     usages: [Usage] = []
 

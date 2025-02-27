@@ -78,7 +78,7 @@ schema K8sCapiOsClusterWrapper:
         }
         spec.readiness.celQuery = "object.status.ready == true"
         spec.readiness.policy = "DeriveFromCelQuery"
-        spec.providerConfigRef.name = "${_projectNamespace}-k8s-ctrl"
+        spec.providerConfigRef.name = k8sProviderConfigName(_projectNamespace, "ctrl")
     }
     usages: [Usage] = []
 

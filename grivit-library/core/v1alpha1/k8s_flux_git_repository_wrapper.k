@@ -29,7 +29,7 @@ schema K8sFluxGitRepositoryWrapper:
                     }
                 }
             }
-            providerConfigRef.name = "${_projectNamespace}-k8s-ctrl"
+            providerConfigRef.name = k8sProviderConfigName(_projectNamespace, "ctrl")
         }
     }
     usages: [Usage] = []

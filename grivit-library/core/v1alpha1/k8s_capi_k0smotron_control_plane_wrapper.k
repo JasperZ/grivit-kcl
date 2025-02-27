@@ -41,7 +41,7 @@ schema K8sCapiK0smotronControlPlaneWrapper:
             }
         }
         spec.readiness.policy = "AllTrue"
-        spec.providerConfigRef.name = "{_projectNamespace}-ctrl-$k8s"
+        spec.providerConfigRef.name = k8sProviderConfigName(_projectNamespace, "ctrl")
     }
     usages: [Usage] = []
 

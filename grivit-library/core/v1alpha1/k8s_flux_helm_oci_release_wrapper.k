@@ -40,7 +40,7 @@ schema K8sFluxHelmOciReleaseWrapper:
                 }
                 kubeConfig = {
                     secretRef = {
-                        name = "${_projectNamespace}-k8s-${_clusterName}-provider"
+                        name = k8sProviderConfigSecretName(_projectNamespace, _clusterName)
                     }
                 }
                 upgrade = {
@@ -60,7 +60,7 @@ schema K8sFluxHelmOciReleaseWrapper:
             }
         }
         spec.readiness.policy = "AllTrue"
-        spec.providerConfigRef.name = "${_projectNamespace}-k8s-ctrl"
+        spec.providerConfigRef.name = k8sProviderConfigName(_projectNamespace, "ctrl")
     }
     usages: [Usage] = [Usage {
         metadata.name = "${_name}-uses-${_projectNamespace}-k8s-${_clusterName}"

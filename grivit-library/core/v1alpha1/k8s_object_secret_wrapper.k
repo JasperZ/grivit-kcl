@@ -22,7 +22,7 @@ schema K8sObjectSecretWrapper:
             type = "Opaque"
             stringData = _stringData
         }
-        spec.providerConfigRef.name = "${_projectNamespace}-k8s-${_clusterName}"
+        spec.providerConfigRef.name = k8sProviderConfigName(_projectNamespace, _clusterName)
     }
     usages: [Usage] = [Usage {
         metadata.name = "${_name}-uses-${ofResource.metadata.name}"
