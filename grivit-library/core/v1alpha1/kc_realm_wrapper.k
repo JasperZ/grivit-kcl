@@ -20,7 +20,7 @@ schema KcRealmWrapper:
         metadata.name = _name
         spec.forProvider.enabled = True
         spec.forProvider.realm = _realmId
-        spec.providerConfigRef.name = kcProviderConfigSecretName(_projectNamespace, _instanceOwnerProjectName, _instanceName, "master")
+        spec.providerConfigRef.name = kcProviderConfigName(_projectNamespace, _instanceOwnerProjectName, _instanceName, "master")
     }
     usages: [Usage] = []
 

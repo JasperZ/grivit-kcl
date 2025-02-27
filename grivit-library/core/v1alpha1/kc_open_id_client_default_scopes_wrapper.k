@@ -31,7 +31,7 @@ schema KcOpenIdClientDefaultScopesWrapper:
             "web-origins"
         ] + _additionalScopes
         spec.forProvider.realmId = _realmId
-        spec.providerConfigRef.name = kcProviderConfigSecretName(_projectNamespace, _instanceOwnerProjectName, _instanceName, _realmId)
+        spec.providerConfigRef.name = kcProviderConfigName(_projectNamespace, _instanceOwnerProjectName, _instanceName, _realmId)
     }
     usages: [Usage] = [Usage {
         metadata.name = "${_name}-uses-${ofResource.metadata.name}"
