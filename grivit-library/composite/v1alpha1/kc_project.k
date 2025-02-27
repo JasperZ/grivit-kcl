@@ -11,6 +11,7 @@ schema KcProject:
 
     realm = core.KcRealmWrapper {
         _instanceName = _instanceName
+        _instanceOwnerProjectName = _instanceOwnerProjectName
         _name = "${_name}-realm"
         _projectNamespace = _projectNamespace
         _realmId = _realmId
@@ -19,6 +20,7 @@ schema KcProject:
     adminGroup = core.KcGroupWrapper {
         _groupName = "admin"
         _instanceName = _instanceName
+        _instanceOwnerProjectName = _instanceOwnerProjectName
         _name = "${_name}-admin-group"
         _projectNamespace = _projectNamespace
         _realmId = realm.managedResource.spec.forProvider.realm
@@ -27,6 +29,7 @@ schema KcProject:
     viewerGroup = core.KcGroupWrapper {
         _groupName = "viewer"
         _instanceName = _instanceName
+        _instanceOwnerProjectName = _instanceOwnerProjectName
         _name = "${_name}-viewer-group"
         _projectNamespace = _projectNamespace
         _realmId = realm.managedResource.spec.forProvider.realm
@@ -34,6 +37,7 @@ schema KcProject:
 
     groupClientScope = core.KcOpenIdClientScopeWrapper {
         _instanceName = _instanceName
+        _instanceOwnerProjectName = _instanceOwnerProjectName
         _name = "${_name}-group-client-scope"
         _projectNamespace = _projectNamespace
         _realmId = realm.managedResource.spec.forProvider.realm
@@ -44,12 +48,14 @@ schema KcProject:
         _claimName = "groups"
         _clientScopeId = groupClientScope.getClientScopeId(_observedComposedResources)
         _instanceName = _instanceName
+        _instanceOwnerProjectName = _instanceOwnerProjectName
         _name = "${_name}-groups-mapper"
         _projectNamespace = _projectNamespace
         _realmId = realm.managedResource.spec.forProvider.realm
     }
     crossplaneClient: core.KcOpenIdClientKcXpProviderWrapper {
         _instanceName = _instanceName
+        _instanceOwnerProjectName = _instanceOwnerProjectName
         _projectNamespace = _projectNamespace
         _realmId = realm.managedResource.spec.forProvider.realm
     }
@@ -129,6 +135,7 @@ output "realm_management_client_id" {
     crossplaneClientRealmAdminRole: core.KcOpenIdClientServiceAccountRole {
         _clientId = realmManagementClientObserve.getOutput(_observedComposedResources, "realm_management_client_id")
         _instanceName = _instanceName
+        _instanceOwnerProjectName = _instanceOwnerProjectName
         _name = "${_name}-crossplane-client-realm-admin"
         _projectNamespace = _projectNamespace
         _realmId = realm.getAtProviderId(_observedComposedResources)
