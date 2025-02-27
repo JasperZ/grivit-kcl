@@ -1,0 +1,42 @@
+schema ArgoCdProviderConfigK8sCredentialsSecretWrapper:
+    _argoCdProjectName: str
+    _argoCdInstanceName: str
+    _argoCdInstanceOwnerProjectName: str
+    _jwtToken: str
+    _projectNamespace: str
+    _uses: [ManagedResource] = []
+
+    _resourceName: str = argoCdProviderConfigSecretName(_projectNamespace, _argoCdInstanceOwnerProjectName, _argoCdInstanceName, _argoCdProjectName)
+
+    managedResource: ManagedResource {
+        apiVersion = "kubernetes.crossplane.io/v1alpha2"
+        kind = "Object"
+        metadata.name = _resourceName
+        metadata.annotations = {
+            "krm.kcl.dev/composition-resource-name" = _resourceName
+        }
+        spec.forProvider.manifest = {
+            apiVersion = "v1"
+            kind = "Secret"
+            metadata.name = _resourceName
+            metadata.namespace = _projectNamespace
+            type = "Opaque"
+            stringData = {
+                value = _jwtToken
+            }
+        }
+        spec.providerConfigRef.name = k8sProviderConfigSecretName(_projectNamespace, "ctrl")
+    }
+    usages: [Usage] = [Usage {
+        metadata.name = "${_resourceName}-uses-${ofResource.metadata.name}"
+        metadata.annotations = {
+            "krm.kcl.dev/composition-resource-name" = "${_resourceName}-uses-${ofResource.metadata.name}"
+        }
+        spec.by.apiVersion = managedResource.apiVersion
+        spec.by.kind = managedResource.kind
+        spec.by.resourceRef.name = managedResource.metadata.name
+        spec.of.apiVersion = ofResource.apiVersion
+        spec.of.kind = ofResource.kind
+        spec.of.resourceRef.name = ofResource.metadata.name
+    } for ofResource in _uses]
+
