@@ -164,9 +164,12 @@ output "realm_management_client_id" {
         ]
     }
     providerConfig: core.KcProviderConfigWrapper {
-        _name = "${_projectNamespace}-kc-${_instanceName}-${_realmId}"
         _credentialsSecretName = providerConfigCredentials.managedResource.spec.forProvider.manifest.metadata.name
         _credentialsSecretNamespace = providerConfigCredentials.managedResource.spec.forProvider.manifest.metadata.namespace
+        _kcInstanceName = _instanceName
+        _kcInstanceOwnerProjectName = _instanceOwnerProjectName
+        _kcRealmId = _realmId
+        _projectNamespace = _projectNamespace
         _uses = [
             providerConfigCredentials.managedResource
         ]

@@ -1,18 +1,23 @@
 schema KcProviderConfigWrapper:
-    _name: str
     _credentialsSecretName: str
     _credentialsSecretNamespace: str
+    _kcInstanceName: str
+    _kcInstanceOwnerProjectName: str
+    _kcRealmId: str
+    _projectNamespace: str
     _uses: [ManagedResource] = []
 
+    _resourceName: str = "${_projectNamespace}-kc-${_kcInstanceOwnerProjectName}-${_kcInstanceName}-${_kcRealmId}"
+
     managedResource: KcProviderConfig {
-        _name = _name
+        _name = _resourceName
         _credentialsSecretName = _credentialsSecretName
         _credentialsSecretNamespace = _credentialsSecretNamespace
     }
     usages: [Usage] = [Usage {
-        metadata.name = "${_name}-uses-${ofResource.metadata.name}"
+        metadata.name = "${_resourceName}-uses-${ofResource.metadata.name}"
         metadata.annotations = {
-            "krm.kcl.dev/composition-resource-name" = "${_name}-uses-${ofResource.metadata.name}"
+            "krm.kcl.dev/composition-resource-name" = "${_resourceName}-uses-${ofResource.metadata.name}"
         }
         spec.by.apiVersion = managedResource.apiVersion
         spec.by.kind = managedResource.kind

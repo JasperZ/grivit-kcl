@@ -69,9 +69,12 @@ schema K8sAppOperationsKeycloak:
         ]
     }
     providerConfig: core.KcProviderConfigWrapper {
-        _name = "${_projectNamespace}-kc-${_instanceName}-master"
         _credentialsSecretName = providerConfigCredentials.managedResource.spec.forProvider.manifest.metadata.name
         _credentialsSecretNamespace = providerConfigCredentials.managedResource.spec.forProvider.manifest.metadata.namespace
+        _kcInstanceName = _instanceName
+        _kcInstanceOwnerProjectName = _instanceOwnerProjectName
+        _kcRealmId = "master"
+        _projectNamespace = _projectNamespace
         _uses = [
             providerConfigCredentials.managedResource
         ]
