@@ -1,4 +1,5 @@
 import core.v1alpha1 as core
+import core.v1alpha1.kc_utils as kcUtils
 
 schema K8sAppOperationsKeycloak:
     _adminPassword: str
@@ -47,10 +48,10 @@ schema K8sAppOperationsKeycloak:
     }
     providerConfigCredentials: core.K8sObjectSecretWrapper {
         _clusterName = "ctrl"
-        _name = "${_projectNamespace}-kc-${_instanceOwnerProjectName}-${_instanceName}-master-provider"
+        _name = kcUtils.kcProviderConfigSecretName(_projectNamespace, _instanceOwnerProjectName, _instanceName, "master")
         _namespace = _projectNamespace
         _projectNamespace = _projectNamespace
-        _secretName = "${_projectNamespace}-kc-${_instanceOwnerProjectName}-${_instanceName}-master-provider"
+        _secretName = kcUtils.kcProviderConfigSecretName(_projectNamespace, _instanceOwnerProjectName, _instanceName, "master")
         _stringData = {
             value = """\
 {

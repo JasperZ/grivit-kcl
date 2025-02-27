@@ -26,7 +26,7 @@ schema KcUserGroupsWrapper:
         spec.forProvider.groupIds = _groupIds
         spec.forProvider.realmId = _realmId
         spec.forProvider.userId = _userId
-        spec.providerConfigRef.name = "${_projectNamespace}-kc-${_instanceOwnerProjectName}-${_instanceName}-${_realmId}"
+        spec.providerConfigRef.name = kcProviderConfigSecretName(_projectNamespace, _instanceOwnerProjectName, _instanceName, _realmId)
     }
     usages: [Usage] = [Usage {
         metadata.name = "${_resourceName}-uses-${ofResource.metadata.name}"
