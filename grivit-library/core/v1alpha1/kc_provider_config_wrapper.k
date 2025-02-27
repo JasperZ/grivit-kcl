@@ -7,7 +7,7 @@ schema KcProviderConfigWrapper:
     _projectNamespace: str
     _uses: [ManagedResource] = []
 
-    _resourceName: str = "${_projectNamespace}-kc-${_kcInstanceOwnerProjectName}-${_kcInstanceName}-${_kcRealmId}"
+    _resourceName: str = kcProviderConfigName(_projectNamespace, _kcInstanceOwnerProjectName, _kcInstanceName, _kcRealmId)
 
     managedResource: KcProviderConfig {
         _name = _resourceName
