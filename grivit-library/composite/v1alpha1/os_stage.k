@@ -66,9 +66,9 @@ schema OsStage:
         ]
     }
     providerConfig: core.OsProviderConfigWrapper {
-        _name = _projectNamespace
         _credentialsSecretName = cloudConfig.managedResource.spec.forProvider.manifest.metadata.name
         _credentialsSecretNamespace = cloudConfig.managedResource.spec.forProvider.manifest.metadata.namespace
+        _projectNamespace = _projectNamespace
         _uses = [
             cloudConfig.managedResource
         ]

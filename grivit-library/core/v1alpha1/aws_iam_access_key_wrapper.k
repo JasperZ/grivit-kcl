@@ -13,7 +13,7 @@ schema AwsIamAccessKeyWrapper:
             "krm.kcl.dev/composition-resource-name" = _name
         }
         spec.forProvider.user = _awsIamUserName
-        spec.providerConfigRef.name = "${_projectNamespace}-aws"
+        spec.providerConfigRef.name = awsProviderConfigName(_projectNamespace)
         spec.writeConnectionSecretToRef.name = _name
         spec.writeConnectionSecretToRef.namespace = _projectNamespace
     }

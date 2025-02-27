@@ -13,7 +13,7 @@ schema AwsIamUserPolicyAttachmentWrapper:
         }
         spec.forProvider.policyArn = _policyArn
         spec.forProvider.user = _userName
-        spec.providerConfigRef.name = "${_projectNamespace}-aws"
+        spec.providerConfigRef.name = awsProviderConfigName(_projectNamespace)
     }
     usages: [Usage] = []
 

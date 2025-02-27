@@ -10,7 +10,7 @@ schema AwsIamUserWrapper:
             "krm.kcl.dev/composition-resource-name" = _name
         }
         spec.forProvider = {}
-        spec.providerConfigRef.name = "${_projectNamespace}-aws"
+        spec.providerConfigRef.name = awsProviderConfigName(_projectNamespace)
     }
     usages: [Usage] = []
 

@@ -2,21 +2,20 @@ schema HelmProviderConfigWrapper:
     _clusterName: str
     _credentialsSecretName: str
     _credentialsSecretNamespace: str
-    _name: str
     _projectNamespace: str
     _uses: [ManagedResource] = []
 
-    resourceName = helmProviderConfigName(_projectNamespace, _clusterName)
+    _resourceName = helmProviderConfigName(_projectNamespace, _clusterName)
 
     managedResource: HelmProviderConfig {
-        _name = _name
+        _name = _resourceName
         _credentialsSecretName = _credentialsSecretName
         _credentialsSecretNamespace = _credentialsSecretNamespace
     }
     usages: [Usage] = [Usage {
-        metadata.name = "${_name}-uses-${ofResource.metadata.name}"
+        metadata.name = "${_resourceName}-uses-${ofResource.metadata.name}"
         metadata.annotations = {
-            "krm.kcl.dev/composition-resource-name" = "${_name}-uses-${ofResource.metadata.name}"
+            "krm.kcl.dev/composition-resource-name" = "${_resourceName}-uses-${ofResource.metadata.name}"
         }
         spec.by.apiVersion = managedResource.apiVersion
         spec.by.kind = managedResource.kind

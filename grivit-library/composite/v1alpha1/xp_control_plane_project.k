@@ -1,5 +1,8 @@
 import core.v1alpha1 as core
+import core.v1alpha1.aws_utils as awsUtils
+import core.v1alpha1.helm_utils as helmUtils
 import core.v1alpha1.k8s_utils as k8sUtils
+import core.v1alpha1.os_utils as osUtils
 
 schema XpControlPlaneProject:
     _contactEmail: str
@@ -8,6 +11,59 @@ schema XpControlPlaneProject:
     _observedComposedResources: any
     _projectNamespace: str
 
+    awsProviderConfigCredentialsSecret: core.K8sObjectSecretWrapper {
+        _clusterName = _k8sClusterName
+        _name = awsUtils.awsProviderConfigSecretName(_projectNamespace)
+        _namespace = _projectNamespace
+        _projectNamespace = _projectNamespace
+        _secretName = awsUtils.awsProviderConfigSecretName(_projectNamespace)
+        _stringData = {}
+        managedResource.spec.references = {
+            patchesFrom = {
+                apiVersion = "v1"
+                fieldPath = "data.value"
+                kind = "Secret"
+                name = "bootstrap-aws"
+                namespace = "bootstrap"
+            }
+            toFieldPath = "data.value"
+        }
+    }
+    awsProviderConfig: core.AwsProviderConfigWrapper {
+        _credentialsSecretName = awsProviderConfigCredentialsSecret.managedResource.spec.forProvider.metadata.name
+        _credentialsSecretNamespace = awsProviderConfigCredentialsSecret.managedResource.spec.forProvider.metadata.namespace
+        _projectNamespace = _projectNamespace
+        _uses = [
+            awsProviderConfigCredentialsSecret.managedResource
+        ]
+    }
+    helmProviderConfigCredentialsSecret: core.K8sObjectSecretWrapper {
+        _clusterName = _k8sClusterName
+        _name = helmUtils.helmProviderConfigSecretName(_projectNamespace, _k8sClusterName)
+        _namespace = _projectNamespace
+        _projectNamespace = _projectNamespace
+        _secretName = helmUtils.helmProviderConfigSecretName(_projectNamespace, _k8sClusterName)
+        _stringData = {}
+        managedResource.spec.references = {
+            patchesFrom = {
+                apiVersion = "v1"
+                fieldPath = "data.value"
+                kind = "Secret"
+                name = "bootstrap-helm"
+                namespace = "bootstrap"
+            }
+            toFieldPath = "data.value"
+        }
+    }
+    helmProviderConfig: core.HelmProviderConfigWrapper {
+        _clusterName = _k8sClusterName
+        _credentialsSecretName = helmProviderConfigCredentialsSecret.managedResource.spec.forProvider.metadata.name
+        _credentialsSecretNamespace = helmProviderConfigCredentialsSecret.managedResource.spec.forProvider.metadata.namespace
+        _projectNamespace = _projectNamespace
+        _uses = [
+            helmProviderConfigCredentialsSecret.managedResource
+        ]
+    }
     k8sProviderConfigCredentialsSecret: core.K8sObjectSecretWrapper {
         _clusterName = _k8sClusterName
         _name = k8sUtils.k8sProviderConfigSecretName(_projectNamespace, _k8sClusterName)
@@ -20,7 +76,7 @@ schema XpControlPlaneProject:
                 apiVersion = "v1"
                 fieldPath = "data.value"
                 kind = "Secret"
-                name = "bootstrap-k8s-ctrl"
+                name = "bootstrap-k8s"
                 namespace = "bootstrap"
             }
             toFieldPath = "data.value"
@@ -31,6 +87,35 @@ schema XpControlPlaneProject:
         _credentialsSecretName = k8sProviderConfigCredentialsSecret.managedResource.spec.forProvider.metadata.name
         _credentialsSecretNamespace = k8sProviderConfigCredentialsSecret.managedResource.spec.forProvider.metadata.namespace
         _projectNamespace = _projectNamespace
+        _uses = [
+            k8sProviderConfigCredentialsSecret.managedResource
+        ]
+    }
+    osProviderConfigCredentialsSecret: core.K8sObjectSecretWrapper {
+        _clusterName = _k8sClusterName
+        _name = osUtils.osProviderConfigSecretName(_projectNamespace)
+        _namespace = _projectNamespace
+        _projectNamespace = _projectNamespace
+        _secretName = osUtils.osProviderConfigSecretName(_projectNamespace)
+        _stringData = {}
+        managedResource.spec.references = {
+            patchesFrom = {
+                apiVersion = "v1"
+                fieldPath = "data.value"
+                kind = "Secret"
+                name = "bootstrap-os"
+                namespace = "bootstrap"
+            }
+            toFieldPath = "data.value"
+        }
+    }
+    osProviderConfig: core.OsProviderConfigWrapper {
+        _credentialsSecretName = k8sProviderConfigCredentialsSecret.managedResource.spec.forProvider.metadata.name
+        _credentialsSecretNamespace = k8sProviderConfigCredentialsSecret.managedResource.spec.forProvider.metadata.namespace
+        _projectNamespace = _projectNamespace
+        _uses = [
+            osProviderConfigCredentialsSecret.managedResource
+        ]
     }
     k8sAppBundleCrds: K8sAppBundleCrds {
         _clusterName = _k8sClusterName
@@ -68,8 +153,14 @@ schema XpControlPlaneProject:
         k8sAppsInfrastructureOsExternalDNS.managedResources
         k8sAppsPlatformBundle.managedResources
     ], [
+        awsProviderConfigCredentialsSecret.managedResource
+        awsProviderConfig.managedResource
+        helmProviderConfigCredentialsSecret.managedResource
+        helmProviderConfig.managedResource
         k8sProviderConfigCredentialsSecret.managedResource
         k8sProviderConfig.managedResource
+        osProviderConfigCredentialsSecret.managedResource
+        osProviderConfig.managedResource
     ])
 
     usages: [core.Usage] = sum([
@@ -78,7 +169,13 @@ schema XpControlPlaneProject:
         k8sAppsInfrastructureOsExternalDNS.usages
         k8sAppsPlatformBundle.usages
     ], [
+        awsProviderConfigCredentialsSecret.usages
+        awsProviderConfig.usages
+        helmProviderConfigCredentialsSecret.usages
+        helmProviderConfig.usages
         k8sProviderConfigCredentialsSecret.usages
         k8sProviderConfig.usages
+        osProviderConfigCredentialsSecret.usages
+        osProviderConfig.usages
     ])
 

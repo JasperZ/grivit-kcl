@@ -13,7 +13,7 @@ schema AwsIamPolicyWrapper:
         }
         spec.forProvider.description = _description
         spec.forProvider.policy = _policy
-        spec.providerConfigRef.name = "${_projectNamespace}-aws"
+        spec.providerConfigRef.name = awsProviderConfigName(_projectNamespace)
     }
     usages: [Usage] = []
 
