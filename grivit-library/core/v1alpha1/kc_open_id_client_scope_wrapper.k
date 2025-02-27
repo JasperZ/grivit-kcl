@@ -13,6 +13,12 @@ schema KcOpenIdClientScopeWrapper:
         metadata.annotations = {
             "krm.kcl.dev/composition-resource-name" = _name
         }
+        metadata.labels = {
+            "keycloak-instance" = _instanceName
+            "keycloak-instance-owner-roject" = _instanceOwnerProjectName
+            "keycloak-realm-id" = _realmId
+            "project" = _projectNamespace
+        }
         spec.forProvider.includeInTokenScope = True
         spec.forProvider.name = _scopeName
         spec.forProvider.realmId = _realmId

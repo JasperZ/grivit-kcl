@@ -23,11 +23,15 @@ schema KcProviderConfig:
 
 schema KcProviderConfigMetadata:
     annotations: KcProviderConfigMetadataAnnotations
+    labels?: KcProviderConfigMetadataLabels
     name: str
 
 schema KcProviderConfigMetadataAnnotations:
     "krm.kcl.dev/composition-resource-name": str
     "krm.kcl.dev/ready": str = "True"
+
+schema KcProviderConfigMetadataLabels:
+    [str]: str
 
 schema KcProviderConfigSpec:
     credentials: KcProviderConfigSpecCredentials

@@ -16,6 +16,12 @@ schema KcUserGroupsWrapper:
         metadata.annotations = {
             "krm.kcl.dev/composition-resource-name" = _resourceName
         }
+        metadata.labels = {
+            "keycloak-instance" = _instanceName
+            "keycloak-instance-owner-roject" = _instanceOwnerProjectName
+            "keycloak-realm-id" = _realmId
+            "project" = _projectNamespace
+        }
         spec.forProvider.exhaustive = True
         spec.forProvider.groupIds = _groupIds
         spec.forProvider.realmId = _realmId

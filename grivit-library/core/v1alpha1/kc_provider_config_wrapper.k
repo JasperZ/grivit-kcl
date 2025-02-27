@@ -13,6 +13,12 @@ schema KcProviderConfigWrapper:
         _name = _resourceName
         _credentialsSecretName = _credentialsSecretName
         _credentialsSecretNamespace = _credentialsSecretNamespace
+        metadata.labels = {
+            "keycloak-instance" = _kcInstanceName
+            "keycloak-instance-owner-roject" = _kcInstanceOwnerProjectName
+            "keycloak-realm-id" = _kcRealmId
+            "project" = _projectNamespace
+        }
     }
     usages: [Usage] = [Usage {
         metadata.name = "${_resourceName}-uses-${ofResource.metadata.name}"
