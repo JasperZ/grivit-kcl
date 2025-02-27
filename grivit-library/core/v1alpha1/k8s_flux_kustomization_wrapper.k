@@ -34,7 +34,7 @@ schema K8sFluxKustomizationWrapper:
                 timeout = "1m"
                 kubeConfig = {
                     secretRef = {
-                        name = "${_projectNamespace}-${_clusterName}-k8s-provider"
+                        name = "${_projectNamespace}-k8s-${_clusterName}-provider"
                     }
                 }
                 dependsOn = [{
@@ -43,7 +43,7 @@ schema K8sFluxKustomizationWrapper:
             }
         }
         spec.readiness.policy = "AllTrue"
-        spec.providerConfigRef.name = "${_projectNamespace}-ctrl-k8s"
+        spec.providerConfigRef.name = "${_projectNamespace}-k8s-ctrl"
     }
     usages: [Usage] = []
 

@@ -20,7 +20,7 @@ schema K8sAppInfrastructureClusterAutoscaler:
             }
             cloudProvider = "clusterapi"
             clusterAPIMode = "kubeconfig-incluster"
-            clusterAPIKubeconfigSecret = "${_projectNamespace}-${_clusterName}-k8s-provider"
+            clusterAPIKubeconfigSecret = "${_projectNamespace}-k8s-${_clusterName}-provider"
             resources = {
                 limits.cpu = "100m"
                 limits.memory = "128Mi"

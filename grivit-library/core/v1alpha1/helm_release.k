@@ -23,7 +23,7 @@ schema HelmReleaseWrapper:
             namespace = _targetNamespace
             skipCreateNamespace = False
         }
-        spec.providerConfigRef.name = "${_projectNamespace}-${_clusterName}-k8s"
+        spec.providerConfigRef.name = "${_projectNamespace}-helm-${_clusterName}"
     }
     usages: [Usage] = []
 

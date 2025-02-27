@@ -1,6 +1,7 @@
 schema ArgoCdProject:
     _argoCdDomain: str
     _argoCdInstanceName: str
+    _argoCdInstanceOwnerProjectName: str
     _kcDomain: str
     _kcInstanceName: str
     _kcRealmId: str
@@ -59,7 +60,7 @@ schema ArgoCdProject:
         _clientId = providerConfigKcClient.managedResource.spec.forProvider.clientId
         _clientSecret = providerConfigKcClient.getClientSecret(_observedComposedResources)
         _domain = _kcDomain
-        _name = "${_projectNamespace}-argocd-${_argoCdInstanceName}-${_projectName}-token"
+        _name = "${_projectNamespace}-argocd-${_argoCdInstanceOwnerProjectName}-${_argoCdInstanceName}-${_projectName}-token"
         _realmId = _kcRealmId
         _projectNamespace = _projectNamespace
         _uses = [
@@ -69,10 +70,10 @@ schema ArgoCdProject:
     }
     providerConfigCredentialsSecret: core.K8sObjectSecretWrapper {
         _clusterName = "ctrl"
-        _name = "${_projectNamespace}-argocd-${_argoCdInstanceName}-${_projectName}-provider"
+        _name = "${_projectNamespace}-argocd-${_argoCdInstanceOwnerProjectName}-${_argoCdInstanceName}-${_projectName}-provider"
         _namespace = _projectNamespace
         _projectNamespace = _projectNamespace
-        _secretName = "${_projectNamespace}-argocd-${_argoCdInstanceName}-${_projectName}-provider"
+        _secretName = "${_projectNamespace}-argocd-${_argoCdInstanceOwnerProjectName}-${_argoCdInstanceName}-${_projectName}-provider"
         _stringData = {
             value = providerConfigHttpJwtToken.getAccessToken(_observedComposedResources)
         }
@@ -81,10 +82,13 @@ schema ArgoCdProject:
         ]
     }
     providerConfig: core.ArgoCdProviderConfigWrapper {
-        _name = "${_projectNamespace}-argocd-${_argoCdInstanceName}-${_projectName}"
+        _argoCdDomain = _argoCdDomain
+        _argoCdProjectName = _projectName
+        _argoCdInstanceName = _argoCdInstanceName
+        _argoCdInstanceOwnerProjectName = _argoCdInstanceOwnerProjectName
         _credentialsSecretName = providerConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.name
         _credentialsSecretNamespace = providerConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.namespace
-        _domain = _argoCdDomain
+        _projectNamespace = _projectNamespace
         _uses = [
             providerConfigCredentialsSecret.managedResource
         ]
@@ -92,6 +96,7 @@ schema ArgoCdProject:
     argoCdProject: core.ArgoCdProjectWrapper {
         _adminGroupName = kcArgoCdAdminsGroup.managedResource.spec.forProvider.name
         _instanceName = _argoCdInstanceName
+        _instanceOwnerProjectName = _argoCdInstanceOwnerProjectName
         _projectName = _projectName
         _projectNamespace = _projectNamespace
         _viewerGroupName = kcArgoCdViewersGroup.managedResource.spec.forProvider.name

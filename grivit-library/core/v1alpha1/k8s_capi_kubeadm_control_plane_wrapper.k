@@ -90,7 +90,7 @@ override_path = true
             }
         }
         spec.readiness.policy = "AllTrue"
-        spec.providerConfigRef.name = "${_projectNamespace}-ctrl-k8s"
+        spec.providerConfigRef.name = "${_projectNamespace}-k8s-ctrl"
     }
     usages: [Usage] = []
 

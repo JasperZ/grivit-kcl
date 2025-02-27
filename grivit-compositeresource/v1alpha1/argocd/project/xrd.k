@@ -34,6 +34,9 @@ schema Xrd(core.CompositeResourceDefinition):
                                     argoCdInstanceName = {
                                         type = "string"
                                     }
+                                    argoCdInstanceOwnerProjectName = {
+                                        type = "string"
+                                    }
                                     kcDomain = {
                                         type = "string"
                                     }

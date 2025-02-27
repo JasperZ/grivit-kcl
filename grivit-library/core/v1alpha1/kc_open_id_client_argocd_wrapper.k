@@ -3,6 +3,7 @@ import base64
 schema KcOpenIdClientArgoCdWrapper:
     _argoCdDomain: str
     _instanceName: str
+    _instanceOwnerProjectName: str
     _projectNamespace: str
     _realmId: str
 
@@ -31,7 +32,7 @@ schema KcOpenIdClientArgoCdWrapper:
         spec.forProvider.webOrigins = [_baseUrl]
         spec.writeConnectionSecretToRef.name = "${_resourceName}-conn"
         spec.writeConnectionSecretToRef.namespace = _projectNamespace
-        spec.providerConfigRef.name = "${_projectNamespace}-kc-${_instanceName}-${_realmId}"
+        spec.providerConfigRef.name = "${_projectNamespace}-kc-${_instanceOwnerProjectName}-${_instanceName}-${_realmId}"
     }
     usages: [Usage] = []
 

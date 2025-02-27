@@ -17,7 +17,7 @@ schema K8sObjectNamespaceWrapper:
             kind = "Namespace"
             metadata.name = _namespaceName
         }
-        spec.providerConfigRef.name = "${_projectNamespace}-${_clusterName}-k8s"
+        spec.providerConfigRef.name = "${_projectNamespace}-k8s-${_clusterName}"
     }
     usages: [Usage] = [Usage {
         metadata.name = "${_name}-uses-${ofResource.metadata.name}"

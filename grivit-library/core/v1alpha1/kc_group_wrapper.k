@@ -1,6 +1,7 @@
 schema KcGroupWrapper:
     _groupName: str
     _instanceName: str
+    _instanceOwnerProjectName: str
     _name: str
     _projectNamespace: str
     _realmId: str
@@ -14,7 +15,7 @@ schema KcGroupWrapper:
         }
         spec.forProvider.name = _groupName
         spec.forProvider.realmId = _realmId
-        spec.providerConfigRef.name = "${_projectNamespace}-kc-${_instanceName}-${_realmId}"
+        spec.providerConfigRef.name = "${_projectNamespace}-kc-${_instanceOwnerProjectName}-${_instanceName}-${_realmId}"
     }
     usages: [Usage] = []
 

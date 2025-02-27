@@ -2,6 +2,7 @@ import base64
 
 schema KcOpenIdClientKcXpProviderWrapper:
     _instanceName: str
+    _instanceOwnerProjectName: str
     _projectNamespace: str
     _realmId: str
 
@@ -25,7 +26,7 @@ schema KcOpenIdClientKcXpProviderWrapper:
         spec.forProvider.standardFlowEnabled = False
         spec.writeConnectionSecretToRef.name = "${_resourceName}-conn"
         spec.writeConnectionSecretToRef.namespace = _projectNamespace
-        spec.providerConfigRef.name = "${_projectNamespace}-kc-${_instanceName}-master"
+        spec.providerConfigRef.name = "${_projectNamespace}-kc-${_instanceOwnerProjectName}-${_instanceName}-master"
     }
     usages: [Usage] = []
 

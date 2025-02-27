@@ -27,7 +27,7 @@ schema K8sCapiK0smotronWorkerConfigTemplateWrapper:
                 }
             }
         }
-        spec.providerConfigRef.name = "${_projectNamespace}-ctrl-k8s"
+        spec.providerConfigRef.name = "${_projectNamespace}-k8s-ctrl"
     }
     usages: [Usage] = []
 

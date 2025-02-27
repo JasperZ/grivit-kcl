@@ -2,6 +2,7 @@ schema KcOpenIdGroupMembershipProtocolMapperWrapper:
     _claimName: str
     _clientScopeId: str
     _instanceName: str
+    _instanceOwnerProjectName: str
     _name: str
     _projectNamespace: str
     _realmId: str
@@ -21,7 +22,7 @@ schema KcOpenIdGroupMembershipProtocolMapperWrapper:
         spec.forProvider.fullPath = False
         spec.forProvider.name = "groups"
         spec.forProvider.realmId = _realmId
-        spec.providerConfigRef.name = "${_projectNamespace}-kc-${_instanceName}-${_realmId}"
+        spec.providerConfigRef.name = "${_projectNamespace}-kc-${_instanceOwnerProjectName}-${_instanceName}-${_realmId}"
     }
     usages: [Usage] = []
 

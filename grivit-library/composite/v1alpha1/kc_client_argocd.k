@@ -4,11 +4,11 @@ schema KcClientArgoCd:
     _clientId: str
     _clusterName: str
     _domain: str
+    _instanceName: str
     _name: str
     _observedComposedResources: any
-    _realmId: str
     _projectNamespace: str
-    _instanceName: str
+    _realmId: str
 
     kcClient: core.KcOpenIdClientWrapper {
         _clientId = _clientId

@@ -15,6 +15,7 @@ schema K8sAppOperationsArgoCd:
     kcArgoCdClient: core.KcOpenIdClientArgoCdWrapper {
         _argoCdDomain = _domain
         _instanceName = _kcInstanceName
+        _instanceOwnerProjectName = _projectNamespace
         _projectNamespace = _projectNamespace
         _realmId = _kcRealmId
     }
@@ -22,6 +23,7 @@ schema K8sAppOperationsArgoCd:
         _additionalScopes = ["groups"]
         _clientId = kcArgoCdClient.getAtProviderId(_observedComposedResources)
         _instanceName = _kcInstanceName
+        _instanceOwnerProjectName = _projectNamespace
         _name = "${_name}-argocd-client-default-scopes"
         _projectNamespace = _projectNamespace
         _realmId = _kcRealmId
@@ -32,6 +34,7 @@ schema K8sAppOperationsArgoCd:
     kcArgoCdAdminsGroup = core.KcGroupArgoCdWrapper {
         _groupType = "admins"
         _instanceName = _instanceName
+        _instanceOwnerProjectName = _projectNamespace
         _projectName = "admin"
         _projectNamespace = _projectNamespace
         _realmId = _kcRealmId
@@ -179,6 +182,7 @@ g, ${kcArgoCdAdminsGroup.managedResource.spec.forProvider.name}, role:admin
     }
     providerConfigKcClient: core.KcOpenIdClientArgoCdXpProviderWrapper {
         _instanceName = _instanceName
+        _instanceOwnerProjectName = _projectNamespace
         _projectName = "admin"
         _projectNamespace = _projectNamespace
         _realmId = _kcRealmId
@@ -190,6 +194,7 @@ g, ${kcArgoCdAdminsGroup.managedResource.spec.forProvider.name}, role:admin
         _additionalScopes = ["groups"]
         _clientId = providerConfigKcClient.getAtProviderId(_observedComposedResources)
         _instanceName = _kcInstanceName
+        _instanceOwnerProjectName = _projectNamespace
         _name = "${providerConfigKcClient.managedResource.spec.forProvider.name}-client-default-scopes"
         _projectNamespace = _projectNamespace
         _realmId = _kcRealmId
@@ -200,6 +205,7 @@ g, ${kcArgoCdAdminsGroup.managedResource.spec.forProvider.name}, role:admin
     kcUserGroupsWrapper: core.KcUserGroupsWrapper {
         _groupIds = [kcArgoCdAdminsGroup.getAtProviderId(_observedComposedResources)]
         _instanceName = _instanceName
+        _instanceOwnerProjectName = _projectNamespace
         _projectNamespace = _projectNamespace
         _realmId = _kcRealmId
         _userId = providerConfigKcClient.getServiceAccountUserId(_observedComposedResources)
@@ -211,7 +217,7 @@ g, ${kcArgoCdAdminsGroup.managedResource.spec.forProvider.name}, role:admin
         _clientId = providerConfigKcClient.managedResource.spec.forProvider.clientId
         _clientSecret = providerConfigKcClient.getClientSecret(_observedComposedResources)
         _domain = _kcDomain
-        _name = "${_projectNamespace}-argocd-${_instanceName}-admin-token"
+        _name = "${_projectNamespace}-argocd-${_projectNamespace}-${_instanceName}-admin-token"
         _realmId = _kcRealmId
         _projectNamespace = _projectNamespace
         _uses = [
@@ -221,10 +227,10 @@ g, ${kcArgoCdAdminsGroup.managedResource.spec.forProvider.name}, role:admin
     }
     providerConfigCredentialsSecret: core.K8sObjectSecretWrapper {
         _clusterName = "ctrl"
-        _name = "${_projectNamespace}-argocd-${_instanceName}-admin-provider"
+        _name = "${_projectNamespace}-argocd-${_projectNamespace}-${_instanceName}-admin-provider"
         _namespace = _projectNamespace
         _projectNamespace = _projectNamespace
-        _secretName = "${_projectNamespace}-argocd-${_instanceName}-admin-provider"
+        _secretName = "${_projectNamespace}-argocd-${_projectNamespace}-${_instanceName}-admin-provider"
         _stringData = {
             value = providerConfigHttpJwtToken.getAccessToken(_observedComposedResources)
         }
@@ -233,10 +239,13 @@ g, ${kcArgoCdAdminsGroup.managedResource.spec.forProvider.name}, role:admin
         ]
     }
     providerConfig: core.ArgoCdProviderConfigWrapper {
-        _name = "${_projectNamespace}-argocd-${_instanceName}-admin"
+        _argoCdDomain = _domain
+        _argoCdProjectName = "admin"
+        _argoCdInstanceName = _instanceName
+        _argoCdInstanceOwnerProjectName = _projectNamespace
         _credentialsSecretName = providerConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.name
         _credentialsSecretNamespace = providerConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.namespace
-        _domain = _domain
+        _projectNamespace = _projectNamespace
         _uses = [
             providerConfigCredentialsSecret.managedResource
         ]

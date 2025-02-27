@@ -10,6 +10,7 @@ spec: any = observedCompositeResource.spec
 argoCdProject: composite.ArgoCdProject = composite.ArgoCdProject {
     _argoCdDomain = spec.argoCdDomain
     _argoCdInstanceName = spec.argoCdInstanceName
+    _argoCdInstanceOwnerProjectName = spec.argoCdInstanceOwnerProjectName
     _kcDomain = spec.kcDomain
     _kcInstanceName = spec.kcInstanceName
     _kcRealmId = spec.kcRealmId

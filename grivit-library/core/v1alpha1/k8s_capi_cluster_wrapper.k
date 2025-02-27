@@ -33,7 +33,7 @@ schema K8sCapiClusterWrapper:
             }
         }
         spec.readiness.policy = "AllTrue"
-        spec.providerConfigRef.name = "${_projectNamespace}-ctrl-k8s"
+        spec.providerConfigRef.name = "${_projectNamespace}-k8s-ctrl"
     }
     usages: [Usage] = [Usage {
         metadata.name = "${_name}-uses-${ofResource.metadata.name}"

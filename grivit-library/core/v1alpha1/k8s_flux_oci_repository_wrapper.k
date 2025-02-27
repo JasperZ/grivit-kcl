@@ -29,7 +29,7 @@ schema K8sFluxOciRepositoryWrapper:
                     }
                 }
             }
-            providerConfigRef.name = "${_projectNamespace}-ctrl-k8s"
+            providerConfigRef.name = "${_projectNamespace}-k8s-ctrl"
         }
     }
     usages: [Usage] = []

@@ -3,6 +3,7 @@ import core.v1alpha1 as core
 schema KcProject:
     _domain: str
     _instanceName: str
+    _instanceOwnerProjectName: str = _projectNamespace
     _name: str
     _observedComposedResources: any
     _projectNamespace: str
@@ -104,7 +105,7 @@ provider "keycloak" {
     realm     = var.realm
 }
 """
-        _credentialsSecretName = "${_projectNamespace}-${_instanceName}-master-kc-provider"
+        _credentialsSecretName = "${_projectNamespace}-kc-${_instanceOwnerProjectName}-${_instanceName}-master-provider"
         _credentialsSecretNamespace = _projectNamespace
         _uses = [crossplaneClient.managedResource]
     }
@@ -141,10 +142,10 @@ output "realm_management_client_id" {
     }
     providerConfigCredentials: core.K8sObjectSecretWrapper {
         _clusterName = "ctrl"
-        _name = "${_projectNamespace}-${_instanceName}-${_realmId}-kc-provider"
+        _name = "${_projectNamespace}-kc-${_instanceOwnerProjectName}-${_instanceName}-${_realmId}-provider"
         _namespace = _projectNamespace
         _projectNamespace = _projectNamespace
-        _secretName = "${_projectNamespace}-${_instanceName}-${_realmId}-kc-provider"
+        _secretName = "${_projectNamespace}-kc-${_instanceOwnerProjectName}-${_instanceName}-${_realmId}-provider"
         _stringData = {
             value = """\
 {

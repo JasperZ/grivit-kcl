@@ -1,11 +1,12 @@
 schema ArgoCdProjectWrapper:
     _adminGroupName: str
     _instanceName: str
+    _instanceOwnerProjectName: str
     _projectName: str
     _projectNamespace: str
     _viewerGroupName: str
 
-    _resourceName: str = "${_projectNamespace}-argocd-${_instanceName}-${_projectName}-project"
+    _resourceName: str = "${_projectNamespace}-argocd-${_instanceOwnerProjectName}-${_instanceName}-${_projectName}-project"
 
     managedResource: ManagedResource {
         apiVersion = "projects.argocd.crossplane.io/v1alpha1"
@@ -40,7 +41,7 @@ schema ArgoCdProjectWrapper:
                 }
             ]
         }
-        spec.providerConfigRef.name = "${_projectNamespace}-argocd-${_instanceName}-admin"
+        spec.providerConfigRef.name = "${_projectNamespace}-argocd-${_instanceOwnerProjectName}-${_instanceName}-admin"
     }
     usages: [Usage] = []
 

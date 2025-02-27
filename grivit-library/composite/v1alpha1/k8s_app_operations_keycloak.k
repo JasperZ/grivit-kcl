@@ -6,6 +6,7 @@ schema K8sAppOperationsKeycloak:
     _domain: str
     _fluxHelmReleaseDependencies?: [core.K8sFluxHelmReleaseWrapper | core.K8sFluxHelmOciReleaseWrapper] = []
     _instanceName: str
+    _instanceOwnerProjectName: str = _projectNamespace
     _name: str
     _projectNamespace: str
 
@@ -46,10 +47,10 @@ schema K8sAppOperationsKeycloak:
     }
     providerConfigCredentials: core.K8sObjectSecretWrapper {
         _clusterName = "ctrl"
-        _name = "${_projectNamespace}-${_instanceName}-master-kc-provider"
+        _name = "${_projectNamespace}-kc-${_instanceOwnerProjectName}-${_instanceName}-master-provider"
         _namespace = _projectNamespace
         _projectNamespace = _projectNamespace
-        _secretName = "${_projectNamespace}-${_instanceName}-master-kc-provider"
+        _secretName = "${_projectNamespace}-kc-${_instanceOwnerProjectName}-${_instanceName}-master-provider"
         _stringData = {
             value = """\
 {

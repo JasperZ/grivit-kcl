@@ -4,11 +4,12 @@ schema KcOpenIdClientWrapper:
     _clientId: str
     _description: str
     _instanceName: str
+    _instanceOwnerProjectName: str
     _name: str
     _projectNamespace: str
     _realmId: str
-    _validRedirectUris: [str]
     _url: str
+    _validRedirectUris: [str]
 
     managedResource: ManagedResource {
         apiVersion = "openidclient.keycloak.crossplane.io/v1alpha1"
@@ -31,7 +32,7 @@ schema KcOpenIdClientWrapper:
         spec.forProvider.webOrigins = [_url]
         spec.writeConnectionSecretToRef.name = "${_name}-conn"
         spec.writeConnectionSecretToRef.namespace = _projectNamespace
-        spec.providerConfigRef.name = "${_projectNamespace}-kc-${_instanceName}-${_realmId}"
+        spec.providerConfigRef.name = "${_projectNamespace}-kc-${_instanceOwnerProjectName}-${_instanceName}-${_realmId}"
     }
     usages: [Usage] = []
 
