@@ -57,8 +57,8 @@ schema XpControlPlaneProject:
     }
     helmProviderConfig: core.HelmProviderConfigWrapper {
         _clusterName = _k8sClusterName
-        _credentialsSecretName = helmProviderConfigCredentialsSecret.managedResource.spec.forProvider.metadata.name
-        _credentialsSecretNamespace = helmProviderConfigCredentialsSecret.managedResource.spec.forProvider.metadata.namespace
+        _credentialsSecretName = helmProviderConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.name
+        _credentialsSecretNamespace = helmProviderConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.namespace
         _projectNamespace = _projectNamespace
         _uses = [
             helmProviderConfigCredentialsSecret.managedResource
@@ -84,8 +84,8 @@ schema XpControlPlaneProject:
     }
     k8sProviderConfig: core.K8sProviderConfigWrapper {
         _clusterName = _k8sClusterName
-        _credentialsSecretName = k8sProviderConfigCredentialsSecret.managedResource.spec.forProvider.metadata.name
-        _credentialsSecretNamespace = k8sProviderConfigCredentialsSecret.managedResource.spec.forProvider.metadata.namespace
+        _credentialsSecretName = k8sProviderConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.name
+        _credentialsSecretNamespace = k8sProviderConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.namespace
         _projectNamespace = _projectNamespace
         _uses = [
             k8sProviderConfigCredentialsSecret.managedResource
@@ -110,8 +110,8 @@ schema XpControlPlaneProject:
         }
     }
     osProviderConfig: core.OsProviderConfigWrapper {
-        _credentialsSecretName = k8sProviderConfigCredentialsSecret.managedResource.spec.forProvider.metadata.name
-        _credentialsSecretNamespace = k8sProviderConfigCredentialsSecret.managedResource.spec.forProvider.metadata.namespace
+        _credentialsSecretName = k8sProviderConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.name
+        _credentialsSecretNamespace = k8sProviderConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.namespace
         _projectNamespace = _projectNamespace
         _uses = [
             osProviderConfigCredentialsSecret.managedResource
