@@ -30,7 +30,7 @@ schema XpControlPlaneProject:
                 toFieldPath = "data.value"
             }
         ]
-        managedResource.spec.providerConfigRef.name = "bootstrap-aws"
+        managedResource.spec.providerConfigRef.name = "bootstrap-k8s"
     }
     awsProviderConfig: core.AwsProviderConfigWrapper {
         _credentialsSecretName = awsProviderConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.name
@@ -59,7 +59,7 @@ schema XpControlPlaneProject:
                 toFieldPath = "data.value"
             }
         ]
-        managedResource.spec.providerConfigRef.name = "bootstrap-helm"
+        managedResource.spec.providerConfigRef.name = "bootstrap-k8s"
     }
     helmProviderConfig: core.HelmProviderConfigWrapper {
         _clusterName = _k8sClusterName
@@ -119,7 +119,7 @@ schema XpControlPlaneProject:
                 toFieldPath = "data.value"
             }
         ]
-        managedResource.spec.providerConfigRef.name = "bootstrap-os"
+        managedResource.spec.providerConfigRef.name = "bootstrap-k8s"
     }
     osProviderConfig: core.OsProviderConfigWrapper {
         _credentialsSecretName = k8sProviderConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.name
