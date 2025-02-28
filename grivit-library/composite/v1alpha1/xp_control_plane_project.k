@@ -24,7 +24,7 @@ schema XpControlPlaneProject:
                     apiVersion = "v1"
                     fieldPath = "data.value"
                     kind = "Secret"
-                    name = "bootstrap-aws"
+                    name = "bootstrap-aws-provider"
                     namespace = "bootstrap"
                 }
                 toFieldPath = "data.value"
@@ -52,7 +52,7 @@ schema XpControlPlaneProject:
                     apiVersion = "v1"
                     fieldPath = "data.value"
                     kind = "Secret"
-                    name = "bootstrap-helm"
+                    name = "bootstrap-helm-provider"
                     namespace = "bootstrap"
                 }
                 toFieldPath = "data.value"
@@ -81,7 +81,7 @@ schema XpControlPlaneProject:
                     apiVersion = "v1"
                     fieldPath = "data.value"
                     kind = "Secret"
-                    name = "bootstrap-k8s"
+                    name = "bootstrap-k8s-provider"
                     namespace = "bootstrap"
                 }
                 toFieldPath = "data.value"
@@ -110,7 +110,7 @@ schema XpControlPlaneProject:
                     apiVersion = "v1"
                     fieldPath = "data.value"
                     kind = "Secret"
-                    name = "bootstrap-os"
+                    name = "bootstrap-os-provider"
                     namespace = "bootstrap"
                 }
                 toFieldPath = "data.value"
