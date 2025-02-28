@@ -11,7 +11,7 @@ schema OsIdentityProjectWrapper:
         }
         spec.forProvider.description = "Project '${_projectName}' manged by Crossplane"
         spec.forProvider.name = _projectName
-        spec.providerConfigRef.name = "${_projectNamespace}-os"
+        spec.providerConfigRef.name = osProviderConfigName(_projectNamespace)
     }
     usages: [Usage] = []
 

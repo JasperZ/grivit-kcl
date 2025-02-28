@@ -23,7 +23,7 @@ schema OsIdentityUserWrapper:
             name = _passwordSecret.managedResource.spec.forProvider.manifest.metadata.name
             namespace = _passwordSecret.managedResource.spec.forProvider.manifest.metadata.namespace
         }
-        spec.providerConfigRef.name = "${_projectNamespace}-os"
+        spec.providerConfigRef.name = osProviderConfigName(_projectNamespace)
     }
     usages: [Usage] = [Usage {
         metadata.name = "${_name}-uses-${ofResource.metadata.name}"

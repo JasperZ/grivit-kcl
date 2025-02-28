@@ -13,7 +13,7 @@ schema OsIdentityApplicationCredentialWrapper:
         }
         spec.forProvider.name = _name
         spec.forProvider.roles = ["admin"]
-        spec.providerConfigRef.name = "${_projectNamespace}-os"
+        spec.providerConfigRef.name = osProviderConfigName(_projectNamespace)
         spec.writeConnectionSecretToRef.name = _name + "-conn"
         spec.writeConnectionSecretToRef.namespace = _projectNamespace
     }

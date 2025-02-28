@@ -17,7 +17,7 @@ schema OsDnsZoneWrapper:
         spec.forProvider.name = "${_domain}."
         spec.forProvider.ttl = 30
         spec.forProvider.type = "PRIMARY"
-        spec.providerConfigRef.name = "${_projectNamespace}-os"
+        spec.providerConfigRef.name = osProviderConfigName(_projectNamespace)
     }
     usages: [Usage] = []
 

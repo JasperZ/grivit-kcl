@@ -10,7 +10,7 @@ schema OsComputeKeypairWrapper:
             "krm.kcl.dev/composition-resource-name" = _name
         }
         spec.forProvider.name = _name
-        spec.providerConfigRef.name = "${_projectNamespace}-os"
+        spec.providerConfigRef.name = osProviderConfigName(_projectNamespace)
         spec.writeConnectionSecretToRef.name = "${_name}-conn"
         spec.writeConnectionSecretToRef.namespace = _projectNamespace
     }

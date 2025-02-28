@@ -16,7 +16,7 @@ schema OsIdentityRoleAssignmentWrapper:
         spec.forProvider.projectId = _projectId
         spec.forProvider.roleId = _roleId
         spec.forProvider.userId = _userId
-        spec.providerConfigRef.name = "${_projectNamespace}-os"
+        spec.providerConfigRef.name = osProviderConfigName(_projectNamespace)
     }
     usages: [Usage] = []
 
