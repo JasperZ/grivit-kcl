@@ -30,8 +30,8 @@ schema XpControlPlaneProject:
         }
     }
     awsProviderConfig: core.AwsProviderConfigWrapper {
-        _credentialsSecretName = awsProviderConfigCredentialsSecret.managedResource.spec.forProvider.metadata.name
-        _credentialsSecretNamespace = awsProviderConfigCredentialsSecret.managedResource.spec.forProvider.metadata.namespace
+        _credentialsSecretName = awsProviderConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.name
+        _credentialsSecretNamespace = awsProviderConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.namespace
         _projectNamespace = _projectNamespace
         _uses = [
             awsProviderConfigCredentialsSecret.managedResource
