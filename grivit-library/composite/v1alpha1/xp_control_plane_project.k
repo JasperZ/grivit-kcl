@@ -18,16 +18,18 @@ schema XpControlPlaneProject:
         _projectNamespace = _projectNamespace
         _secretName = awsUtils.awsProviderConfigSecretName(_projectNamespace)
         _stringData = {}
-        managedResource.spec.references = {
-            patchesFrom = {
-                apiVersion = "v1"
-                fieldPath = "data.value"
-                kind = "Secret"
-                name = "bootstrap-aws"
-                namespace = "bootstrap"
+        managedResource.spec.references = [
+            {
+                patchesFrom = {
+                    apiVersion = "v1"
+                    fieldPath = "data.value"
+                    kind = "Secret"
+                    name = "bootstrap-aws"
+                    namespace = "bootstrap"
+                }
+                toFieldPath = "data.value"
             }
-            toFieldPath = "data.value"
-        }
+        ]
     }
     awsProviderConfig: core.AwsProviderConfigWrapper {
         _credentialsSecretName = awsProviderConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.name
@@ -44,16 +46,18 @@ schema XpControlPlaneProject:
         _projectNamespace = _projectNamespace
         _secretName = helmUtils.helmProviderConfigSecretName(_projectNamespace, _k8sClusterName)
         _stringData = {}
-        managedResource.spec.references = {
-            patchesFrom = {
-                apiVersion = "v1"
-                fieldPath = "data.value"
-                kind = "Secret"
-                name = "bootstrap-helm"
-                namespace = "bootstrap"
+        managedResource.spec.references = [
+            {
+                patchesFrom = {
+                    apiVersion = "v1"
+                    fieldPath = "data.value"
+                    kind = "Secret"
+                    name = "bootstrap-helm"
+                    namespace = "bootstrap"
+                }
+                toFieldPath = "data.value"
             }
-            toFieldPath = "data.value"
-        }
+        ]
     }
     helmProviderConfig: core.HelmProviderConfigWrapper {
         _clusterName = _k8sClusterName
@@ -71,16 +75,18 @@ schema XpControlPlaneProject:
         _projectNamespace = _projectNamespace
         _secretName = k8sUtils.k8sProviderConfigSecretName(_projectNamespace, _k8sClusterName)
         _stringData = {}
-        managedResource.spec.references = {
-            patchesFrom = {
-                apiVersion = "v1"
-                fieldPath = "data.value"
-                kind = "Secret"
-                name = "bootstrap-k8s"
-                namespace = "bootstrap"
+        managedResource.spec.references = [
+            {
+                patchesFrom = {
+                    apiVersion = "v1"
+                    fieldPath = "data.value"
+                    kind = "Secret"
+                    name = "bootstrap-k8s"
+                    namespace = "bootstrap"
+                }
+                toFieldPath = "data.value"
             }
-            toFieldPath = "data.value"
-        }
+        ]
     }
     k8sProviderConfig: core.K8sProviderConfigWrapper {
         _clusterName = _k8sClusterName
@@ -98,16 +104,18 @@ schema XpControlPlaneProject:
         _projectNamespace = _projectNamespace
         _secretName = osUtils.osProviderConfigSecretName(_projectNamespace)
         _stringData = {}
-        managedResource.spec.references = {
-            patchesFrom = {
-                apiVersion = "v1"
-                fieldPath = "data.value"
-                kind = "Secret"
-                name = "bootstrap-os"
-                namespace = "bootstrap"
+        managedResource.spec.references = [
+            {
+                patchesFrom = {
+                    apiVersion = "v1"
+                    fieldPath = "data.value"
+                    kind = "Secret"
+                    name = "bootstrap-os"
+                    namespace = "bootstrap"
+                }
+                toFieldPath = "data.value"
             }
-            toFieldPath = "data.value"
-        }
+        ]
     }
     osProviderConfig: core.OsProviderConfigWrapper {
         _credentialsSecretName = k8sProviderConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.name
