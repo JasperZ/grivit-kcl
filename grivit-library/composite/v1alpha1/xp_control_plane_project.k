@@ -168,7 +168,6 @@ schema XpControlPlaneProject:
         k8sAppsInfrastructureOsCSIDriver.usages
         k8sAppsInfrastructureOsExternalDNS.usages
         k8sAppsPlatformBundle.usages
-    ], [
         awsProviderConfigCredentialsSecret.usages
         awsProviderConfig.usages
         helmProviderConfigCredentialsSecret.usages
@@ -177,5 +176,5 @@ schema XpControlPlaneProject:
         k8sProviderConfig.usages
         osProviderConfigCredentialsSecret.usages
         osProviderConfig.usages
-    ])
+    ], [])
 
