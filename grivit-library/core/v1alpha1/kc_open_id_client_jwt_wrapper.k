@@ -52,8 +52,13 @@ schema KcOpenIdClientJwtWrapper:
 
         if managedResource.metadata.name in observedComposedResources:
             if observedComposedResources[managedResource.metadata.name].Resource?.status?.response?.body:
-                _body = str(observedComposedResources[managedResource.metadata.name].Resource?.status?.response?.body or "")
-                _accessToken = json.decode(_body).access_token
+                _bodyRaw = str(observedComposedResources[managedResource.metadata.name].Resource?.status?.response?.body or "")
+                if json.validate(_bodyRaw):
+                    _bodyJson = json.decode(_bodyRaw)
+                    if _bodyJson.access_token:
+                        _accessToken = _bodyJson.access_token
+
+
 
 
         _accessToken
