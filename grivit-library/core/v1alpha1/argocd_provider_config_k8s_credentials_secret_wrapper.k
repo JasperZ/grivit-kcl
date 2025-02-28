@@ -25,7 +25,7 @@ schema ArgoCdProviderConfigK8sCredentialsSecretWrapper:
                 value = _jwtToken
             }
         }
-        spec.providerConfigRef.name = k8sProviderConfigSecretName(_projectNamespace, "ctrl")
+        spec.providerConfigRef.name = k8sProviderConfigName(_projectNamespace, "ctrl")
     }
     usages: [Usage] = [Usage {
         metadata.name = "${_resourceName}-uses-${ofResource.metadata.name}"
