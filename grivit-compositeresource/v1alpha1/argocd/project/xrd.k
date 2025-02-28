@@ -43,6 +43,9 @@ schema Xrd(core.CompositeResourceDefinition):
                                     kcInstanceName = {
                                         type = "string"
                                     }
+                                    kcInstanceOwnerProjectName = {
+                                        type = "string"
+                                    }
                                     kcRealmId = {
                                         type = "string"
                                     }

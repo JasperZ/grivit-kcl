@@ -4,6 +4,7 @@ schema ArgoCdProject:
     _argoCdInstanceOwnerProjectName: str
     _kcDomain: str
     _kcInstanceName: str
+    _kcInstanceOwnerProjectName: str
     _kcRealmId: str
     _observedComposedResources: any
     _projectName: str
@@ -11,6 +12,7 @@ schema ArgoCdProject:
 
     providerConfigKcClient: core.KcOpenIdClientArgoCdXpProviderWrapper {
         _instanceName = _kcInstanceName
+        _instanceOwnerProjectName = _kcInstanceOwnerProjectName
         _projectName = _projectName
         _projectNamespace = _projectNamespace
         _realmId = _kcRealmId
@@ -19,6 +21,7 @@ schema ArgoCdProject:
         _additionalScopes = ["groups"]
         _clientId = providerConfigKcClient.getAtProviderId(_observedComposedResources)
         _instanceName = _kcInstanceName
+        _instanceOwnerProjectName = _kcInstanceOwnerProjectName
         _name = "${providerConfigKcClient.managedResource.spec.forProvider.name}-client-default-scopes"
         _projectNamespace = _projectNamespace
         _realmId = _kcRealmId
@@ -29,6 +32,7 @@ schema ArgoCdProject:
     kcArgoCdAdminsGroup = core.KcGroupArgoCdWrapper {
         _groupType = "admins"
         _instanceName = _argoCdInstanceName
+        _instanceOwnerProjectName = _kcInstanceOwnerProjectName
         _projectName = _projectName
         _projectNamespace = _projectNamespace
         _realmId = _kcRealmId
@@ -39,6 +43,7 @@ schema ArgoCdProject:
     kcArgoCdViewersGroup = core.KcGroupArgoCdWrapper {
         _groupType = "viewers"
         _instanceName = _kcInstanceName
+        _instanceOwnerProjectName = _kcInstanceOwnerProjectName
         _projectName = _projectName
         _projectNamespace = _projectNamespace
         _realmId = _kcRealmId
@@ -49,6 +54,7 @@ schema ArgoCdProject:
     kcUserGroupsWrapper: core.KcUserGroupsWrapper {
         _groupIds = [kcArgoCdAdminsGroup.getAtProviderId(_observedComposedResources)]
         _instanceName = _kcInstanceName
+        _instanceOwnerProjectName = _kcInstanceOwnerProjectName
         _projectNamespace = _projectNamespace
         _realmId = _kcRealmId
         _userId = providerConfigKcClient.getServiceAccountUserId(_observedComposedResources)
