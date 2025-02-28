@@ -122,8 +122,8 @@ schema XpControlPlaneProject:
         managedResource.spec.providerConfigRef.name = "bootstrap-k8s"
     }
     osProviderConfig: core.OsProviderConfigWrapper {
-        _credentialsSecretName = k8sProviderConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.name
-        _credentialsSecretNamespace = k8sProviderConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.namespace
+        _credentialsSecretName = osProviderConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.name
+        _credentialsSecretNamespace = osProviderConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.namespace
         _projectNamespace = _projectNamespace
         _uses = [
             osProviderConfigCredentialsSecret.managedResource
