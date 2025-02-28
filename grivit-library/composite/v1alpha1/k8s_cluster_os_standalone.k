@@ -146,8 +146,8 @@ clouds:
     }
     providerConfig: core.K8sProviderConfigWrapper {
         _clusterName = _name
-        _credentialsSecretName = k8sProviderConfigCredentialsSecret.managedResource.spec.forProvider.metadata.name
-        _credentialsSecretNamespace = k8sProviderConfigCredentialsSecret.managedResource.spec.forProvider.metadata.namespace
+        _credentialsSecretName = k8sProviderConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.name
+        _credentialsSecretNamespace = k8sProviderConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.namespace
         _projectNamespace = _projectNamespace
         _uses = [
             k8sProviderConfigCredentialsSecret.managedResource
