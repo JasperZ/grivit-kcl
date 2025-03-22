@@ -1,6 +1,7 @@
 schema OpenBaoProviderConfigWrapper:
     _credentialsSecretName: str
     _credentialsSecretNamespace: str
+    _openBaoDomain: str
     _openBaoInstanceName: str
     _openBaoInstanceOwnerProjectName: str
     _openBaoProjectName: str
@@ -13,6 +14,7 @@ schema OpenBaoProviderConfigWrapper:
         _name = _resourceName
         _credentialsSecretName = _credentialsSecretName
         _credentialsSecretNamespace = _credentialsSecretNamespace
+        _openBaoDomain = _openBaoDomain
     }
     usages: [Usage] = [Usage {
         metadata.name = "${_resourceName}-uses-${ofResource.metadata.name}"

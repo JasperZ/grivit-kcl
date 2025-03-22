@@ -1,5 +1,4 @@
 schema OpenBaoProviderConfigK8sCredentialsSecretWrapper:
-    _openBaoDomain: str
     _openBaoInstanceName: str
     _openBaoInstanceOwnerProjectName: str
     _openBaoJwtToken: str
@@ -25,7 +24,6 @@ schema OpenBaoProviderConfigK8sCredentialsSecretWrapper:
             type = "Opaque"
             stringData = {
                 value = {
-                    address = _openBaoDomain
                     auth_login_jwt = {
                         jwt = _openBaoJwtToken
                         role = _openBaoRole

@@ -131,7 +131,6 @@ schema K8sAppOperationsOpenBao:
         ]
     }
     providerConfigCredentialsSecret: core.OpenBaoProviderConfigK8sCredentialsSecretWrapper {
-        _openBaoDomain = _domain
         _openBaoInstanceName = _instanceName
         _openBaoInstanceOwnerProjectName = _projectNamespace
         _openBaoJwtToken = providerConfigHttpJwtToken.getAccessToken(_observedComposedResources)
@@ -143,6 +142,7 @@ schema K8sAppOperationsOpenBao:
         ]
     }
     providerConfig: core.OpenBaoProviderConfigWrapper {
+        _openBaoDomain = _domain
         _credentialsSecretName = providerConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.name
         _credentialsSecretNamespace = providerConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.namespace
         _openBaoInstanceName = _instanceName

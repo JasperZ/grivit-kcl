@@ -1,6 +1,7 @@
 schema OpenBaoProviderConfig:
     _credentialsSecretName: str
     _credentialsSecretNamespace: str
+    _openBaoDomain: str
     _name: str
 
     apiVersion: str = "vault.upbound.io/v1beta1"
@@ -19,6 +20,7 @@ schema OpenBaoProviderConfig:
                 namespace = _credentialsSecretNamespace
             }
         }
+        address = "https://${_openBaoDomain}:443"
     }
 
 schema OpenBaoProviderConfigMetadata:
@@ -30,8 +32,8 @@ schema OpenBaoProviderConfigMetadataAnnotations:
     "krm.kcl.dev/ready": str = "True"
 
 schema OpenBaoProviderConfigSpec:
+    address: str
     credentials: OpenBaoProviderConfigSpecCredentials
-    serverAddr: str
 
 schema OpenBaoProviderConfigSpecCredentials:
     secretRef: OpenBaoProviderConfigSpecCredentialsSecretRef
