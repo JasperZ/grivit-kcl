@@ -29,7 +29,6 @@ schema KcOpenIdClientOpenBaoWrapper:
         spec.forProvider.clientId = _clientId
         spec.forProvider.directAccessGrantsEnabled = True
         spec.forProvider.description = "OpenBao client for instance '${_instanceName}' to authenticate users (managed by Crossplane)."
-        spec.forProvider.homeUrl = _baseUrl
         spec.forProvider.name = _clientId
         spec.forProvider.realmId = _realmId
         spec.forProvider.rootUrl = _baseUrl
