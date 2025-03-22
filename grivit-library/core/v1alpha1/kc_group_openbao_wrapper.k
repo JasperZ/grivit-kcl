@@ -1,4 +1,4 @@
-schema KcGroupArgoCdWrapper:
+schema KcGroupOpenBaoWrapper:
     _groupType: "admins" | "viewers"
     _instanceName: str
     _instanceOwnerProjectName: str
@@ -7,8 +7,8 @@ schema KcGroupArgoCdWrapper:
     _realmId: str
     _uses: [ManagedResource] = []
 
-    _groupName: str = "argocd-${_instanceName}-${_projectName}-${_groupType}"
-    _resourceName: str = "${_projectNamespace}-${_instanceOwnerProjectName}-${_instanceName}-${_realmId}-argocd-${_projectName}-${_groupType}-group"
+    _groupName: str = "openbao-${_instanceName}-${_projectName}-${_groupType}"
+    _resourceName: str = "${_projectNamespace}-${_instanceOwnerProjectName}-${_instanceName}-${_realmId}-openbao-${_projectName}-${_groupType}-group"
 
     managedResource: ManagedResource {
         apiVersion = "group.keycloak.crossplane.io/v1alpha1"
