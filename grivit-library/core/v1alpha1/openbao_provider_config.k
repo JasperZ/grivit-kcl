@@ -5,7 +5,6 @@ schema OpenBaoProviderConfig:
     _openBaoDomain: str
     _name: str
 
-
     apiVersion: str = "vault.upbound.io/v1beta1"
     kind: str = "ProviderConfig"
     metadata: OpenBaoProviderConfigMetadata {

@@ -226,7 +226,7 @@ exit 0
 # keep the container running forever
 tail -f /dev/null
 """
-                            ]
+                        ]
                         env = [
                             {
                                 name = "POD_NAMESPACE"
@@ -292,7 +292,7 @@ tail -f /dev/null
     providerConfigKcClient: core.KcOpenIdClientOpenBaoXpProviderWrapper {
         _instanceName = _instanceName
         _instanceOwnerProjectName = _projectNamespace
-        _projectName = "admin"
+        _projectName = "root"
         _projectNamespace = _projectNamespace
         _realmId = _kcRealmId
         _uses = [
@@ -335,6 +335,14 @@ tail -f /dev/null
             helmRelease.managedResource
         ]
     }
+    testGroup: core.OpenBaoIdentityGroupWrapper {
+        _groupName = "test-group"
+        _groupType = "internal"
+        _instanceName = _instanceName
+        _instanceOwnerProjectName = _projectNamespace
+        _name = "${_name}-test-group"
+        _projectName = "root"
+    }
     managedResources: [core.ManagedResource | core.OpenBaoProviderConfig] = [
         kcOpenBaoClient.managedResource
         kcOpenBaoClientDefaultScopes.managedResource
@@ -349,6 +357,7 @@ tail -f /dev/null
         k8sRole.managedResource
         k8sRoleBinding.managedResource
         k8sScriptsConfigMap.managedResource
+        testGroup.managedResource
     ]
     usages: [core.Usage] = sum([
         kcOpenBaoClient.usages
@@ -364,5 +373,6 @@ tail -f /dev/null
         k8sRole.usages
         k8sRoleBinding.usages
         k8sScriptsConfigMap.usages
+        testGroup.usages
     ], [])
 
