@@ -133,7 +133,7 @@ schema K8sAppOperationsOpenBao:
                 }
                 serviceAccount = {
                     create = False
-                    name = k8sServiceAccount.managedResource.spec.forProvider.metadata.name
+                    name = k8sServiceAccount.managedResource.spec.forProvider.manifest.metadata.name
                 }
             }
         }
