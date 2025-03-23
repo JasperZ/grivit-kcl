@@ -218,7 +218,14 @@ exit 0
                         name = "vault-init-and-unseal"
                         image = "bitnami/kubectl:latest"
                         command = ["/bin/sh", "-c"]
-                        args = ["/scripts/init-and-unseal.sh"]
+                        args = [
+                            """\
+#!/bin/bash
+
+#/scripts/init-and-unseal.sh
+exit 0
+"""
+                            ]
                         env = [
                             {
                                 name = "POD_NAMESPACE"
