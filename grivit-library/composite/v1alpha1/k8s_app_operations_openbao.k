@@ -139,8 +139,6 @@ wait_for_openbao() {
 
 wait_for_openbao
 
-echo "1111"
-
 set +e
 is_initialized=$(kubectl exec \${POD_NAME} -n \${POD_NAMESPACE} -c openbao -- bao status -format=json | jq -r '.initialized')
 set -e
