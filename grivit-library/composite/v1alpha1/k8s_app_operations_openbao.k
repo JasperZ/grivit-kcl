@@ -189,6 +189,8 @@ else
 fi
 
 echo "3333"
+
+exit 0
 """
         }
         _name = "${_name}-script-cm"
