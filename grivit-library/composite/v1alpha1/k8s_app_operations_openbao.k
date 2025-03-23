@@ -222,8 +222,10 @@ exit 0
                             """\
 #!/bin/bash
 
-#/scripts/init-and-unseal.sh
-exit 0
+/scripts/init-and-unseal.sh
+
+# keep the container running forever
+tail -f /dev/null
 """
                             ]
                         env = [
