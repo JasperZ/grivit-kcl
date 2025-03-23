@@ -1,0 +1,36 @@
+schema K8sObjectServiceAccountWrapper:
+    _clusterName: str
+    _name: str
+    _projectNamespace: str
+    _serviceAccountName: str
+    _serviceAccountNamespace: str
+    _uses: [ManagedResource] = []
+
+    managedResource: ManagedResource {
+        apiVersion = "kubernetes.crossplane.io/v1alpha2"
+        kind = "Object"
+        metadata.name = _name
+        metadata.annotations = {
+            "krm.kcl.dev/composition-resource-name" = _name
+        }
+        spec.forProvider.manifest = {
+            apiVersion = "v1"
+            kind = "ServiceAccount"
+            metadata.name = _serviceAccountName
+            metadata.namespace = _serviceAccountNamespace
+        }
+        spec.providerConfigRef.name = k8sProviderConfigName(_projectNamespace, _clusterName)
+    }
+    usages: [Usage] = [Usage {
+        metadata.name = "${_name}-uses-${ofResource.metadata.name}"
+        metadata.annotations = {
+            "krm.kcl.dev/composition-resource-name" = "${_name}-uses-${ofResource.metadata.name}"
+        }
+        spec.by.apiVersion = managedResource.apiVersion
+        spec.by.kind = managedResource.kind
+        spec.by.resourceRef.name = managedResource.metadata.name
+        spec.of.apiVersion = ofResource.apiVersion
+        spec.of.kind = ofResource.kind
+        spec.of.resourceRef.name = ofResource.metadata.name
+    } for ofResource in _uses]
+

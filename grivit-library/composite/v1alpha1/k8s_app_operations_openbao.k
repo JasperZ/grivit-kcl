@@ -43,6 +43,58 @@ schema K8sAppOperationsOpenBao:
             kcOpenBaoClientDefaultScopes.managedResource
         ]
     }
+    k8sServiceAccount: core.K8sObjectServiceAccountWrapper {
+        _clusterName = _clusterName
+        _name = "${_name}-sa"
+        _projectNamespace = _projectNamespace
+        _serviceAccountName = "openbao"
+        _serviceAccountNamespace= "openbao"
+    }
+    k8sRole: core.K8sObjectRoleWrapper {
+        _clusterName = _clusterName
+        _name = "${_name}-role"
+        _projectNamespace = _projectNamespace
+        _roleName = "openbao"
+        _roleNamespace = "openbao"
+        _roleRules = [
+            {
+                apiGroups = [""]
+                resources = ["secrets"]
+                verbs = ["get", "create", "update"]
+            }
+            {
+                apiGroups = [""]
+                resources = ["pods"]
+                verbs = ["get"]
+            }
+            {
+                apiGroups = [""]
+                resources = ["pods/exec"]
+                verbs = ["create"]
+            }
+        ]
+    }
+    k8sRoleBinding: core.K8sObjectRoleBindingWrapper {
+        _clusterName = _clusterName
+        _name = "${_name}-rolebinding"
+        _projectNamespace = _projectNamespace
+        _roleBindingName = "openbao"
+        _roleBindingNamespace = "openbao"
+        _roleBindingSubjects = [
+            {
+                kind = k8sServiceAccount.managedResource.spec.forProvider.kind
+                name = k8sServiceAccount.managedResource.spec.forProvider.metadata.name
+                namespace = k8sServiceAccount.managedResource.spec.forProvider.metadata.name
+            }
+        ]
+        _roleBindingRoleRefKind = k8sRole.managedResource.spec.forProvider.kind
+        _roleBindingRoleRefName = k8sRole.managedResource.spec.forProvider.metadata.name
+        _roleBindingRoleRefNamespace = k8sRole.managedResource.spec.forProvider.metadata.namespace
+        _uses = [
+            k8sServiceAccount.managedResource
+            k8sRole.managedResource
+        ]    
+    }
     helmRepo: core.K8sFluxHelmRepositoryWrapper {
         _name = "${_name}-repo"
         _helmRepoUrl = "https://openbao.github.io/openbao-helm"
@@ -79,10 +131,15 @@ schema K8sAppOperationsOpenBao:
                         }
                     ]
                 }
+                serviceAccount = {
+                    create = False
+                    name = k8sServiceAccount.managedResource.spec.forProvider.metadata.name
+                }
             }
         }
         _uses = [
             kcOpenBaoAdminsGroup.managedResource
+            k8sRoleBinding.managedResource
         ]
     }
     providerConfigKcClient: core.KcOpenIdClientOpenBaoXpProviderWrapper {
