@@ -61,7 +61,7 @@ schema K8sAppOperationsOpenBao:
             {
                 apiGroups = [""]
                 resources = ["secrets"]
-                verbs = ["get", "create", "update"]
+                verbs = ["get", "create", "patch", "update"]
             }
             {
                 apiGroups = [""]
