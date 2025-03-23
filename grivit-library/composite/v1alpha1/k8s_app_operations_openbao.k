@@ -48,7 +48,7 @@ schema K8sAppOperationsOpenBao:
         _name = "${_name}-sa"
         _projectNamespace = _projectNamespace
         _serviceAccountName = "openbao"
-        _serviceAccountNamespace= "openbao"
+        _serviceAccountNamespace = "openbao"
     }
     k8sRole: core.K8sObjectRoleWrapper {
         _clusterName = _clusterName
@@ -93,7 +93,7 @@ schema K8sAppOperationsOpenBao:
         _uses = [
             k8sServiceAccount.managedResource
             k8sRole.managedResource
-        ]    
+        ]
     }
     helmRepo: core.K8sFluxHelmRepositoryWrapper {
         _name = "${_name}-repo"
@@ -222,6 +222,9 @@ schema K8sAppOperationsOpenBao:
         providerConfigHttpJwtToken.managedResource
         providerConfigCredentialsSecret.managedResource
         providerConfig.managedResource
+        k8sServiceAccount.managedResource
+        k8sRole.managedResource
+        k8sRoleBinding.managedResource
     ]
     usages: [core.Usage] = sum([
         kcOpenBaoClient.usages
@@ -235,5 +238,8 @@ schema K8sAppOperationsOpenBao:
         providerConfigHttpJwtToken.usages
         providerConfigCredentialsSecret.usages
         providerConfig.usages
+        k8sServiceAccount.usages
+        k8sRole.usages
+        k8sRoleBinding.usages
     ], [])
 

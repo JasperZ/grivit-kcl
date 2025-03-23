@@ -28,7 +28,6 @@ schema K8sObjectRoleBindingWrapper:
                 name = _roleBindingRoleRefName
                 namespace = _roleBindingRoleRefNamespace
             }
-
         }
         spec.providerConfigRef.name = k8sProviderConfigName(_projectNamespace, _clusterName)
     }
