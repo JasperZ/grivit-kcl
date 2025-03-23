@@ -327,10 +327,10 @@ tail -f /dev/null
         _credentialsSecretName = "${_name}-keys-and-root-token"
         _credentialsSecretNamespace = "openbao"
         _openBaoDomain = _domain
+        _openBaoInstanceContext = "root"
         _openBaoInstanceName = _instanceName
         _openBaoInstanceOwnerProjectName = _projectNamespace
-        _openBaoProjectName = "root"
-        _projectNamespace = _projectNamespace
+        _projectName = _projectNamespace
         _uses = [
             helmRelease.managedResource
         ]
@@ -338,10 +338,11 @@ tail -f /dev/null
     testGroup: core.OpenBaoIdentityGroupWrapper {
         _groupName = "test-group"
         _groupType = "internal"
-        _instanceName = _instanceName
-        _instanceOwnerProjectName = _projectNamespace
         _name = "${_name}-test-group"
-        _projectName = "root"
+        _openBaoInstanceContext = "root"
+        _openBaoInstanceName = _instanceName
+        _openBaoInstanceOwnerProjectName = _projectNamespace
+        _projectName = _projectNamespace
     }
     managedResources: [core.ManagedResource | core.OpenBaoProviderConfig] = [
         kcOpenBaoClient.managedResource

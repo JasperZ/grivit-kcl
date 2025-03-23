@@ -8,9 +8,10 @@ schema OpenBaoIdentityGroupWrapper:
     _groupName: str
     _groupPolicies: [str] = []
     _groupType: "external" | "internal"
-    _instanceName: str
-    _instanceOwnerProjectName: str
     _name: str
+    _openBaoInstanceContext: str
+    _openBaoInstanceName: str
+    _openBaoInstanceOwnerProjectName: str
     _projectName: str
 
     managedResource: ManagedResource {
@@ -31,7 +32,7 @@ schema OpenBaoIdentityGroupWrapper:
             policies = _groupPolicies
             type = _groupType
         }
-        spec.providerConfigRef.name = openBaoProviderConfigName(_projectName, _instanceName, _instanceOwnerProjectName, _projectName)
+        spec.providerConfigRef.name = openBaoProviderConfigName(_projectName, _openBaoInstanceName, _openBaoInstanceOwnerProjectName, _openBaoInstanceContext)
     }
     usages: [Usage] = []
 

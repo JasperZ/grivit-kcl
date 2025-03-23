@@ -3,13 +3,13 @@ schema OpenBaoProviderConfigWrapper:
     _credentialsSecretName: str
     _credentialsSecretNamespace: str
     _openBaoDomain: str
+    _openBaoInstanceContext: str
     _openBaoInstanceName: str
     _openBaoInstanceOwnerProjectName: str
-    _openBaoProjectName: str
-    _projectNamespace: str
+    _projectName: str
     _uses: [ManagedResource] = []
 
-    _resourceName: str = openBaoProviderConfigName(_projectNamespace, _openBaoInstanceOwnerProjectName, _openBaoInstanceName, _openBaoProjectName)
+    _resourceName: str = openBaoProviderConfigName(_projectName, _openBaoInstanceName, _openBaoInstanceOwnerProjectName, _openBaoInstanceContext)
 
     managedResource: OpenBaoProviderConfig {
         _name = _resourceName
