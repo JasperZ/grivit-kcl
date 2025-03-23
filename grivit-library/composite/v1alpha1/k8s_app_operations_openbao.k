@@ -95,30 +95,12 @@ schema K8sAppOperationsOpenBao:
             k8sRole.managedResource
         ]
     }
-    helmRepo: core.K8sFluxHelmRepositoryWrapper {
-        _name = "${_name}-repo"
-        _helmRepoUrl = "https://openbao.github.io/openbao-helm"
-        _projectNamespace = _projectNamespace
-    }
-    helmRelease: core.K8sFluxHelmReleaseWrapper {
+    k8sScriptsConfigMap: core.K8sObjectConfigMapWrapper {
         _clusterName = _clusterName
-        _name = "${_name}-rel"
-        _helmChartName = "openbao"
-        _helmChartVersion = "0.10.1"
-        _helmReleaseName = "openbao"
-        _helmReleaseNamespace = "openbao"
-        _helmRepositoryWrapper = helmRepo
-        _helmReleaseWrapperDependencies = _fluxHelmReleaseDependencies
-        _projectNamespace = _projectNamespace
-        managedResource.spec.forProvider.manifest.spec.values = {
-            server = {
-                extraContainers = [
-                    {
-                        name = "vault-init-and-unseal"
-                        image = "bitnami/kubectl:latest"
-                        command = ["/bin/sh", "-c"]
-                        args = [
-                            """\
+        _configMapName = "openbao-scripts"
+        _configMapNamespace = "openbao"
+        _configMapData = {
+            "init-and-unseal.sh": """\
 #!/bin/bash
 
 set -euo pipefail
@@ -210,7 +192,33 @@ fi
 
 echo "3333"
 """
-                        ]
+        }
+        _name = "${_name}-script-cm"
+        _projectNamespace = _projectNamespace
+    }
+    helmRepo: core.K8sFluxHelmRepositoryWrapper {
+        _name = "${_name}-repo"
+        _helmRepoUrl = "https://openbao.github.io/openbao-helm"
+        _projectNamespace = _projectNamespace
+    }
+    helmRelease: core.K8sFluxHelmReleaseWrapper {
+        _clusterName = _clusterName
+        _name = "${_name}-rel"
+        _helmChartName = "openbao"
+        _helmChartVersion = "0.10.1"
+        _helmReleaseName = "openbao"
+        _helmReleaseNamespace = "openbao"
+        _helmRepositoryWrapper = helmRepo
+        _helmReleaseWrapperDependencies = _fluxHelmReleaseDependencies
+        _projectNamespace = _projectNamespace
+        managedResource.spec.forProvider.manifest.spec.values = {
+            server = {
+                extraContainers = [
+                    {
+                        name = "vault-init-and-unseal"
+                        image = "bitnami/kubectl:latest"
+                        command = ["/bin/sh", "-c"]
+                        args = ["/scripts/init-and-unseal.sh"]
                         env = [
                             {
                                 name = "POD_NAMESPACE"
@@ -227,6 +235,15 @@ echo "3333"
                                 mountPath = "/scripts"
                             }
                         ]
+                    }
+                ]
+                extraVolumes = [
+                    {
+                        name = "scripts"
+                        configMap = {
+                            name = k8sScriptsConfigMap.managedResource.spec.forProvider.manifest.metadata.name
+                            defaultMode = 755
+                        }
                     }
                 ]
                 ingress = {
@@ -257,6 +274,7 @@ echo "3333"
         _uses = [
             kcOpenBaoAdminsGroup.managedResource
             k8sRoleBinding.managedResource
+            k8sScriptsConfigMap.managedResource
         ]
     }
     providerConfigKcClient: core.KcOpenIdClientOpenBaoXpProviderWrapper {
@@ -342,6 +360,7 @@ echo "3333"
         k8sServiceAccount.managedResource
         k8sRole.managedResource
         k8sRoleBinding.managedResource
+        k8sScriptsConfigMap.managedResource
     ]
     usages: [core.Usage] = sum([
         kcOpenBaoClient.usages
@@ -358,5 +377,6 @@ echo "3333"
         k8sServiceAccount.usages
         k8sRole.usages
         k8sRoleBinding.usages
+        k8sScriptsConfigMap.usages
     ], [])
 
