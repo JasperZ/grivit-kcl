@@ -123,8 +123,8 @@ schema K8sAppOperationsOpenBao:
 
 set -euo pipefail
 
-echo "namespace: ${POD_NAMESPACE}"
-echo "pod: ${POD_NAME}"
+echo "namespace: \${POD_NAMESPACE}"
+echo "pod: \${POD_NAME}"
 
 VAULT_ADDR="http://127.0.0.1:8200"
 VAULT_SECRET_NAME="vault-init-keys"
@@ -161,7 +161,7 @@ wait_for_vault
 echo "1111"
 
 set +e
-is_initialized=$(kubectl exec ${POD_NAME} -n ${POD_NAMESPACE} -c openbao -- bao status -format=json | jq -r '.initialized')
+is_initialized=$(kubectl exec \${POD_NAME} -n \${POD_NAMESPACE} -c openbao -- bao status -format=json | jq -r '.initialized')
 set -e
 
 echo $is_initialized
@@ -169,7 +169,7 @@ echo $is_initialized
 if [ "$is_initialized" == "false" ]; then
     log "Vault is not initialized. Initializing..."
 
-    kubectl exec ${POD_NAME} -n ${POD_NAMESPACE} -c openbao -- bao operator init -format=json > "$SECRET_FILE"
+    kubectl exec \${POD_NAME} -n \${POD_NAMESPACE} -c openbao -- bao operator init -format=json > "$SECRET_FILE"
 
     unseal_keys=$(jq -r '.unseal_keys_b64[]' "$SECRET_FILE")
     root_token=$(jq -r '.root_token' "$SECRET_FILE")
@@ -177,7 +177,7 @@ if [ "$is_initialized" == "false" ]; then
     log "Saving unseal keys and root token to Kubernetes secret: $VAULT_SECRET_NAME"
 
     kubectl create secret generic "$VAULT_SECRET_NAME" \
-    --namespace="${POD_NAMESPACE}" \
+    --namespace="\${POD_NAMESPACE}" \
     --from-literal=keys="$(jq -c '.unseal_keys_b64' "$SECRET_FILE")" \
     --from-literal=root_token="$root_token" \
     --dry-run=client -o yaml | kubectl apply -f -
@@ -188,18 +188,18 @@ fi
 echo "2222"
 
 set +e
-is_sealed=$(kubectl exec ${POD_NAME} -n ${POD_NAMESPACE} -c openbao -- bao status -format=json | jq -r '.sealed')
+is_sealed=$(kubectl exec \${POD_NAME} -n \${POD_NAMESPACE} -c openbao -- bao status -format=json | jq -r '.sealed')
 set -e
 
 if [ "$is_sealed" == "true" ]; then
     log "Vault is sealed. Attempting to unseal..."
 
     keys_json=$(kubectl get secret "$VAULT_SECRET_NAME" \
-    -n "${POD_NAMESPACE}" -o jsonpath='{.data.keys}' | base64 -d)
+    -n "\${POD_NAMESPACE}" -o jsonpath='{.data.keys}' | base64 -d)
 
     for key in $(echo "$keys_json" | jq -r '.[]'); do
-    kubectl exec ${POD_NAME} -n ${POD_NAMESPACE} -c openbao -- bao operator unseal "$key"
-    if [ "$(kubectl exec ${POD_NAME} -n ${POD_NAMESPACE} -c openbao -- bao status -format=json | jq -r '.sealed')" == "false" ]; then
+    kubectl exec \${POD_NAME} -n \${POD_NAMESPACE} -c openbao -- bao operator unseal "$key"
+    if [ "$(kubectl exec \${POD_NAME} -n \${POD_NAMESPACE} -c openbao -- bao status -format=json | jq -r '.sealed')" == "false" ]; then
         log "Vault successfully unsealed."
         break
     fi
