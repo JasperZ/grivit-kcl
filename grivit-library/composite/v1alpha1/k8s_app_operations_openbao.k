@@ -324,7 +324,7 @@ tail -f /dev/null
     }
     k8sKeysRootTokenSecretObserve: core.K8sObjectSecretWrapper {
         _clusterName = _clusterName
-        _name = osUtils.osProviderConfigSecretName(_projectNamespace)
+        _name = "${_name}-keys-and-root-token"
         _namespace = "openbao"
         _projectNamespace = _projectNamespace
         _secretName = "${_name}-keys-and-root-token"
@@ -336,10 +336,10 @@ tail -f /dev/null
     }
     providerConfigCredentialsSecret: core.K8sObjectSecretWrapper {
         _clusterName = _clusterName
-        _name = osUtils.osProviderConfigSecretName(_projectNamespace)
+        _name = openBaoUtils.openBaoProviderConfigSecretName(_projectNamespace, _instanceName, _projectNamespace, _projectNamespace)
         _namespace = _projectNamespace
         _projectNamespace = _projectNamespace
-        _secretName = osUtils.osProviderConfigSecretName(_projectNamespace)
+        _secretName = openBaoUtils.openBaoProviderConfigSecretName(_projectNamespace, _instanceName, _projectNamespace, _projectNamespace)
         _stringData = {
             value = json.encode({
                 token = "k8sKeysRootTokenSecretObserve.managedResource.spec."
