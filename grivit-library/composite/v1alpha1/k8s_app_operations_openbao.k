@@ -1,3 +1,4 @@
+import crypto
 import core.v1alpha1 as core
 import core.v1alpha1.openbao_utils as openBaoUtils
 
@@ -109,8 +110,8 @@ echo "namespace: \${POD_NAMESPACE}"
 echo "pod: \${POD_NAME}"
 
 # Set as Pod ENV
-#OPENBAO_SECRET_NAME="vault-init-keys"
-SECRET_FILE="/tmp/vault-keys.json"
+#OPENBAO_SECRET_NAME="openbao-init-keys"
+SECRET_FILE="/tmp/openbao-keys.json"
 MAX_RETRIES=30
 SLEEP_SECONDS=5
 
@@ -147,7 +148,7 @@ set -e
 echo $is_initialized
 
 if [ "$is_initialized" == "false" ]; then
-    log "Vault is not initialized. Initializing..."
+    log "OpenBao is not initialized. Initializing..."
 
     kubectl exec \${POD_NAME} -n \${POD_NAMESPACE} -c openbao -- bao operator init -format=json > "$SECRET_FILE"
 
@@ -162,17 +163,15 @@ if [ "$is_initialized" == "false" ]; then
     --from-literal=root_token="$root_token" \
     --dry-run=client -o yaml | kubectl apply -f -
 else
-    log "Vault is already initialized."
+    log "OpenBao is already initialized."
 fi
-
-echo "2222"
 
 set +e
 is_sealed=$(kubectl exec \${POD_NAME} -n \${POD_NAMESPACE} -c openbao -- bao status -format=json | jq -r '.sealed')
 set -e
 
 if [ "$is_sealed" == "true" ]; then
-    log "Vault is sealed. Attempting to unseal..."
+    log "OpenBao is sealed. Attempting to unseal..."
 
     keys_json=$(kubectl get secret "$OPENBAO_SECRET_NAME" \
     -n "\${POD_NAMESPACE}" -o jsonpath='{.data.keys}' | base64 -d)
@@ -180,15 +179,13 @@ if [ "$is_sealed" == "true" ]; then
     for key in $(echo "$keys_json" | jq -r '.[]'); do
     kubectl exec \${POD_NAME} -n \${POD_NAMESPACE} -c openbao -- bao operator unseal "$key"
     if [ "$(kubectl exec \${POD_NAME} -n \${POD_NAMESPACE} -c openbao -- bao status -format=json | jq -r '.sealed')" == "false" ]; then
-        log "Vault successfully unsealed."
+        log "OpenBao successfully unsealed."
         break
     fi
     done
 else
-    log "Vault is already unsealed."
+    log "OpenBao is already unsealed."
 fi
-
-echo "3333"
 
 exit 0
 """
@@ -213,6 +210,9 @@ exit 0
         _projectNamespace = _projectNamespace
         managedResource.spec.forProvider.manifest.spec.values = {
             server = {
+                annotations = {
+                    "checksum/init-and-unseal.sh" = crypto.sha256(k8sScriptsConfigMap.managedResource.spec.forProvider.manifest.data["init-and-unseal.sh"])
+                }
                 extraContainers = [
                     {
                         name = "vault-init-and-unseal"
