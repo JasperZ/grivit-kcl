@@ -1,4 +1,5 @@
 schema OpenBaoProviderConfigWrapper:
+    _credentialsSecretKey: str = "value"
     _credentialsSecretName: str
     _credentialsSecretNamespace: str
     _openBaoDomain: str
@@ -12,6 +13,7 @@ schema OpenBaoProviderConfigWrapper:
 
     managedResource: OpenBaoProviderConfig {
         _name = _resourceName
+        _credentialsSecretKey = _credentialsSecretKey
         _credentialsSecretName = _credentialsSecretName
         _credentialsSecretNamespace = _credentialsSecretNamespace
         _openBaoDomain = _openBaoDomain

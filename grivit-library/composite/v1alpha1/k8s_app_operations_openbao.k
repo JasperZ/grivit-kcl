@@ -1,4 +1,5 @@
 import crypto
+import json
 import core.v1alpha1 as core
 import core.v1alpha1.openbao_utils as openBaoUtils
 
@@ -321,39 +322,17 @@ tail -f /dev/null
             kcOpenBaoAdminsGroup.managedResource
         ]
     }
-    providerConfigHttpJwtToken: core.KcOpenIdClientJwtWrapper {
-        _clientId = providerConfigKcClient.managedResource.spec.forProvider.clientId
-        _clientSecret = providerConfigKcClient.getClientSecret(_observedComposedResources)
-        _domain = _kcDomain
-        _name = "${openBaoUtils.openBaoProviderConfigName(_projectNamespace, _projectNamespace, _instanceName, 'admin')}-token"
-        _realmId = _kcRealmId
-        _projectNamespace = _projectNamespace
-        _uses = [
-            kcUserGroupsWrapper.managedResource
-            providerConfigKcClientDefaultScopes.managedResource
-        ]
-    }
-    providerConfigCredentialsSecret: core.OpenBaoProviderConfigK8sCredentialsSecretWrapper {
-        _openBaoInstanceName = _instanceName
-        _openBaoInstanceOwnerProjectName = _projectNamespace
-        _openBaoJwtToken = providerConfigHttpJwtToken.getAccessToken(_observedComposedResources)
-        _openBaoProjectName = "admin"
-        _openBaoRole = ""
-        _projectNamespace = _projectNamespace
-        _uses = [
-            providerConfigHttpJwtToken.managedResource
-        ]
-    }
     providerConfig: core.OpenBaoProviderConfigWrapper {
+        _credentialsSecretKey = "root_token"
+        _credentialsSecretName = "${_name}-keys-and-root-token"
+        _credentialsSecretNamespace = "openbao"
         _openBaoDomain = _domain
-        _credentialsSecretName = providerConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.name
-        _credentialsSecretNamespace = providerConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.namespace
         _openBaoInstanceName = _instanceName
         _openBaoInstanceOwnerProjectName = _projectNamespace
-        _openBaoProjectName = "admin"
+        _openBaoProjectName = "root"
         _projectNamespace = _projectNamespace
         _uses = [
-            providerConfigCredentialsSecret.managedResource
+            helmRelease.managedResource
         ]
     }
     managedResources: [core.ManagedResource | core.OpenBaoProviderConfig] = [
@@ -365,8 +344,6 @@ tail -f /dev/null
         providerConfigKcClient.managedResource
         providerConfigKcClientDefaultScopes.managedResource
         kcUserGroupsWrapper.managedResource
-        providerConfigHttpJwtToken.managedResource
-        providerConfigCredentialsSecret.managedResource
         providerConfig.managedResource
         k8sServiceAccount.managedResource
         k8sRole.managedResource
@@ -382,8 +359,6 @@ tail -f /dev/null
         providerConfigKcClient.usages
         providerConfigKcClientDefaultScopes.usages
         kcUserGroupsWrapper.usages
-        providerConfigHttpJwtToken.usages
-        providerConfigCredentialsSecret.usages
         providerConfig.usages
         k8sServiceAccount.usages
         k8sRole.usages

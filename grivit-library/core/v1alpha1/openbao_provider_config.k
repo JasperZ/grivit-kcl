@@ -1,8 +1,10 @@
 schema OpenBaoProviderConfig:
+    _credentialsSecretKey: str = "value"
     _credentialsSecretName: str
     _credentialsSecretNamespace: str
     _openBaoDomain: str
     _name: str
+
 
     apiVersion: str = "vault.upbound.io/v1beta1"
     kind: str = "ProviderConfig"
@@ -15,7 +17,7 @@ schema OpenBaoProviderConfig:
     spec: OpenBaoProviderConfigSpec {
         credentials = {
             secretRef = {
-                key = "value"
+                key = _credentialsSecretKey
                 name = _credentialsSecretName
                 namespace = _credentialsSecretNamespace
             }
