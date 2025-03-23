@@ -82,14 +82,14 @@ schema K8sAppOperationsOpenBao:
         _roleBindingNamespace = "openbao"
         _roleBindingSubjects = [
             {
-                kind = k8sServiceAccount.managedResource.spec.forProvider.kind
-                name = k8sServiceAccount.managedResource.spec.forProvider.metadata.name
-                namespace = k8sServiceAccount.managedResource.spec.forProvider.metadata.name
+                kind = k8sServiceAccount.managedResource.spec.forProvider.manifest.kind
+                name = k8sServiceAccount.managedResource.spec.forProvider.manifest.metadata.name
+                namespace = k8sServiceAccount.managedResource.spec.forProvider.manifest.metadata.name
             }
         ]
-        _roleBindingRoleRefKind = k8sRole.managedResource.spec.forProvider.kind
-        _roleBindingRoleRefName = k8sRole.managedResource.spec.forProvider.metadata.name
-        _roleBindingRoleRefNamespace = k8sRole.managedResource.spec.forProvider.metadata.namespace
+        _roleBindingRoleRefKind = k8sRole.managedResource.spec.forProvider.manifest.kind
+        _roleBindingRoleRefName = k8sRole.managedResource.spec.forProvider.manifest.metadata.name
+        _roleBindingRoleRefNamespace = k8sRole.managedResource.spec.forProvider.manifest.metadata.namespace
         _uses = [
             k8sServiceAccount.managedResource
             k8sRole.managedResource
