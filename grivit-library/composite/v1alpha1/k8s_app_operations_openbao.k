@@ -242,7 +242,7 @@ echo "3333"
                         name = "scripts"
                         configMap = {
                             name = k8sScriptsConfigMap.managedResource.spec.forProvider.manifest.metadata.name
-                            defaultMode = oct(0o755)
+                            defaultMode = int(0o755)
                         }
                     }
                 ]
