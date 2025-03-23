@@ -237,7 +237,7 @@ echo "3333"
                         ]
                     }
                 ]
-                extraVolumes = [
+                volumes = [
                     {
                         name = "scripts"
                         configMap = {
