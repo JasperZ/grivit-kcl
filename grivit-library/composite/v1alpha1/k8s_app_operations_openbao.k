@@ -322,17 +322,43 @@ tail -f /dev/null
             kcOpenBaoAdminsGroup.managedResource
         ]
     }
+    k8sKeysRootTokenSecretObserve: core.K8sObjectSecretWrapper {
+        _clusterName = _clusterName
+        _name = osUtils.osProviderConfigSecretName(_projectNamespace)
+        _namespace = "openbao"
+        _projectNamespace = _projectNamespace
+        _secretName = "${_name}-keys-and-root-token"
+        _stringData = {}
+        _uses = [
+            helmRelease.managedResource
+        ]
+        managedResource.spec.managementPolicies = ["Observe"]
+    }
+    providerConfigCredentialsSecret: core.K8sObjectSecretWrapper {
+        _clusterName = _clusterName
+        _name = osUtils.osProviderConfigSecretName(_projectNamespace)
+        _namespace = _projectNamespace
+        _projectNamespace = _projectNamespace
+        _secretName = osUtils.osProviderConfigSecretName(_projectNamespace)
+        _stringData = {
+            value = json.encode({
+                token = "k8sKeysRootTokenSecretObserve.managedResource.spec."
+            })
+        }
+        _uses = [
+            k8sKeysRootTokenSecretObserve.managedResource
+        ]
+    }
     providerConfig: core.OpenBaoProviderConfigWrapper {
-        _credentialsSecretKey = "root_token"
-        _credentialsSecretName = "${_name}-keys-and-root-token"
-        _credentialsSecretNamespace = "openbao"
+        _credentialsSecretName = providerConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.name
+        _credentialsSecretNamespace = providerConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.namespace
         _openBaoDomain = _domain
         _openBaoInstanceContext = "root"
         _openBaoInstanceName = _instanceName
         _openBaoInstanceOwnerProjectName = _projectNamespace
         _projectName = _projectNamespace
         _uses = [
-            helmRelease.managedResource
+            providerConfigCredentialsSecret.managedResource
         ]
     }
     testGroup: core.OpenBaoIdentityGroupWrapper {
@@ -353,6 +379,8 @@ tail -f /dev/null
         providerConfigKcClient.managedResource
         providerConfigKcClientDefaultScopes.managedResource
         kcUserGroupsWrapper.managedResource
+        k8sKeysRootTokenSecretObserve.managedResource
+        providerConfigCredentialsSecret.managedResource
         providerConfig.managedResource
         k8sServiceAccount.managedResource
         k8sRole.managedResource
@@ -369,6 +397,8 @@ tail -f /dev/null
         providerConfigKcClient.usages
         providerConfigKcClientDefaultScopes.usages
         kcUserGroupsWrapper.usages
+        k8sKeysRootTokenSecretObserve.usages
+        providerConfigCredentialsSecret.usages
         providerConfig.usages
         k8sServiceAccount.usages
         k8sRole.usages
