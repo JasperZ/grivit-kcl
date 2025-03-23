@@ -108,13 +108,11 @@ set -euo pipefail
 echo "namespace: \${POD_NAMESPACE}"
 echo "pod: \${POD_NAME}"
 
-VAULT_ADDR="http://127.0.0.1:8200"
-VAULT_SECRET_NAME="vault-init-keys"
+# Set as Pod ENV
+#OPENBAO_SECRET_NAME="vault-init-keys"
 SECRET_FILE="/tmp/vault-keys.json"
 MAX_RETRIES=30
 SLEEP_SECONDS=5
-
-export VAULT_ADDR
 
 log() {
     echo -e "\033[1;34m[INFO]\033[0m $1"
@@ -125,20 +123,20 @@ error() {
     exit 1
 }
 
-wait_for_vault() {
-  log "Waiting for Vault to become reachable at $VAULT_ADDR..."
+wait_for_openbao() {
+  log "Waiting for OpenBao to become available..."
   local i=0
-  until curl -s "$VAULT_ADDR/v1/sys/health" >/dev/null; do
+  until kubectl exec \${POD_NAME} -n \${POD_NAMESPACE} -c openbao -- date; do
     ((i++))
     if [ "$i" -ge "$MAX_RETRIES" ]; then
-      error "Vault is not responding after $((MAX_RETRIES * SLEEP_SECONDS)) seconds."
+      error "OpenBao is not responding after $((MAX_RETRIES * SLEEP_SECONDS)) seconds."
     fi
     sleep "$SLEEP_SECONDS"
   done
-  log "Vault is reachable."
+  log "OpenBao is reachable."
 }
 
-wait_for_vault
+wait_for_openbao
 
 echo "1111"
 
@@ -156,9 +154,9 @@ if [ "$is_initialized" == "false" ]; then
     unseal_keys=$(jq -r '.unseal_keys_b64[]' "$SECRET_FILE")
     root_token=$(jq -r '.root_token' "$SECRET_FILE")
 
-    log "Saving unseal keys and root token to Kubernetes secret: $VAULT_SECRET_NAME"
+    log "Saving unseal keys and root token to Kubernetes secret: $OPENBAO_SECRET_NAME"
 
-    kubectl create secret generic "$VAULT_SECRET_NAME" \
+    kubectl create secret generic "$OPENBAO_SECRET_NAME" \
     --namespace="\${POD_NAMESPACE}" \
     --from-literal=keys="$(jq -c '.unseal_keys_b64' "$SECRET_FILE")" \
     --from-literal=root_token="$root_token" \
@@ -176,7 +174,7 @@ set -e
 if [ "$is_sealed" == "true" ]; then
     log "Vault is sealed. Attempting to unseal..."
 
-    keys_json=$(kubectl get secret "$VAULT_SECRET_NAME" \
+    keys_json=$(kubectl get secret "$OPENBAO_SECRET_NAME" \
     -n "\${POD_NAMESPACE}" -o jsonpath='{.data.keys}' | base64 -d)
 
     for key in $(echo "$keys_json" | jq -r '.[]'); do
@@ -227,6 +225,10 @@ echo "3333"
                             {
                                 name = "POD_NAME"
                                 valueFrom.fieldRef.fieldPath = "metadata.name"
+                            }
+                            {
+                                name = "OPENBAO_SECRET_NAME"
+                                value = "${_name}-keys-and-root-token"
                             }
                         ]
                         volumeMounts = [
