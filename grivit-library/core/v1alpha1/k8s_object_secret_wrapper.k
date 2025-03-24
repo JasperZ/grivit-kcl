@@ -37,3 +37,10 @@ schema K8sObjectSecretWrapper:
         spec.of.resourceRef.name = ofResource.metadata.name
     } for ofResource in _uses]
 
+    getData: (any, str) -> str = lambda observedComposedResources: any, key: str -> str {
+        _data: str = ""
+        if managedResource.metadata.name in observedComposedResources:
+            _data = str(base64.decode(observedComposedResources[managedResource.metadata.name].status?.atProvider?.manifest?.data[key]))
+
+        _data
+    }

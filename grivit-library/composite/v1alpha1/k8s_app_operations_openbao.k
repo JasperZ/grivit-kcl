@@ -343,7 +343,7 @@ tail -f /dev/null
         _secretName = openBaoUtils.openBaoProviderConfigSecretName(_projectNamespace, _instanceName, _projectNamespace, _projectNamespace)
         _stringData = {
             value = json.encode({
-                token = base64.decode(k8sKeysRootTokenSecretObserve.managedResource.status.atProvider.manifest.data.root_token))
+                token = k8sKeysRootTokenSecretObserve.getData(_observedComposedResources, "root_token")
             })
         }
         _uses = [
