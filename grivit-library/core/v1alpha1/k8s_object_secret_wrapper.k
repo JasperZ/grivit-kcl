@@ -1,3 +1,5 @@
+import base64
+
 schema K8sObjectSecretWrapper:
     _clusterName: str
     _name: str
