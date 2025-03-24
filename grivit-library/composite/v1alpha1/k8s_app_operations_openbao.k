@@ -1,3 +1,4 @@
+import base64
 import crypto
 import json
 import core.v1alpha1 as core
@@ -342,7 +343,7 @@ tail -f /dev/null
         _secretName = openBaoUtils.openBaoProviderConfigSecretName(_projectNamespace, _instanceName, _projectNamespace, _projectNamespace)
         _stringData = {
             value = json.encode({
-                token = "k8sKeysRootTokenSecretObserve.managedResource.spec."
+                token = base64.decode(k8sKeysRootTokenSecretObserve.managedResource.status.atProvider.manifest.data.root_token))
             })
         }
         _uses = [
