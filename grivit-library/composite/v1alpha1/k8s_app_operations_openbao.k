@@ -353,7 +353,7 @@ tail -f /dev/null
         _credentialsSecretName = providerConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.name
         _credentialsSecretNamespace = providerConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.namespace
         _openBaoDomain = _domain
-        _openBaoInstanceContext = "root"
+        _openBaoInstanceContext = "admin"
         _openBaoInstanceName = _instanceName
         _openBaoInstanceOwnerProjectName = _projectNamespace
         _projectName = _projectNamespace
@@ -365,7 +365,7 @@ tail -f /dev/null
         _groupName = "test-group"
         _groupType = "internal"
         _name = "${_name}-test-group"
-        _openBaoInstanceContext = "root"
+        _openBaoInstanceContext = "admin"
         _openBaoInstanceName = _instanceName
         _openBaoInstanceOwnerProjectName = _projectNamespace
         _projectName = _projectNamespace
