@@ -133,6 +133,19 @@ output "realm_management_client_id" {
         _providerConfigName = kcTfProviderConfigWrapper.managedResource.metadata.name
     }
     # END: Workaround
+    realmManagementClientObserve2: core.KcOpenIdClientWrapper {
+        _instanceName = _instanceName
+        _instanceOwnerProjectName = _instanceOwnerProjectName
+        _name = "${_name}-realm-management2"
+        _projectNamespace = _projectNamespace
+        _realmId = realm.managedResource.spec.forProvider.realm
+        
+        managedResource.spec.forProvider = {
+            realmId = realm.managedResource.spec.forProvider.realm
+            clientId = "realm-management"
+        }
+        managedResource.spec.managementPolicies = ["Observe"]
+    }
     crossplaneClientRealmAdminRole: core.KcOpenIdClientServiceAccountRole {
         _clientId = realmManagementClientObserve.getOutput(_observedComposedResources, "realm_management_client_id")
         _instanceName = _instanceName
@@ -191,6 +204,7 @@ output "realm_management_client_id" {
         crossplaneClient.managedResource
         kcTfProviderConfigWrapper.managedResource
         realmManagementClientObserve.managedResource
+        realmManagementClientObserve2.managedResource
         crossplaneClientRealmAdminRole.managedResource
         providerConfigCredentials.managedResource
         providerConfig.managedResource
@@ -205,6 +219,7 @@ output "realm_management_client_id" {
         crossplaneClient.usages
         kcTfProviderConfigWrapper.usages
         realmManagementClientObserve.usages
+        realmManagementClientObserve2.usages
         crossplaneClientRealmAdminRole.usages
         providerConfigCredentials.usages
         providerConfig.usages
