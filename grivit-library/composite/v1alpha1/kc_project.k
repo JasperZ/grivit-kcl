@@ -134,11 +134,15 @@ output "realm_management_client_id" {
     }
     # END: Workaround
     realmManagementClientObserve2: core.KcOpenIdClientWrapper {
+        _clientId = "realm-management"
+        _description = ""
         _instanceName = _instanceName
         _instanceOwnerProjectName = _instanceOwnerProjectName
         _name = "${_name}-realm-management2"
         _projectNamespace = _projectNamespace
         _realmId = realm.managedResource.spec.forProvider.realm
+        _url = ""
+        _validRedirectUris = []
         
         managedResource.spec.forProvider = {
             realmId = realm.managedResource.spec.forProvider.realm
