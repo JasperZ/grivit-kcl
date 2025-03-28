@@ -16,7 +16,7 @@ schema OpenBaoAppRoleAuthBackendRoleWrapper:
         }
         spec.forProvider.backend = "${_projectName}/approle"
         spec.forProvider.roleName = _roleName
-        spec.forProvider.tokenType = _roleTokenPolicies
+        spec.forProvider.tokenPolicies = _roleTokenPolicies
         spec.providerConfigRef.name = openBaoProviderConfigName(_projectNamespace, _instanceName, _instanceOwnerProjectName, "admin")
     }
     usages: [Usage] = []
