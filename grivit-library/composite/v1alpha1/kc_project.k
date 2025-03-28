@@ -60,85 +60,12 @@ schema KcProject:
         _projectNamespace = _projectNamespace
         _realmId = realm.managedResource.spec.forProvider.realm
     }
-    # START: Workaround to retrieve id of the realm-management client until crossplane keycloak is fixed
-    kcTfProviderConfigWrapper: core.TfProviderConfigWrapper = {
-        _name = "${_name}-kc-tfprovider-config"
-        _configuration = """\
-terraform {
-  required_providers {
-    keycloak = {
-      source = "keycloak/keycloak"
-      version = "5.1.1"
-    }
-  }
-
-  backend "kubernetes" {
-    secret_suffix     = "${_name}-kc-tfprovider-config-state"
-    namespace         = "${_projectNamespace}"
-    in_cluster_config = true
-  }
-}
-
-variable "client_id" {
-    type = string
-}
-
-variable "username" {
-    type = string
-}
-
-variable "password" {
-    type = string
-}
-
-variable "url" {
-    type = string
-}
-
-variable "base_path" {
-    type = string
-}
-
-variable "realm" {
-    type = string
-}
-
-provider "keycloak" {
-    client_id = var.client_id
-    username  = var.username
-    password  = var.password
-    url       = var.url
-    base_path = var.base_path
-    realm     = var.realm
-}
-"""
-        _credentialsSecretName = kcUtils.kcProviderConfigSecretName(_projectNamespace, _instanceOwnerProjectName, _instanceName, "master")
-        _credentialsSecretNamespace = _projectNamespace
-        _uses = [crossplaneClient.managedResource]
-    }
-
-    realmManagementClientObserve: core.TfWorkspaceWrapper {
-        _moduleInlineCode = """\
-data "keycloak_openid_client" "realm_management" {
-  realm_id  = "${realm.managedResource.spec.forProvider.realm}"
-  client_id = "realm-management"
-}
-
-output "realm_management_client_id" {
-  value = data.keycloak_openid_client.realm_management.id
-}
-"""
-        _name = "${_name}-realm-management"
-        _projectNamespace = _projectNamespace
-        _providerConfigName = kcTfProviderConfigWrapper.managedResource.metadata.name
-    }
-    # END: Workaround
-    realmManagementClientObserve2: core.KcOpenIdClientWrapper {
+    realmManagementClientObserve: core.KcOpenIdClientWrapper {
         _clientId = "realm-management"
         _description = ""
         _instanceName = _instanceName
         _instanceOwnerProjectName = _instanceOwnerProjectName
-        _name = "${_name}-realm-management2"
+        _name = "${_name}-realm-management"
         _projectNamespace = _projectNamespace
         _realmId = realm.managedResource.spec.forProvider.realm
         _url = ""
@@ -151,7 +78,7 @@ output "realm_management_client_id" {
         managedResource.spec.managementPolicies = ["Observe"]
     }
     crossplaneClientRealmAdminRole: core.KcOpenIdClientServiceAccountRole {
-        _clientId = realmManagementClientObserve.getOutput(_observedComposedResources, "realm_management_client_id")
+        _clientId = realmManagementClientObserve.getAtProviderId(_observedComposedResources)
         _instanceName = _instanceName
         _instanceOwnerProjectName = _instanceOwnerProjectName
         _name = "${_name}-crossplane-client-realm-admin"
@@ -206,9 +133,7 @@ output "realm_management_client_id" {
         groupClientScope.managedResource
         groupsMapper.managedResource
         crossplaneClient.managedResource
-        kcTfProviderConfigWrapper.managedResource
         realmManagementClientObserve.managedResource
-        realmManagementClientObserve2.managedResource
         crossplaneClientRealmAdminRole.managedResource
         providerConfigCredentials.managedResource
         providerConfig.managedResource
@@ -221,9 +146,7 @@ output "realm_management_client_id" {
         groupClientScope.usages
         groupsMapper.usages
         crossplaneClient.usages
-        kcTfProviderConfigWrapper.usages
         realmManagementClientObserve.usages
-        realmManagementClientObserve2.usages
         crossplaneClientRealmAdminRole.usages
         providerConfigCredentials.usages
         providerConfig.usages
