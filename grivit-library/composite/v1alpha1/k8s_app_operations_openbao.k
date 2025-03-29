@@ -361,15 +361,7 @@ tail -f /dev/null
             providerConfigCredentialsSecret.managedResource
         ]
     }
-    testGroup: core.OpenBaoIdentityGroupWrapper {
-        _groupName = "test-group"
-        _groupType = "internal"
-        _name = "${_name}-test-group"
-        _openBaoInstanceContext = "admin"
-        _openBaoInstanceName = _instanceName
-        _openBaoInstanceOwnerProjectName = _projectNamespace
-        _projectName = _projectNamespace
-    }
+
     managedResources: [core.ManagedResource | core.OpenBaoProviderConfig] = [
         kcOpenBaoClient.managedResource
         kcOpenBaoClientDefaultScopes.managedResource
@@ -386,7 +378,6 @@ tail -f /dev/null
         k8sRole.managedResource
         k8sRoleBinding.managedResource
         k8sScriptsConfigMap.managedResource
-        testGroup.managedResource
     ]
     usages: [core.Usage] = sum([
         kcOpenBaoClient.usages
@@ -404,6 +395,5 @@ tail -f /dev/null
         k8sRole.usages
         k8sRoleBinding.usages
         k8sScriptsConfigMap.usages
-        testGroup.usages
     ], [])
 
