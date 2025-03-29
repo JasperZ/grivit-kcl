@@ -116,8 +116,8 @@ path "*" {
     }
     
     providerConfig: core.OpenBaoProviderConfigWrapper {
-        _credentialsSecretName = providerConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.name
-        _credentialsSecretNamespace = providerConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.namespace
+        _credentialsSecretName = "413e0a633a73a0774da57ffe4abededf-admin-provider"
+        _credentialsSecretNamespace = "grivit-ctrl-crossplane-dev"
         _openBaoDomain = _openBaoDomain
         _openBaoInstanceContext = _projectName
         _openBaoInstanceName= _openBaoInstanceName
