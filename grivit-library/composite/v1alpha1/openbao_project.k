@@ -172,6 +172,7 @@ path "*" {
         appRoleAuthBackendLogin.managedResource
         kvMount.managedResource
         kvSecretBackend.managedResource
+        testToken.managedResource
         providerConfigCredentialsSecret.managedResource
         providerConfig.managedResource
         k8sTestSecret.managedResource
@@ -187,6 +188,7 @@ path "*" {
         appRoleAuthBackendLogin.usages
         kvMount.usages
         kvSecretBackend.usages
+        testToken.usages
         providerConfigCredentialsSecret.usages
         providerConfig.usages
         k8sTestSecret.usages
