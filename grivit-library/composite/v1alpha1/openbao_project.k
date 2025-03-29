@@ -9,15 +9,15 @@ schema OpenBaoProject:
     _projectName: str
     _projectNamespace: str
 
-    appRoleAuthBackend: core.OpenBaoAuthBackendWrapper {
-        _backendDescription = "AppRole auth backend for project '${_projectName}' managed by Crossplane."
-        _backendType= "approle"
-        _instanceName = _openBaoInstanceName
-        _instanceOwnerProjectName= _openBaoInstanceOwnerProjectName
-        _name = "${_projectName}-approle-auth-backend"
-        _projectName = _projectName
-        _projectNamespace = _projectNamespace
-    }
+#    appRoleAuthBackend: core.OpenBaoAuthBackendWrapper {
+#        _backendDescription = "AppRole auth backend for project '${_projectName}' managed by Crossplane."
+#        _backendType= "approle"
+#        _instanceName = _openBaoInstanceName
+#        _instanceOwnerProjectName= _openBaoInstanceOwnerProjectName
+#        _name = "${_projectName}-approle-auth-backend"
+#        _projectName = _projectName
+#        _projectNamespace = _projectNamespace
+#    }
 
     providerConfigPolicy: core.OpenBaoPolicyWrapper {
         _instanceName = _openBaoInstanceName
@@ -37,45 +37,45 @@ path "*" {
         _projectNamespace = _projectNamespace
     }
 
-    adminGroup: core.OpenBaoIdentityGroupWrapper {
-        _groupName = "${_projectName}-admin"
-        _groupPolicies= [providerConfigPolicy.managedResource.spec.forProvider.name]
-        _groupType: "internal"
-        _name = "${_projectName}-openbao-admin-group"
-        _openBaoInstanceContext= "admin"
-        _openBaoInstanceName= _openBaoInstanceName
-        _openBaoInstanceOwnerProjectName= _openBaoInstanceOwnerProjectName
-        _projectName = _projectName
-    }
-
-    appRoleAuthBackendRole: core.OpenBaoAppRoleAuthBackendRoleWrapper {
-        _instanceName = _openBaoInstanceName
-        _instanceOwnerProjectName= _openBaoInstanceOwnerProjectName
-        _name = "${_projectName}-approle-auth-backend-role"
-        _projectName = _projectName
-        _projectNamespace = _projectNamespace
-        _roleName = "${_projectName}-crossplane-project-admin"
-        _roleTokenPolicies = ["default", providerConfigPolicy.managedResource.spec.forProvider.name]
-    }
-
-    appRoleAuthBackendRoleSecretId: core.OpenBaoAppRoleAuthBackendRoleSecretIdWrapper {
-        _instanceName = _openBaoInstanceName
-        _instanceOwnerProjectName= _openBaoInstanceOwnerProjectName
-        _name = "${_projectName}-approle-auth-backend-role-secret-id"
-        _projectName = _projectName
-        _projectNamespace = _projectNamespace
-        _roleName = appRoleAuthBackendRole.managedResource.spec.forProvider.roleName
-    }
-
-    appRoleAuthBackendLogin: core.OpenBaoAppRoleAuthBackendLoginWrapper {
-        _instanceName = _openBaoInstanceName
-        _instanceOwnerProjectName= _openBaoInstanceOwnerProjectName
-        _loginRoleId = appRoleAuthBackendRole.getAtProviderRoleId(_observedComposedResources)
-        _loginSecretIdResourceName = appRoleAuthBackendRoleSecretId.managedResource.metadata.name
-        _name = "${_projectName}-approle-auth-backend-login"
-        _projectName = _projectName
-        _projectNamespace = _projectNamespace
-    }
+#    adminGroup: core.OpenBaoIdentityGroupWrapper {
+#        _groupName = "${_projectName}-admin"
+#        _groupPolicies= [providerConfigPolicy.managedResource.spec.forProvider.name]
+#        _groupType: "internal"
+#        _name = "${_projectName}-openbao-admin-group"
+#        _openBaoInstanceContext= "admin"
+#        _openBaoInstanceName= _openBaoInstanceName
+#        _openBaoInstanceOwnerProjectName= _openBaoInstanceOwnerProjectName
+#        _projectName = _projectName
+#    }
+#
+#    appRoleAuthBackendRole: core.OpenBaoAppRoleAuthBackendRoleWrapper {
+#        _instanceName = _openBaoInstanceName
+#        _instanceOwnerProjectName= _openBaoInstanceOwnerProjectName
+#        _name = "${_projectName}-approle-auth-backend-role"
+#        _projectName = _projectName
+#        _projectNamespace = _projectNamespace
+#        _roleName = "${_projectName}-crossplane-project-admin"
+#        _roleTokenPolicies = ["default", providerConfigPolicy.managedResource.spec.forProvider.name]
+#    }
+#
+#    appRoleAuthBackendRoleSecretId: core.OpenBaoAppRoleAuthBackendRoleSecretIdWrapper {
+#        _instanceName = _openBaoInstanceName
+#        _instanceOwnerProjectName= _openBaoInstanceOwnerProjectName
+#        _name = "${_projectName}-approle-auth-backend-role-secret-id"
+#        _projectName = _projectName
+#        _projectNamespace = _projectNamespace
+#        _roleName = appRoleAuthBackendRole.managedResource.spec.forProvider.roleName
+#    }
+#
+#    appRoleAuthBackendLogin: core.OpenBaoAppRoleAuthBackendLoginWrapper {
+#        _instanceName = _openBaoInstanceName
+#        _instanceOwnerProjectName= _openBaoInstanceOwnerProjectName
+#        _loginRoleId = appRoleAuthBackendRole.getAtProviderRoleId(_observedComposedResources)
+#        _loginSecretIdResourceName = appRoleAuthBackendRoleSecretId.managedResource.metadata.name
+#        _name = "${_projectName}-approle-auth-backend-login"
+#        _projectName = _projectName
+#        _projectNamespace = _projectNamespace
+#    }
 
     kvMount: core.OpenBaoMountWrapper {
         _mountType= "kv-v2"
@@ -94,15 +94,14 @@ path "*" {
         _projectNamespace = _projectNamespace
     }
 
-    testToken: core.OpenBaoTokenWrapper {
+    providerConfigToken: core.OpenBaoTokenWrapper {
         _name = "${_projectName}-test-token-3"
         _openBaoInstanceName = _openBaoInstanceName
         _openBaoInstanceOwnerProjectName = _openBaoInstanceOwnerProjectName
         _projectName = _projectName
         _projectNamespace = _projectNamespace
         _tokenDisplayName= "${_projectName}-crossplane-test-token-3"
-        _tokenPolicies= ["${_projectName}-crossplane-provider"]
-        _tokenRoleName = "${_projectName}-crossplane-test-token-3"
+        _tokenPolicies= [providerConfigPolicy.managedResource.spec.forProvider.name]
     }
 
     providerConfigCredentialsSecret: core.K8sObjectSecretWrapper {
@@ -113,15 +112,7 @@ path "*" {
         _secretName = core.openBaoProviderConfigSecretName(_projectName, _openBaoInstanceName, _openBaoInstanceOwnerProjectName, _projectName)
         _stringData = {
             value = json.encode({
-                token = testToken.getClientToken(_observedComposedResources)
-                #auth_login = {
-                #    path = appRoleAuthBackend.managedResource.spec.forProvider.path
-                #
-                #    parameters = {
-                #        role_id   = appRoleAuthBackendRole.getAtProviderRoleId(_observedComposedResources)
-                #        secret_id = appRoleAuthBackendRoleSecretId.getSecretId(_observedComposedResources)
-                #    }
-                #}
+                token = providerConfigToken.getClientToken(_observedComposedResources)
             })
         }
     }
@@ -164,15 +155,15 @@ path "*" {
     }
 
     managedResources: [core.ManagedResource | core.OpenBaoProviderConfig] = [
-        appRoleAuthBackend.managedResource
+        #appRoleAuthBackend.managedResource
         providerConfigPolicy.managedResource
-        adminGroup.managedResource
-        appRoleAuthBackendRole.managedResource
-        appRoleAuthBackendRoleSecretId.managedResource
-        appRoleAuthBackendLogin.managedResource
+        #adminGroup.managedResource
+        #appRoleAuthBackendRole.managedResource
+        #appRoleAuthBackendRoleSecretId.managedResource
+        #appRoleAuthBackendLogin.managedResource
         kvMount.managedResource
         kvSecretBackend.managedResource
-        testToken.managedResource
+        providerConfigToken.managedResource
         providerConfigCredentialsSecret.managedResource
         providerConfig.managedResource
         k8sTestSecret.managedResource
@@ -180,15 +171,15 @@ path "*" {
     ]
 
     usages: [core.Usage] = sum([
-        appRoleAuthBackend.usages
+        #appRoleAuthBackend.usages
         providerConfigPolicy.usages
-        adminGroup.usages
-        appRoleAuthBackendRole.usages
-        appRoleAuthBackendRoleSecretId.usages
-        appRoleAuthBackendLogin.usages
+        #adminGroup.usages
+        #appRoleAuthBackendRole.usages
+        #appRoleAuthBackendRoleSecretId.usages
+        #appRoleAuthBackendLogin.usages
         kvMount.usages
         kvSecretBackend.usages
-        testToken.usages
+        providerConfigToken.usages
         providerConfigCredentialsSecret.usages
         providerConfig.usages
         k8sTestSecret.usages
