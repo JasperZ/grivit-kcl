@@ -19,6 +19,20 @@ schema OpenBaoProject:
         _projectNamespace = _projectNamespace
     }
 
+    providerConfigPolicy: core.OpenBaoPolicyWrapper {
+        _instanceName = _openBaoInstanceName
+        _instanceOwnerProjectName= _openBaoInstanceOwnerProjectName
+        _name = "${_projectName}-crossplane-provider"
+        _policyName = "${_projectName}-crossplane-provider"
+        _policyDocument = """\
+path "${_projectName}/*" {
+  capabilities = ["create", "read", "update", "patch", "delete", "list", "scan"]
+}
+"""
+        _projectName = _projectName
+        _projectNamespace = _projectNamespace
+    }
+
     appRoleAuthBackendRole: core.OpenBaoAppRoleAuthBackendRoleWrapper {
         _instanceName = _openBaoInstanceName
         _instanceOwnerProjectName= _openBaoInstanceOwnerProjectName
@@ -26,7 +40,7 @@ schema OpenBaoProject:
         _projectName = _projectName
         _projectNamespace = _projectNamespace
         _roleName = "${_projectName}-crossplane-project-admin"
-        _roleTokenPolicies = ["default"]
+        _roleTokenPolicies = ["default", providerConfigPolicy.managedResource.spec.forProvider.name]
     }
 
     appRoleAuthBackendRoleSecretId: core.OpenBaoAppRoleAuthBackendRoleSecretIdWrapper {
@@ -61,20 +75,6 @@ schema OpenBaoProject:
         _instanceName = _openBaoInstanceName
         _instanceOwnerProjectName= _openBaoInstanceOwnerProjectName
         _name = "${_projectName}-kv-secret-backendv2"
-        _projectName = _projectName
-        _projectNamespace = _projectNamespace
-    }
-
-    providerConfigPolicy: core.OpenBaoPolicyWrapper {
-        _instanceName = _openBaoInstanceName
-        _instanceOwnerProjectName= _openBaoInstanceOwnerProjectName
-        _name = "${_projectName}-crossplane-provider"
-        _policyName = "${_projectName}-crossplane-provider"
-        _policyDocument = """\
-path "${_projectName}/*" {
-  capabilities = ["create", "read", "update", "patch", "delete", "list", "scan"]
-}
-"""
         _projectName = _projectName
         _projectNamespace = _projectNamespace
     }
@@ -121,12 +121,12 @@ path "${_projectName}/*" {
 
     managedResources: [core.ManagedResource | core.OpenBaoProviderConfig] = [
         appRoleAuthBackend.managedResource
+        providerConfigPolicy.managedResource
         appRoleAuthBackendRole.managedResource
         appRoleAuthBackendRoleSecretId.managedResource
         appRoleAuthBackendLogin.managedResource
         kvMount.managedResource
         kvSecretBackend.managedResource
-        providerConfigPolicy.managedResource
         providerConfigCredentialsSecret.managedResource
         providerConfig.managedResource
         testGroup.managedResource
@@ -134,12 +134,12 @@ path "${_projectName}/*" {
 
     usages: [core.Usage] = sum([
         appRoleAuthBackend.usages
+        providerConfigPolicy.usages
         appRoleAuthBackendRole.usages
         appRoleAuthBackendRoleSecretId.usages
         appRoleAuthBackendLogin.usages
         kvMount.usages
         kvSecretBackend.usages
-        providerConfigPolicy.usages
         providerConfigCredentialsSecret.usages
         providerConfig.usages
         testGroup.usages
