@@ -64,6 +64,43 @@ schema OpenBaoProject:
         _projectNamespace = _projectNamespace
     }
 
+    providerConfigPolicy: core.OpenBaoPolicyWrapper {
+        _instanceName = _openBaoInstanceName
+        _instanceOwnerProjectName= _openBaoInstanceOwnerProjectName
+        _name = "${_projectName}-crossplane-provider"
+        _policyName = "${_projectName}-crossplane-provider"
+        _policyDocument = """\
+path "${_projectName}/*" {
+  capabilities = ["create", "read", "update", "patch", "delete", "list", "scan"]
+}
+"""
+        _projectName = _projectName
+        _projectNamespace = _projectNamespace
+    }
+
+    providerConfigCredentialsSecret: core.K8sObjectSecretWrapper {
+        _clusterName = "ctrl"
+        _name = core.openBaoProviderConfigSecretName(_projectName, _openBaoInstanceName, _openBaoInstanceOwnerProjectName, _projectName)
+        _namespace = _projectNamespace
+        _projectNamespace = _projectNamespace
+        _secretName = core.openBaoProviderConfigSecretName(_projectName, _openBaoInstanceName, _openBaoInstanceOwnerProjectName, _projectName)
+        _stringData = {
+            value = json.encode({
+                token = "tbd"
+            })
+        }
+    }
+    
+    providerConfig: core.OpenBaoProviderConfigWrapper {
+        _credentialsSecretName = providerConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.name
+        _credentialsSecretNamespace = providerConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.namespace
+        _openBaoDomain = _openBaoDomain
+        _openBaoInstanceContext = _projectName
+        _openBaoInstanceName= _openBaoInstanceName
+        _openBaoInstanceOwnerProjectName= _openBaoInstanceOwnerProjectName
+        _projectName = _projectName
+    }
+
     managedResources: [core.ManagedResource | core.OpenBaoProviderConfig] = [
         approleAuthBackend.managedResource
         appRoleAuthBackendRole.managedResource
@@ -71,6 +108,9 @@ schema OpenBaoProject:
         appRoleAuthBackendLogin.managedResource
         kvMount.managedResource
         kvSecretBackend.managedResource
+        providerConfigPolicy.managedResource
+        providerConfigCredentialsSecret.managedResource
+        providerConfig.managedResource
     ]
 
     usages: [core.Usage] = sum([
@@ -80,4 +120,7 @@ schema OpenBaoProject:
         appRoleAuthBackendLogin.usages
         kvMount.usages
         kvSecretBackend.usages
+        providerConfigPolicy.usages
+        providerConfigCredentialsSecret.usages
+        providerConfig.usages
     ], [])

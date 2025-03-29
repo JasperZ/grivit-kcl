@@ -17,8 +17,10 @@ schema OpenBaoAppRoleAuthBackendLoginWrapper:
         spec.forProvider.backend = "${_projectName}/approle"
         spec.forProvider.roleId = _loginRoleId
         spec.forProvider.secretIdSecretRef.key = "attribute.secret_id"
-        spec.forProvider.secretIdSecretRef.name = "${_loginSecretIdResourceName}-conn"
+        spec.forProvider.secretIdSecretRef.name = _loginSecretIdResourceName
         spec.forProvider.secretIdSecretRef.namespace = _projectNamespace
+        spec.writeConnectionSecretToRef.name = _name
+        spec.writeConnectionSecretToRef.namespace = _projectNamespace
         spec.providerConfigRef.name = openBaoProviderConfigName(_projectNamespace, _instanceName, _instanceOwnerProjectName, "admin")
     }
     usages: [Usage] = []
