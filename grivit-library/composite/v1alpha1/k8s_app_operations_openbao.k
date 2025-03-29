@@ -336,10 +336,10 @@ tail -f /dev/null
     }
     providerConfigCredentialsSecret: core.K8sObjectSecretWrapper {
         _clusterName = _clusterName
-        _name = openBaoUtils.openBaoProviderConfigSecretName(_projectNamespace, _instanceName, _projectNamespace, _projectNamespace)
+        _name = openBaoUtils.openBaoProviderConfigSecretName(_projectNamespace, _instanceName, _projectNamespace, "admin")
         _namespace = _projectNamespace
         _projectNamespace = _projectNamespace
-        _secretName = openBaoUtils.openBaoProviderConfigSecretName(_projectNamespace, _instanceName, _projectNamespace, _projectNamespace)
+        _secretName = openBaoUtils.openBaoProviderConfigSecretName(_projectNamespace, _instanceName, _projectNamespace, "admin")
         _stringData = {
             value = json.encode({
                 token = k8sKeysRootTokenSecretObserve.getData(_observedComposedResources, "root_token")

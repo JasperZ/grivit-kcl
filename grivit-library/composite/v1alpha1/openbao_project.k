@@ -9,7 +9,7 @@ schema OpenBaoProject:
     _projectName: str
     _projectNamespace: str
 
-    approleAuthBackend: core.OpenBaoAuthBackendWrapper {
+    appRoleAuthBackend: core.OpenBaoAuthBackendWrapper {
         _backendDescription = "AppRole auth backend for project '${_projectName}' managed by Crossplane."
         _backendType= "approle"
         _instanceName = _openBaoInstanceName
@@ -103,7 +103,7 @@ schema OpenBaoProject:
     }
 
     managedResources: [core.ManagedResource | core.OpenBaoProviderConfig] = [
-        approleAuthBackend.managedResource
+        appRoleAuthBackend.managedResource
         appRoleAuthBackendRole.managedResource
         appRoleAuthBackendRoleSecretId.managedResource
         appRoleAuthBackendLogin.managedResource
@@ -115,7 +115,7 @@ schema OpenBaoProject:
     ]
 
     usages: [core.Usage] = sum([
-        approleAuthBackend.usages
+        appRoleAuthBackend.usages
         appRoleAuthBackendRole.usages
         appRoleAuthBackendRoleSecretId.usages
         appRoleAuthBackendLogin.usages
