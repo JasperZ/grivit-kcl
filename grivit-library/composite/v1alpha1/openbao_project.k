@@ -109,14 +109,27 @@ path "${_projectName}/*" {
         _projectName = _projectName
     }
 
-    testGroup: core.OpenBaoIdentityGroupWrapper {
-        _groupName = "test-group"
-        _groupType = "internal"
-        _name = "${_projectName}-test-group"
-        _openBaoInstanceContext = _projectName
-        _openBaoInstanceName = _openBaoInstanceName
-        _openBaoInstanceOwnerProjectName = _projectNamespace
-        _projectName = _projectNamespace
+    k8sTestSecret: core.K8sObjectSecretWrapper {
+        _clusterName = "ctrl"
+        _name = "test-secret"
+        _namespace = _projectNamespace
+        _projectNamespace = _projectNamespace
+        _secretName = "test-secret"
+        _stringData = {
+            value = "test value"
+        }
+    }
+
+    baoTestSecret: core.OpenBaoKvSecretV2Wrapper {
+        _name = "test-secret"
+        _openBaoInstanceName= _openBaoInstanceName
+        _openBaoInstanceOwnerProjectName= _openBaoInstanceOwnerProjectName
+        _projectName = _projectName
+        _projectNamespace = _projectNamespace
+        _secretDataJsonSecretRefKey = "value"
+        _secretDataJsonSecretRefName = k8sTestSecret.managedResource.spec.forProvider.manifest.metadata.name
+        _secretDataJsonSecretRefNamespace = k8sTestSecret.managedResource.spec.forProvider.manifest.metadata.namespace
+        _secretName = "test-secret"
     }
 
     managedResources: [core.ManagedResource | core.OpenBaoProviderConfig] = [
@@ -129,7 +142,8 @@ path "${_projectName}/*" {
         kvSecretBackend.managedResource
         providerConfigCredentialsSecret.managedResource
         providerConfig.managedResource
-        testGroup.managedResource
+        k8sTestSecret.managedResource
+        baoTestSecret.managedResource
     ]
 
     usages: [core.Usage] = sum([
@@ -142,5 +156,6 @@ path "${_projectName}/*" {
         kvSecretBackend.usages
         providerConfigCredentialsSecret.usages
         providerConfig.usages
-        testGroup.usages
+        k8sTestSecret.usages
+        baoTestSecret.usages
     ], [])
