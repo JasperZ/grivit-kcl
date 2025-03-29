@@ -132,7 +132,11 @@ path "*" {
         _projectNamespace = _projectNamespace
         _secretName = "test-secret"
         _stringData = {
-            value = "test value"
+            value = json.encode({
+                key1: "value1"
+                key2: "value2"
+                key3: "value3"
+            })
         }
     }
 
@@ -145,11 +149,7 @@ path "*" {
         _secretDataJsonSecretRefKey = "value"
         _secretDataJsonSecretRefName = k8sTestSecret.managedResource.spec.forProvider.manifest.metadata.name
         _secretDataJsonSecretRefNamespace = k8sTestSecret.managedResource.spec.forProvider.manifest.metadata.namespace
-        _secretName = json.encode({
-            key1: "value1"
-            key2: "value2"
-            key3: "value3"
-        })
+        _secretName = "test-secret"
     }
 
     managedResources: [core.ManagedResource | core.OpenBaoProviderConfig] = [
