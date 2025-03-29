@@ -102,14 +102,15 @@ path "*" {
         _secretName = core.openBaoProviderConfigSecretName(_projectName, _openBaoInstanceName, _openBaoInstanceOwnerProjectName, _projectName)
         _stringData = {
             value = json.encode({
-                auth_login = {
-                    path = appRoleAuthBackend.managedResource.spec.forProvider.path
-
-                    parameters = {
-                        role_id   = appRoleAuthBackendRole.getAtProviderRoleId(_observedComposedResources)
-                        secret_id = appRoleAuthBackendRoleSecretId.getSecretId(_observedComposedResources)
-                    }
-                }
+                token = appRoleAuthBackendLogin.getClientToken(_observedComposedResources)
+                #auth_login = {
+                #    path = appRoleAuthBackend.managedResource.spec.forProvider.path
+                #
+                #    parameters = {
+                #        role_id   = appRoleAuthBackendRole.getAtProviderRoleId(_observedComposedResources)
+                #        secret_id = appRoleAuthBackendRoleSecretId.getSecretId(_observedComposedResources)
+                #    }
+                #}
             })
         }
     }

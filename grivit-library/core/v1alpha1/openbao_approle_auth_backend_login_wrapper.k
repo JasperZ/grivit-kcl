@@ -24,3 +24,11 @@ schema OpenBaoAppRoleAuthBackendLoginWrapper:
         spec.providerConfigRef.name = openBaoProviderConfigName(_projectNamespace, _instanceName, _instanceOwnerProjectName, "admin")
     }
     usages: [Usage] = []
+
+    getClientToken: (any) -> str = lambda observedComposedResources: any -> str {
+        _clientToken: str = ""
+        if managedResource.metadata.name in observedComposedResources:
+            _clientToken = str(base64.decode(observedComposedResources[managedResource.metadata.name].ConnectionDetails["attribute.client_token"]))
+
+        _clientToken
+    }
