@@ -9,7 +9,7 @@ schema OpenBaoPolicyWrapper:
 
     managedResource: ManagedResource {
         apiVersion = "vault.vault.upbound.io/v1alpha1"
-        kind = "Backend"
+        kind = "Policy"
         metadata.name = _name
         metadata.annotations = {
             "krm.kcl.dev/composition-resource-name" = _name
