@@ -42,6 +42,9 @@ path "*" {
         _name = "${_projectName}-kv-secret-backendv2"
         _projectName = _projectName
         _projectNamespace = _projectNamespace
+        _uses = [
+            kvMount.managedResource
+        ]
     }
 
     providerConfigToken: core.OpenBaoTokenWrapper {
@@ -52,6 +55,9 @@ path "*" {
         _projectNamespace = _projectNamespace
         _tokenDisplayName= "${_projectName}-openbao-crossplane-provider"
         _tokenPolicies= [providerConfigPolicy.managedResource.spec.forProvider.name]
+        _uses = [
+            providerConfigPolicy.managedResource
+        ]
     }
 
     providerConfigCredentialsSecret: core.K8sObjectSecretWrapper {
@@ -65,6 +71,9 @@ path "*" {
                 token = providerConfigToken.getClientToken(_observedComposedResources)
             })
         }
+        _uses = [
+            providerConfigToken.managedResource
+        ]
     }
     
     providerConfig: core.OpenBaoProviderConfigWrapper {
@@ -75,6 +84,9 @@ path "*" {
         _openBaoInstanceName= _openBaoInstanceName
         _openBaoInstanceOwnerProjectName= _openBaoInstanceOwnerProjectName
         _projectName = _projectName
+        _uses = [
+            providerConfigCredentialsSecret.managedResource
+        ]
     }
 
     k8sTestSecret: core.K8sObjectSecretWrapper {

@@ -13,7 +13,7 @@ schema OpenBaoTokenWrapper:
     _tokenRenewMinLease: int = 43200
     _tokenRoleName?: str
     _tokenTtl: str = "24h"
-
+    _uses: [ManagedResource] = []
 
     managedResource: ManagedResource {
         apiVersion = "vault.vault.upbound.io/v1alpha1"
@@ -34,7 +34,18 @@ schema OpenBaoTokenWrapper:
         spec.writeConnectionSecretToRef.namespace = _projectNamespace
         spec.providerConfigRef.name = openBaoProviderConfigName(_projectNamespace, _openBaoInstanceName, _openBaoInstanceOwnerProjectName, "admin")
     }
-    usages: [Usage] = []
+    usages: [Usage] = [Usage {
+        metadata.name = "${_name}-uses-${ofResource.metadata.name}"
+        metadata.annotations = {
+            "krm.kcl.dev/composition-resource-name" = "${_name}-uses-${ofResource.metadata.name}"
+        }
+        spec.by.apiVersion = managedResource.apiVersion
+        spec.by.kind = managedResource.kind
+        spec.by.resourceRef.name = managedResource.metadata.name
+        spec.of.apiVersion = ofResource.apiVersion
+        spec.of.kind = ofResource.kind
+        spec.of.resourceRef.name = ofResource.metadata.name
+    } for ofResource in _uses]
 
     getClientToken: (any) -> str = lambda observedComposedResources: any -> str {
         _clientToken: str = ""
