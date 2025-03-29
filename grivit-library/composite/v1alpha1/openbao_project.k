@@ -95,12 +95,12 @@ path "*" {
     }
 
     providerConfigToken: core.OpenBaoTokenWrapper {
-        _name = "${_projectName}-test-token-3"
+        _name = "${_projectName}-crossplane-provider"
         _openBaoInstanceName = _openBaoInstanceName
         _openBaoInstanceOwnerProjectName = _openBaoInstanceOwnerProjectName
         _projectName = _projectName
         _projectNamespace = _projectNamespace
-        _tokenDisplayName= "${_projectName}-crossplane-test-token-3"
+        _tokenDisplayName= "${_projectName}-crossplane-provider"
         _tokenPolicies= [providerConfigPolicy.managedResource.spec.forProvider.name]
     }
 
