@@ -1,3 +1,5 @@
+import base64
+
 schema OpenBaoTokenWrapper:
     _name: str
     _openBaoInstanceName: str
