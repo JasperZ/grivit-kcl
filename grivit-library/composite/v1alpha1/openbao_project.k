@@ -94,6 +94,17 @@ path "*" {
         _projectNamespace = _projectNamespace
     }
 
+    testToken: core.OpenBaoTokenWrapper {
+        _name = "${_projectName}-test-token"
+        _openBaoInstanceName = _openBaoInstanceName
+        _openBaoInstanceOwnerProjectName = _openBaoInstanceOwnerProjectName
+        _projectName = _projectName
+        _projectNamespace = _projectNamespace
+        _tokenDisplayName= "${_projectName}-crossplane-test-token"
+        _tokenPolicies= ["default", providerConfigPolicy.managedResource.spec.forProvider.name]
+        _tokenRoleName = "${_projectName}-crossplane-test-token"
+    }
+
     providerConfigCredentialsSecret: core.K8sObjectSecretWrapper {
         _clusterName = "ctrl"
         _name = core.openBaoProviderConfigSecretName(_projectName, _openBaoInstanceName, _openBaoInstanceOwnerProjectName, _projectName)
