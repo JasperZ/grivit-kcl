@@ -47,6 +47,15 @@ schema OpenBaoProject:
         _projectNamespace = _projectNamespace
     }
 
+    kvMount: core.OpenBaoMountWrapper {
+        _mountType= "kv-v2"
+        _instanceName = _openBaoInstanceName
+        _instanceOwnerProjectName= _openBaoInstanceOwnerProjectName
+        _name = "${_projectName}-kv-mount"
+        _projectName = _projectName
+        _projectNamespace = _projectNamespace
+    }
+
     kvSecretBackend: core.OpenBaoKvSecretBackendV2Wrapper {
         _instanceName = _openBaoInstanceName
         _instanceOwnerProjectName= _openBaoInstanceOwnerProjectName
@@ -60,6 +69,7 @@ schema OpenBaoProject:
         appRoleAuthBackendRole.managedResource
         appRoleAuthBackendRoleSecretId.managedResource
         appRoleAuthBackendLogin.managedResource
+        kvMount.managedResource
         kvSecretBackend.managedResource
     ]
 
@@ -68,5 +78,6 @@ schema OpenBaoProject:
         appRoleAuthBackendRole.usages
         appRoleAuthBackendRoleSecretId.usages
         appRoleAuthBackendLogin.usages
+        kvMount.usages
         kvSecretBackend.usages
     ], [])
