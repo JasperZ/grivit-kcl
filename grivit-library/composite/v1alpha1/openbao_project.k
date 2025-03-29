@@ -109,6 +109,16 @@ path "${_projectName}/*" {
         _projectName = _projectName
     }
 
+    testGroup: core.OpenBaoIdentityGroupWrapper {
+        _groupName = "test-group"
+        _groupType = "internal"
+        _name = "${_projectName}-test-group"
+        _openBaoInstanceContext = _projectName
+        _openBaoInstanceName = _openBaoInstanceName
+        _openBaoInstanceOwnerProjectName = _projectNamespace
+        _projectName = _projectNamespace
+    }
+
     managedResources: [core.ManagedResource | core.OpenBaoProviderConfig] = [
         appRoleAuthBackend.managedResource
         appRoleAuthBackendRole.managedResource
@@ -119,6 +129,7 @@ path "${_projectName}/*" {
         providerConfigPolicy.managedResource
         providerConfigCredentialsSecret.managedResource
         providerConfig.managedResource
+        testGroup.managedResource
     ]
 
     usages: [core.Usage] = sum([
@@ -131,4 +142,5 @@ path "${_projectName}/*" {
         providerConfigPolicy.usages
         providerConfigCredentialsSecret.usages
         providerConfig.usages
+        testGroup.usages
     ], [])
