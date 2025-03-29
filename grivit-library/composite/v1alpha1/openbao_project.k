@@ -65,19 +65,19 @@ schema OpenBaoProject:
         _projectNamespace = _projectNamespace
     }
 
-#    providerConfigPolicy: core.OpenBaoPolicyWrapper {
-#        _instanceName = _openBaoInstanceName
-#        _instanceOwnerProjectName= _openBaoInstanceOwnerProjectName
-#        _name = "${_projectName}-crossplane-provider"
-#        _policyName = "${_projectName}-crossplane-provider"
-#        _policyDocument = """\
-#path "${_projectName}/*" {
-#  capabilities = ["create", "read", "update", "patch", "delete", "list", "scan"]
-#}
-#"""
-#        _projectName = _projectName
-#        _projectNamespace = _projectNamespace
-#    }
+    providerConfigPolicy: core.OpenBaoPolicyWrapper {
+        _instanceName = _openBaoInstanceName
+        _instanceOwnerProjectName= _openBaoInstanceOwnerProjectName
+        _name = "${_projectName}-crossplane-provider"
+        _policyName = "${_projectName}-crossplane-provider"
+        _policyDocument = """\
+path "${_projectName}/*" {
+  capabilities = ["create", "read", "update", "patch", "delete", "list", "scan"]
+}
+"""
+        _projectName = _projectName
+        _projectNamespace = _projectNamespace
+    }
 
     providerConfigCredentialsSecret: core.K8sObjectSecretWrapper {
         _clusterName = "ctrl"
@@ -88,7 +88,7 @@ schema OpenBaoProject:
         _stringData = {
             value = json.encode({
                 auth_login = {
-                    path = ""
+                    path = appRoleAuthBackend.managedResource.spec.forProvider.path
 
                     parameters = {
                         role_id   = appRoleAuthBackendRole.getAtProviderRoleId(_observedComposedResources)
