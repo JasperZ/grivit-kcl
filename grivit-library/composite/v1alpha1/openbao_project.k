@@ -15,13 +15,13 @@ schema OpenBaoProject:
         _name = "${_projectName}-crossplane-provider"
         _policyName = "${_projectName}-crossplane-provider"
         _policyDocument = """\
-#path "${_projectName}/*" {
-#  capabilities = ["create", "read", "update", "patch", "delete", "list", "scan"]
-#}
-
-path "*" {
+path "${_projectName}/*" {
   capabilities = ["create", "read", "update", "patch", "delete", "list", "scan"]
 }
+
+#path "*" {
+#  capabilities = ["create", "read", "update", "patch", "delete", "list", "scan"]
+#}
 """
         _projectName = _projectName
         _projectNamespace = _projectNamespace
