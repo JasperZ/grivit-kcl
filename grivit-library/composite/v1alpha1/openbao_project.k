@@ -1,3 +1,4 @@
+import json
 import core.v1alpha1 as core
 
 schema OpenBaoProject:
