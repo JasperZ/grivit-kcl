@@ -1,3 +1,5 @@
+import base64
+
 schema OpenBaoAppRoleAuthBackendRoleSecretIdWrapper:
     _instanceName: str
     _instanceOwnerProjectName: str
