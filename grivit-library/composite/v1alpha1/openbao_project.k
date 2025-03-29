@@ -33,6 +33,17 @@ path "${_projectName}/*" {
         _projectNamespace = _projectNamespace
     }
 
+    adminGroup: core.OpenBaoIdentityGroupWrapper {
+        _groupName = "${_projectName}-admin"
+        _groupPolicies= [providerConfigPolicy.managedResource.spec.forProvider.name]
+        _groupType: "internal"
+        _name = "${_projectName}-openbao-admin-group"
+        _openBaoInstanceContext= "admin"
+        _openBaoInstanceName= _openBaoInstanceName
+        _openBaoInstanceOwnerProjectName= _openBaoInstanceOwnerProjectName
+        _projectName = _projectName
+    }
+
     appRoleAuthBackendRole: core.OpenBaoAppRoleAuthBackendRoleWrapper {
         _instanceName = _openBaoInstanceName
         _instanceOwnerProjectName= _openBaoInstanceOwnerProjectName
@@ -135,6 +146,7 @@ path "${_projectName}/*" {
     managedResources: [core.ManagedResource | core.OpenBaoProviderConfig] = [
         appRoleAuthBackend.managedResource
         providerConfigPolicy.managedResource
+        adminGroup.managedResource
         appRoleAuthBackendRole.managedResource
         appRoleAuthBackendRoleSecretId.managedResource
         appRoleAuthBackendLogin.managedResource
@@ -149,6 +161,7 @@ path "${_projectName}/*" {
     usages: [core.Usage] = sum([
         appRoleAuthBackend.usages
         providerConfigPolicy.usages
+        adminGroup.usages
         appRoleAuthBackendRole.usages
         appRoleAuthBackendRoleSecretId.usages
         appRoleAuthBackendLogin.usages
