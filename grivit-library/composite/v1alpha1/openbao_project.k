@@ -95,14 +95,14 @@ path "*" {
     }
 
     testToken: core.OpenBaoTokenWrapper {
-        _name = "${_projectName}-test-token-2"
+        _name = "${_projectName}-test-token-3"
         _openBaoInstanceName = _openBaoInstanceName
         _openBaoInstanceOwnerProjectName = _openBaoInstanceOwnerProjectName
         _projectName = _projectName
         _projectNamespace = _projectNamespace
-        _tokenDisplayName= "${_projectName}-crossplane-test-token-2"
-        _tokenPolicies= ["default", "${_projectName}-crossplane-provider"]
-        _tokenRoleName = "${_projectName}-crossplane-test-token-2"
+        _tokenDisplayName= "${_projectName}-crossplane-test-token-3"
+        _tokenPolicies= ["${_projectName}-crossplane-provider"]
+        _tokenRoleName = "${_projectName}-crossplane-test-token-3"
     }
 
     providerConfigCredentialsSecret: core.K8sObjectSecretWrapper {
