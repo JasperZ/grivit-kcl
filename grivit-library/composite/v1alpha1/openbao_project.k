@@ -65,19 +65,19 @@ schema OpenBaoProject:
         _projectNamespace = _projectNamespace
     }
 
-    providerConfigPolicy: core.OpenBaoPolicyWrapper {
-        _instanceName = _openBaoInstanceName
-        _instanceOwnerProjectName= _openBaoInstanceOwnerProjectName
-        _name = "${_projectName}-crossplane-provider"
-        _policyName = "${_projectName}-crossplane-provider"
-        _policyDocument = """\
-path "${_projectName}/*" {
-  capabilities = ["create", "read", "update", "patch", "delete", "list", "scan"]
-}
-"""
-        _projectName = _projectName
-        _projectNamespace = _projectNamespace
-    }
+#    providerConfigPolicy: core.OpenBaoPolicyWrapper {
+#        _instanceName = _openBaoInstanceName
+#        _instanceOwnerProjectName= _openBaoInstanceOwnerProjectName
+#        _name = "${_projectName}-crossplane-provider"
+#        _policyName = "${_projectName}-crossplane-provider"
+#        _policyDocument = """\
+#path "${_projectName}/*" {
+#  capabilities = ["create", "read", "update", "patch", "delete", "list", "scan"]
+#}
+#"""
+#        _projectName = _projectName
+#        _projectNamespace = _projectNamespace
+#    }
 
     providerConfigCredentialsSecret: core.K8sObjectSecretWrapper {
         _clusterName = "ctrl"
@@ -109,7 +109,7 @@ path "${_projectName}/*" {
         appRoleAuthBackendLogin.managedResource
         kvMount.managedResource
         kvSecretBackend.managedResource
-        providerConfigPolicy.managedResource
+        #providerConfigPolicy.managedResource
         providerConfigCredentialsSecret.managedResource
         providerConfig.managedResource
     ]
@@ -121,7 +121,7 @@ path "${_projectName}/*" {
         appRoleAuthBackendLogin.usages
         kvMount.usages
         kvSecretBackend.usages
-        providerConfigPolicy.usages
+        #providerConfigPolicy.usages
         providerConfigCredentialsSecret.usages
         providerConfig.usages
     ], [])
