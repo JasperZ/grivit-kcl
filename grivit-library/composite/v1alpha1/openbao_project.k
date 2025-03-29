@@ -111,7 +111,7 @@ path "${_projectName}/*" {
 
     k8sTestSecret: core.K8sObjectSecretWrapper {
         _clusterName = "ctrl"
-        _name = "test-secret"
+        _name = "k8s-test-secret"
         _namespace = _projectNamespace
         _projectNamespace = _projectNamespace
         _secretName = "test-secret"
@@ -121,7 +121,7 @@ path "${_projectName}/*" {
     }
 
     baoTestSecret: core.OpenBaoKvSecretV2Wrapper {
-        _name = "test-secret"
+        _name = "bao-test-secret"
         _openBaoInstanceName= _openBaoInstanceName
         _openBaoInstanceOwnerProjectName= _openBaoInstanceOwnerProjectName
         _projectName = _projectName
