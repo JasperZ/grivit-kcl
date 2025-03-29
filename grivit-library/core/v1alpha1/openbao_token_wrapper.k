@@ -11,7 +11,7 @@ schema OpenBaoTokenWrapper:
     _tokenRenewable: bool = True
     _tokenRenewIncrement: int = 86400
     _tokenRenewMinLease: int = 43200
-    _tokenRoleName: str
+    _tokenRoleName?: str
     _tokenTtl: str = "24h"
 
 
@@ -27,7 +27,8 @@ schema OpenBaoTokenWrapper:
         spec.forProvider.renewable = _tokenRenewable
         spec.forProvider.renewIncrement = _tokenRenewIncrement
         spec.forProvider.renewMinLease = _tokenRenewMinLease
-        #spec.forProvider.roleName = _tokenRoleName
+        if _tokenRoleName:
+            spec.forProvider.roleName = _tokenRoleName
         spec.forProvider.ttl = _tokenTtl
         spec.writeConnectionSecretToRef.name = _name
         spec.writeConnectionSecretToRef.namespace = _projectNamespace

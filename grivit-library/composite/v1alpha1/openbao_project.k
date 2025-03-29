@@ -101,7 +101,7 @@ path "*" {
         _projectName = _projectName
         _projectNamespace = _projectNamespace
         _tokenDisplayName= "${_projectName}-crossplane-test-token-3"
-        _tokenPolicies= ["${_projectName}-crossplane-provider", "test-policy"]
+        _tokenPolicies= ["${_projectName}-crossplane-provider"]
         _tokenRoleName = "${_projectName}-crossplane-test-token-3"
     }
 
