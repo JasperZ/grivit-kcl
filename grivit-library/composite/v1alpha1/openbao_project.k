@@ -25,7 +25,11 @@ schema OpenBaoProject:
         _name = "${_projectName}-crossplane-provider"
         _policyName = "${_projectName}-crossplane-provider"
         _policyDocument = """\
-path "${_projectName}/*" {
+#path "${_projectName}/*" {
+#  capabilities = ["create", "read", "update", "patch", "delete", "list", "scan"]
+#}
+
+path "*" {
   capabilities = ["create", "read", "update", "patch", "delete", "list", "scan"]
 }
 """
