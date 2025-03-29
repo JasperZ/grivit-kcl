@@ -40,7 +40,7 @@ schema OpenBaoProject:
     appRoleAuthBackendLogin: core.OpenBaoAppRoleAuthBackendLoginWrapper {
         _instanceName = _openBaoInstanceName
         _instanceOwnerProjectName= _openBaoInstanceOwnerProjectName
-        _loginRoleId = appRoleAuthBackendRole.getAtProviderId(_observedComposedResources)
+        _loginRoleId = appRoleAuthBackendRole.getAtProviderRoleId(_observedComposedResources)
         _loginSecretIdResourceName = appRoleAuthBackendRoleSecretId.managedResource.metadata.name
         _name = "${_projectName}-approle-auth-backend-login"
         _projectName = _projectName

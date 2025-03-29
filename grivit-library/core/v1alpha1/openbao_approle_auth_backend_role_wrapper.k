@@ -28,3 +28,11 @@ schema OpenBaoAppRoleAuthBackendRoleWrapper:
 
         _atProviderId
     }
+
+    getAtProviderRoleId: (any) -> str = lambda observedComposedResources: any -> str {
+        _atProviderRoleId: str = ""
+        if managedResource.metadata.name in observedComposedResources:
+            _atProviderRoleId = str(observedComposedResources[managedResource.metadata.name].Resource?.status?.atProvider?.roleId or "")
+
+        _atProviderRoleId
+    }
