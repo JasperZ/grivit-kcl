@@ -21,3 +21,10 @@ schema OpenBaoAppRoleAuthBackendRoleSecretIdWrapper:
     }
     usages: [Usage] = []
 
+    getSecretId: (any) -> str = lambda observedComposedResources: any -> str {
+        _secretId: str = ""
+        if managedResource.metadata.name in observedComposedResources:
+            _secretId = str(base64.decode(observedComposedResources[managedResource.metadata.name].ConnectionDetails["attribute.secret_id"]))
+
+        _secretId
+    }
