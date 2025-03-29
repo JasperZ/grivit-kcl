@@ -25,7 +25,7 @@ schema OpenBaoProject:
         _projectName = _projectName
         _projectNamespace = _projectNamespace
         _roleName = "${_projectName}-crossplane-project-admin"
-        _roleTokenPolicies = []
+        _roleTokenPolicies = ["default"]
     }
 
     appRoleAuthBackendRoleSecretId: core.OpenBaoAppRoleAuthBackendRoleSecretIdWrapper {
