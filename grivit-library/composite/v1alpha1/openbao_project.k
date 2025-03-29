@@ -101,7 +101,7 @@ path "*" {
         _projectName = _projectName
         _projectNamespace = _projectNamespace
         _tokenDisplayName= "${_projectName}-crossplane-test-token-1"
-        _tokenPolicies= ["default", providerConfigPolicy.managedResource.spec.forProvider.name]
+        _tokenPolicies= ["default", "${_projectName}-crossplane-provider"]
         _tokenRoleName = "${_projectName}-crossplane-test-token-1"
     }
 
