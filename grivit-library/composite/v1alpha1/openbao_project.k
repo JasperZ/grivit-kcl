@@ -113,7 +113,7 @@ path "*" {
         _secretName = core.openBaoProviderConfigSecretName(_projectName, _openBaoInstanceName, _openBaoInstanceOwnerProjectName, _projectName)
         _stringData = {
             value = json.encode({
-                token = appRoleAuthBackendLogin.getClientToken(_observedComposedResources)
+                token = testToken.getClientToken(_observedComposedResources)
                 #auth_login = {
                 #    path = appRoleAuthBackend.managedResource.spec.forProvider.path
                 #

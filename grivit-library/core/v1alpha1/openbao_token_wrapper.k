@@ -25,7 +25,7 @@ schema OpenBaoTokenWrapper:
         spec.forProvider.renewable = _tokenRenewable
         spec.forProvider.renewIncrement = _tokenRenewIncrement
         spec.forProvider.renewMinLease = _tokenRenewMinLease
-        spec.forProvider.roleName = _tokenRoleName
+        #spec.forProvider.roleName = _tokenRoleName
         spec.forProvider.ttl = _tokenTtl
         spec.writeConnectionSecretToRef.name = _name
         spec.writeConnectionSecretToRef.namespace = _projectNamespace
@@ -33,3 +33,10 @@ schema OpenBaoTokenWrapper:
     }
     usages: [Usage] = []
 
+    getClientToken: (any) -> str = lambda observedComposedResources: any -> str {
+        _clientToken: str = ""
+        if managedResource.metadata.name in observedComposedResources:
+            _clientToken = str(base64.decode(observedComposedResources[managedResource.metadata.name].ConnectionDetails["attribute.client_token"]))
+
+        _clientToken
+    }
