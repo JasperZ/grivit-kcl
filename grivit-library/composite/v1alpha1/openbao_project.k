@@ -47,11 +47,20 @@ schema OpenBaoProject:
         _projectNamespace = _projectNamespace
     }
 
+    kvSecretBackend: core.OpenBaoKvSecretBackendV2Wrapper {
+        _instanceName = _openBaoInstanceName
+        _instanceOwnerProjectName= _openBaoInstanceOwnerProjectName
+        _name = "${_projectName}-kv-secret-backendv2"
+        _projectName = _projectName
+        _projectNamespace = _projectNamespace
+    }
+
     managedResources: [core.ManagedResource | core.OpenBaoProviderConfig] = [
         approleAuthBackend.managedResource
         appRoleAuthBackendRole.managedResource
         appRoleAuthBackendRoleSecretId.managedResource
         appRoleAuthBackendLogin.managedResource
+        kvSecretBackend.managedResource
     ]
 
     usages: [core.Usage] = sum([
@@ -59,4 +68,5 @@ schema OpenBaoProject:
         appRoleAuthBackendRole.usages
         appRoleAuthBackendRoleSecretId.usages
         appRoleAuthBackendLogin.usages
+        kvSecretBackend.usages
     ], [])
