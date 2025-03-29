@@ -12,7 +12,7 @@ schema OpenBaoKvSecretBackendV2Wrapper:
         metadata.annotations = {
             "krm.kcl.dev/composition-resource-name" = _name
         }
-        spec.forProvider.mount = "${_projectName}/kv}"
+        spec.forProvider.mount = "${_projectName}/kv"
         spec.providerConfigRef.name = openBaoProviderConfigName(_projectNamespace, _instanceName, _instanceOwnerProjectName, "admin")
     }
     usages: [Usage] = []
