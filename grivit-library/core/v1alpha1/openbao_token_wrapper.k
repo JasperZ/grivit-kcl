@@ -29,7 +29,7 @@ schema OpenBaoTokenWrapper:
         spec.forProvider.ttl = _tokenTtl
         spec.writeConnectionSecretToRef.name = _name
         spec.writeConnectionSecretToRef.namespace = _projectNamespace
-        spec.providerConfigRef.name = openBaoProviderConfigName(_projectNamespace, _openBaoInstanceName, _openBaoInstanceOwnerProjectName, _projectName)
+        spec.providerConfigRef.name = openBaoProviderConfigName(_projectNamespace, _openBaoInstanceName, _openBaoInstanceOwnerProjectName, "admin")
     }
     usages: [Usage] = []
 
