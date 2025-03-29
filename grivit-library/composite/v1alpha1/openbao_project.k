@@ -116,7 +116,7 @@ path "${_projectName}/*" {
         appRoleAuthBackendLogin.managedResource
         kvMount.managedResource
         kvSecretBackend.managedResource
-        #providerConfigPolicy.managedResource
+        providerConfigPolicy.managedResource
         providerConfigCredentialsSecret.managedResource
         providerConfig.managedResource
     ]
@@ -128,7 +128,7 @@ path "${_projectName}/*" {
         appRoleAuthBackendLogin.usages
         kvMount.usages
         kvSecretBackend.usages
-        #providerConfigPolicy.usages
+        providerConfigPolicy.usages
         providerConfigCredentialsSecret.usages
         providerConfig.usages
     ], [])
