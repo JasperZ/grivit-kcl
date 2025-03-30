@@ -19,6 +19,14 @@ path "${_projectName}/*" {
   capabilities = ["create", "read", "update", "patch", "delete", "list", "scan"]
 }
 
+path "auth/token/lookup-accessor" {
+  capabilities = ["update"]
+}
+
+path "auth/token/revoke-accessor" {
+  capabilities = ["update"]
+}
+
 #path "*" {
 #  capabilities = ["create", "read", "update", "patch", "delete", "list", "scan"]
 #}
