@@ -133,7 +133,7 @@ schema ControlPlane:
     }
     k8sAppPrometheusOperatorCrds: apps.PrometheusOperatorCrds {
         _clusterName = _k8sClusterName
-        _name = "${_clusterName}-crd-prom"
+        _name = "${_projectNamespace}-${_k8sClusterName}-crd-prom"
         _projectNamespace = _projectNamespace
     }
     k8sAppOpenStackCinderCsi: apps.OpenStackCinderCsi {
