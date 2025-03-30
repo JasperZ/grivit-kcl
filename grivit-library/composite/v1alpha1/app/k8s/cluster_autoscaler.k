@@ -1,6 +1,6 @@
 import core.v1alpha1 as core
 
-schema K8sAppInfrastructureClusterAutoscaler:
+schema ClusterAutoscaler:
     _clusterName: str
     _name: str
     _projectNamespace: str

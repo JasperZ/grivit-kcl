@@ -10,7 +10,7 @@ schema K8sAppBundleOperation:
     _observedComposedResources: any
     _projectNamespace: str
     # _headlampDomain: str
-
+    
     k8sAppsOperationArgoCd: K8sAppOperationsArgoCd {
         _clusterName = _clusterName
         _domain = _argoCdDomain

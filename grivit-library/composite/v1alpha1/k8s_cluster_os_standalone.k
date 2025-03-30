@@ -1,5 +1,6 @@
 import crypto
 import core.v1alpha1 as core
+import .app.k8s as apps
 
 schema K8sClusterOsStandaloneConfigWorkersAutoscaling:
     minSize: int
@@ -153,8 +154,9 @@ clouds:
             k8sProviderConfigCredentialsSecret.managedResource
         ]
     }
-    k8sCRDsBundle: K8sAppBundleCrds {
+    k8sAppPrometheusOperatorCrds: apps.PrometheusOperatorCrds {
         _clusterName = _name
+        _name = "${_clusterName}-crd-prom"
         _projectNamespace = _projectNamespace
     }
     k8sAppsInfrastructureOsBundle: K8sAppBundleOsInfrastructure {
@@ -162,7 +164,7 @@ clouds:
         _clusterSubnetId = openstackCluster.getSubnetId(_observedComposedResources)
         _domainFilters = [_domain]
         _externalNetworkId = openstackCluster.getExternalNetworkId(_observedComposedResources)
-        _fluxHelmReleaseDependencies = k8sCRDsBundle.fluxHelmReleases
+        _fluxHelmReleaseDependencies = [k8sAppPrometheusOperatorCrds.helmRelease]
         _name = "${_name}-ia"
         _observedComposedResources = _observedComposedResources
         _projectNamespace = _projectNamespace
@@ -196,7 +198,7 @@ clouds:
         providerConfig.managedResource
         k8sCrossplaneSecretsNamespace.managedResource
     ] + sum([
-        k8sCRDsBundle.managedResources
+        k8sAppPrometheusOperatorCrds.managedResources
         k8sAppsInfrastructureOsBundle.managedResources
         k8sAppsPlatformBundle.managedResources
     ], [])
@@ -213,7 +215,7 @@ clouds:
         workerMachineTemplate.usages
         k8sProviderConfigCredentialsSecret.usages
         providerConfig.usages
-        k8sCRDsBundle.usages
+        k8sAppPrometheusOperatorCrds.usages
         k8sAppsInfrastructureOsBundle.usages
         k8sAppsPlatformBundle.usages
         k8sCrossplaneSecretsNamespace.usages

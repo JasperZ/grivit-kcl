@@ -1,35 +1,24 @@
 import core.v1alpha1 as core
 
-schema K8sAppPlatformMetricsServer:
+schema PrometheusOperatorCrds:
     _clusterName: str
     _name: str
-    _fluxHelmReleaseDependencies?: [core.K8sFluxHelmReleaseWrapper]
     _projectNamespace: str
 
     helmRepo: core.K8sFluxHelmRepositoryWrapper {
         _name = "${_name}-repo"
-        _helmRepoUrl = "https://kubernetes-sigs.github.io/metrics-server"
+        _helmRepoUrl = "https://prometheus-community.github.io/helm-charts"
         _projectNamespace = _projectNamespace
     }
     helmRelease: core.K8sFluxHelmReleaseWrapper {
         _clusterName = _clusterName
         _name = "${_name}-rel"
-        _helmChartName = "metrics-server"
-        _helmChartVersion = "3.12.1"
-        _helmReleaseName = "metrics-server"
+        _helmChartName = "prometheus-operator-crds"
+        _helmChartVersion = "14.0.0"
+        _helmReleaseName = "prometheus-operator-crds"
         _helmReleaseNamespace = "kube-system"
         _helmRepositoryWrapper = helmRepo
-        _helmReleaseWrapperDependencies = _fluxHelmReleaseDependencies
         _projectNamespace = _projectNamespace
-        managedResource.spec.forProvider.manifest.spec.values = {
-            args = ["--kubelet-insecure-tls"]
-            resources = {
-                limits.cpu = "100m"
-                limits.memory = "256Mi"
-                requests.cpu = "100m"
-                requests.memory = "256Mi"
-            }
-        }
         managedResource.spec.forProvider.manifest.spec.install.createNamespace = False
     }
     managedResources: [core.ManagedResource] = [
@@ -38,4 +27,3 @@ schema K8sAppPlatformMetricsServer:
     ]
 
     usages: [core.Usage] = helmRepo.usages + helmRelease.usages
-

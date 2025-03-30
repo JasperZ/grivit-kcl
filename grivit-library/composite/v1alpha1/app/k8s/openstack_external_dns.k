@@ -1,6 +1,6 @@
 import core.v1alpha1 as core
 
-schema K8sAppInfrastructureOsExternalDNS:
+schema OpenStackExternalDns:
     _clusterName: str
     _domainFilters: [str]
     _fluxHelmReleaseDependencies?: [core.K8sFluxHelmReleaseWrapper]

@@ -1,5 +1,6 @@
 import crypto
 import core.v1alpha1 as core
+import core.v1alpha1.k8s_utils as k8sUtils
 
 schema K8sClusterOsK0smotronConfigWorkersAutoscaling:
     minSize: int
@@ -142,8 +143,9 @@ clouds:
             k8sProviderConfigCredentialsSecret.managedResource
         ]
     }
-    k8sCRDsBundle: K8sAppBundleCrds {
+    k8sAppPrometheusOperatorCrds: apps.PrometheusOperatorCrds {
         _clusterName = _name
+        _name = "${_clusterName}-crd-prom"
         _projectNamespace = _projectNamespace
     }
     k8sAppsInfrastructureOsBundle: K8sAppBundleOsInfrastructure {
@@ -151,7 +153,7 @@ clouds:
         _clusterSubnetId = openstackCluster.getSubnetId(_observedComposedResources)
         _domainFilters = [_domain]
         _externalNetworkId = openstackCluster.getExternalNetworkId(_observedComposedResources)
-        _fluxHelmReleaseDependencies = k8sCRDsBundle.fluxHelmReleases
+        _fluxHelmReleaseDependencies = [k8sAppPrometheusOperatorCrds.helmRelease]
         _name = "${_name}-ia"
         _observedComposedResources = _observedComposedResources
         _projectNamespace = _projectNamespace
@@ -164,7 +166,6 @@ clouds:
         _observedComposedResources = _observedComposedResources
         _projectNamespace = _projectNamespace
     }
-
     managedResources: [core.K8sProviderConfig | core.ManagedResource] = [
         applicationCredential.managedResource
         cluster.managedResource
@@ -178,7 +179,7 @@ clouds:
         k8sProviderConfigCredentialsSecret.managedResource
         providerConfig.managedResource
     ] + sum([
-        k8sCRDsBundle.managedResources
+        k8sAppPrometheusOperatorCrds.managedResources
         k8sAppsInfrastructureOsBundle.managedResources
         k8sAppsPlatformBundle.managedResources
     ], [])
@@ -195,7 +196,7 @@ clouds:
         workerMachineTemplate.usages
         k8sProviderConfigCredentialsSecret.usages
         providerConfig.usages
-        k8sCRDsBundle.usages
+        k8sAppPrometheusOperatorCrds.usages
         k8sAppsInfrastructureOsBundle.usages
         k8sAppsPlatformBundle.usages
     ], [])

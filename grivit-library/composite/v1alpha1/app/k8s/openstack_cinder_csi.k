@@ -1,6 +1,6 @@
 import core.v1alpha1 as core
 
-schema K8sAppInfrastructureOsCsiDriver:
+schema OpenStackCinderCsi:
     _clusterName: str
     _name: str
     _fluxHelmReleaseDependencies?: [core.K8sFluxHelmReleaseWrapper]

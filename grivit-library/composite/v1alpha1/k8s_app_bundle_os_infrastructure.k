@@ -1,4 +1,5 @@
 import core.v1alpha1 as core
+import .app.k8s as apps
 
 schema K8sAppBundleOsInfrastructure:
     _clusterName: str
@@ -10,13 +11,13 @@ schema K8sAppBundleOsInfrastructure:
     _observedComposedResources: any
     _projectNamespace: str
 
-    k8sAppsInfrastructureCilium: K8sAppInfrastructureCilium {
+    appCilium: apps.Cilium {
         _clusterName = _clusterName
         _fluxHelmReleaseDependencies = _fluxHelmReleaseDependencies
         _name = "${_name}-cilium"
         _projectNamespace = _projectNamespace
     }
-    k8sAppsInfrastructureOsCloudControllerManager: K8sAppInfrastructureOsCloudControllerManager {
+    appOpenStackCloudControllerManager: apps.OpenStackCloudControllerManager {
         _clusterName = _clusterName
         _clusterSubnetId = _clusterSubnetId
         _externalNetworkId = _externalNetworkId
@@ -25,14 +26,14 @@ schema K8sAppBundleOsInfrastructure:
         _observedComposedResources = _observedComposedResources
         _projectNamespace = _projectNamespace
     }
-    k8sAppsInfrastructureOsCSIDriver: K8sAppInfrastructureOsCsiDriver {
+    appOpenStackCinderCsi: apps.OpenStackCinderCsi {
         _clusterName = _clusterName
         _name = "${_name}-ocsi"
         _fluxHelmReleaseDependencies = _fluxHelmReleaseDependencies
         _observedComposedResources = _observedComposedResources
         _projectNamespace = _projectNamespace
     }
-    k8sAppsInfrastructureOsExternalDNS: K8sAppInfrastructureOsExternalDNS {
+    appOpenStackExternalDns: apps.OpenStackExternalDns {
         _clusterName = _clusterName
         _domainFilters = _domainFilters
         _fluxHelmReleaseDependencies = _fluxHelmReleaseDependencies
@@ -40,18 +41,18 @@ schema K8sAppBundleOsInfrastructure:
         _observedComposedResources = _observedComposedResources
         _projectNamespace = _projectNamespace
     }
-    k8sAppsInfrastructureClusterAutoscaler: K8sAppInfrastructureClusterAutoscaler {
+    appClusterAutoscaler: apps.ClusterAutoscaler {
         _clusterName = _clusterName
         _name = "${_name}-ca"
         _projectNamespace = _projectNamespace
     }
     fluxHelmReleases: [core.K8sFluxHelmReleaseWrapper] = [
-        k8sAppsInfrastructureCilium.helmRelease
-        k8sAppsInfrastructureOsCloudControllerManager.helmRelease
-        k8sAppsInfrastructureOsCSIDriver.helmRelease
-        k8sAppsInfrastructureOsExternalDNS.helmRelease
+        appCilium.helmRelease
+        appOpenStackCloudControllerManager.helmRelease
+        appOpenStackCinderCsi.helmRelease
+        appOpenStackExternalDns.helmRelease
     ]
 
-    managedResources: [core.ManagedResource] = k8sAppsInfrastructureCilium.managedResources + k8sAppsInfrastructureOsCloudControllerManager.managedResources + k8sAppsInfrastructureOsCSIDriver.managedResources + k8sAppsInfrastructureOsExternalDNS.managedResources + k8sAppsInfrastructureClusterAutoscaler.managedResources
-    usages: [core.Usage] = k8sAppsInfrastructureCilium.usages + k8sAppsInfrastructureOsCloudControllerManager.usages + k8sAppsInfrastructureOsCSIDriver.usages + k8sAppsInfrastructureOsExternalDNS.usages + k8sAppsInfrastructureClusterAutoscaler.usages
+    managedResources: [core.ManagedResource] = appCilium.managedResources + appOpenStackCloudControllerManager.managedResources + appOpenStackCinderCsi.managedResources + appOpenStackExternalDns.managedResources + appClusterAutoscaler.managedResources
+    usages: [core.Usage] = appCilium.usages + appOpenStackCloudControllerManager.usages + appOpenStackCinderCsi.usages + appOpenStackExternalDns.usages + appClusterAutoscaler.usages
 
