@@ -19,8 +19,8 @@ schema Keycloak:
     release: core.K8sFluxHelmOciReleaseWrapper {
         _clusterName = _kubernetesClusterName
         _name = "${_name}-rel"
-        _helmReleaseName = "keycloak"
-        _helmReleaseNamespace = "keycloak"
+        _helmReleaseName = "keycloak-${_keycloakInstanceName}"
+        _helmReleaseNamespace = "keycloak-${_keycloakInstanceName}"
         _helmOciRepositoryWrapper = repo
         _helmReleaseWrapperDependencies = _fluxHelmReleaseDependencies
         _projectNamespace = _projectNamespace
