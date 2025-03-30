@@ -53,8 +53,8 @@ schema ArgoCd:
         _name = "${_name}-rel"
         _helmChartName = "argo-cd"
         _helmChartVersion = "7.7.10"
-        _helmReleaseName = "argocd"
-        _helmReleaseNamespace = "argocd"
+        _helmReleaseName = "argocd-${_argoCdInstanceName}"
+        _helmReleaseNamespace = "argocd-${_argoCdInstanceName}"
         _helmRepositoryWrapper = helmRepo
         _helmReleaseWrapperDependencies = _fluxHelmReleaseDependencies
         _projectNamespace = _projectNamespace
