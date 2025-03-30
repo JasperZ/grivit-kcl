@@ -19,6 +19,16 @@ path "${_projectName}/*" {
   capabilities = ["create", "read", "update", "patch", "delete", "list", "scan"]
 }
 
+# Allow creating tokens (generic)
+path "auth/token/create" {
+  capabilities = ["update"]
+}
+
+# (Optional) Allow creating tokens with a specific role
+path "auth/token/create/*" {
+  capabilities = ["update"]
+}
+
 path "auth/token/lookup-accessor" {
   capabilities = ["update"]
 }
