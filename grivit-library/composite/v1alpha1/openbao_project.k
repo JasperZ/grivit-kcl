@@ -19,27 +19,20 @@ path "${_projectName}/*" {
   capabilities = ["create", "read", "update", "patch", "delete", "list", "scan"]
 }
 
-# Allow creating tokens (generic)
+# Allow creating tokens
 path "auth/token/create" {
   capabilities = ["update"]
 }
 
-# (Optional) Allow creating tokens with a specific role
+# Allow creating tokens with a role
 path "auth/token/create/*" {
   capabilities = ["update"]
 }
 
-path "auth/token/lookup-accessor" {
-  capabilities = ["update"]
+# Allow reading token roles
+path "auth/token/roles/*" {
+  capabilities = ["read", "list"]
 }
-
-path "auth/token/revoke-accessor" {
-  capabilities = ["update"]
-}
-
-#path "*" {
-#  capabilities = ["create", "read", "update", "patch", "delete", "list", "scan"]
-#}
 """
         _projectName = _projectName
         _projectNamespace = _projectNamespace
