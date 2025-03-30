@@ -1,27 +1,27 @@
 import core.v1alpha1 as core
 import core.v1alpha1.kc_utils as kcUtils
 
-schema KcProject:
-    _domain: str
-    _instanceName: str
-    _instanceOwnerProjectName: str
+schema Keycloak:
+    _keycloakDomain: str
+    _keycloakInstanceName: str
+    _keycloakInstanceOwnerProjectName: str
+    _keycloakRealmName: str
     _name: str
     _observedComposedResources: any
     _projectNamespace: str
-    _realmId: str
 
     realm = core.KcRealmWrapper {
-        _instanceName = _instanceName
-        _instanceOwnerProjectName = _instanceOwnerProjectName
+        _instanceName = _keycloakInstanceName
+        _instanceOwnerProjectName = _keycloakInstanceOwnerProjectName
         _name = "${_name}-realm"
         _projectNamespace = _projectNamespace
-        _realmId = _realmId
+        _realmId = _keycloakRealmName
     }
 
     adminGroup = core.KcGroupWrapper {
         _groupName = "admin"
-        _instanceName = _instanceName
-        _instanceOwnerProjectName = _instanceOwnerProjectName
+        _instanceName = _keycloakInstanceName
+        _instanceOwnerProjectName = _keycloakInstanceOwnerProjectName
         _name = "${_name}-admin-group"
         _projectNamespace = _projectNamespace
         _realmId = realm.managedResource.spec.forProvider.realm
@@ -29,16 +29,16 @@ schema KcProject:
 
     viewerGroup = core.KcGroupWrapper {
         _groupName = "viewer"
-        _instanceName = _instanceName
-        _instanceOwnerProjectName = _instanceOwnerProjectName
+        _instanceName = _keycloakInstanceName
+        _instanceOwnerProjectName = _keycloakInstanceOwnerProjectName
         _name = "${_name}-viewer-group"
         _projectNamespace = _projectNamespace
         _realmId = realm.managedResource.spec.forProvider.realm
     }
 
     groupClientScope = core.KcOpenIdClientScopeWrapper {
-        _instanceName = _instanceName
-        _instanceOwnerProjectName = _instanceOwnerProjectName
+        _instanceName = _keycloakInstanceName
+        _instanceOwnerProjectName = _keycloakInstanceOwnerProjectName
         _name = "${_name}-group-client-scope"
         _projectNamespace = _projectNamespace
         _realmId = realm.managedResource.spec.forProvider.realm
@@ -48,23 +48,23 @@ schema KcProject:
     groupsMapper = core.KcOpenIdGroupMembershipProtocolMapperWrapper {
         _claimName = "groups"
         _clientScopeId = groupClientScope.getClientScopeId(_observedComposedResources)
-        _instanceName = _instanceName
-        _instanceOwnerProjectName = _instanceOwnerProjectName
+        _instanceName = _keycloakInstanceName
+        _instanceOwnerProjectName = _keycloakInstanceOwnerProjectName
         _name = "${_name}-groups-mapper"
         _projectNamespace = _projectNamespace
         _realmId = realm.managedResource.spec.forProvider.realm
     }
     crossplaneClient: core.KcOpenIdClientKcXpProviderWrapper {
-        _instanceName = _instanceName
-        _instanceOwnerProjectName = _instanceOwnerProjectName
+        _instanceName = _keycloakInstanceName
+        _instanceOwnerProjectName = _keycloakInstanceOwnerProjectName
         _projectNamespace = _projectNamespace
         _realmId = realm.managedResource.spec.forProvider.realm
     }
     realmManagementClientObserve: core.KcOpenIdClientWrapper {
         _clientId = "realm-management"
         _description = ""
-        _instanceName = _instanceName
-        _instanceOwnerProjectName = _instanceOwnerProjectName
+        _instanceName = _keycloakInstanceName
+        _instanceOwnerProjectName = _keycloakInstanceOwnerProjectName
         _name = "${_name}-realm-management"
         _projectNamespace = _projectNamespace
         _realmId = realm.managedResource.spec.forProvider.realm
@@ -79,33 +79,33 @@ schema KcProject:
     }
     crossplaneClientRealmAdminRole: core.KcOpenIdClientServiceAccountRole {
         _clientId = realmManagementClientObserve.getAtProviderId(_observedComposedResources)
-        _instanceName = _instanceName
-        _instanceOwnerProjectName = _instanceOwnerProjectName
+        _instanceName = _keycloakInstanceName
+        _instanceOwnerProjectName = _keycloakInstanceOwnerProjectName
         _name = "${_name}-crossplane-client-realm-admin"
         _projectNamespace = _projectNamespace
         _realmId = realm.getAtProviderId(_observedComposedResources)
         _roleName = "realm-admin"
         _serviceAccountUserId = crossplaneClient.getServiceAccountUserId(_observedComposedResources)
         # Use provider for master realm to setup crossplane client
-        managedResource.spec.providerConfigRef.name = kcUtils.kcProviderConfigName(_projectNamespace, _instanceOwnerProjectName, _instanceName, "master")
+        managedResource.spec.providerConfigRef.name = kcUtils.kcProviderConfigName(_projectNamespace, _keycloakInstanceOwnerProjectName, _keycloakInstanceName, "master")
         _uses = [
             realmManagementClientObserve.managedResource
         ]
     }
     providerConfigCredentials: core.K8sObjectSecretWrapper {
         _clusterName = "ctrl"
-        _name = kcUtils.kcProviderConfigSecretName(_projectNamespace, _instanceOwnerProjectName, _instanceName, _realmId)
+        _name = kcUtils.kcProviderConfigSecretName(_projectNamespace, _keycloakInstanceOwnerProjectName, _keycloakInstanceName, _keycloakRealmName)
         _namespace = _projectNamespace
         _projectNamespace = _projectNamespace
-        _secretName = kcUtils.kcProviderConfigSecretName(_projectNamespace, _instanceOwnerProjectName, _instanceName, _realmId)
+        _secretName = kcUtils.kcProviderConfigSecretName(_projectNamespace, _keycloakInstanceOwnerProjectName, _keycloakInstanceName, _keycloakRealmName)
         _stringData = {
             value = """\
 {
   "client_id": "${crossplaneClient.managedResource.spec.forProvider.clientId}",
   "client_secret": "${crossplaneClient.getClientSecret(_observedComposedResources)}",
-  "url": "https://${_domain}",
+  "url": "https://${_keycloakDomain}",
   "base_path": "/",
-  "realm": "${_realmId}"
+  "realm": "${_keycloakRealmName}"
 }
 """
         }
@@ -118,9 +118,9 @@ schema KcProject:
     providerConfig: core.KcProviderConfigWrapper {
         _credentialsSecretName = providerConfigCredentials.managedResource.spec.forProvider.manifest.metadata.name
         _credentialsSecretNamespace = providerConfigCredentials.managedResource.spec.forProvider.manifest.metadata.namespace
-        _kcInstanceName = _instanceName
-        _kcInstanceOwnerProjectName = _instanceOwnerProjectName
-        _kcRealmId = _realmId
+        _kcInstanceName = _keycloakInstanceName
+        _kcInstanceOwnerProjectName = _keycloakInstanceOwnerProjectName
+        _kcRealmId = _keycloakRealmName
         _projectNamespace = _projectNamespace
         _uses = [
             providerConfigCredentials.managedResource
