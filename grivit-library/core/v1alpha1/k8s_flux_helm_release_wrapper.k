@@ -81,7 +81,7 @@ schema K8sFluxHelmReleaseWrapper:
         spec.by.resourceRef.name = managedResource.metadata.name
         spec.of.apiVersion = "kubernetes.crossplane.io/v1alpha1"
         spec.of.kind = "ProviderConfig"
-        spec.of.resourceRef.name = "${_projectNamespace}-k8s-${_clusterName}"
+        spec.of.resourceRef.name = managedResource.spec.providerConfigRef.name
     }] + [Usage {
         metadata.name = "${_name}-uses-${k8sFluxHelmReleaseDependency.managedResource.metadata.name}"
         metadata.annotations = {
