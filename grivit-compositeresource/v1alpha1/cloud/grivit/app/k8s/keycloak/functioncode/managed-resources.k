@@ -9,15 +9,12 @@ claimName: str = observedCompositeResource.metadata.name
 claimNamespace: str = observedCompositeResource.metadata.labels["crossplane.io/claim-namespace"]
 spec: any = observedCompositeResource.spec
 
-app: apps.ArgoCd = apps.ArgoCd {
-    _argoCdDomain = spec.argoCdDomain
-    _argoCdInstanceName = spec.argoCdInstanceName
+app: apps.Keycloak = apps.Keycloak {
+    _keycloakAdminPassword = spec.keycloakAdminPassword
     _keycloakDomain = spec.keycloakDomain
     _keycloakInstanceName = spec.keycloakInstanceName
-    _keycloakRealmId = spec.keycloakRealmId
     _kubernetesClusterName = spec.kubernetesClusterName
     _name = claimName
-    _observedComposedResources = observedComposedResources
     _projectNamespace = claimNamespace
 }
 

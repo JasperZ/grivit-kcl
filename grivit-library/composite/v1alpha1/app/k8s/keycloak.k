@@ -1,13 +1,12 @@
 import core.v1alpha1 as core
 import core.v1alpha1.kc_utils as kcUtils
 
-schema K8sAppOperationsKeycloak:
-    _adminPassword: str
-    _clusterName: str
-    _domain: str
+schema Keycloak:
     _fluxHelmReleaseDependencies?: [core.K8sFluxHelmReleaseWrapper | core.K8sFluxHelmOciReleaseWrapper] = []
-    _instanceName: str
-    _instanceOwnerProjectName: str = _projectNamespace
+    _keycloakAdminPassword: str
+    _keycloakDomain: str
+    _keycloakInstanceName: str
+    _kubernetesClusterName: str
     _name: str
     _projectNamespace: str
 
@@ -18,7 +17,7 @@ schema K8sAppOperationsKeycloak:
         _projectNamespace = _projectNamespace
     }
     release: core.K8sFluxHelmOciReleaseWrapper {
-        _clusterName = _clusterName
+        _clusterName = _kubernetesClusterName
         _name = "${_name}-rel"
         _helmReleaseName = "keycloak"
         _helmReleaseNamespace = "keycloak"
@@ -28,13 +27,13 @@ schema K8sAppOperationsKeycloak:
         managedResource.spec.forProvider.manifest.spec.values = {
             auth = {
                 adminUser = "admin"
-                adminPassword = _adminPassword
+                adminPassword = _keycloakAdminPassword
             }
             production = True
             ingress = {
                 enabled = True
                 ingressClassName = "nginx"
-                hostname = _domain
+                hostname = _keycloakDomain
                 annotations = {
                     "cert-manager.io/cluster-issuer" = "letsencrypt"
                 }
@@ -48,17 +47,17 @@ schema K8sAppOperationsKeycloak:
     }
     providerConfigCredentials: core.K8sObjectSecretWrapper {
         _clusterName = "ctrl"
-        _name = kcUtils.kcProviderConfigSecretName(_projectNamespace, _instanceOwnerProjectName, _instanceName, "master")
+        _name = kcUtils.kcProviderConfigSecretName(_projectNamespace, _projectNamespace, _keycloakInstanceName, "master")
         _namespace = _projectNamespace
         _projectNamespace = _projectNamespace
-        _secretName = kcUtils.kcProviderConfigSecretName(_projectNamespace, _instanceOwnerProjectName, _instanceName, "master")
+        _secretName = kcUtils.kcProviderConfigSecretName(_projectNamespace, _projectNamespace, _keycloakInstanceName, "master")
         _stringData = {
             value = """\
 {
   "client_id":"admin-cli",
   "username": "admin",
-  "password": "${_adminPassword}",
-  "url": "https://${_domain}",
+  "password": "${_keycloakAdminPassword}",
+  "url": "https://${_keycloakDomain}",
   "base_path": "/",
   "realm": "master"
 }
@@ -72,8 +71,8 @@ schema K8sAppOperationsKeycloak:
     providerConfig: core.KcProviderConfigWrapper {
         _credentialsSecretName = providerConfigCredentials.managedResource.spec.forProvider.manifest.metadata.name
         _credentialsSecretNamespace = providerConfigCredentials.managedResource.spec.forProvider.manifest.metadata.namespace
-        _kcInstanceName = _instanceName
-        _kcInstanceOwnerProjectName = _instanceOwnerProjectName
+        _kcInstanceName = _keycloakInstanceName
+        _kcInstanceOwnerProjectName = _projectNamespace
         _kcRealmId = "master"
         _projectNamespace = _projectNamespace
         _uses = [
