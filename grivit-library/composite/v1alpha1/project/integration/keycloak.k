@@ -75,7 +75,7 @@ schema Keycloak:
             realmId = realm.managedResource.spec.forProvider.realm
             clientId = "realm-management"
         }
-        managedResource.spec.providerConfigRef.name = kcUtils.kcProviderConfigName(_projectNamespace, _instanceOwnerProjectName, _instanceName, "master")
+        managedResource.spec.providerConfigRef.name = kcUtils.kcProviderConfigName(_projectNamespace, _keycloakInstanceOwnerProjectName, _instanceName, "master")
         managedResource.spec.managementPolicies = ["Observe"]
     }
     crossplaneClientRealmAdminRole: core.KcOpenIdClientServiceAccountRole {
