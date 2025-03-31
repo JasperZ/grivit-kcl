@@ -10,9 +10,9 @@ schema KcOpenIdGroupMembershipProtocolMapperWrapper:
     managedResource: ManagedResource {
         apiVersion = "openidgroup.keycloak.crossplane.io/v1alpha1"
         kind = "GroupMembershipProtocolMapper"
-        metadata.name = "${_name}-${_clientScopeId}"
+        metadata.name = _name
         metadata.annotations = {
-            "krm.kcl.dev/composition-resource-name" = "${_name}-${_clientScopeId}"
+            "krm.kcl.dev/composition-resource-name" = _name
         }
         metadata.labels = {
             "keycloak-instance" = _instanceName
