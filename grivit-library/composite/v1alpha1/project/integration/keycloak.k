@@ -36,24 +36,25 @@ schema Keycloak:
         _realmId = realm.managedResource.spec.forProvider.realm
     }
 
-    groupClientScope: core.KcOpenIdClientScopeWrapper {
-        _instanceName = _keycloakInstanceName
-        _instanceOwnerProjectName = _keycloakInstanceOwnerProjectName
-        _name = "${_name}-group-client-scope"
-        _projectNamespace = _projectNamespace
-        _realmId = realm.managedResource.spec.forProvider.realm
-        _scopeName = "groups"
-    }
+# GroupMembershipProtocolMapper currently working with clientScopeId
+#    groupClientScope: core.KcOpenIdClientScopeWrapper {
+#        _instanceName = _keycloakInstanceName
+#        _instanceOwnerProjectName = _keycloakInstanceOwnerProjectName
+#        _name = "${_name}-group-client-scope"
+#        _projectNamespace = _projectNamespace
+#        _realmId = realm.managedResource.spec.forProvider.realm
+#        _scopeName = "groups"
+#    }
 
-    groupsMapper: core.KcOpenIdGroupMembershipProtocolMapperWrapper {
-        _claimName = "groups"
-        _clientScopeId = groupClientScope.getClientScopeId(_observedComposedResources)
-        _instanceName = _keycloakInstanceName
-        _instanceOwnerProjectName = _keycloakInstanceOwnerProjectName
-        _name = "${_name}-groups-mapper"
-        _projectNamespace = _projectNamespace
-        _realmId = realm.managedResource.spec.forProvider.realm
-    }
+#    groupsMapper: core.KcOpenIdGroupMembershipProtocolMapperWrapper {
+#        _claimName = "groups"
+#        _clientScopeId = groupClientScope.getClientScopeId(_observedComposedResources)
+#        _instanceName = _keycloakInstanceName
+#        _instanceOwnerProjectName = _keycloakInstanceOwnerProjectName
+#        _name = "${_name}-groups-mapper"
+#        _projectNamespace = _projectNamespace
+#        _realmId = realm.managedResource.spec.forProvider.realm
+#    }
     crossplaneClient: core.KcOpenIdClientKcXpProviderWrapper {
         _instanceName = _keycloakInstanceName
         _instanceOwnerProjectName = _keycloakInstanceOwnerProjectName
@@ -131,8 +132,8 @@ schema Keycloak:
         realm.managedResource
         adminGroup.managedResource
         viewerGroup.managedResource
-        groupClientScope.managedResource
-        groupsMapper.managedResource
+        #groupClientScope.managedResource
+        #groupsMapper.managedResource
         crossplaneClient.managedResource
         realmManagementClientObserve.managedResource
         crossplaneClientRealmAdminRole.managedResource
@@ -144,8 +145,8 @@ schema Keycloak:
         realm.usages
         adminGroup.usages
         viewerGroup.usages
-        groupClientScope.usages
-        groupsMapper.usages
+        #groupClientScope.usages
+        #groupsMapper.usages
         crossplaneClient.usages
         realmManagementClientObserve.usages
         crossplaneClientRealmAdminRole.usages
