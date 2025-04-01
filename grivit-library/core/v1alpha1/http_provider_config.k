@@ -1,7 +1,7 @@
 schema HttpProviderConfig:
     _name: str
 
-    apiVersion: str = "keycloak.crossplane.io/v1beta1"
+    apiVersion: str = "http.crossplane.io/v1alpha1"
     kind: str = "ProviderConfig"
     metadata: HttpProviderConfigMetadata {
         annotations: HttpProviderConfigMetadataAnnotations {
