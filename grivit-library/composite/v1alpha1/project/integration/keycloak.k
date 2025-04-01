@@ -53,6 +53,19 @@ schema Keycloak:
         _name = "${_name}-groups-mapper"
         _projectNamespace = _projectNamespace
         _realmId = realm.managedResource.spec.forProvider.realm
+
+        managedResource.spec.forProvider = {
+            claimName = "groups"
+            clientScopeIdRef = {
+                name = groupClientScope.managedResource.metadata.name
+                policy = {
+                    resolution = "Required"
+                    resolve = "Always"
+                }
+            }
+            name = "groups"
+            realmId = realm.managedResource.spec.forProvider.realm
+        }
     }
     crossplaneClient: core.KcOpenIdClientKcXpProviderWrapper {
         _instanceName = _keycloakInstanceName
