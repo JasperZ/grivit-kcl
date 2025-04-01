@@ -72,6 +72,9 @@ schema ControlPlane:
             helmProviderConfigCredentialsSecret.managedResource
         ]
     }
+    httpProviderConfig: core.HttpProviderConfigWrapper {
+        _projectNamespace = _projectNamespace
+    }
     k8sProviderConfigCredentialsSecret: core.K8sObjectSecretWrapper {
         _clusterName = _k8sClusterName
         _name = k8sUtils.k8sProviderConfigSecretName(_projectNamespace, _k8sClusterName)
@@ -218,6 +221,7 @@ schema ControlPlane:
         awsProviderConfig.managedResource
         helmProviderConfigCredentialsSecret.managedResource
         helmProviderConfig.managedResource
+        httpProviderConfig.managedResource
         k8sProviderConfigCredentialsSecret.managedResource
         k8sProviderConfig.managedResource
         osProviderConfigCredentialsSecret.managedResource
@@ -229,6 +233,7 @@ schema ControlPlane:
         awsProviderConfig.usages
         helmProviderConfigCredentialsSecret.usages
         helmProviderConfig.usages
+        httpProviderConfig.usages
         k8sProviderConfigCredentialsSecret.usages
         k8sProviderConfig.usages
         osProviderConfigCredentialsSecret.usages

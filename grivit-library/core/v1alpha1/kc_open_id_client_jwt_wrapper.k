@@ -32,7 +32,7 @@ schema KcOpenIdClientJwtWrapper:
             shouldLoopInfinitely = True
             url = "https://${_domain}/realms/${_realmId}/protocol/openid-connect/token"
         }
-        spec.providerConfigRef.name = "${_projectNamespace}-http"
+        spec.providerConfigRef.name = httpProviderConfigName(_projectNamespace)
     }
     usages: [Usage] = [Usage {
         metadata.name = "${_name}-uses-${ofResource.metadata.name}"
