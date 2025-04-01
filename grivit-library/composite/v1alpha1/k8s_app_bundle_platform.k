@@ -9,7 +9,7 @@ schema K8sAppBundlePlatform:
     _observedComposedResources: any
     _projectNamespace: str
 
-    k8sAppsPlatformCertManager: apps.CertManager {
+    k8sAppsPlatformCertManager: apps.CertManagerAppK8s {
         _clusterName = _clusterName
         _email: _email
         _fluxHelmReleaseDependencies = _fluxHelmReleaseDependencies
@@ -17,25 +17,25 @@ schema K8sAppBundlePlatform:
         _observedComposedResources = _observedComposedResources
         _projectNamespace = _projectNamespace
     }
-    k8sAppsPlatformIngressNginx: apps.IngressNginx {
+    k8sAppsPlatformIngressNginx: apps.IngressNginxAppK8s {
         _clusterName = _clusterName
         _name = "${_name}-ingress"
         _fluxHelmReleaseDependencies = _fluxHelmReleaseDependencies
         _projectNamespace = _projectNamespace
     }
-    k8sAppsPlatformMetricsServer: apps.MetricsServer {
+    k8sAppsPlatformMetricsServer: apps.MetricsServerAppK8s {
         _clusterName = _clusterName
         _name = "${_name}-metrics"
         _fluxHelmReleaseDependencies = _fluxHelmReleaseDependencies
         _projectNamespace = _projectNamespace
     }
-    k8sAppsPlatformSnapshotController: apps.SnapshotController {
+    k8sAppsPlatformSnapshotController: apps.SnapshotControllerAppK8s {
         _clusterName = _clusterName
         _name = "${_name}-sc"
         _projectNamespace = _projectNamespace
     }
     # ToDo: Velero
-    k8sAppsPlatformVerticalPodAutoscaler: apps.VerticalPodAutoscaler {
+    k8sAppsPlatformVerticalPodAutoscaler: apps.VerticalPodAutoscalerAppK8s {
         _clusterName = _clusterName
         _name = "${_name}-vpa"
         _fluxHelmReleaseDependencies = _fluxHelmReleaseDependencies

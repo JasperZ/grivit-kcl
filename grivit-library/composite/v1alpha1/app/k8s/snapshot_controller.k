@@ -1,6 +1,6 @@
 import core.v1alpha1 as core
 
-schema SnapshotController:
+schema SnapshotControllerAppK8s:
     _clusterName: str
     _name: str
     _kustomizationDependencies?: [core.K8sFluxKustomizationWrapper] = []

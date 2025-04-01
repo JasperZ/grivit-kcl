@@ -1,6 +1,7 @@
 import crypto
 import core.v1alpha1 as core
 import core.v1alpha1.k8s_utils as k8sUtils
+import .app.k8s as apps
 
 schema K8sClusterOsK0smotronConfigWorkersAutoscaling:
     minSize: int
@@ -143,7 +144,7 @@ clouds:
             k8sProviderConfigCredentialsSecret.managedResource
         ]
     }
-    k8sAppPrometheusOperatorCrds: apps.PrometheusOperatorCrds {
+    k8sAppPrometheusOperatorCrds: apps.PrometheusOperatorCrdsAppK8s {
         _clusterName = _name
         _name = "${_clusterName}-crd-prom"
         _projectNamespace = _projectNamespace

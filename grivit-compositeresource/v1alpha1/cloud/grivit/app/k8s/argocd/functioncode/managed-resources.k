@@ -9,7 +9,7 @@ claimName: str = observedCompositeResource.metadata.name
 claimNamespace: str = observedCompositeResource.metadata.labels["crossplane.io/claim-namespace"]
 spec: any = observedCompositeResource.spec
 
-app: apps.ArgoCd = apps.ArgoCd {
+argoCdAppK8s: apps.ArgoCdAppK8s = apps.ArgoCdAppK8s {
     _argoCdDomain = spec.argoCdDomain
     _argoCdInstanceName = spec.argoCdInstanceName
     _keycloakDomain = spec.keycloakDomain
@@ -22,6 +22,6 @@ app: apps.ArgoCd = apps.ArgoCd {
 }
 
 items = sum([
-    app.managedResources
-    app.usages
+    argoCdAppK8s.managedResources
+    argoCdAppK8s.usages
 ], [])

@@ -1,7 +1,7 @@
 import core.v1alpha1 as core
 import core.v1alpha1.kc_utils as kcUtils
 
-schema Keycloak:
+schema KeycloakAppK8s:
     _fluxHelmReleaseDependencies?: [core.K8sFluxHelmReleaseWrapper | core.K8sFluxHelmOciReleaseWrapper] = []
     _keycloakAdminPassword: str
     _keycloakDomain: str

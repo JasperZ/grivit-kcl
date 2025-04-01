@@ -1,26 +1,26 @@
 import manifests
 
-nameSingular: str = "Keycloak"
-namePlural: str = "Keycloaks"
-apiGroup: str = "integration.project.grivit.cloud"
-apiVersion: str = "v1alpha1"
+nameSingularKeycloakProjectIntegration: str = "Keycloak"
+namePluralKeycloakProjectIntegration: str = "Keycloaks"
+apiGroupKeycloakProjectIntegration: str = "integration.project.grivit.cloud"
+apiVersionKeycloakProjectIntegration: str = "v1alpha1"
 
-xr: Xr = Xr {
-    _nameSingular = nameSingular
-    _apiGroup = apiGroup
-    _apiVersion = apiVersion
+xrKeycloakProjectIntegration: XrKeycloakProjectIntegration = XrKeycloakProjectIntegration {
+    _nameSingular = nameSingularKeycloakProjectIntegration
+    _apiGroup = apiGroupKeycloakProjectIntegration
+    _apiVersion = apiVersionKeycloakProjectIntegration
 }
 
-xrd: Xrd = Xrd {
-    _nameSingular = nameSingular
-    _namePlural = namePlural
-    _apiGroup = apiGroup
-    _apiVersion = apiVersion
+xrdKeycloakProjectIntegration: XrdKeycloakProjectIntegration = XrdKeycloakProjectIntegration {
+    _nameSingular = nameSingularKeycloakProjectIntegration
+    _namePlural = namePluralKeycloakProjectIntegration
+    _apiGroup = apiGroupKeycloakProjectIntegration
+    _apiVersion = apiVersionKeycloakProjectIntegration
 }
 
 manifests.yaml_stream([
-    xr
-    xrd
+    xrKeycloakProjectIntegration
+    xrdKeycloakProjectIntegration
 ], {
     sort_keys = False
     ignore_private = True

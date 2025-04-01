@@ -1,6 +1,6 @@
 import core.v1alpha1 as core
 
-schema CertManager:
+schema CertManagerAppK8s:
     _clusterName: str
     _email: str
     _fluxHelmReleaseDependencies?: [core.K8sFluxHelmReleaseWrapper]

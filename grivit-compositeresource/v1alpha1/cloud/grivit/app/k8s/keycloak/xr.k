@@ -1,7 +1,7 @@
 import file
 import grivit_library.core.v1alpha1 as core
 
-schema Xr(core.Composition):
+schema XrKeycloakAppK8s(core.Composition):
     _nameSingular: str
     _apiGroup: str
     _apiVersion: str

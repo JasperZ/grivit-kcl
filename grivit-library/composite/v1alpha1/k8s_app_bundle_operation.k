@@ -1,4 +1,5 @@
 import core.v1alpha1 as core
+import .app.k8s as apps
 
 schema K8sAppBundleOperation:
     _argoCdDomain: str
@@ -11,12 +12,12 @@ schema K8sAppBundleOperation:
     _projectNamespace: str
     # _headlampDomain: str
     
-    k8sAppsOperationArgoCd: K8sAppOperationsArgoCd {
-        _clusterName = _clusterName
-        _domain = _argoCdDomain
+    k8sAppsOperationArgoCd: apps.ArgoCdAppK8s {
+        _kubernetesClusterName = _clusterName
+        _argoCdDomain = _argoCdDomain
         _fluxHelmReleaseDependencies = _fluxHelmReleaseDependencies
-        _kcInstanceName = _kcInstanceName
-        _kcRealmId = _kcRealmId
+        _keycloakInstanceName = _kcInstanceName
+        _keycloakRealmId = _kcRealmId
         _name = "${_name}-argocd"
         _observedComposedResources = _observedComposedResources
         _projectNamespace = _projectNamespace

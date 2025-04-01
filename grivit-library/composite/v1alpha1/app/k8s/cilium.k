@@ -1,6 +1,6 @@
 import core.v1alpha1 as core
 
-schema Cilium:
+schema CiliumAppK8s:
     _clusterName: str
     _fluxHelmReleaseDependencies?: [core.K8sFluxHelmReleaseWrapper]
     _name: str

@@ -1,7 +1,7 @@
 import core.v1alpha1 as core
 import core.v1alpha1.kc_utils as kcUtils
 
-schema Keycloak:
+schema KeycloakProjectIntegration:
     _keycloakDomain: str
     _keycloakInstanceName: str
     _keycloakInstanceOwnerProjectName: str

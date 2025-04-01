@@ -9,7 +9,7 @@ claimName: str = observedCompositeResource.metadata.name
 claimNamespace: str = observedCompositeResource.metadata.labels["crossplane.io/claim-namespace"]
 spec: any = observedCompositeResource.spec
 
-app: apps.Keycloak = apps.Keycloak {
+keycloakAppK8s: apps.KeycloakAppK8s = apps.KeycloakAppK8s {
     _keycloakAdminPassword = spec.keycloakAdminPassword
     _keycloakDomain = spec.keycloakDomain
     _keycloakInstanceName = spec.keycloakInstanceName
@@ -19,6 +19,6 @@ app: apps.Keycloak = apps.Keycloak {
 }
 
 items = sum([
-    app.managedResources
-    app.usages
+    keycloakAppK8s.managedResources
+    keycloakAppK8s.usages
 ], [])

@@ -1,6 +1,6 @@
 import core.v1alpha1 as core
 
-schema PrometheusOperatorCrds:
+schema PrometheusOperatorCrdsAppK8s:
     _clusterName: str
     _name: str
     _projectNamespace: str

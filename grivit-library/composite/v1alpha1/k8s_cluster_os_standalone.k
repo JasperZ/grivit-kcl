@@ -154,7 +154,7 @@ clouds:
             k8sProviderConfigCredentialsSecret.managedResource
         ]
     }
-    k8sAppPrometheusOperatorCrds: apps.PrometheusOperatorCrds {
+    k8sAppPrometheusOperatorCrds: apps.PrometheusOperatorCrdsAppK8s {
         _clusterName = _name
         _name = "${_clusterName}-crd-prom"
         _projectNamespace = _projectNamespace

@@ -1,7 +1,7 @@
 import core.v1alpha1 as core
 import core.v1alpha1.argocd_utils as argoCdUtils
 
-schema ArgoCd:
+schema ArgoCdAppK8s:
     _argoCdDomain: str
     _argoCdInstanceName: str
     _fluxHelmReleaseDependencies?: [core.K8sFluxHelmReleaseWrapper] = []

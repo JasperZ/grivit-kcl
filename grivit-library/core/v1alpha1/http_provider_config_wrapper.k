@@ -4,11 +4,12 @@ schema HttpProviderConfigWrapper:
 
     _resourceName: str = httpProviderConfigName(_projectNamespace)
 
-    managedResource: HttpProviderConfig {
+    managedResource: HttpProviderConfig = {
         _name = _resourceName
         metadata.labels = {
             "project" = _projectNamespace
         }
+        spec.credentials.source = "None"
     }
     usages: [Usage] = [Usage {
         metadata.name = "${_resourceName}-uses-${ofResource.metadata.name}"

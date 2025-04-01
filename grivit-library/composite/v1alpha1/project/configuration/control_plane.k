@@ -6,7 +6,7 @@ import core.v1alpha1.os_utils as osUtils
 
 import ...app.k8s as apps
 
-schema ControlPlane:
+schema ControlPlaneProjectConfiguration:
     _contactEmail: str
     _domain: str
     _k8sClusterName: str
@@ -134,19 +134,19 @@ schema ControlPlane:
             osProviderConfigCredentialsSecret.managedResource
         ]
     }
-    k8sAppPrometheusOperatorCrds: apps.PrometheusOperatorCrds {
+    k8sAppPrometheusOperatorCrds: apps.PrometheusOperatorCrdsAppK8s {
         _clusterName = _k8sClusterName
         _name = "${_projectNamespace}-${_k8sClusterName}-crd-prom"
         _projectNamespace = _projectNamespace
     }
-    k8sAppOpenStackCinderCsi: apps.OpenStackCinderCsi {
+    k8sAppOpenStackCinderCsi: apps.OpenStackCinderCsiAppK8s {
         _clusterName = _k8sClusterName
         _fluxHelmReleaseDependencies = [k8sAppPrometheusOperatorCrds.helmRelease]
         _name = "${_projectNamespace}-${_k8sClusterName}-ia-ocsi"
         _observedComposedResources = _observedComposedResources
         _projectNamespace = _projectNamespace
     }
-    k8sAppOpenStackExternalDns: apps.OpenStackExternalDns {
+    k8sAppOpenStackExternalDns: apps.OpenStackExternalDnsAppK8s {
         _clusterName = _k8sClusterName
         _domainFilters = [_domain]
         _fluxHelmReleaseDependencies = [k8sAppPrometheusOperatorCrds.helmRelease]
@@ -154,7 +154,7 @@ schema ControlPlane:
         _observedComposedResources = _observedComposedResources
         _projectNamespace = _projectNamespace
     }
-    k8sAppCertManager: apps.CertManager {
+    k8sAppCertManager: apps.CertManagerAppK8s {
         _clusterName = _k8sClusterName
         _email: _contactEmail
         _fluxHelmReleaseDependencies = [
@@ -165,7 +165,7 @@ schema ControlPlane:
         _observedComposedResources = _observedComposedResources
         _projectNamespace = _projectNamespace
     }
-    k8sAppIngressNginx: apps.IngressNginx {
+    k8sAppIngressNginx: apps.IngressNginxAppK8s {
         _clusterName = _k8sClusterName
         _name = "${_projectNamespace}-${_k8sClusterName}-ingress"
         _fluxHelmReleaseDependencies = [
@@ -174,7 +174,7 @@ schema ControlPlane:
         ]
         _projectNamespace = _projectNamespace
     }
-    k8sAppMetricsServer: apps.MetricsServer {
+    k8sAppMetricsServer: apps.MetricsServerAppK8s {
         _clusterName = _k8sClusterName
         _name = "${_projectNamespace}-${_k8sClusterName}-metrics"
         _fluxHelmReleaseDependencies = [
@@ -183,13 +183,13 @@ schema ControlPlane:
         ]
         _projectNamespace = _projectNamespace
     }
-    k8sAppSnapshotController: apps.SnapshotController {
+    k8sAppSnapshotController: apps.SnapshotControllerAppK8s {
         _clusterName = _k8sClusterName
         _name = "${_projectNamespace}-${_k8sClusterName}-sc"
         _projectNamespace = _projectNamespace
     }
     # ToDo: Velero
-    k8sAppVerticalPodAutoscaler: apps.VerticalPodAutoscaler {
+    k8sAppVerticalPodAutoscaler: apps.VerticalPodAutoscalerAppK8s {
         _clusterName = _k8sClusterName
         _name = "${_projectNamespace}-${_k8sClusterName}-vpa"
         _fluxHelmReleaseDependencies = [

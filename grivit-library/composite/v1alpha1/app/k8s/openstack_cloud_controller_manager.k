@@ -1,6 +1,6 @@
 import core.v1alpha1 as core
 
-schema OpenStackCloudControllerManager:
+schema OpenStackCloudControllerManagerAppK8s:
     _clusterName: str
     _clusterSubnetId: str
     _externalNetworkId: str

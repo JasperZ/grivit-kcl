@@ -11,13 +11,13 @@ schema K8sAppBundleOsInfrastructure:
     _observedComposedResources: any
     _projectNamespace: str
 
-    appCilium: apps.Cilium {
+    appCilium: apps.CiliumAppK8s {
         _clusterName = _clusterName
         _fluxHelmReleaseDependencies = _fluxHelmReleaseDependencies
         _name = "${_name}-cilium"
         _projectNamespace = _projectNamespace
     }
-    appOpenStackCloudControllerManager: apps.OpenStackCloudControllerManager {
+    appOpenStackCloudControllerManager: apps.OpenStackCloudControllerManagerAppK8s {
         _clusterName = _clusterName
         _clusterSubnetId = _clusterSubnetId
         _externalNetworkId = _externalNetworkId
@@ -26,14 +26,14 @@ schema K8sAppBundleOsInfrastructure:
         _observedComposedResources = _observedComposedResources
         _projectNamespace = _projectNamespace
     }
-    appOpenStackCinderCsi: apps.OpenStackCinderCsi {
+    appOpenStackCinderCsi: apps.OpenStackCinderCsiAppK8s {
         _clusterName = _clusterName
         _name = "${_name}-ocsi"
         _fluxHelmReleaseDependencies = _fluxHelmReleaseDependencies
         _observedComposedResources = _observedComposedResources
         _projectNamespace = _projectNamespace
     }
-    appOpenStackExternalDns: apps.OpenStackExternalDns {
+    appOpenStackExternalDns: apps.OpenStackExternalDnsAppK8s {
         _clusterName = _clusterName
         _domainFilters = _domainFilters
         _fluxHelmReleaseDependencies = _fluxHelmReleaseDependencies
@@ -41,7 +41,7 @@ schema K8sAppBundleOsInfrastructure:
         _observedComposedResources = _observedComposedResources
         _projectNamespace = _projectNamespace
     }
-    appClusterAutoscaler: apps.ClusterAutoscaler {
+    appClusterAutoscaler: apps.ClusterAutoscalerAppK8s {
         _clusterName = _clusterName
         _name = "${_name}-ca"
         _projectNamespace = _projectNamespace
