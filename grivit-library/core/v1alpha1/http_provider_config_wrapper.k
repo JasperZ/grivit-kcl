@@ -4,7 +4,7 @@ schema HttpProviderConfigWrapper:
 
     _resourceName: str = httpProviderConfigName(_projectNamespace)
 
-    managedResource: HttpProviderConfig = {
+    managedResource: HttpProviderConfig {
         _name = _resourceName
         metadata.labels = {
             "project" = _projectNamespace
