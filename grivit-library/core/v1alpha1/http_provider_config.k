@@ -4,7 +4,7 @@ schema HttpProviderConfig:
     apiVersion: str = "keycloak.crossplane.io/v1beta1"
     kind: str = "ProviderConfig"
     metadata: HttpProviderConfigMetadata {
-        annotations = {
+        annotations: HttpProviderConfigMetadataAnnotations {
             "krm.kcl.dev/composition-resource-name" = _name
         }
         name = _name
