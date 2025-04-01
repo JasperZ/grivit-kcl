@@ -10,7 +10,7 @@ schema Keycloak:
     _observedComposedResources: any
     _projectNamespace: str
 
-    realm = core.KcRealmWrapper {
+    realm: core.KcRealmWrapper {
         _instanceName = _keycloakInstanceName
         _instanceOwnerProjectName = _keycloakInstanceOwnerProjectName
         _name = "${_name}-realm"
@@ -18,7 +18,7 @@ schema Keycloak:
         _realmId = _keycloakRealmName
     }
 
-    adminGroup = core.KcGroupWrapper {
+    adminGroup: core.KcGroupWrapper {
         _groupName = "admin"
         _instanceName = _keycloakInstanceName
         _instanceOwnerProjectName = _keycloakInstanceOwnerProjectName
@@ -27,7 +27,7 @@ schema Keycloak:
         _realmId = realm.managedResource.spec.forProvider.realm
     }
 
-    viewerGroup = core.KcGroupWrapper {
+    viewerGroup: core.KcGroupWrapper {
         _groupName = "viewer"
         _instanceName = _keycloakInstanceName
         _instanceOwnerProjectName = _keycloakInstanceOwnerProjectName
@@ -36,7 +36,7 @@ schema Keycloak:
         _realmId = realm.managedResource.spec.forProvider.realm
     }
 
-    groupClientScope = core.KcOpenIdClientScopeWrapper {
+    groupClientScope: core.KcOpenIdClientScopeWrapper {
         _instanceName = _keycloakInstanceName
         _instanceOwnerProjectName = _keycloakInstanceOwnerProjectName
         _name = "${_name}-group-client-scope"
@@ -45,7 +45,7 @@ schema Keycloak:
         _scopeName = "groups"
     }
 
-    groupsMapper = core.KcOpenIdGroupMembershipProtocolMapperWrapper {
+    groupsMapper: core.KcOpenIdGroupMembershipProtocolMapperWrapper {
         _claimName = "groups"
         _clientScopeId = groupClientScope.getClientScopeId(_observedComposedResources)
         _instanceName = _keycloakInstanceName
