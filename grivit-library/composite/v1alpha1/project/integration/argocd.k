@@ -81,7 +81,13 @@ schema ArgoCdProjectIntegration:
         _projectNamespace = _claimNamespace
         _realmId = _keycloakRealmId
         
-        managedResource.spec.forProvider.clientId = providerConfigKcClient.getAtProviderId(_observedComposedResources)
+        managedResource.spec.forProvider = {
+            addToAccessToken = True
+            claimName = "groups"
+            clientId = providerConfigKcClient.getAtProviderId(_observedComposedResources)
+            name = "groups"
+            realmId = _keycloakRealmId
+        }
     }
     providerConfigHttpJwtToken: core.KcOpenIdClientJwtWrapper {
         _clientId = providerConfigKcClient.managedResource.spec.forProvider.clientId
