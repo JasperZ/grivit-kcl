@@ -85,6 +85,7 @@ schema ArgoCdProjectIntegration:
             addToAccessToken = True
             claimName = "groups"
             clientId = providerConfigKcClient.getAtProviderId(_observedComposedResources)
+            fullPath = False
             name = "groups"
             realmId = _keycloakRealmId
         }
