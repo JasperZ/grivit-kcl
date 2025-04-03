@@ -75,7 +75,7 @@ path "auth/token/roles/*" {
         _clusterName = "ctrl"
         _name = core.openBaoProviderConfigSecretName(_projectName, _openBaoInstanceName, _openBaoInstanceOwnerProjectName, _projectName)
         _namespace = _projectNamespace
-        _projectNamespace = _projectNamespace
+        _projectName = _projectNamespace
         _secretName = core.openBaoProviderConfigSecretName(_projectName, _openBaoInstanceName, _openBaoInstanceOwnerProjectName, _projectName)
         _stringData = {
             value = json.encode({
@@ -104,7 +104,7 @@ path "auth/token/roles/*" {
         _clusterName = "ctrl"
         _name = "k8s-test-secret"
         _namespace = _projectNamespace
-        _projectNamespace = _projectNamespace
+        _projectName = _projectNamespace
         _secretName = "test-secret"
         _stringData = {
             value = json.encode({

@@ -98,7 +98,7 @@ schema KeycloakProjectIntegration:
         _clusterName = "ctrl"
         _name = kcUtils.kcProviderConfigSecretName(_projectNamespace, _keycloakInstanceOwnerProjectName, _keycloakInstanceName, _keycloakRealmName)
         _namespace = _projectNamespace
-        _projectNamespace = _projectNamespace
+        _projectName = _projectNamespace
         _secretName = kcUtils.kcProviderConfigSecretName(_projectNamespace, _keycloakInstanceOwnerProjectName, _keycloakInstanceName, _keycloakRealmName)
         _stringData = {
             value = """\

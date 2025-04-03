@@ -1,62 +1,63 @@
-schema ArgoCdProject:
+import core.v1alpha1 as core
+import core.v1alpha1.argocd_utils as argoCdUtils
+
+schema ArgoCdProjectIntegration:
     _argoCdDomain: str
     _argoCdInstanceName: str
     _argoCdInstanceOwnerProjectName: str
-    _kcDomain: str
-    _kcInstanceName: str
-    _kcInstanceOwnerProjectName: str
-    _kcRealmId: str
+    _argoCdProjectName: str
+    _keycloakDomain: str
+    _keycloakInstanceName: str
+    _keycloakInstanceOwnerProjectName: str
+    _keycloakRealmId: str
     _observedComposedResources: any
-    _projectName: str
-    _projectNamespace: str
+    _claimNamespace: str
+    _targetProjectName: str
 
     providerConfigKcClient: core.KcOpenIdClientArgoCdXpProviderWrapper {
-        _instanceName = _kcInstanceName
-        _instanceOwnerProjectName = _kcInstanceOwnerProjectName
-        _projectName = _projectName
-        _projectNamespace = _projectNamespace
-        _realmId = _kcRealmId
+        _instanceName = _keycloakInstanceName
+        _instanceOwnerProjectName = _keycloakInstanceOwnerProjectName
+        _projectName = _claimNamespace
+        _realmId = _keycloakRealmId
     }
     providerConfigKcClientDefaultScopes: core.KcOpenIdClientDefaultScopesWrapper {
         _additionalScopes = ["groups"]
         _clientId = providerConfigKcClient.getAtProviderId(_observedComposedResources)
-        _instanceName = _kcInstanceName
-        _instanceOwnerProjectName = _kcInstanceOwnerProjectName
+        _instanceName = _keycloakInstanceName
+        _instanceOwnerProjectName = _keycloakInstanceOwnerProjectName
         _name = "${providerConfigKcClient.managedResource.spec.forProvider.name}-client-default-scopes"
-        _projectNamespace = _projectNamespace
-        _realmId = _kcRealmId
+        _projectName = _claimNamespace
+        _realmId = _keycloakRealmId
         _uses = [
             providerConfigKcClient.managedResource
         ]
     }
-    kcArgoCdAdminsGroup = core.KcGroupArgoCdWrapper {
+    kcArgoCdAdminsGroup: core.KcGroupArgoCdWrapper {
         _groupType = "admins"
         _instanceName = _argoCdInstanceName
-        _instanceOwnerProjectName = _kcInstanceOwnerProjectName
-        _projectName = _projectName
-        _projectNamespace = _projectNamespace
-        _realmId = _kcRealmId
+        _instanceOwnerProjectName = _keycloakInstanceOwnerProjectName
+        _projectName = _claimNamespace
+        _realmId = _keycloakRealmId
         _uses = [
             providerConfigKcClientDefaultScopes.managedResource
         ]
     }
-    kcArgoCdViewersGroup = core.KcGroupArgoCdWrapper {
+    kcArgoCdViewersGroup: core.KcGroupArgoCdWrapper {
         _groupType = "viewers"
-        _instanceName = _kcInstanceName
-        _instanceOwnerProjectName = _kcInstanceOwnerProjectName
-        _projectName = _projectName
-        _projectNamespace = _projectNamespace
-        _realmId = _kcRealmId
+        _instanceName = _keycloakInstanceName
+        _instanceOwnerProjectName = _keycloakInstanceOwnerProjectName
+        _projectName = _claimNamespace
+        _realmId = _keycloakRealmId
         _uses = [
             providerConfigKcClientDefaultScopes.managedResource
         ]
     }
     kcUserGroupsWrapper: core.KcUserGroupsWrapper {
         _groupIds = [kcArgoCdAdminsGroup.getAtProviderId(_observedComposedResources)]
-        _instanceName = _kcInstanceName
-        _instanceOwnerProjectName = _kcInstanceOwnerProjectName
-        _projectNamespace = _projectNamespace
-        _realmId = _kcRealmId
+        _instanceName = _keycloakInstanceName
+        _instanceOwnerProjectName = _keycloakInstanceOwnerProjectName
+        _projectName = _claimNamespace
+        _realmId = _keycloakRealmId
         _userId = providerConfigKcClient.getServiceAccountUserId(_observedComposedResources)
         _uses = [
             kcArgoCdAdminsGroup.managedResource
@@ -65,10 +66,10 @@ schema ArgoCdProject:
     providerConfigHttpJwtToken: core.KcOpenIdClientJwtWrapper {
         _clientId = providerConfigKcClient.managedResource.spec.forProvider.clientId
         _clientSecret = providerConfigKcClient.getClientSecret(_observedComposedResources)
-        _domain = _kcDomain
-        _name = "${_projectNamespace}-argocd-${_argoCdInstanceOwnerProjectName}-${_argoCdInstanceName}-${_projectName}-token"
-        _realmId = _kcRealmId
-        _projectNamespace = _projectNamespace
+        _domain = _keycloakDomain
+        _name = "${argoCdUtils.argoCdProviderConfigSecretName(_targetProjectName, _argoCdInstanceOwnerProjectName, _argoCdInstanceName, _argoCdProjectName)}-token"
+        _realmId = _keycloakRealmId
+        _projectNamespace = _claimNamespace
         _uses = [
             kcUserGroupsWrapper.managedResource
             providerConfigKcClientDefaultScopes.managedResource
@@ -76,10 +77,10 @@ schema ArgoCdProject:
     }
     providerConfigCredentialsSecret: core.K8sObjectSecretWrapper {
         _clusterName = "ctrl"
-        _name = "${_projectNamespace}-argocd-${_argoCdInstanceOwnerProjectName}-${_argoCdInstanceName}-${_projectName}-provider"
-        _namespace = _projectNamespace
-        _projectNamespace = _projectNamespace
-        _secretName = "${_projectNamespace}-argocd-${_argoCdInstanceOwnerProjectName}-${_argoCdInstanceName}-${_projectName}-provider"
+        _name = argoCdUtils.argoCdProviderConfigSecretName(_targetProjectName, _argoCdInstanceOwnerProjectName, _argoCdInstanceName, _argoCdProjectName)
+        _namespace = _claimNamespace
+        _projectName = _claimNamespace
+        _secretName = argoCdUtils.argoCdProviderConfigSecretName(_targetProjectName, _argoCdInstanceOwnerProjectName, _argoCdInstanceName, _argoCdProjectName)
         _stringData = {
             value = providerConfigHttpJwtToken.getAccessToken(_observedComposedResources)
         }
@@ -89,12 +90,12 @@ schema ArgoCdProject:
     }
     providerConfig: core.ArgoCdProviderConfigWrapper {
         _argoCdDomain = _argoCdDomain
-        _argoCdProjectName = _projectName
+        _argoCdProjectName = _argoCdProjectName
         _argoCdInstanceName = _argoCdInstanceName
         _argoCdInstanceOwnerProjectName = _argoCdInstanceOwnerProjectName
         _credentialsSecretName = providerConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.name
         _credentialsSecretNamespace = providerConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.namespace
-        _projectNamespace = _projectNamespace
+        _projectName = _targetProjectName
         _uses = [
             providerConfigCredentialsSecret.managedResource
         ]
@@ -103,8 +104,8 @@ schema ArgoCdProject:
         _adminGroupName = kcArgoCdAdminsGroup.managedResource.spec.forProvider.name
         _instanceName = _argoCdInstanceName
         _instanceOwnerProjectName = _argoCdInstanceOwnerProjectName
-        _projectName = _projectName
-        _projectNamespace = _projectNamespace
+        _projectName = _argoCdProjectName
+        _projectNamespace = _claimNamespace
         _viewerGroupName = kcArgoCdViewersGroup.managedResource.spec.forProvider.name
     }
     managedResources: [core.ManagedResource | core.ArgoCdProviderConfig] = [

@@ -17,7 +17,7 @@ schema ControlPlaneProjectConfiguration:
         _clusterName = _k8sClusterName
         _name = awsUtils.awsProviderConfigSecretName(_projectNamespace)
         _namespace = _projectNamespace
-        _projectNamespace = _projectNamespace
+        _projectName = _projectNamespace
         _secretName = awsUtils.awsProviderConfigSecretName(_projectNamespace)
         _stringData = {}
         managedResource.spec.references = [
@@ -46,7 +46,7 @@ schema ControlPlaneProjectConfiguration:
         _clusterName = _k8sClusterName
         _name = helmUtils.helmProviderConfigSecretName(_projectNamespace, _k8sClusterName)
         _namespace = _projectNamespace
-        _projectNamespace = _projectNamespace
+        _projectName = _projectNamespace
         _secretName = helmUtils.helmProviderConfigSecretName(_projectNamespace, _k8sClusterName)
         _stringData = {}
         managedResource.spec.references = [
@@ -79,7 +79,7 @@ schema ControlPlaneProjectConfiguration:
         _clusterName = _k8sClusterName
         _name = k8sUtils.k8sProviderConfigSecretName(_projectNamespace, _k8sClusterName)
         _namespace = _projectNamespace
-        _projectNamespace = _projectNamespace
+        _projectName = _projectNamespace
         _secretName = k8sUtils.k8sProviderConfigSecretName(_projectNamespace, _k8sClusterName)
         _stringData = {}
         managedResource.spec.references = [
@@ -109,7 +109,7 @@ schema ControlPlaneProjectConfiguration:
         _clusterName = _k8sClusterName
         _name = osUtils.osProviderConfigSecretName(_projectNamespace)
         _namespace = _projectNamespace
-        _projectNamespace = _projectNamespace
+        _projectName = _projectNamespace
         _secretName = osUtils.osProviderConfigSecretName(_projectNamespace)
         _stringData = {}
         managedResource.spec.references = [

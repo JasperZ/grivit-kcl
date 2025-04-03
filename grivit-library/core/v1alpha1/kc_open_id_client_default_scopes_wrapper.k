@@ -4,7 +4,7 @@ schema KcOpenIdClientDefaultScopesWrapper:
     _instanceName: str
     _instanceOwnerProjectName: str
     _name: str
-    _projectNamespace: str
+    _projectName: str
     _realmId: str
     _uses: [ManagedResource] = []
 
@@ -19,7 +19,7 @@ schema KcOpenIdClientDefaultScopesWrapper:
             "keycloak-instance" = _instanceName
             "keycloak-instance-owner-roject" = _instanceOwnerProjectName
             "keycloak-realm-id" = _realmId
-            "project" = _projectNamespace
+            "project" = _projectName
         }
         spec.forProvider.clientId = _clientId
         spec.forProvider.defaultScopes = [
@@ -31,7 +31,7 @@ schema KcOpenIdClientDefaultScopesWrapper:
             "web-origins"
         ] + _additionalScopes
         spec.forProvider.realmId = _realmId
-        spec.providerConfigRef.name = kcProviderConfigName(_projectNamespace, _instanceOwnerProjectName, _instanceName, _realmId)
+        spec.providerConfigRef.name = kcProviderConfigName(_projectName, _instanceOwnerProjectName, _instanceName, _realmId)
     }
     usages: [Usage] = [Usage {
         metadata.name = "${_name}-uses-${ofResource.metadata.name}"

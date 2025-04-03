@@ -40,7 +40,7 @@ schema K8sClusterOsK0smotron:
         _clusterName = "ctrl"
         _name = "${_name}-cloud-config"
         _namespace = _projectNamespace
-        _projectNamespace = _projectNamespace
+        _projectName = _projectNamespace
         _secretName = "${_name}-cloud-config"
         _stringData = {
             "clouds.yaml": """\
@@ -116,7 +116,7 @@ clouds:
         _clusterName = _name
         _name = k8sUtils.k8sProviderConfigSecretName(_projectNamespace, _name)
         _namespace = _projectNamespace
-        _projectNamespace = _projectNamespace
+        _projectName = _projectNamespace
         _secretName = k8sUtils.k8sProviderConfigSecretName(_projectNamespace, _name)
         _stringData = {}
         managedResource.spec.references = {

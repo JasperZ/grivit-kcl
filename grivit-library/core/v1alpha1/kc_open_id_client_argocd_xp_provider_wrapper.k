@@ -4,12 +4,11 @@ schema KcOpenIdClientArgoCdXpProviderWrapper:
     _instanceName: str
     _instanceOwnerProjectName: str
     _projectName: str
-    _projectNamespace: str
     _realmId: str
     _uses: [ManagedResource] = []
 
     _clientId: str = "argocd-${_instanceName}-${_projectName}-xp-provider"
-    _resourceName: str = "${_projectNamespace}-${_clientId}"
+    _resourceName: str = "${_projectName}-${_clientId}"
 
     managedResource: ManagedResource {
         apiVersion = "openidclient.keycloak.crossplane.io/v1alpha1"
@@ -22,7 +21,7 @@ schema KcOpenIdClientArgoCdXpProviderWrapper:
             "keycloak-instance" = _instanceName
             "keycloak-instance-owner-roject" = _instanceOwnerProjectName
             "keycloak-realm-id" = _realmId
-            "project" = _projectNamespace
+            "project" = _projectName
         }
         spec.forProvider.accessType = "CONFIDENTIAL"
         spec.forProvider.clientId = _clientId
@@ -33,8 +32,8 @@ schema KcOpenIdClientArgoCdXpProviderWrapper:
         spec.forProvider.serviceAccountsEnabled = True
         spec.forProvider.standardFlowEnabled = False
         spec.writeConnectionSecretToRef.name = "${_resourceName}-conn"
-        spec.writeConnectionSecretToRef.namespace = _projectNamespace
-        spec.providerConfigRef.name = kcProviderConfigName(_projectNamespace, _instanceOwnerProjectName, _instanceName, _realmId)
+        spec.writeConnectionSecretToRef.namespace = _projectName
+        spec.providerConfigRef.name = kcProviderConfigName(_projectName, _instanceOwnerProjectName, _instanceName, _realmId)
     }
     usages: [Usage] = [Usage {
         metadata.name = "${_resourceName}-uses-${ofResource.metadata.name}"

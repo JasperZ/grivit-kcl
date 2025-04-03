@@ -5,10 +5,10 @@ schema ArgoCdProviderConfigWrapper:
     _argoCdInstanceOwnerProjectName: str
     _credentialsSecretName: str
     _credentialsSecretNamespace: str
-    _projectNamespace: str
+    _projectName: str
     _uses: [ManagedResource] = []
 
-    _resourceName: str = argoCdProviderConfigName(_projectNamespace, _argoCdInstanceOwnerProjectName, _argoCdInstanceName, _argoCdProjectName)
+    _resourceName: str = argoCdProviderConfigName(_projectName, _argoCdInstanceOwnerProjectName, _argoCdInstanceName, _argoCdProjectName)
 
     managedResource: ArgoCdProviderConfig {
         _name = _resourceName

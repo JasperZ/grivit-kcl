@@ -28,7 +28,7 @@ schema K8sAppOperationsOpenBao:
         _instanceName = _kcInstanceName
         _instanceOwnerProjectName = _projectNamespace
         _name = "${_name}-openbao-client-default-scopes"
-        _projectNamespace = _projectNamespace
+        _projectName = _projectNamespace
         _realmId = _kcRealmId
         _uses = [
             kcOpenBaoClient.managedResource
@@ -305,7 +305,7 @@ tail -f /dev/null
         _instanceName = _kcInstanceName
         _instanceOwnerProjectName = _projectNamespace
         _name = "${providerConfigKcClient.managedResource.spec.forProvider.name}-client-default-scopes"
-        _projectNamespace = _projectNamespace
+        _projectName = _projectNamespace
         _realmId = _kcRealmId
         _uses = [
             providerConfigKcClient.managedResource
@@ -315,7 +315,7 @@ tail -f /dev/null
         _groupIds = [kcOpenBaoAdminsGroup.getAtProviderId(_observedComposedResources)]
         _instanceName = _instanceName
         _instanceOwnerProjectName = _projectNamespace
-        _projectNamespace = _projectNamespace
+        _projectName = _projectNamespace
         _realmId = _kcRealmId
         _userId = providerConfigKcClient.getServiceAccountUserId(_observedComposedResources)
         _uses = [
@@ -326,7 +326,7 @@ tail -f /dev/null
         _clusterName = _clusterName
         _name = "${_name}-keys-and-root-token"
         _namespace = "openbao"
-        _projectNamespace = _projectNamespace
+        _projectName = _projectNamespace
         _secretName = "${_name}-keys-and-root-token"
         _stringData = {}
         _uses = [
@@ -338,7 +338,7 @@ tail -f /dev/null
         _clusterName = _clusterName
         _name = openBaoUtils.openBaoProviderConfigSecretName(_projectNamespace, _instanceName, _projectNamespace, "admin")
         _namespace = _projectNamespace
-        _projectNamespace = _projectNamespace
+        _projectName = _projectNamespace
         _secretName = openBaoUtils.openBaoProviderConfigSecretName(_projectNamespace, _instanceName, _projectNamespace, "admin")
         _stringData = {
             value = json.encode({

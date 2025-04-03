@@ -4,7 +4,7 @@ schema K8sObjectSecretWrapper:
     _clusterName: str
     _name: str
     _namespace: str
-    _projectNamespace: str
+    _projectName: str
     _secretName: str
     _stringData: {str:str}
     _uses: [ManagedResource] = []
@@ -24,7 +24,7 @@ schema K8sObjectSecretWrapper:
             type = "Opaque"
             stringData = _stringData
         }
-        spec.providerConfigRef.name = k8sProviderConfigName(_projectNamespace, _clusterName)
+        spec.providerConfigRef.name = k8sProviderConfigName(_projectName, _clusterName)
     }
     usages: [Usage] = [Usage {
         metadata.name = "${_name}-uses-${ofResource.metadata.name}"

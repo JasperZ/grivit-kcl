@@ -28,14 +28,14 @@ schema KcClientArgoCd:
         _clientId = kcClient.getAtProviderId(_observedComposedResources)
         _instanceName = _instanceName
         _name = "${_name}-client-default-scopes"
-        _projectNamespace = _projectNamespace
+        _projectName = _projectNamespace
         _realmId = _realmId
     }
     k8sClientCredentialsSecret: core.K8sObjectSecretWrapper {
         _clusterName = _clusterName
         _name = "${_name}-client-credentials"
         _namespace = "crossplane-secrets"
-        _projectNamespace = _projectNamespace
+        _projectName = _projectNamespace
         _secretName = _clientId
         _stringData = {
             clientId = _clientId

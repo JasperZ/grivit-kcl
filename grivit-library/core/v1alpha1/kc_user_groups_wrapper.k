@@ -2,12 +2,12 @@ schema KcUserGroupsWrapper:
     _groupIds: [str]
     _instanceName: str
     _instanceOwnerProjectName: str
-    _projectNamespace: str
+    _projectName: str
     _realmId: str
     _userId: str
     _uses: [ManagedResource] = []
 
-    _resourceName: str = "${_projectNamespace}-${_instanceName}-${_realmId}-${_userId}-groups"
+    _resourceName: str = "${_projectName}-${_instanceName}-${_realmId}-${_userId}-groups"
 
     managedResource: ManagedResource {
         apiVersion = "user.keycloak.crossplane.io/v1alpha1"
@@ -20,13 +20,13 @@ schema KcUserGroupsWrapper:
             "keycloak-instance" = _instanceName
             "keycloak-instance-owner-roject" = _instanceOwnerProjectName
             "keycloak-realm-id" = _realmId
-            "project" = _projectNamespace
+            "project" = _projectName
         }
         spec.forProvider.exhaustive = True
         spec.forProvider.groupIds = _groupIds
         spec.forProvider.realmId = _realmId
         spec.forProvider.userId = _userId
-        spec.providerConfigRef.name = kcProviderConfigName(_projectNamespace, _instanceOwnerProjectName, _instanceName, _realmId)
+        spec.providerConfigRef.name = kcProviderConfigName(_projectName, _instanceOwnerProjectName, _instanceName, _realmId)
     }
     usages: [Usage] = [Usage {
         metadata.name = "${_resourceName}-uses-${ofResource.metadata.name}"

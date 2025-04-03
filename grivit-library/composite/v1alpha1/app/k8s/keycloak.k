@@ -49,7 +49,7 @@ schema KeycloakAppK8s:
         _clusterName = "ctrl"
         _name = kcUtils.kcProviderConfigSecretName(_projectNamespace, _projectNamespace, _keycloakInstanceName, "master")
         _namespace = _projectNamespace
-        _projectNamespace = _projectNamespace
+        _projectName = _projectNamespace
         _secretName = kcUtils.kcProviderConfigSecretName(_projectNamespace, _projectNamespace, _keycloakInstanceName, "master")
         _stringData = {
             value = """\

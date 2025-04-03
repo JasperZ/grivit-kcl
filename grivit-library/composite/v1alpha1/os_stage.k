@@ -12,7 +12,7 @@ schema OsStage:
         _clusterName = "ctrl"
         _name = "${_name}-password"
         _namespace = _projectNamespace
-        _projectNamespace = _projectNamespace
+        _projectName = _projectNamespace
         _secretName = "${_name}-password"
         _stringData = {
             # ToDo: hard coded password
@@ -43,7 +43,7 @@ schema OsStage:
         _clusterName = "ctrl"
         _name = "${_name}-cloud-config"
         _namespace = _projectNamespace
-        _projectNamespace = _projectNamespace
+        _projectName = _projectNamespace
         _secretName = "${_name}-cloud-config"
         _stringData = {
             # ToDo: Hard coded url

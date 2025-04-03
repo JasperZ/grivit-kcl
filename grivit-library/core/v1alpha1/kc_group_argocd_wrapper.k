@@ -3,12 +3,11 @@ schema KcGroupArgoCdWrapper:
     _instanceName: str
     _instanceOwnerProjectName: str
     _projectName: str
-    _projectNamespace: str
     _realmId: str
     _uses: [ManagedResource] = []
 
     _groupName: str = "argocd-${_instanceName}-${_projectName}-${_groupType}"
-    _resourceName: str = "${_projectNamespace}-${_instanceOwnerProjectName}-${_instanceName}-${_realmId}-argocd-${_projectName}-${_groupType}-group"
+    _resourceName: str = "${_projectName}-${_instanceOwnerProjectName}-${_instanceName}-${_realmId}-argocd-${_projectName}-${_groupType}-group"
 
     managedResource: ManagedResource {
         apiVersion = "group.keycloak.crossplane.io/v1alpha1"
@@ -19,7 +18,7 @@ schema KcGroupArgoCdWrapper:
         }
         spec.forProvider.name = _groupName
         spec.forProvider.realmId = _realmId
-        spec.providerConfigRef.name = kcProviderConfigName(_projectNamespace, _instanceOwnerProjectName, _instanceName, _realmId)
+        spec.providerConfigRef.name = kcProviderConfigName(_projectName, _instanceOwnerProjectName, _instanceName, _realmId)
     }
     usages: [Usage] = [Usage {
         metadata.name = "${_resourceName}-uses-${ofResource.metadata.name}"
