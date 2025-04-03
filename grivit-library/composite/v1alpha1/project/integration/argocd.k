@@ -6,12 +6,12 @@ schema ArgoCdProjectIntegration:
     _argoCdInstanceName: str
     _argoCdInstanceOwnerProjectName: str
     _argoCdProjectName: str
+    _claimNamespace: str
     _keycloakDomain: str
     _keycloakInstanceName: str
     _keycloakInstanceOwnerProjectName: str
     _keycloakRealmId: str
     _observedComposedResources: any
-    _claimNamespace: str
     _targetProjectName: str
 
     providerConfigKcClient: core.KcOpenIdClientArgoCdXpProviderWrapper {
@@ -62,6 +62,26 @@ schema ArgoCdProjectIntegration:
         _uses = [
             kcArgoCdAdminsGroup.managedResource
         ]
+    }
+    # GroupMembershipProtocolMapper currently working with clientScopeId
+    groupClientScope: core.KcOpenIdClientScopeWrapper {
+        _instanceName = _keycloakInstanceName
+        _instanceOwnerProjectName = _keycloakInstanceOwnerProjectName
+        _name = "${providerConfigKcClient.managedResource.spec.forProvider.name}-group-client-scope"
+        _projectNamespace = _claimNamespace
+        _realmId = _keycloakRealmId
+        _scopeName = "groups"
+    }
+    groupsMapper: core.KcOpenIdGroupMembershipProtocolMapperWrapper {
+        _claimName = "groups"
+        _clientScopeId = groupClientScope.getClientScopeId(_observedComposedResources)
+        _instanceName = _keycloakInstanceName
+        _instanceOwnerProjectName = _keycloakInstanceOwnerProjectName
+        _name = "${providerConfigKcClient.managedResource.spec.forProvider.name}-groups-mapper"
+        _projectNamespace = _claimNamespace
+        _realmId = _keycloakRealmId
+        
+        managedResource.spec.forProvider.clientId = providerConfigKcClient.getAtProviderId(_observedComposedResources)
     }
     providerConfigHttpJwtToken: core.KcOpenIdClientJwtWrapper {
         _clientId = providerConfigKcClient.managedResource.spec.forProvider.clientId
@@ -114,6 +134,8 @@ schema ArgoCdProjectIntegration:
         providerConfigKcClient.managedResource
         providerConfigKcClientDefaultScopes.managedResource
         kcUserGroupsWrapper.managedResource
+        groupClientScope.managedResource
+        groupsMapper.managedResource
         providerConfigHttpJwtToken.managedResource
         providerConfigCredentialsSecret.managedResource
         providerConfig.managedResource
@@ -125,6 +147,8 @@ schema ArgoCdProjectIntegration:
         providerConfigKcClient.usages
         providerConfigKcClientDefaultScopes.usages
         kcUserGroupsWrapper.usages
+        groupClientScope.usages
+        groupsMapper.usages
         providerConfigHttpJwtToken.usages
         providerConfigCredentialsSecret.usages
         providerConfig.usages
