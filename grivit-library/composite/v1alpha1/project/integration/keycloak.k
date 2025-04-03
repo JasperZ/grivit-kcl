@@ -36,31 +36,13 @@ schema KeycloakProjectIntegration:
         _realmId = realm.managedResource.spec.forProvider.realm
     }
 
-# GroupMembershipProtocolMapper currently working with clientScopeId
-#    groupClientScope: core.KcOpenIdClientScopeWrapper {
-#        _instanceName = _keycloakInstanceName
-#        _instanceOwnerProjectName = _keycloakInstanceOwnerProjectName
-#        _name = "${_name}-group-client-scope"
-#        _projectNamespace = _projectNamespace
-#        _realmId = realm.managedResource.spec.forProvider.realm
-#        _scopeName = "groups"
-#    }
-
-#    groupsMapper: core.KcOpenIdGroupMembershipProtocolMapperWrapper {
-#        _claimName = "groups"
-#        _clientScopeId = groupClientScope.getClientScopeId(_observedComposedResources)
-#        _instanceName = _keycloakInstanceName
-#        _instanceOwnerProjectName = _keycloakInstanceOwnerProjectName
-#        _name = "${_name}-groups-mapper"
-#        _projectNamespace = _projectNamespace
-#        _realmId = realm.managedResource.spec.forProvider.realm
-#    }
     crossplaneClient: core.KcOpenIdClientKcXpProviderWrapper {
         _instanceName = _keycloakInstanceName
         _instanceOwnerProjectName = _keycloakInstanceOwnerProjectName
         _projectNamespace = _projectNamespace
         _realmId = realm.managedResource.spec.forProvider.realm
     }
+
     realmManagementClientObserve: core.KcOpenIdClientWrapper {
         _clientId = "realm-management"
         _description = ""
@@ -79,6 +61,7 @@ schema KeycloakProjectIntegration:
         managedResource.spec.providerConfigRef.name = kcUtils.kcProviderConfigName(_projectNamespace, _keycloakInstanceOwnerProjectName, _instanceName, "master")
         managedResource.spec.managementPolicies = ["Observe"]
     }
+
     crossplaneClientRealmAdminRole: core.KcOpenIdClientServiceAccountRole {
         _clientId = realmManagementClientObserve.getAtProviderId(_observedComposedResources)
         _instanceName = _keycloakInstanceName
@@ -94,6 +77,7 @@ schema KeycloakProjectIntegration:
             realmManagementClientObserve.managedResource
         ]
     }
+
     providerConfigCredentials: core.K8sObjectSecretWrapper {
         _clusterName = "ctrl"
         _name = kcUtils.kcProviderConfigSecretName(_projectNamespace, _keycloakInstanceOwnerProjectName, _keycloakInstanceName, _keycloakRealmName)
@@ -117,6 +101,7 @@ schema KeycloakProjectIntegration:
             crossplaneClientRealmAdminRole.managedResource
         ]
     }
+
     providerConfig: core.KcProviderConfigWrapper {
         _credentialsSecretName = providerConfigCredentials.managedResource.spec.forProvider.manifest.metadata.name
         _credentialsSecretNamespace = providerConfigCredentials.managedResource.spec.forProvider.manifest.metadata.namespace
@@ -128,12 +113,11 @@ schema KeycloakProjectIntegration:
             providerConfigCredentials.managedResource
         ]
     }
+
     managedResources: [core.ManagedResource | core.KcProviderConfig | core.TfProviderConfig] = [
         realm.managedResource
         adminGroup.managedResource
         viewerGroup.managedResource
-        #groupClientScope.managedResource
-        #groupsMapper.managedResource
         crossplaneClient.managedResource
         realmManagementClientObserve.managedResource
         crossplaneClientRealmAdminRole.managedResource
@@ -145,8 +129,6 @@ schema KeycloakProjectIntegration:
         realm.usages
         adminGroup.usages
         viewerGroup.usages
-        #groupClientScope.usages
-        #groupsMapper.usages
         crossplaneClient.usages
         realmManagementClientObserve.usages
         crossplaneClientRealmAdminRole.usages

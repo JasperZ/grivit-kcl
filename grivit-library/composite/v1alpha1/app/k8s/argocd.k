@@ -20,27 +20,27 @@ schema ArgoCdAppK8s:
         _projectNamespace = _projectNamespace
         _realmId = _keycloakRealmId
     }
-    kcArgoCdClientDefaultScopes: core.KcOpenIdClientDefaultScopesWrapper {
-        _additionalScopes = ["groups"]
-        _clientId = kcArgoCdClient.getAtProviderId(_observedComposedResources)
-        _instanceName = _keycloakInstanceName
-        _instanceOwnerProjectName = _projectNamespace
-        _name = "${_name}-argocd-client-default-scopes"
-        _projectNamespace = _projectNamespace
-        _realmId = _keycloakRealmId
-        _uses = [
-            kcArgoCdClient.managedResource
-        ]
-    }
+#    kcArgoCdClientDefaultScopes: core.KcOpenIdClientDefaultScopesWrapper {
+#        _additionalScopes = ["groups"]
+#        _clientId = kcArgoCdClient.getAtProviderId(_observedComposedResources)
+#        _instanceName = _keycloakInstanceName
+#        _instanceOwnerProjectName = _projectNamespace
+#        _name = "${_name}-argocd-client-default-scopes"
+#        _projectNamespace = _projectNamespace
+#        _realmId = _keycloakRealmId
+#        _uses = [
+#            kcArgoCdClient.managedResource
+#        ]
+#    }
     kcArgoCdAdminsGroup = core.KcGroupArgoCdWrapper {
         _groupType = "admins"
         _instanceName = _argoCdInstanceName
         _instanceOwnerProjectName = _projectNamespace
         _projectName = "admin"
-        _projectNamespace = _projectNamespace
+        _projectName = _projectNamespace
         _realmId = _keycloakRealmId
         _uses = [
-            kcArgoCdClientDefaultScopes.managedResource
+            #kcArgoCdClientDefaultScopes.managedResource
         ]
     }
     helmRepo: core.K8sFluxHelmRepositoryWrapper {
@@ -185,29 +185,29 @@ g, ${kcArgoCdAdminsGroup.managedResource.spec.forProvider.name}, role:admin
         _instanceName = _argoCdInstanceName
         _instanceOwnerProjectName = _projectNamespace
         _projectName = "admin"
-        _projectNamespace = _projectNamespace
+        _projectName = _projectNamespace
         _realmId = _keycloakRealmId
         _uses = [
             helmRelease.managedResource
         ]
     }
-    providerConfigKcClientDefaultScopes: core.KcOpenIdClientDefaultScopesWrapper {
-        _additionalScopes = ["groups"]
-        _clientId = providerConfigKcClient.getAtProviderId(_observedComposedResources)
-        _instanceName = _keycloakInstanceName
-        _instanceOwnerProjectName = _projectNamespace
-        _name = "${providerConfigKcClient.managedResource.spec.forProvider.name}-client-default-scopes"
-        _projectNamespace = _projectNamespace
-        _realmId = _keycloakRealmId
-        _uses = [
-            providerConfigKcClient.managedResource
-        ]
-    }
+#    providerConfigKcClientDefaultScopes: core.KcOpenIdClientDefaultScopesWrapper {
+#        _additionalScopes = ["groups"]
+#        _clientId = providerConfigKcClient.getAtProviderId(_observedComposedResources)
+#        _instanceName = _keycloakInstanceName
+#        _instanceOwnerProjectName = _projectNamespace
+#        _name = "${providerConfigKcClient.managedResource.spec.forProvider.name}-client-default-scopes"
+#        _projectName = _projectNamespace
+#        _realmId = _keycloakRealmId
+#        _uses = [
+#            providerConfigKcClient.managedResource
+#        ]
+#    }
     kcUserGroupsWrapper: core.KcUserGroupsWrapper {
         _groupIds = [kcArgoCdAdminsGroup.getAtProviderId(_observedComposedResources)]
         _instanceName = _argoCdInstanceName
         _instanceOwnerProjectName = _projectNamespace
-        _projectNamespace = _projectNamespace
+        _projectName = _projectNamespace
         _realmId = _keycloakRealmId
         _userId = providerConfigKcClient.getServiceAccountUserId(_observedComposedResources)
         _uses = [
@@ -223,7 +223,7 @@ g, ${kcArgoCdAdminsGroup.managedResource.spec.forProvider.name}, role:admin
         _projectNamespace = _projectNamespace
         _uses = [
             kcUserGroupsWrapper.managedResource
-            providerConfigKcClientDefaultScopes.managedResource
+            #providerConfigKcClientDefaultScopes.managedResource
         ]
     }
     providerConfigCredentialsSecret: core.ArgoCdProviderConfigK8sCredentialsSecretWrapper {
@@ -243,19 +243,19 @@ g, ${kcArgoCdAdminsGroup.managedResource.spec.forProvider.name}, role:admin
         _argoCdInstanceOwnerProjectName = _projectNamespace
         _credentialsSecretName = providerConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.name
         _credentialsSecretNamespace = providerConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.namespace
-        _projectNamespace = _projectNamespace
+        _projectName = _projectNamespace
         _uses = [
             providerConfigCredentialsSecret.managedResource
         ]
     }
     managedResources: [core.ManagedResource | core.ArgoCdProviderConfig] = [
         kcArgoCdClient.managedResource
-        kcArgoCdClientDefaultScopes.managedResource
+        #kcArgoCdClientDefaultScopes.managedResource
         kcArgoCdAdminsGroup.managedResource
         helmRepo.managedResource
         helmRelease.managedResource
         providerConfigKcClient.managedResource
-        providerConfigKcClientDefaultScopes.managedResource
+        #providerConfigKcClientDefaultScopes.managedResource
         kcUserGroupsWrapper.managedResource
         providerConfigHttpJwtToken.managedResource
         providerConfigCredentialsSecret.managedResource
@@ -263,12 +263,12 @@ g, ${kcArgoCdAdminsGroup.managedResource.spec.forProvider.name}, role:admin
     ]
     usages: [core.Usage] = sum([
         kcArgoCdClient.usages
-        kcArgoCdClientDefaultScopes.usages
+        #kcArgoCdClientDefaultScopes.usages
         kcArgoCdAdminsGroup.usages
         helmRepo.usages
         helmRelease.usages
         providerConfigKcClient.usages
-        providerConfigKcClientDefaultScopes.usages
+        #providerConfigKcClientDefaultScopes.usages
         kcUserGroupsWrapper.usages
         providerConfigHttpJwtToken.usages
         providerConfigCredentialsSecret.usages
