@@ -181,9 +181,8 @@ g, ${kcArgoCdAdminsGroup.managedResource.spec.forProvider.name}, role:admin
         ]
     }
     providerConfigKcClient: core.KcOpenIdClientArgoCdXpProviderWrapper {
-        _instanceName = _argoCdInstanceName
+        _instanceName = _keycloakInstanceName
         _instanceOwnerProjectName = _projectNamespace
-        _projectName = "admin"
         _projectName = _projectNamespace
         _realmId = _keycloakRealmId
         _uses = [
