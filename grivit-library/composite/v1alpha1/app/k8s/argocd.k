@@ -33,10 +33,9 @@ schema ArgoCdAppK8s:
 #        ]
 #    }
     kcArgoCdAdminsGroup = core.KcGroupArgoCdWrapper {
-        _groupType = "admins"
+        _groupType = "instance-admins"
         _instanceName = _argoCdInstanceName
         _instanceOwnerProjectName = _projectNamespace
-        _projectName = "admin"
         _projectName = _projectNamespace
         _realmId = _keycloakRealmId
         _uses = [

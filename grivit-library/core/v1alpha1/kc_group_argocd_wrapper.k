@@ -1,5 +1,5 @@
 schema KcGroupArgoCdWrapper:
-    _groupType: "admins" | "viewers"
+    _groupType: "admins" | "instance-admins" | "viewers"
     _instanceName: str
     _instanceOwnerProjectName: str
     _projectName: str
