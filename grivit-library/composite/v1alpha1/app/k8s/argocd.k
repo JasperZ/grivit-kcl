@@ -59,7 +59,7 @@ schema ArgoCdAppK8s:
         _clientScopeId = "dummy"
         _instanceName = _keycloakInstanceName
         _instanceOwnerProjectName = _keycloakInstanceOwnerProjectName
-        _name = "${_managedResourcePrefix}groups-mapper"
+        _name = "${_managedResourcePrefix}client-group-mapper"
         _projectNamespace = _claimNamespace
         _realmId = _keycloakRealmId
         
@@ -251,7 +251,7 @@ g, ${kcArgoCdAdminsGroup.managedResource.spec.forProvider.name}, role:admin
         _clientScopeId = "dummy"
         _instanceName = _keycloakInstanceName
         _instanceOwnerProjectName = _keycloakInstanceOwnerProjectName
-        _name = "${_managedResourcePrefix}groups-mapper"
+        _name = "${_managedResourcePrefix}-provider-group-mapper"
         _projectNamespace = _claimNamespace
         _realmId = _keycloakRealmId
         
