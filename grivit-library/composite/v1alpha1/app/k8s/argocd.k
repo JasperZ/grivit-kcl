@@ -1,3 +1,4 @@
+import crypto
 import core.v1alpha1 as core
 import core.v1alpha1.argocd_utils as argoCdUtils
 
@@ -15,7 +16,8 @@ schema ArgoCdAppK8s:
     _kubernetesClusterName: str
     _observedComposedResources: any
 
-    _managedResourcePrefix = "${_claimNamespace}-argocd-${_argoCdInstanceOwnerProjectName}-${_argoCdInstanceName}-${_argoCdProjectName}-"
+    #_managedResourcePrefix = "${_claimNamespace}-argocd-${_argoCdInstanceOwnerProjectName}-${_argoCdInstanceName}-${_argoCdProjectName}-"
+    _managedResourcePrefix = crypto.sha256("${_claimNamespace}-argocd-${_argoCdInstanceOwnerProjectName}-${_argoCdInstanceName}") + _argoCdProjectName + "-"
 
     kcArgoCdClient: core.KcOpenIdClientArgoCdWrapper {
         _argoCdDomain = _argoCdDomain
