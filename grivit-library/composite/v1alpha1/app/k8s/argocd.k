@@ -54,6 +54,24 @@ schema ArgoCdAppK8s:
             #kcArgoCdClientDefaultScopes.managedResource
         ]
     }
+    kcArgoCdClientGroupMapper: core.KcOpenIdGroupMembershipProtocolMapperWrapper {
+        _claimName = "groups"
+        _clientScopeId = "dummy"
+        _instanceName = _keycloakInstanceName
+        _instanceOwnerProjectName = _keycloakInstanceOwnerProjectName
+        _name = "${_managedResourcePrefix}groups-mapper"
+        _projectNamespace = _claimNamespace
+        _realmId = _keycloakRealmId
+        
+        managedResource.spec.forProvider = {
+            addToAccessToken = True
+            claimName = "groups"
+            clientId = kcArgoCdClient.getAtProviderId(_observedComposedResources)
+            fullPath = False
+            name = "groups"
+            realmId = _keycloakRealmId
+        }
+    }
     helmRepo: core.K8sFluxHelmRepositoryWrapper {
         _name = "${_managedResourcePrefix}repo"
         _helmRepoUrl = "https://argoproj.github.io/argo-helm"
@@ -300,6 +318,7 @@ g, ${kcArgoCdAdminsGroup.managedResource.spec.forProvider.name}, role:admin
         kcArgoCdClient.managedResource
         #kcArgoCdClientDefaultScopes.managedResource
         kcArgoCdAdminsGroup.managedResource
+        kcArgoCdClientGroupMapper.managedResource
         helmRepo.managedResource
         helmRelease.managedResource
         providerConfigKcClient.managedResource
@@ -314,6 +333,7 @@ g, ${kcArgoCdAdminsGroup.managedResource.spec.forProvider.name}, role:admin
         kcArgoCdClient.usages
         #kcArgoCdClientDefaultScopes.usages
         kcArgoCdAdminsGroup.usages
+        kcArgoCdClientGroupMapper.usages
         helmRepo.usages
         helmRelease.usages
         providerConfigKcClient.usages
