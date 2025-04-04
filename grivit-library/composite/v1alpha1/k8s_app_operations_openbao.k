@@ -312,12 +312,12 @@ tail -f /dev/null
         ]
     }
     kcUserGroupsWrapper: core.KcUserGroupsWrapper {
-        _groupIds = [kcOpenBaoAdminsGroup.getAtProviderId(_observedComposedResources)]
-        _instanceName = _instanceName
-        _instanceOwnerProjectName = _projectNamespace
+        _keycloakGroupIds = [kcOpenBaoAdminsGroup.getAtProviderId(_observedComposedResources)]
+        _keycloakInstanceName = _instanceName
+        _keycloakInstanceOwnerProjectName = _projectNamespace
+        _keycloakRealmId = _kcRealmId
+        _keycloakUserId = providerConfigKcClient.getServiceAccountUserId(_observedComposedResources)
         _projectName = _projectNamespace
-        _realmId = _kcRealmId
-        _userId = providerConfigKcClient.getServiceAccountUserId(_observedComposedResources)
         _uses = [
             kcOpenBaoAdminsGroup.managedResource
         ]

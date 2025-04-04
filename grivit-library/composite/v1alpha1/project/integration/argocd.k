@@ -14,18 +14,23 @@ schema ArgoCdProjectIntegration:
     _observedComposedResources: any
     _targetProjectName: str
 
+    _managedResourcePrefix = "${_claimNamespace}-argocd-${_argoCdInstanceOwnerProjectName}-${_argoCdInstanceName}-${_argoCdProjectName}-"
+
     providerConfigKcClient: core.KcOpenIdClientArgoCdXpProviderWrapper {
-        _instanceName = _keycloakInstanceName
-        _instanceOwnerProjectName = _keycloakInstanceOwnerProjectName
+        _argoCdInstanceName = _argoCdInstanceName
+        _argoCdInstanceOwnerProjectName = _argoCdInstanceOwnerProjectName
+        _argoCdProjectName = _argoCdProjectName
+        _keycloakInstanceName= _keycloakInstanceName
+        _keycloakInstanceOwnerProjectName = _keycloakInstanceOwnerProjectName
+        _keycloakRealmId= _keycloakRealmId
         _projectName = _claimNamespace
-        _realmId = _keycloakRealmId
     }
     providerConfigKcClientDefaultScopes: core.KcOpenIdClientDefaultScopesWrapper {
         _additionalScopes = ["groups"]
         _clientId = providerConfigKcClient.getAtProviderId(_observedComposedResources)
         _instanceName = _keycloakInstanceName
         _instanceOwnerProjectName = _keycloakInstanceOwnerProjectName
-        _name = "${providerConfigKcClient.managedResource.spec.forProvider.name}-client-default-scopes"
+        _name = "${_managedResourcePrefix}client-default-scopes"
         _projectName = _claimNamespace
         _realmId = _keycloakRealmId
         _uses = [
@@ -33,32 +38,39 @@ schema ArgoCdProjectIntegration:
         ]
     }
     kcArgoCdAdminsGroup: core.KcGroupArgoCdWrapper {
+        _argoCdInstanceName = _argoCdInstanceName
+        _argoCdInstanceOwnerProjectName = _argoCdInstanceOwnerProjectName
+        _argoCdProjectName= _argoCdProjectName
         _groupType = "admins"
-        _instanceName = _argoCdInstanceName
-        _instanceOwnerProjectName = _keycloakInstanceOwnerProjectName
+        _keycloakInstanceName = _keycloakInstanceName
+        _keycloakInstanceOwnerProjectName = _keycloakInstanceOwnerProjectName
+        _keycloakRealmId = _keycloakRealmId
         _projectName = _claimNamespace
-        _realmId = _keycloakRealmId
         _uses = [
             providerConfigKcClientDefaultScopes.managedResource
         ]
     }
     kcArgoCdViewersGroup: core.KcGroupArgoCdWrapper {
+        _argoCdInstanceName = _argoCdInstanceName
+        _argoCdInstanceOwnerProjectName = _argoCdInstanceOwnerProjectName
+        _argoCdProjectName= _argoCdProjectName
         _groupType = "viewers"
-        _instanceName = _keycloakInstanceName
-        _instanceOwnerProjectName = _keycloakInstanceOwnerProjectName
+        _keycloakInstanceName = _keycloakInstanceName
+        _keycloakInstanceOwnerProjectName = _keycloakInstanceOwnerProjectName
+        _keycloakRealmId = _keycloakRealmId
         _projectName = _claimNamespace
-        _realmId = _keycloakRealmId
         _uses = [
             providerConfigKcClientDefaultScopes.managedResource
         ]
     }
     kcUserGroupsWrapper: core.KcUserGroupsWrapper {
-        _groupIds = [kcArgoCdAdminsGroup.getAtProviderId(_observedComposedResources)]
-        _instanceName = _keycloakInstanceName
-        _instanceOwnerProjectName = _keycloakInstanceOwnerProjectName
+        _keycloakGroupIds = [kcArgoCdAdminsGroup.getAtProviderId(_observedComposedResources)]
+        _keycloakInstanceName= _keycloakInstanceName
+        _keycloakInstanceOwnerProjectName = _keycloakInstanceOwnerProjectName
+        _keycloakRealmId= _keycloakRealmId
+        _keycloakUserId = providerConfigKcClient.getServiceAccountUserId(_observedComposedResources)
         _projectName = _claimNamespace
-        _realmId = _keycloakRealmId
-        _userId = providerConfigKcClient.getServiceAccountUserId(_observedComposedResources)
+        _managedResourceName = "${_managedResourcePrefix}admins"
         _uses = [
             kcArgoCdAdminsGroup.managedResource
         ]
@@ -67,7 +79,7 @@ schema ArgoCdProjectIntegration:
     groupClientScope: core.KcOpenIdClientScopeWrapper {
         _instanceName = _keycloakInstanceName
         _instanceOwnerProjectName = _keycloakInstanceOwnerProjectName
-        _name = "${providerConfigKcClient.managedResource.spec.forProvider.name}-group-client-scope"
+        _name = "${_managedResourcePrefix}group-client-scope"
         _projectNamespace = _claimNamespace
         _realmId = _keycloakRealmId
         _scopeName = "groups"
@@ -77,7 +89,7 @@ schema ArgoCdProjectIntegration:
         _clientScopeId = groupClientScope.getClientScopeId(_observedComposedResources)
         _instanceName = _keycloakInstanceName
         _instanceOwnerProjectName = _keycloakInstanceOwnerProjectName
-        _name = "${providerConfigKcClient.managedResource.spec.forProvider.name}-groups-mapper"
+        _name = "${_managedResourcePrefix}groups-mapper"
         _projectNamespace = _claimNamespace
         _realmId = _keycloakRealmId
         
@@ -91,12 +103,12 @@ schema ArgoCdProjectIntegration:
         }
     }
     providerConfigHttpJwtToken: core.KcOpenIdClientJwtWrapper {
-        _clientId = providerConfigKcClient.managedResource.spec.forProvider.clientId
-        _clientSecret = providerConfigKcClient.getClientSecret(_observedComposedResources)
-        _domain = _keycloakDomain
-        _name = "${argoCdUtils.argoCdProviderConfigSecretName(_targetProjectName, _argoCdInstanceOwnerProjectName, _argoCdInstanceName, _argoCdProjectName)}-token"
-        _realmId = _keycloakRealmId
-        _projectNamespace = _claimNamespace
+        _keycloakClientId = providerConfigKcClient.managedResource.spec.forProvider.clientId
+        _keycloakClientSecret = providerConfigKcClient.getClientSecret(_observedComposedResources)
+        _keycloakDomain = _keycloakDomain
+        _keycloakRealmId = _keycloakRealmId
+        _managedResourceName = "${argoCdUtils.argoCdProviderConfigSecretName(_targetProjectName, _argoCdInstanceOwnerProjectName, _argoCdInstanceName, _argoCdProjectName)}-token"
+        _projectName = _claimNamespace
         _uses = [
             kcUserGroupsWrapper.managedResource
             providerConfigKcClientDefaultScopes.managedResource

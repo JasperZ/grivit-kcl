@@ -15,6 +15,8 @@ schema ArgoCdAppK8s:
     _kubernetesClusterName: str
     _observedComposedResources: any
 
+    _managedResourcePrefix = "${_claimNamespace}-argocd-${_argoCdInstanceOwnerProjectName}-${_argoCdInstanceName}-${_argoCdProjectName}-"
+
     kcArgoCdClient: core.KcOpenIdClientArgoCdWrapper {
         _argoCdDomain = _argoCdDomain
         _argoCdInstanceName = _argoCdInstanceName
@@ -51,13 +53,13 @@ schema ArgoCdAppK8s:
         ]
     }
     helmRepo: core.K8sFluxHelmRepositoryWrapper {
-        _name = "${_claimNamespace}-argocd-${_argoCdInstanceOwnerProjectName}-${_argoCdInstanceName}"
+        _name = "${_managedResourcePrefix}repo"
         _helmRepoUrl = "https://argoproj.github.io/argo-helm"
         _projectNamespace = _claimNamespace
     }
     helmRelease: core.K8sFluxHelmReleaseWrapper {
         _clusterName = _kubernetesClusterName
-        _name = "${_claimNamespace}-argocd-${_argoCdInstanceOwnerProjectName}-${_argoCdInstanceName}"
+        _name = "${_managedResourcePrefix}rel"
         _helmChartName = "argo-cd"
         _helmChartVersion = "7.7.10"
         _helmReleaseName = "argocd-${_argoCdInstanceName}"
@@ -219,7 +221,7 @@ g, ${kcArgoCdAdminsGroup.managedResource.spec.forProvider.name}, role:admin
         _keycloakRealmId= _keycloakRealmId
         _keycloakUserId = providerConfigKcClient.getServiceAccountUserId(_observedComposedResources)
         _projectName = _claimNamespace
-        _managedResourceName = "${_claimNamespace}-argocd-${_argoCdInstanceOwnerProjectName}-${_argoCdInstanceName}-${_argoCdProjectName}-admins"
+        _managedResourceName = "${_managedResourcePrefix}admins"
         _uses = [
             kcArgoCdAdminsGroup.managedResource
         ]
@@ -229,7 +231,7 @@ g, ${kcArgoCdAdminsGroup.managedResource.spec.forProvider.name}, role:admin
         _keycloakClientSecret = providerConfigKcClient.getClientSecret(_observedComposedResources)
         _keycloakDomain = _keycloakDomain
         _keycloakRealmId = _keycloakRealmId
-        _managedResourceName = "${_claimNamespace}-argocd-${_argoCdInstanceOwnerProjectName}-${_argoCdInstanceName}-${_argoCdProjectName}-admin"
+        _managedResourceName = "${_managedResourcePrefix}admin"
         _projectName = _claimNamespace
         _uses = [
             kcUserGroupsWrapper.managedResource
