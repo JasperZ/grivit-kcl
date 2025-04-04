@@ -1,3 +1,4 @@
+import crypto
 import core.v1alpha1 as core
 import core.v1alpha1.argocd_utils as argoCdUtils
 
@@ -14,7 +15,8 @@ schema ArgoCdProjectIntegration:
     _observedComposedResources: any
     _targetProjectName: str
 
-    _managedResourcePrefix = "${_claimNamespace}-argocd-${_argoCdInstanceOwnerProjectName}-${_argoCdInstanceName}-${_argoCdProjectName}-"
+    #_managedResourcePrefix = "${_claimNamespace}-argocd-${_argoCdInstanceOwnerProjectName}-${_argoCdInstanceName}-${_argoCdProjectName}-"
+    _managedResourcePrefix = crypto.md5("${_claimNamespace}-argocd-${_argoCdInstanceOwnerProjectName}-${_argoCdInstanceName}") + "-" + _argoCdProjectName + "-"
 
     providerConfigKcClient: core.KcOpenIdClientArgoCdXpProviderWrapper {
         _argoCdInstanceName = _argoCdInstanceName
