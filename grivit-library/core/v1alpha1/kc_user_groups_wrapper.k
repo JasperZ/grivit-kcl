@@ -1,37 +1,36 @@
 schema KcUserGroupsWrapper:
-    _groupIds: [str]
-    _instanceName: str
-    _instanceOwnerProjectName: str
+    _keycloakGroupIds: [str]
+    _keycloakInstanceName: str
+    _keycloakInstanceOwnerProjectName: str
+    _keycloakRealmId: str
+    _keycloakUserId: str
     _projectName: str
-    _realmId: str
-    _userId: str
+    _managedResourceName: str
     _uses: [ManagedResource] = []
-
-    _resourceName: str = "${_projectName}-${_instanceName}-${_realmId}-${_userId}-groups"
 
     managedResource: ManagedResource {
         apiVersion = "user.keycloak.crossplane.io/v1alpha1"
         kind = "Groups"
-        metadata.name = _resourceName
+        metadata.name = _managedResourceName
         metadata.annotations = {
-            "krm.kcl.dev/composition-resource-name" = _resourceName
+            "krm.kcl.dev/composition-resource-name" = _managedResourceName
         }
         metadata.labels = {
-            "keycloak-instance" = _instanceName
-            "keycloak-instance-owner-roject" = _instanceOwnerProjectName
-            "keycloak-realm-id" = _realmId
+            "keycloak-instance" = _keycloakInstanceName
+            "keycloak-instance-owner-roject" = _keycloakInstanceOwnerProjectName
+            "keycloak-realm-id" = _keycloakRealmId
             "project" = _projectName
         }
         spec.forProvider.exhaustive = True
-        spec.forProvider.groupIds = _groupIds
-        spec.forProvider.realmId = _realmId
-        spec.forProvider.userId = _userId
-        spec.providerConfigRef.name = kcProviderConfigName(_projectName, _instanceOwnerProjectName, _instanceName, _realmId)
+        spec.forProvider.groupIds = _keycloakGroupIds
+        spec.forProvider.realmId = _keycloakRealmId
+        spec.forProvider.userId = _keycloakUserId
+        spec.providerConfigRef.name = kcProviderConfigName(_projectName, _keycloakInstanceOwnerProjectName, _keycloakInstanceName, _keycloakRealmId)
     }
     usages: [Usage] = [Usage {
-        metadata.name = "${_resourceName}-uses-${ofResource.metadata.name}"
+        metadata.name = "${_managedResourceName}-uses-${ofResource.metadata.name}"
         metadata.annotations = {
-            "krm.kcl.dev/composition-resource-name" = "${_resourceName}-uses-${ofResource.metadata.name}"
+            "krm.kcl.dev/composition-resource-name" = "${_managedResourceName}-uses-${ofResource.metadata.name}"
         }
         spec.by.apiVersion = managedResource.apiVersion
         spec.by.kind = managedResource.kind

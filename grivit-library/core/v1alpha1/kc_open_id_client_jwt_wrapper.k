@@ -2,26 +2,26 @@ import crypto
 import json
 
 schema KcOpenIdClientJwtWrapper:
-    _clientId: str
-    _clientSecret: str
-    _domain: str
-    _name: str
-    _realmId: str
-    _projectNamespace: str
+    _keycloakClientId: str
+    _keycloakClientSecret: str
+    _keycloakDomain: str
+    _keycloakRealmId: str
+    _managedResourceName: str
+    _projectName: str
     _uses: [ManagedResource] = []
 
-    _configMd5 = crypto.md5("${_clientId}${_clientSecret}")
+    _configMd5 = crypto.md5("${_keycloakClientId}${_keycloakClientSecret}")
 
     managedResource: ManagedResource {
         apiVersion = "http.crossplane.io/v1alpha2"
         kind = "DisposableRequest"
-        metadata.name = "${_name}-${_configMd5}"
+        metadata.name = "${_managedResourceName}-${_configMd5}"
         metadata.annotations = {
-            "krm.kcl.dev/composition-resource-name" = "${_name}-${_configMd5}"
+            "krm.kcl.dev/composition-resource-name" = "${_managedResourceName}-${_configMd5}"
         }
         spec.deletionPolicy = "Orphan"
         spec.forProvider = {
-            body = "grant_type=client_credentials&client_id=${_clientId}&client_secret=${_clientSecret}&scope=openid"
+            body = "grant_type=client_credentials&client_id=${_keycloakClientId}&client_secret=${_keycloakClientSecret}&scope=openid"
             expectedResponse = ".statusCode == 200"
             headers = {
                 "Content-Type" = ["application/x-www-form-urlencoded"]
@@ -30,14 +30,14 @@ schema KcOpenIdClientJwtWrapper:
             method = "POST"
             nextReconcile: "4m"
             shouldLoopInfinitely = True
-            url = "https://${_domain}/realms/${_realmId}/protocol/openid-connect/token"
+            url = "https://${_keycloakDomain}/realms/${_keycloakRealmId}/protocol/openid-connect/token"
         }
-        spec.providerConfigRef.name = httpProviderConfigName(_projectNamespace)
+        spec.providerConfigRef.name = httpProviderConfigName(_projectName)
     }
     usages: [Usage] = [Usage {
-        metadata.name = "${_name}-uses-${ofResource.metadata.name}"
+        metadata.name = "${_managedResourceName}-uses-${ofResource.metadata.name}"
         metadata.annotations = {
-            "krm.kcl.dev/composition-resource-name" = "${_name}-uses-${ofResource.metadata.name}"
+            "krm.kcl.dev/composition-resource-name" = "${_managedResourceName}-uses-${ofResource.metadata.name}"
         }
         spec.by.apiVersion = managedResource.apiVersion
         spec.by.kind = managedResource.kind

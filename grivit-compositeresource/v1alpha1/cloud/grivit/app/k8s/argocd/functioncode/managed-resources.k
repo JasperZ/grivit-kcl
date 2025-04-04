@@ -12,13 +12,15 @@ spec: any = observedCompositeResource.spec
 argoCdAppK8s: apps.ArgoCdAppK8s = apps.ArgoCdAppK8s {
     _argoCdDomain = spec.argoCdDomain
     _argoCdInstanceName = spec.argoCdInstanceName
+    _argoCdInstanceOwnerProjectName = claimNamespace
+    _argoCdProjectName = "instance"
+    _claimNamespace = claimNamespace
     _keycloakDomain = spec.keycloakDomain
     _keycloakInstanceName = spec.keycloakInstanceName
+    _keycloakInstanceOwnerProjectName = spec.keycloakInstanceOwnerProjectName
     _keycloakRealmId = spec.keycloakRealmId
     _kubernetesClusterName = spec.kubernetesClusterName
-    _name = claimName
     _observedComposedResources = observedComposedResources
-    _projectNamespace = claimNamespace
 }
 
 items = sum([

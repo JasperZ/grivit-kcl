@@ -40,6 +40,9 @@ schema XrdArgoCdAppK8s(core.CompositeResourceDefinition):
                                     keycloakInstanceName = {
                                         type = "string"
                                     }
+                                    keycloakInstanceOwnerProjectName = {
+                                        type = "string"
+                                    }
                                     keycloakRealmId = {
                                         type = "string"
                                     }

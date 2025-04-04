@@ -2,14 +2,17 @@ import base64
 
 schema KcOpenIdClientArgoCdWrapper:
     _argoCdDomain: str
-    _instanceName: str
-    _instanceOwnerProjectName: str
-    _projectNamespace: str
-    _realmId: str
+    _argoCdInstanceName: str
+    _argoCdInstanceOwnerProjectName: str
+    _argoCdProjectName: str
+    _keycloakInstanceName: str
+    _keycloakInstanceOwnerProjectName: str
+    _keycloakRealmId: str
+    _projectName: str
 
-    _clientId: str = "argocd-${_instanceName}-client"
     _baseUrl: str = "https://${_argoCdDomain}"
-    _resourceName: str = "${_projectNamespace}-${_clientId}"
+    _clientId: str = "argocd-${_argoCdInstanceOwnerProjectName}-${_argoCdInstanceName}-${_argoCdProjectName}-client"
+    _resourceName: str = "${_projectName}-${_clientId}"
 
     managedResource: ManagedResource {
         apiVersion = "openidclient.keycloak.crossplane.io/v1alpha1"
@@ -19,26 +22,29 @@ schema KcOpenIdClientArgoCdWrapper:
             "krm.kcl.dev/composition-resource-name" = _resourceName
         }
         metadata.labels = {
-            "keycloak-instance" = _instanceName
-            "keycloak-instance-owner-roject" = _instanceOwnerProjectName
-            "keycloak-realm-id" = _realmId
-            "project" = _projectNamespace
+            "argocd-instance" = _argoCdInstanceName
+            "argocd-instance-owner-project" = _argoCdInstanceOwnerProjectName
+            "argocd-project-name" = _argoCdProjectName
+            "keycloak-instance" = _keycloakInstanceName
+            "keycloak-instance-owner-project" = _keycloakInstanceOwnerProjectName
+            "keycloak-realm-id" = _keycloakRealmId
+            "project" = _projectName
         }
         spec.forProvider.accessType = "CONFIDENTIAL"
         spec.forProvider.adminUrl = _baseUrl
         spec.forProvider.clientId = _clientId
         spec.forProvider.directAccessGrantsEnabled = True
-        spec.forProvider.description = "ArgoCD client for instance '${_instanceName}' to authenticate users (managed by Crossplane)."
+        spec.forProvider.description = "managed by Crossplane"
         spec.forProvider.name = _clientId
-        spec.forProvider.realmId = _realmId
+        spec.forProvider.realmId = _keycloakRealmId
         spec.forProvider.rootUrl = _baseUrl
         spec.forProvider.standardFlowEnabled = True
         spec.forProvider.validPostLogoutRedirectUris = [_baseUrl]
         spec.forProvider.validRedirectUris = ["${_baseUrl}/auth/callback"]
         spec.forProvider.webOrigins = [_baseUrl]
         spec.writeConnectionSecretToRef.name = "${_resourceName}-conn"
-        spec.writeConnectionSecretToRef.namespace = _projectNamespace
-        spec.providerConfigRef.name = kcProviderConfigName(_projectNamespace, _instanceOwnerProjectName, _instanceName, _realmId)
+        spec.writeConnectionSecretToRef.namespace = _projectName
+        spec.providerConfigRef.name = kcProviderConfigName(_projectName, _keycloakInstanceOwnerProjectName, _keycloakInstanceName, _keycloakRealmId)
     }
     usages: [Usage] = []
 
