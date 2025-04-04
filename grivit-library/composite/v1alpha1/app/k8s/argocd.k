@@ -228,6 +228,24 @@ g, ${kcArgoCdAdminsGroup.managedResource.spec.forProvider.name}, role:admin
             kcArgoCdAdminsGroup.managedResource
         ]
     }
+    groupsMapper: core.KcOpenIdGroupMembershipProtocolMapperWrapper {
+        _claimName = "groups"
+        _clientScopeId = "dummy"
+        _instanceName = _keycloakInstanceName
+        _instanceOwnerProjectName = _keycloakInstanceOwnerProjectName
+        _name = "${_managedResourcePrefix}groups-mapper"
+        _projectNamespace = _claimNamespace
+        _realmId = _keycloakRealmId
+        
+        managedResource.spec.forProvider = {
+            addToAccessToken = True
+            claimName = "groups"
+            clientId = providerConfigKcClient.getAtProviderId(_observedComposedResources)
+            fullPath = False
+            name = "groups"
+            realmId = _keycloakRealmId
+        }
+    }
     providerConfigHttpJwtToken: core.KcOpenIdClientJwtWrapper {
         _keycloakClientId = providerConfigKcClient.managedResource.spec.forProvider.clientId
         _keycloakClientSecret = providerConfigKcClient.getClientSecret(_observedComposedResources)
@@ -287,6 +305,7 @@ g, ${kcArgoCdAdminsGroup.managedResource.spec.forProvider.name}, role:admin
         providerConfigKcClient.managedResource
         #providerConfigKcClientDefaultScopes.managedResource
         kcUserGroupsWrapper.managedResource
+        groupsMapper.managedResource
         providerConfigHttpJwtToken.managedResource
         providerConfigCredentialsSecret.managedResource
         providerConfig.managedResource
@@ -300,6 +319,7 @@ g, ${kcArgoCdAdminsGroup.managedResource.spec.forProvider.name}, role:admin
         providerConfigKcClient.usages
         #providerConfigKcClientDefaultScopes.usages
         kcUserGroupsWrapper.usages
+        groupsMapper.usages
         providerConfigHttpJwtToken.usages
         providerConfigCredentialsSecret.usages
         providerConfig.usages
