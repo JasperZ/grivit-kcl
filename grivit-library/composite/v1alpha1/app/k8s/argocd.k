@@ -17,7 +17,7 @@ schema ArgoCdAppK8s:
     _observedComposedResources: any
 
     #_managedResourcePrefix = "${_claimNamespace}-argocd-${_argoCdInstanceOwnerProjectName}-${_argoCdInstanceName}-${_argoCdProjectName}-"
-    _managedResourcePrefix = crypto.sha256("${_claimNamespace}-argocd-${_argoCdInstanceOwnerProjectName}-${_argoCdInstanceName}") + _argoCdProjectName + "-"
+    _managedResourcePrefix = crypto.md5("${_claimNamespace}-argocd-${_argoCdInstanceOwnerProjectName}-${_argoCdInstanceName}") + "-" + _argoCdProjectName + "-"
 
     kcArgoCdClient: core.KcOpenIdClientArgoCdWrapper {
         _argoCdDomain = _argoCdDomain
