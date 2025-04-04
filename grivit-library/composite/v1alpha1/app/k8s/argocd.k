@@ -29,18 +29,6 @@ schema ArgoCdAppK8s:
         _keycloakRealmId = _keycloakRealmId
         _projectName = _claimNamespace
     }
-#    kcArgoCdClientDefaultScopes: core.KcOpenIdClientDefaultScopesWrapper {
-#        _additionalScopes = ["groups"]
-#        _clientId = kcArgoCdClient.getAtProviderId(_observedComposedResources)
-#        _instanceName = _keycloakInstanceName
-#        _instanceOwnerProjectName = _projectNamespace
-#        _name = "${_name}-argocd-client-default-scopes"
-#        _projectNamespace = _projectNamespace
-#        _realmId = _keycloakRealmId
-#        _uses = [
-#            kcArgoCdClient.managedResource
-#        ]
-#    }
     kcArgoCdAdminsGroup: core.KcGroupArgoCdWrapper {
         _argoCdInstanceName = _argoCdInstanceName
         _argoCdInstanceOwnerProjectName = _argoCdInstanceOwnerProjectName
@@ -222,18 +210,6 @@ g, ${kcArgoCdAdminsGroup.managedResource.spec.forProvider.name}, role:admin
             helmRelease.managedResource
         ]
     }
-#    providerConfigKcClientDefaultScopes: core.KcOpenIdClientDefaultScopesWrapper {
-#        _additionalScopes = ["groups"]
-#        _clientId = providerConfigKcClient.getAtProviderId(_observedComposedResources)
-#        _instanceName = _keycloakInstanceName
-#        _instanceOwnerProjectName = _projectNamespace
-#        _name = "${providerConfigKcClient.managedResource.spec.forProvider.name}-client-default-scopes"
-#        _projectName = _projectNamespace
-#        _realmId = _keycloakRealmId
-#        _uses = [
-#            providerConfigKcClient.managedResource
-#        ]
-#    }
     kcUserGroupsWrapper: core.KcUserGroupsWrapper {
         _keycloakGroupIds = [kcArgoCdAdminsGroup.getAtProviderId(_observedComposedResources)]
         _keycloakInstanceName= _keycloakInstanceName

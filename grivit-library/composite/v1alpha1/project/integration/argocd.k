@@ -27,18 +27,6 @@ schema ArgoCdProjectIntegration:
         _keycloakRealmId= _keycloakRealmId
         _projectName = _claimNamespace
     }
-    providerConfigKcClientDefaultScopes: core.KcOpenIdClientDefaultScopesWrapper {
-        _additionalScopes = ["groups"]
-        _clientId = providerConfigKcClient.getAtProviderId(_observedComposedResources)
-        _instanceName = _keycloakInstanceName
-        _instanceOwnerProjectName = _keycloakInstanceOwnerProjectName
-        _name = "${_managedResourcePrefix}client-default-scopes"
-        _projectName = _claimNamespace
-        _realmId = _keycloakRealmId
-        _uses = [
-            providerConfigKcClient.managedResource
-        ]
-    }
     kcArgoCdAdminsGroup: core.KcGroupArgoCdWrapper {
         _argoCdInstanceName = _argoCdInstanceName
         _argoCdInstanceOwnerProjectName = _argoCdInstanceOwnerProjectName
@@ -48,9 +36,7 @@ schema ArgoCdProjectIntegration:
         _keycloakInstanceOwnerProjectName = _keycloakInstanceOwnerProjectName
         _keycloakRealmId = _keycloakRealmId
         _projectName = _claimNamespace
-        _uses = [
-            providerConfigKcClientDefaultScopes.managedResource
-        ]
+        _uses = []
     }
     kcArgoCdViewersGroup: core.KcGroupArgoCdWrapper {
         _argoCdInstanceName = _argoCdInstanceName
@@ -61,9 +47,7 @@ schema ArgoCdProjectIntegration:
         _keycloakInstanceOwnerProjectName = _keycloakInstanceOwnerProjectName
         _keycloakRealmId = _keycloakRealmId
         _projectName = _claimNamespace
-        _uses = [
-            providerConfigKcClientDefaultScopes.managedResource
-        ]
+        _uses = []
     }
     kcUserGroupsWrapper: core.KcUserGroupsWrapper {
         _keycloakGroupIds = [kcArgoCdAdminsGroup.getAtProviderId(_observedComposedResources)]
@@ -113,7 +97,6 @@ schema ArgoCdProjectIntegration:
         _projectName = _claimNamespace
         _uses = [
             kcUserGroupsWrapper.managedResource
-            providerConfigKcClientDefaultScopes.managedResource
         ]
     }
     providerConfigCredentialsSecret: core.K8sObjectSecretWrapper {
@@ -153,7 +136,6 @@ schema ArgoCdProjectIntegration:
         kcArgoCdAdminsGroup.managedResource
         kcArgoCdViewersGroup.managedResource
         providerConfigKcClient.managedResource
-        providerConfigKcClientDefaultScopes.managedResource
         kcUserGroupsWrapper.managedResource
         groupClientScope.managedResource
         groupsMapper.managedResource
@@ -166,7 +148,6 @@ schema ArgoCdProjectIntegration:
         kcArgoCdAdminsGroup.usages
         kcArgoCdViewersGroup.usages
         providerConfigKcClient.usages
-        providerConfigKcClientDefaultScopes.usages
         kcUserGroupsWrapper.usages
         groupClientScope.usages
         groupsMapper.usages
