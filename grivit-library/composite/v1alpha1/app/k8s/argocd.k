@@ -98,7 +98,7 @@ name: Keycloak
 issuer: https://${_keycloakDomain}/realms/${_keycloakRealmId}
 clientID: ${kcArgoCdClient.managedResource.spec.forProvider.clientId}
 clientSecret: ${kcArgoCdClient.getClientSecret(_observedComposedResources)}
-requestedScopes: ["openid", "profile", "email", "groups"]
+requestedScopes: ["openid", "profile", "email"]
 
 #ToDo: Workaround until it's easier to set the client id as audience in the crossplane keycloak provider
 allowedAudiences:
