@@ -24,6 +24,7 @@ schema ManagedResourceSpec:
     readiness?: ManagedResourceSpecReadiness
     references?: any
     writeConnectionSecretToRef?: ManagedResourceSpecWriteConnectionSecretToRef
+    publishConnectionDetailsTo?: ManagedResourceSpecPublishConnectionDetailsTo
 
 schema ManagedResourceSpecProviderConfigRef:
     name: str
@@ -36,3 +37,5 @@ schema ManagedResourceSpecWriteConnectionSecretToRef:
     name: str
     namespace?: str
 
+schema ManagedResourceSpecPublishConnectionDetailsTo:
+    name: str
