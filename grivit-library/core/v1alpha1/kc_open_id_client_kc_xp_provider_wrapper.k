@@ -2,6 +2,7 @@ import base64
 
 schema KcOpenIdClientKcXpProviderWrapper:
     _keycloakInstance: KeycloakInstance
+    _keycloakProviderConfig?: str
     _projectName: str
 
     _clientId: str = "kc-${_keycloakInstance.name}-${_keycloakInstance.realmId}-xp-provider"
@@ -30,7 +31,7 @@ schema KcOpenIdClientKcXpProviderWrapper:
         spec.forProvider.standardFlowEnabled = False
         spec.writeConnectionSecretToRef.name = "${_resourceName}-conn"
         spec.writeConnectionSecretToRef.namespace = _projectName
-        spec.providerConfigRef.name = kcProviderConfigName(_projectName, _keycloakInstance)
+        spec.providerConfigRef.name = _keycloakProviderConfig if _keycloakProviderConfig else kcProviderConfigName(_projectName, _keycloakInstance)
     }
     usages: [Usage] = []
 

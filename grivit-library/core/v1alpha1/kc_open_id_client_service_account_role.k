@@ -1,6 +1,7 @@
 schema KcOpenIdClientServiceAccountRole:
     _clientId: str
     _keycloakInstance: KeycloakInstance
+    _keycloakProviderConfig?: str
     _name: str
     _projectNamespace: str
     _roleName: str
@@ -24,7 +25,7 @@ schema KcOpenIdClientServiceAccountRole:
         spec.forProvider.serviceAccountUserId = _serviceAccountUserId
         spec.forProvider.realmId = _keycloakInstance.realmId
         spec.forProvider.role = _roleName
-        spec.providerConfigRef.name = kcProviderConfigName(_projectNamespace, _keycloakInstance)
+        spec.providerConfigRef.name = _keycloakProviderConfig if _keycloakProviderConfig else kcProviderConfigName(_projectNamespace, _keycloakInstance)
     }
     usages: [Usage] = [Usage {
         metadata.name = "${_name}-uses-${ofResource.metadata.name}"

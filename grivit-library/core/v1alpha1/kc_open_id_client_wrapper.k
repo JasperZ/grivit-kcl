@@ -4,6 +4,7 @@ schema KcOpenIdClientWrapper:
     _clientId: str
     _description: str
     _keycloakInstance: KeycloakInstance
+    _keycloakProviderConfig?: str
     _name: str
     _projectNamespace: str
     _url: str
@@ -36,7 +37,7 @@ schema KcOpenIdClientWrapper:
         spec.forProvider.webOrigins = [_url]
         spec.writeConnectionSecretToRef.name = "${_name}-conn"
         spec.writeConnectionSecretToRef.namespace = _projectNamespace
-        spec.providerConfigRef.name = kcProviderConfigName(_projectNamespace, _keycloakInstance)
+        spec.providerConfigRef.name = _keycloakProviderConfig if _keycloakProviderConfig else kcProviderConfigName(_projectNamespace, _keycloakInstance)
     }
     usages: [Usage] = []
 
