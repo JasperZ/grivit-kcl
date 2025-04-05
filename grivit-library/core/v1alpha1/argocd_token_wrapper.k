@@ -1,3 +1,5 @@
+import base64
+
 schema ArgoCdTokenWrapper:
     _argoCdInstance: ArgoCdInstance
     _argoCdTokenDescription: str
