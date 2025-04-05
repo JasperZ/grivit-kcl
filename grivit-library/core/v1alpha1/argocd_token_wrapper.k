@@ -33,3 +33,10 @@ schema ArgoCdTokenWrapper:
     }
     usages: [Usage] = []
 
+    getToken: (any) -> str = lambda observedComposedResources: any -> str {
+        _accessKeySecret: str = ""
+        if managedResource.metadata.name in observedComposedResources:
+            _accessKeySecret = str(base64.decode(observedComposedResources[managedResource.metadata.name].ConnectionDetails?.token))
+
+        _accessKeySecret
+    }
