@@ -109,38 +109,6 @@ schema ArgoCdProjectIntegration:
         _projectName = _claimNamespace
         _resourceName= "${_managedResourcePrefix}project"
     }
-    argoCdProjectToken: core.ArgoCdTokenWrapper {
-        _argoCdInstance = _argoCdInstance
-        _argoCdTokenDescription = "Managed by Crossplane"
-        _argoCdTokenId = "crossplane-admin"
-        _argoCdTokenProject = argoCdProject.managedResource.metadata.name
-        _argoCdTokenRole = "admins"
-        _projectName = _claimNamespace
-        _resourceName = "${_managedResourcePrefix}project-token"
-    }
-    providerConfigTokenCredentialsSecret: core.K8sObjectSecretWrapper {
-        _clusterName = "ctrl"
-        _name = core.argoCdProviderConfigSecretName(_targetProjectName, _argoCdInstanceTargetProject) + "token"
-        _namespace = _claimNamespace
-        _projectName = _claimNamespace
-        _secretName = core.argoCdProviderConfigSecretName(_targetProjectName, _argoCdInstanceTargetProject) + "token"
-        _stringData = {
-            value = argoCdProjectToken.getToken(_observedComposedResources)
-        }
-        _uses = [
-            providerConfigHttpJwtToken.managedResource
-        ]
-    }
-    providerConfigToken: core.ArgoCdProviderConfigWrapper {
-        _argoCdInstance = _argoCdInstanceTargetProject
-        _credentialsSecretName = providerConfigTokenCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.name
-        _credentialsSecretNamespace = providerConfigTokenCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.namespace
-        _projectName = _targetProjectName
-        _uses = [
-            providerConfigCredentialsSecret.managedResource
-        ]
-        _resourceName = core.argoCdProviderConfigName(_targetProjectName, _argoCdInstanceTargetProject) + "token"
-    }
     managedResources: [core.ManagedResource | core.ArgoCdProviderConfig] = [
         kcArgoCdAdminsGroup.managedResource
         kcArgoCdViewersGroup.managedResource
@@ -152,9 +120,6 @@ schema ArgoCdProjectIntegration:
         providerConfigCredentialsSecret.managedResource
         providerConfig.managedResource
         argoCdProject.managedResource
-        argoCdProjectToken.managedResource
-        providerConfigTokenCredentialsSecret.managedResource
-        providerConfigToken.managedResource
     ]
     usages: [core.Usage] = sum([
         kcArgoCdAdminsGroup.usages
@@ -167,8 +132,5 @@ schema ArgoCdProjectIntegration:
         providerConfigCredentialsSecret.usages
         providerConfig.usages
         argoCdProject.usages
-        argoCdProjectToken.usages
-        providerConfigTokenCredentialsSecret.usages
-        providerConfigToken.usages
     ], [])
 

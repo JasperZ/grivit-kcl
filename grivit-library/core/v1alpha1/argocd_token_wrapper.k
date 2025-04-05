@@ -32,7 +32,6 @@ schema ArgoCdTokenWrapper:
         spec.providerConfigRef.name = argoCdProviderConfigName(_projectName, _argoCdInstanceOverride)
         spec.writeConnectionSecretToRef.name = _resourceName
         spec.writeConnectionSecretToRef.namespace = _projectName
-        spec.publishConnectionDetailsTo.name = _projectName + "1234abcd"
     }
     usages: [Usage] = []
 
