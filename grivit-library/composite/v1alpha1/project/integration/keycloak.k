@@ -29,7 +29,7 @@ schema KeycloakProjectIntegration:
         _keycloakInstance = _keycloakInstanceTargetRealm
         _keycloakProviderConfig = core.kcProviderConfigName(_claimNamespace, _keycloakInstance)
         _projectName = _claimNamespace
-        _resourceName = "${_managedResourcePrefix}admins-group"
+        _resourceName = "${_managedResourcePrefix}admins"
     }
 
     viewerGroup: core.KcGroupWrapper {
@@ -37,7 +37,7 @@ schema KeycloakProjectIntegration:
         _keycloakInstance = _keycloakInstanceTargetRealm
         _keycloakProviderConfig = core.kcProviderConfigName(_claimNamespace, _keycloakInstance)
         _projectName = _claimNamespace
-        _resourceName = "${_managedResourcePrefix}viewers-group"
+        _resourceName = "${_managedResourcePrefix}viewers"
     }
 
     crossplaneClient: core.KcOpenIdClientKcXpProviderWrapper {
