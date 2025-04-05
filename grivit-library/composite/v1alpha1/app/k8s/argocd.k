@@ -280,7 +280,7 @@ g, ${kcArgoCdAdminsGroup.managedResource.spec.forProvider.name}, role:admin
 
     providerConfig: core.ArgoCdProviderConfigWrapper {
         _argoCdDomain = _argoCdDomain
-        _argoCdProjectName = "admin"
+        _argoCdProjectName = _argoCdProjectName
         _argoCdInstanceName = _argoCdInstanceName
         _argoCdInstanceOwnerProjectName = _argoCdInstanceOwnerProjectName
         _credentialsSecretName = providerConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.name
