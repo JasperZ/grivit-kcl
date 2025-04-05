@@ -278,13 +278,11 @@ g, ${kcArgoCdAdminsGroup.managedResource.spec.forProvider.name}, role:admin
     }
     managedResources: [core.ManagedResource | core.ArgoCdProviderConfig] = [
         kcArgoCdClient.managedResource
-        #kcArgoCdClientDefaultScopes.managedResource
         kcArgoCdAdminsGroup.managedResource
         kcArgoCdClientGroupMapper.managedResource
         helmRepo.managedResource
         helmRelease.managedResource
         providerConfigKcClient.managedResource
-        #providerConfigKcClientDefaultScopes.managedResource
         kcUserGroupsWrapper.managedResource
         groupsMapper.managedResource
         providerConfigHttpJwtToken.managedResource
@@ -293,13 +291,11 @@ g, ${kcArgoCdAdminsGroup.managedResource.spec.forProvider.name}, role:admin
     ]
     usages: [core.Usage] = sum([
         kcArgoCdClient.usages
-        #kcArgoCdClientDefaultScopes.usages
         kcArgoCdAdminsGroup.usages
         kcArgoCdClientGroupMapper.usages
         helmRepo.usages
         helmRelease.usages
         providerConfigKcClient.usages
-        #providerConfigKcClientDefaultScopes.usages
         kcUserGroupsWrapper.usages
         groupsMapper.usages
         providerConfigHttpJwtToken.usages
@@ -307,3 +303,6 @@ g, ${kcArgoCdAdminsGroup.managedResource.spec.forProvider.name}, role:admin
         providerConfig.usages
     ], [])
 
+
+    check:
+        len(managedResources) == len({managedResource.metadata.name: True for managedResource in managedResources}), "Names of managed Resources must be unique"
