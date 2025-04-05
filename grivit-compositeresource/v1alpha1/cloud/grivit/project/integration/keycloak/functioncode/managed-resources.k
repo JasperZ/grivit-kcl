@@ -16,6 +16,7 @@ keycloakInstance: core.KeycloakInstance {
 }
 
 keycloakProjectIntegration: integrations.KeycloakProjectIntegration = integrations.KeycloakProjectIntegration {
+    _claimName = claimName
     _claimNamespace = claimNamespace
     _keycloakInstance = keycloakInstance
     _observedComposedResources = observedComposedResources

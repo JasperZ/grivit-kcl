@@ -24,6 +24,7 @@ keycloakInstance: core.KeycloakInstance {
 
 argoCdProjectIntegration: integrations.ArgoCdProjectIntegration = integrations.ArgoCdProjectIntegration {
     _argoCdInstance = argoCdInstance
+    _claimName = claimName
     _claimNamespace = claimNamespace
     _keycloakInstance = keycloakInstance
     _observedComposedResources = observedComposedResources
