@@ -41,7 +41,7 @@ schema ArgoCdProjectWrapper:
                 }
             ]
         }
-        spec.providerConfigRef.name = argoCdProviderConfigName(_projectNamespace, _instanceOwnerProjectName, _instanceName, "admin")
+        spec.providerConfigRef.name = argoCdProviderConfigName(_projectNamespace, _instanceOwnerProjectName, _instanceName, "instance")
     }
     usages: [Usage] = []
 
