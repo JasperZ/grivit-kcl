@@ -2,13 +2,14 @@ import crypto
 import core.v1alpha1 as core
 
 schema KeycloakAppK8s:
+    _claimName: str
     _claimNamespace: str
     _fluxHelmReleaseDependencies?: [core.K8sFluxHelmReleaseWrapper | core.K8sFluxHelmOciReleaseWrapper] = []
     _keycloakInstance: core.KeycloakInstance
     _keycloakAdminPassword: str
     _kubernetesClusterName: str
 
-    _managedResourcePrefix = crypto.md5("${_claimNamespace}-keycloak-${_keycloakInstance.ownerProjectName}-${_keycloakInstance.name}") + "-" + _keycloakInstance.realmId + "-"
+    _managedResourcePrefix = crypto.md5("${_claimNamespace}-${_claimName}-keycloak-${_keycloakInstance.ownerProjectName}-${_keycloakInstance.name}") + "-" + _keycloakInstance.realmId + "-"
 
     repo: core.K8sFluxOciRepositoryWrapper {
         _name = "${_managedResourcePrefix}repo"

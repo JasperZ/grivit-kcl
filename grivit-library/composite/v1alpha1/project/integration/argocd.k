@@ -3,6 +3,7 @@ import core.v1alpha1 as core
 
 schema ArgoCdProjectIntegration:
     _argoCdInstance: core.ArgoCdInstance
+    _claimName: str
     _claimNamespace: str
     _keycloakInstance: core.KeycloakInstance
     _observedComposedResources: any
@@ -15,7 +16,7 @@ schema ArgoCdProjectIntegration:
         projectName = _targetProjectName
     }
 
-    _managedResourcePrefix = crypto.md5("${_claimNamespace}-argocd-${_argoCdInstanceTargetProject.ownerProjectName}-${_argoCdInstanceTargetProject.name}") + "-" + _argoCdInstanceTargetProject.projectName + "-"
+    _managedResourcePrefix = crypto.md5("${_claimNamespace}-${_claimName}-argocd-${_argoCdInstanceTargetProject.ownerProjectName}-${_argoCdInstanceTargetProject.name}") + "-" + _argoCdInstanceTargetProject.projectName + "-"
 
     providerConfigKcClient: core.KcOpenIdClientArgoCdXpProviderWrapper {
         _argoCdInstance = _argoCdInstance

@@ -1,6 +1,7 @@
 import core.v1alpha1 as core
 
 schema KeycloakProjectIntegration:
+    _claimName: str
     _claimNamespace: str
     _keycloakInstance: core.KeycloakInstance
     _observedComposedResources: any
@@ -13,7 +14,7 @@ schema KeycloakProjectIntegration:
         realmId = _targetProjectName
     }
 
-    _managedResourcePrefix = crypto.md5("${_claimNamespace}-keycloak-${_keycloakInstanceTargetRealm.ownerProjectName}-${_keycloakInstanceTargetRealm.name}") + "-" + _keycloakInstanceTargetRealm.realmId + "-"
+    _managedResourcePrefix = crypto.md5("${_claimNamespace}-${_claimName}-keycloak-${_keycloakInstanceTargetRealm.ownerProjectName}-${_keycloakInstanceTargetRealm.name}") + "-" + _keycloakInstanceTargetRealm.realmId + "-"
 
     realm: core.KcRealmWrapper {
         _keycloakInstance = _keycloakInstance

@@ -18,6 +18,7 @@ keycloakInstance: core.KeycloakInstance {
 }
 
 keycloakAppK8s: apps.KeycloakAppK8s = apps.KeycloakAppK8s {
+    _claimName = claimName
     _claimNamespace = claimNamespace
     _keycloakInstance = keycloakInstance
     _keycloakAdminPassword = spec.keycloakAdminPassword

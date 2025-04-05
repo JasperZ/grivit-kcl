@@ -3,13 +3,14 @@ import core.v1alpha1 as core
 
 schema ArgoCdAppK8s:
     _argoCdInstance: core.ArgoCdInstance
+    _claimName: str
     _claimNamespace: str
     _fluxHelmReleaseDependencies?: [core.K8sFluxHelmReleaseWrapper] = []
     _keycloakInstance: core.KeycloakInstance
     _kubernetesClusterName: str
     _observedComposedResources: any
 
-    _managedResourcePrefix = crypto.md5("${_claimNamespace}-argocd-${_argoCdInstance.ownerProjectName}-${_argoCdInstance.name}") + "-" + _argoCdInstance.projectName + "-"
+    _managedResourcePrefix = crypto.md5("${_claimNamespace}-${_claimName}-argocd-${_argoCdInstance.ownerProjectName}-${_argoCdInstance.name}") + "-" + _argoCdInstance.projectName + "-"
 
     kcArgoCdClient: core.KcOpenIdClientArgoCdWrapper {
         _argoCdInstance = _argoCdInstance

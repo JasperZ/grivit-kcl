@@ -26,6 +26,7 @@ keycloakInstance: core.KeycloakInstance {
 
 argoCdAppK8s: apps.ArgoCdAppK8s = apps.ArgoCdAppK8s {
     _argoCdInstance = argoCdInstance
+    _claimName = claimName
     _claimNamespace = claimNamespace
     _keycloakInstance = keycloakInstance
     _kubernetesClusterName = spec.kubernetesClusterName
