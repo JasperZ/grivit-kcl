@@ -14,6 +14,7 @@ schema ArgoCdAppK8s:
     kcArgoCdClient: core.KcOpenIdClientArgoCdWrapper {
         _argoCdInstance = _argoCdInstance
         _keycloakClientId = "argocd-${_argoCdInstance.ownerProjectName}-${_argoCdInstance.name}-${_argoCdInstance.projectName}-client"
+        _keycloakInstance = _keycloakInstance
         _argoCdInstance = _argoCdInstance
         _projectName = _claimNamespace
         _resourceName = "${_managedResourcePrefix}client"
