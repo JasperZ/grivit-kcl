@@ -227,7 +227,7 @@ g, ${kcArgoCdAdminsGroup.managedResource.spec.forProvider.name}, role:admin
         ]
     }
 
-    _providerConfigCredentialsSecretName: str = "argoCdUtils.argoCdProviderConfigSecretName(_claimNamespace, _argoCdInstance)"
+    _providerConfigCredentialsSecretName: str = core.argoCdProviderConfigSecretName(_claimNamespace, _argoCdInstance)
     providerConfigCredentialsSecret: core.K8sObjectSecretWrapper {
         _clusterName = "ctrl"
         _name= _providerConfigCredentialsSecretName
