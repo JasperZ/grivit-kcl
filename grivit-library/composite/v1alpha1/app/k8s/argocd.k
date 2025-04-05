@@ -213,7 +213,7 @@ g, ${kcArgoCdAdminsGroup.managedResource.spec.forProvider.name}, role:admin
         _keycloakRealmId= _keycloakRealmId
         _keycloakUserId = providerConfigKcClient.getServiceAccountUserId(_observedComposedResources)
         _projectName = _claimNamespace
-        _managedResourceName = "${_managedResourcePrefix}admins"
+        _managedResourceName = "${_managedResourcePrefix}provider-user-groups"
         _uses = [
             kcArgoCdAdminsGroup.managedResource
         ]
