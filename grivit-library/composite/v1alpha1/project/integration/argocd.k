@@ -42,7 +42,7 @@ schema ArgoCdProjectIntegration:
         _keycloakInstance = _keycloakInstance
         _keycloakUserId = providerConfigKcClient.getServiceAccountUserId(_observedComposedResources)
         _projectName = _claimNamespace
-        _managedResourceName = "${_managedResourcePrefix}client"
+        _managedResourceName = "${_managedResourcePrefix}crossplane-sa-groups"
         _uses = [
             kcArgoCdAdminsGroup.managedResource
         ]
