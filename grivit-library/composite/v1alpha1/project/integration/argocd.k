@@ -94,7 +94,7 @@ schema ArgoCdProjectIntegration:
         ]
     }
     providerConfig: core.ArgoCdProviderConfigWrapper {
-        _argoCdInstance = _argoCdInstance
+        _argoCdInstance = _argoCdInstanceTargetProject
         _credentialsSecretName = providerConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.name
         _credentialsSecretNamespace = providerConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.namespace
         _projectName = _targetProjectName
