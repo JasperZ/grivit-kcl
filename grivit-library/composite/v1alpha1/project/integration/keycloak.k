@@ -1,3 +1,4 @@
+import crypto
 import core.v1alpha1 as core
 
 schema KeycloakProjectIntegration:
