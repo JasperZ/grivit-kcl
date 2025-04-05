@@ -98,7 +98,7 @@ schema KeycloakProjectIntegration:
     providerConfig: core.KcProviderConfigWrapper {
         _credentialsSecretName = providerConfigCredentials.managedResource.spec.forProvider.manifest.metadata.name
         _credentialsSecretNamespace = providerConfigCredentials.managedResource.spec.forProvider.manifest.metadata.namespace
-        _keycloakInstance = _keycloakInstance
+        _keycloakInstance = _keycloakInstanceTargetRealm
         _projectName = _targetProjectName
         _uses = [
             providerConfigCredentials.managedResource
