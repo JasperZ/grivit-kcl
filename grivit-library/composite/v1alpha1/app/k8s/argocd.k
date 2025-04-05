@@ -28,18 +28,13 @@ schema ArgoCdAppK8s:
         _keycloakRealmId = _keycloakRealmId
         _projectName = _claimNamespace
     }
-    kcArgoCdAdminsGroup: core.KcGroupArgoCdWrapper {
-        _argoCdInstanceName = _argoCdInstanceName
-        _argoCdInstanceOwnerProjectName = _argoCdInstanceOwnerProjectName
-        _argoCdProjectName= _argoCdProjectName
-        _groupType = "admins"
+    kcArgoCdAdminsGroup: core.KcGroupWrapper {
+        _keycloakGroupName = "argocd-${_argoCdInstanceOwnerProjectName}-${_argoCdInstanceName}-${_argoCdProjectName}-admins"
         _keycloakInstanceName = _keycloakInstanceName
         _keycloakInstanceOwnerProjectName = _keycloakInstanceOwnerProjectName
         _keycloakRealmId = _keycloakRealmId
         _projectName = _claimNamespace
-        _uses = [
-            #kcArgoCdClientDefaultScopes.managedResource
-        ]
+        _resourceName = "${_managedResourcePrefix}admins"
     }
     kcArgoCdClientGroupMapper: core.KcOpenIdGroupMembershipProtocolMapperWrapper {
         _claimName = "groups"
