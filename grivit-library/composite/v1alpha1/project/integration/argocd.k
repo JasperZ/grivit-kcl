@@ -28,27 +28,21 @@ schema ArgoCdProjectIntegration:
         _projectName = _claimNamespace
         _resourceName = "${_managedResourcePrefix}crossplane"
     }
-    kcArgoCdAdminsGroup: core.KcGroupArgoCdWrapper {
-        _argoCdInstanceName = _argoCdInstanceName
-        _argoCdInstanceOwnerProjectName = _argoCdInstanceOwnerProjectName
-        _argoCdProjectName= _argoCdProjectName
-        _groupType = "admins"
+    kcArgoCdAdminsGroup: core.KcGroupWrapper {
+        _keycloakGroupName = "argocd-${_argoCdInstanceOwnerProjectName}-${_argoCdInstanceName}-${_argoCdProjectName}-admins"
         _keycloakInstanceName = _keycloakInstanceName
         _keycloakInstanceOwnerProjectName = _keycloakInstanceOwnerProjectName
         _keycloakRealmId = _keycloakRealmId
         _projectName = _claimNamespace
-        _uses = []
+        _resourceName = "${_managedResourcePrefix}admins"
     }
-    kcArgoCdViewersGroup: core.KcGroupArgoCdWrapper {
-        _argoCdInstanceName = _argoCdInstanceName
-        _argoCdInstanceOwnerProjectName = _argoCdInstanceOwnerProjectName
-        _argoCdProjectName= _argoCdProjectName
-        _groupType = "viewers"
+    kcArgoCdViewersGroup: core.KcGroupWrapper {
+        _keycloakGroupName = "argocd-${_argoCdInstanceOwnerProjectName}-${_argoCdInstanceName}-${_argoCdProjectName}-viewers"
         _keycloakInstanceName = _keycloakInstanceName
         _keycloakInstanceOwnerProjectName = _keycloakInstanceOwnerProjectName
         _keycloakRealmId = _keycloakRealmId
         _projectName = _claimNamespace
-        _uses = []
+        _resourceName = "${_managedResourcePrefix}viewers"
     }
     kcUserGroupsWrapper: core.KcUserGroupsWrapper {
         _keycloakGroupIds = [kcArgoCdAdminsGroup.getAtProviderId(_observedComposedResources)]

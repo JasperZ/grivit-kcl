@@ -19,21 +19,21 @@ schema KeycloakProjectIntegration:
     }
 
     adminGroup: core.KcGroupWrapper {
-        _groupName = "admin"
-        _instanceName = _keycloakInstanceName
-        _instanceOwnerProjectName = _keycloakInstanceOwnerProjectName
-        _name = "${_name}-admin-group"
-        _projectNamespace = _projectNamespace
-        _realmId = realm.managedResource.spec.forProvider.realm
+        _keycloakGroupName = "admin"
+        _keycloakInstanceName = _keycloakInstanceName
+        _keycloakInstanceOwnerProjectName = _keycloakInstanceOwnerProjectName
+        _keycloakRealmId = realm.managedResource.spec.forProvider.realm
+        _projectName = _projectNamespace
+        _resourceName = "${_name}-admin-group"
     }
 
     viewerGroup: core.KcGroupWrapper {
-        _groupName = "viewer"
-        _instanceName = _keycloakInstanceName
-        _instanceOwnerProjectName = _keycloakInstanceOwnerProjectName
-        _name = "${_name}-viewer-group"
-        _projectNamespace = _projectNamespace
-        _realmId = realm.managedResource.spec.forProvider.realm
+        _keycloakGroupName = "viewer"
+        _keycloakInstanceName = _keycloakInstanceName
+        _keycloakInstanceOwnerProjectName = _keycloakInstanceOwnerProjectName
+        _keycloakRealmId = realm.managedResource.spec.forProvider.realm
+        _projectName = _projectNamespace
+        _resourceName = "${_name}-viewer-group"
     }
 
     crossplaneClient: core.KcOpenIdClientKcXpProviderWrapper {
