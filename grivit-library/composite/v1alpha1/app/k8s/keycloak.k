@@ -11,14 +11,14 @@ schema KeycloakAppK8s:
     _managedResourcePrefix = crypto.md5("${_claimNamespace}-keycloak-${_keycloakInstance.ownerProjectName}-${_keycloakInstance.name}") + "-" + _keycloakInstance.realmId + "-"
 
     repo: core.K8sFluxOciRepositoryWrapper {
-        _name = "${_managedResourcePrefix}-repo"
+        _name = "${_managedResourcePrefix}repo"
         _tag = "24.2.2"
         _url = "oci://registry-1.docker.io/bitnamicharts/keycloak"
         _projectNamespace = _claimNamespace
     }
     release: core.K8sFluxHelmOciReleaseWrapper {
         _clusterName = _kubernetesClusterName
-        _name = "${_managedResourcePrefix}-rel"
+        _name = "${_managedResourcePrefix}rel"
         _helmReleaseName = "keycloak-${_keycloakInstance.name}"
         _helmReleaseNamespace = "keycloak-${_keycloakInstance.name}"
         _helmOciRepositoryWrapper = repo
