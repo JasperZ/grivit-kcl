@@ -23,10 +23,12 @@ schema ArgoCdAppK8s:
         _argoCdInstanceName = _argoCdInstanceName
         _argoCdInstanceOwnerProjectName = _argoCdInstanceOwnerProjectName
         _argoCdProjectName = _argoCdProjectName
+        _keycloakClientId = "argocd-${_argoCdInstanceOwnerProjectName}-${_argoCdInstanceName}-${_argoCdProjectName}-client"
         _keycloakInstanceName = _keycloakInstanceName
         _keycloakInstanceOwnerProjectName = _keycloakInstanceOwnerProjectName
         _keycloakRealmId = _keycloakRealmId
         _projectName = _claimNamespace
+        _resourceName = "${_managedResourcePrefix}client"
     }
     kcArgoCdAdminsGroup: core.KcGroupWrapper {
         _keycloakGroupName = "argocd-${_argoCdInstanceOwnerProjectName}-${_argoCdInstanceName}-${_argoCdProjectName}-admins"

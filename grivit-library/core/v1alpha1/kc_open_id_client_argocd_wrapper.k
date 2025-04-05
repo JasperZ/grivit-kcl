@@ -5,14 +5,14 @@ schema KcOpenIdClientArgoCdWrapper:
     _argoCdInstanceName: str
     _argoCdInstanceOwnerProjectName: str
     _argoCdProjectName: str
+    _keycloakClientId: str
     _keycloakInstanceName: str
     _keycloakInstanceOwnerProjectName: str
     _keycloakRealmId: str
     _projectName: str
+    _resourceName: str
 
     _baseUrl: str = "https://${_argoCdDomain}"
-    _clientId: str = "argocd-${_argoCdInstanceOwnerProjectName}-${_argoCdInstanceName}-${_argoCdProjectName}-client"
-    _resourceName: str = "${_projectName}-${_clientId}"
 
     managedResource: ManagedResource {
         apiVersion = "openidclient.keycloak.crossplane.io/v1alpha1"
@@ -32,10 +32,10 @@ schema KcOpenIdClientArgoCdWrapper:
         }
         spec.forProvider.accessType = "CONFIDENTIAL"
         spec.forProvider.adminUrl = _baseUrl
-        spec.forProvider.clientId = _clientId
+        spec.forProvider.clientId = _keycloakClientId
         spec.forProvider.directAccessGrantsEnabled = True
         spec.forProvider.description = "managed by Crossplane"
-        spec.forProvider.name = _clientId
+        spec.forProvider.name = _keycloakClientId
         spec.forProvider.realmId = _keycloakRealmId
         spec.forProvider.rootUrl = _baseUrl
         spec.forProvider.standardFlowEnabled = True
