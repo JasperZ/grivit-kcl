@@ -30,15 +30,15 @@ schema ArgoCdTokenWrapper:
             role = _argoCdTokenRole
         }
         spec.providerConfigRef.name = argoCdProviderConfigName(_projectName, _argoCdInstanceOverride)
-        spec.writeConnectionSecretToRef.name = "${_resourceName}"
+        spec.writeConnectionSecretToRef.name = _resourceName
         spec.writeConnectionSecretToRef.namespace = _projectName
     }
     usages: [Usage] = []
 
     getToken: (any) -> str = lambda observedComposedResources: any -> str {
-        _accessKeySecret: str = ""
+        _token: str = ""
         if managedResource.metadata.name in observedComposedResources:
-            _accessKeySecret = str(base64.decode(observedComposedResources[managedResource.metadata.name].ConnectionDetails?.token))
+            _token = str(base64.decode(observedComposedResources[managedResource.metadata.name].ConnectionDetails?.token))
 
-        _accessKeySecret
+        _token
     }

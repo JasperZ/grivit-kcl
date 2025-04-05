@@ -46,6 +46,8 @@ schema ArgoCdProjectWrapper:
             ]
         }
         spec.providerConfigRef.name = argoCdProviderConfigName(_projectName, _argoCdInstanceOverride)
+        spec.writeConnectionSecretToRef.name = _resourceName
+        spec.writeConnectionSecretToRef.namespace = _projectName
     }
     usages: [Usage] = []
 
