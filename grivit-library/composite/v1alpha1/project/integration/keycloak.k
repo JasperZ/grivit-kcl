@@ -1,5 +1,4 @@
 import core.v1alpha1 as core
-import core.v1alpha1.kc_utils as kcUtils
 
 schema KeycloakProjectIntegration:
     _claimNamespace: str
@@ -72,10 +71,10 @@ schema KeycloakProjectIntegration:
 
     providerConfigCredentials: core.K8sObjectSecretWrapper {
         _clusterName = "ctrl"
-        _name = kcUtils.kcProviderConfigSecretName(_targetProjectName, _keycloakInstanceTargetRealm)
+        _name = core.kcProviderConfigSecretName(_targetProjectName, _keycloakInstanceTargetRealm)
         _namespace = _claimNamespace
         _projectName = _claimNamespace
-        _secretName = kcUtils.kcProviderConfigSecretName(_targetProjectName, _keycloakInstanceTargetRealm)
+        _secretName = core.kcProviderConfigSecretName(_targetProjectName, _keycloakInstanceTargetRealm)
         _stringData = {
             value = """\
 {

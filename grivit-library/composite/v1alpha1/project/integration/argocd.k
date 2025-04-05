@@ -1,6 +1,5 @@
 import crypto
 import core.v1alpha1 as core
-import core.v1alpha1.argocd_utils as argoCdUtils
 
 schema ArgoCdProjectIntegration:
     _argoCdInstance: core.ArgoCdInstance
@@ -74,7 +73,7 @@ schema ArgoCdProjectIntegration:
         _keycloakClientId = providerConfigKcClient.managedResource.spec.forProvider.clientId
         _keycloakClientSecret = providerConfigKcClient.getClientSecret(_observedComposedResources)
         _keycloakInstance = _keycloakInstance
-        _managedResourceName = "${argoCdUtils.argoCdProviderConfigSecretName(_targetProjectName, _argoCdInstanceTargetProject)}-token"
+        _managedResourceName = "${core.argoCdProviderConfigSecretName(_targetProjectName, _argoCdInstanceTargetProject)}-token"
         _projectName = _claimNamespace
         _uses = [
             kcUserGroupsWrapper.managedResource
@@ -82,10 +81,10 @@ schema ArgoCdProjectIntegration:
     }
     providerConfigCredentialsSecret: core.K8sObjectSecretWrapper {
         _clusterName = "ctrl"
-        _name = argoCdUtils.argoCdProviderConfigSecretName(_targetProjectName, _argoCdInstanceTargetProject)
+        _name = core.argoCdProviderConfigSecretName(_targetProjectName, _argoCdInstanceTargetProject)
         _namespace = _claimNamespace
         _projectName = _claimNamespace
-        _secretName = argoCdUtils.argoCdProviderConfigSecretName(_targetProjectName, _argoCdInstanceTargetProject)
+        _secretName = core.argoCdProviderConfigSecretName(_targetProjectName, _argoCdInstanceTargetProject)
         _stringData = {
             value = providerConfigHttpJwtToken.getAccessToken(_observedComposedResources)
         }
