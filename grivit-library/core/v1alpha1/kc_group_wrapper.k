@@ -1,6 +1,7 @@
 schema KcGroupWrapper:
     _keycloakGroupName: str
     _keycloakInstance: KeycloakInstance
+    _keycloakProviderConfig?: str
     _projectName: str
     _resourceName: str
 
@@ -19,7 +20,7 @@ schema KcGroupWrapper:
         }
         spec.forProvider.name = _keycloakGroupName
         spec.forProvider.realmId = _keycloakInstance.realmId
-        spec.providerConfigRef.name = kcProviderConfigName(_projectName, _keycloakInstance)
+        spec.providerConfigRef.name = _keycloakProviderConfig if _keycloakProviderConfig else kcProviderConfigName(_projectName, _keycloakInstance)
     }
     usages: [Usage] = []
 
