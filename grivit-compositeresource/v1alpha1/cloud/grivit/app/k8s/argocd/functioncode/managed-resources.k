@@ -21,7 +21,7 @@ keycloakInstance: core.KeycloakInstance {
     domain = spec.keycloakDomain
     name = spec.keycloakInstanceName
     ownerProjectName = spec.keycloakInstanceOwnerProjectName
-    realmId = claimName
+    realmId = claimNamespace
 }
 
 argoCdAppK8s: apps.ArgoCdAppK8s = apps.ArgoCdAppK8s {
