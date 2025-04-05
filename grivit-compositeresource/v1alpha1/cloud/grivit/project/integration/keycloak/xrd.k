@@ -37,7 +37,7 @@ schema XrdKeycloakProjectIntegration(core.CompositeResourceDefinition):
                                     keycloakInstanceOwnerProjectName = {
                                         type = "string"
                                     }
-                                    keycloakRealmName = {
+                                    targetProjectName = {
                                         type = "string"
                                     }
                                 }

@@ -1,13 +1,9 @@
 import base64
 
 schema KcOpenIdClientArgoCdXpProviderWrapper:
-    _argoCdInstanceName: str
-    _argoCdInstanceOwnerProjectName: str
-    _argoCdProjectName: str
+    _argoCdInstance: ArgoCdInstance
     _keycloakClientId: str
-    _keycloakInstanceName: str
-    _keycloakInstanceOwnerProjectName: str
-    _keycloakRealmId: str
+    _keycloakInstance: KeycloakInstance
     _projectName: str
     _resourceName: str
     _uses: [ManagedResource] = []
@@ -20,12 +16,12 @@ schema KcOpenIdClientArgoCdXpProviderWrapper:
             "krm.kcl.dev/composition-resource-name" = _resourceName
         }
         metadata.labels = {
-            "argocd-instance" = _argoCdInstanceName
-            "argocd-instance-owner-project" = _argoCdInstanceOwnerProjectName
-            "argocd-project-name" = _argoCdProjectName
-            "keycloak-instance" = _keycloakInstanceName
-            "keycloak-instance-owner-project" = _keycloakInstanceOwnerProjectName
-            "keycloak-realm-id" = _keycloakRealmId
+            "argocd-instance" = _argoCdInstance.name
+            "argocd-instance-owner-project" = _argoCdInstance.ownerProjectName
+            "argocd-project-name" = _argoCdInstance.projectName
+            "keycloak-instance" = _keycloakInstance.name
+            "keycloak-instance-owner-project" = _keycloakInstance.ownerProjectName
+            "keycloak-realm-id" = _keycloakInstance.realmId
             "project" = _projectName
         }
         spec.forProvider.accessType = "CONFIDENTIAL"
@@ -33,12 +29,12 @@ schema KcOpenIdClientArgoCdXpProviderWrapper:
         spec.forProvider.directAccessGrantsEnabled = False
         spec.forProvider.description = "managed by Crossplane"
         spec.forProvider.name = _keycloakClientId
-        spec.forProvider.realmId = _keycloakRealmId
+        spec.forProvider.realmId = _keycloakInstance.realmId
         spec.forProvider.serviceAccountsEnabled = True
         spec.forProvider.standardFlowEnabled = False
         spec.writeConnectionSecretToRef.name = "${_resourceName}-conn"
         spec.writeConnectionSecretToRef.namespace = _projectName
-        spec.providerConfigRef.name = kcProviderConfigName(_projectName, _keycloakInstanceOwnerProjectName, _keycloakInstanceName, _keycloakRealmId)
+        spec.providerConfigRef.name = kcProviderConfigName(_projectName, _keycloakInstance)
     }
     usages: [Usage] = [Usage {
         metadata.name = "${_resourceName}-uses-${ofResource.metadata.name}"

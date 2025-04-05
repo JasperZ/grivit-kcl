@@ -1,12 +1,10 @@
 schema ArgoCdProviderConfigK8sCredentialsSecretWrapper:
-    _argoCdProjectName: str
-    _argoCdInstanceName: str
-    _argoCdInstanceOwnerProjectName: str
+    _argoCdInstance: ArgoCdInstance
     _jwtToken: str
     _projectNamespace: str
     _uses: [ManagedResource] = []
 
-    _resourceName: str = argoCdProviderConfigSecretName(_projectNamespace, _argoCdInstanceOwnerProjectName, _argoCdInstanceName, _argoCdProjectName)
+    _resourceName: str = argoCdProviderConfigSecretName(_projectNamespace, _argoCdInstance)
 
     managedResource: ManagedResource {
         apiVersion = "kubernetes.crossplane.io/v1alpha2"

@@ -1,18 +1,13 @@
 import base64
 
 schema KcOpenIdClientArgoCdWrapper:
-    _argoCdDomain: str
-    _argoCdInstanceName: str
-    _argoCdInstanceOwnerProjectName: str
-    _argoCdProjectName: str
+    _argoCdInstance: ArgoCdInstance
     _keycloakClientId: str
-    _keycloakInstanceName: str
-    _keycloakInstanceOwnerProjectName: str
-    _keycloakRealmId: str
+    _keycloakInstance: KeycloakInstance
     _projectName: str
     _resourceName: str
 
-    _baseUrl: str = "https://${_argoCdDomain}"
+    _baseUrl: str = "https://${_argoCdInstance.domain}"
 
     managedResource: ManagedResource {
         apiVersion = "openidclient.keycloak.crossplane.io/v1alpha1"
@@ -22,12 +17,12 @@ schema KcOpenIdClientArgoCdWrapper:
             "krm.kcl.dev/composition-resource-name" = _resourceName
         }
         metadata.labels = {
-            "argocd-instance" = _argoCdInstanceName
-            "argocd-instance-owner-project" = _argoCdInstanceOwnerProjectName
-            "argocd-project-name" = _argoCdProjectName
-            "keycloak-instance" = _keycloakInstanceName
-            "keycloak-instance-owner-project" = _keycloakInstanceOwnerProjectName
-            "keycloak-realm-id" = _keycloakRealmId
+            "argocd-instance" = _argoCdInstance.name
+            "argocd-instance-owner-project" = _argoCdInstance.ownerProjectName
+            "argocd-project-name" = _argoCdInstance.projectName
+            "keycloak-instance" = _keycloakInstance.name
+            "keycloak-instance-owner-project" = _keycloakInstance.ownerProjectName
+            "keycloak-realm-id" = _keycloakInstance.realmId
             "project" = _projectName
         }
         spec.forProvider.accessType = "CONFIDENTIAL"
@@ -36,7 +31,7 @@ schema KcOpenIdClientArgoCdWrapper:
         spec.forProvider.directAccessGrantsEnabled = True
         spec.forProvider.description = "managed by Crossplane"
         spec.forProvider.name = _keycloakClientId
-        spec.forProvider.realmId = _keycloakRealmId
+        spec.forProvider.realmId = _keycloakInstance.realmId
         spec.forProvider.rootUrl = _baseUrl
         spec.forProvider.standardFlowEnabled = True
         spec.forProvider.validPostLogoutRedirectUris = [_baseUrl]
@@ -44,7 +39,7 @@ schema KcOpenIdClientArgoCdWrapper:
         spec.forProvider.webOrigins = [_baseUrl]
         spec.writeConnectionSecretToRef.name = "${_resourceName}-conn"
         spec.writeConnectionSecretToRef.namespace = _projectName
-        spec.providerConfigRef.name = kcProviderConfigName(_projectName, _keycloakInstanceOwnerProjectName, _keycloakInstanceName, _keycloakRealmId)
+        spec.providerConfigRef.name = kcProviderConfigName(_projectName, _keycloakInstance)
     }
     usages: [Usage] = []
 

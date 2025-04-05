@@ -1,9 +1,8 @@
 schema KcRealmWrapper:
-    _instanceName: str
-    _instanceOwnerProjectName: str
+    _keycloakInstance: KeycloakInstance
+    _keycloakRealmId: str
     _name: str
-    _projectNamespace: str
-    _realmId: str
+    _projectName: str
 
     managedResource: ManagedResource {
         apiVersion = "realm.keycloak.crossplane.io/v1alpha1"
@@ -12,15 +11,15 @@ schema KcRealmWrapper:
             "krm.kcl.dev/composition-resource-name" = _name
         }
         metadata.labels = {
-            keycloakInstanceName = _instanceName
-            keycloakInstanceOwnerProjectName = _instanceOwnerProjectName
-            keycloakRealmId = _realmId
-            projectName = _projectNamespace
+            keycloakInstanceName = _keycloakInstance.name
+            keycloakInstanceOwnerProjectName = _keycloakInstance.ownerProjectName
+            keycloakRealmId = _keycloakRealmId
+            projectName = _projectName
         }
         metadata.name = _name
         spec.forProvider.enabled = True
-        spec.forProvider.realm = _realmId
-        spec.providerConfigRef.name = kcProviderConfigName(_projectNamespace, _instanceOwnerProjectName, _instanceName, "master")
+        spec.forProvider.realm = _keycloakRealmId
+        spec.providerConfigRef.name = kcProviderConfigName(_projectName, _keycloakInstance)
     }
     usages: [Usage] = []
 

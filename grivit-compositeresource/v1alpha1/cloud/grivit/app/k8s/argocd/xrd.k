@@ -43,9 +43,6 @@ schema XrdArgoCdAppK8s(core.CompositeResourceDefinition):
                                     keycloakInstanceOwnerProjectName = {
                                         type = "string"
                                     }
-                                    keycloakRealmId = {
-                                        type = "string"
-                                    }
                                     kubernetesClusterName = {
                                         type = "string"
                                     }

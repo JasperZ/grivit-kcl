@@ -1,17 +1,23 @@
 import crypto
 
-argoCdProviderConfigName: (str, str, str, str) -> str = lambda projectName: str, argoCdInstanceName: str, argoCdInstanceOwnerProjectName: str, argoCdProjectName: str -> str {
-    _humanReadablePrefix = "${projectName}-argocd-${argoCdInstanceName}-${argoCdInstanceOwnerProjectName}"
-    _humanReadableName = "${_humanReadablePrefix}-${argoCdProjectName}"
+schema ArgoCdInstance:
+    domain: str
+    name: str
+    ownerProjectName: str
+    projectName: str
+
+argoCdProviderConfigName: (str, ArgoCdInstance) -> str = lambda projectName: str, argoCdInstance: ArgoCdInstance -> str {
+    _humanReadablePrefix = "${projectName}-argocd-${argoCdInstance.name}-${argoCdInstance.ownerProjectName}"
+    _humanReadableName = "${_humanReadablePrefix}-${argoCdInstance.projectName}"
 
     _hashedPrefix = crypto.md5(_humanReadablePrefix)
-    _hashedName = "${_hashedPrefix}-${argoCdProjectName}"
+    _hashedName = "${_hashedPrefix}-${argoCdInstance.projectName}"
 
     _name = _hashedName
 }
 
-argoCdProviderConfigSecretName: (str, str, str, str) -> str = lambda projectName: str, argoCdInstanceName: str, argoCdInstanceOwnerProjectName: str, argoCdProjectName: str -> str {
-    _providerConfigName = argoCdProviderConfigName(projectName, argoCdInstanceName, argoCdInstanceOwnerProjectName, argoCdProjectName)
+argoCdProviderConfigSecretName: (str, ArgoCdInstance) -> str = lambda projectName: str, argoCdInstance: ArgoCdInstance -> str {
+    _providerConfigName = argoCdProviderConfigName(projectName, argoCdInstance)
     _providerConfigSecretName = "${_providerConfigName}-provider"
 
     _name = _providerConfigSecretName

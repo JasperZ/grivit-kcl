@@ -1,11 +1,16 @@
 schema ArgoCdProjectWrapper:
-    _adminGroupName: str
-    _instanceName: str
-    _instanceOwnerProjectName: str
+    _argoCdInstance: ArgoCdInstance
+    _argoCdProjectAdminsGroupName: str
+    _argoCdProjectViewersGroupName: str
     _projectName: str
-    _projectNamespace: str
     _resourceName: str
-    _viewerGroupName: str
+
+    _argoCdInstanceOverride: ArgoCdInstance {
+        domain = _argoCdInstance.domain
+        name = _argoCdInstance.name
+        ownerProjectName = _argoCdInstance.ownerProjectName
+        projectName = "instance"
+    }
 
     managedResource: ManagedResource {
         apiVersion = "projects.argocd.crossplane.io/v1alpha1"
@@ -18,29 +23,29 @@ schema ArgoCdProjectWrapper:
             roles = [
                 {
                     description = "Project admin"
-                    groups = [_adminGroupName]
-                    name = "admin"
+                    groups = [_argoCdProjectAdminsGroupName]
+                    name = "admins"
                     # Syntax: p, <role/user/group>, <resource>, <action>, <object>, <effect>
                     policies = [
-                        "p, proj:${_resourceName}:admin, applications, *, ${_resourceName}/*, allow"
-                        "p, proj:${_resourceName}:admin, clusters, *, ${_resourceName}/*, allow"
-                        "p, proj:${_resourceName}:admin, repositories, *, ${_resourceName}/*, allow"
+                        "p, proj:${_resourceName}:admins, applications, *, ${_resourceName}/*, allow"
+                        "p, proj:${_resourceName}:admins, clusters, *, ${_resourceName}/*, allow"
+                        "p, proj:${_resourceName}:admins, repositories, *, ${_resourceName}/*, allow"
                     ]
                 }
                 {
                     description = "Project viewer"
-                    groups = [_viewerGroupName]
-                    name = "viewer"
+                    groups = [_argoCdProjectViewersGroupName]
+                    name = "viewers"
                     # Syntax: p, <role/user/group>, <resource>, <action>, <object>, <effect>
                     policies = [
-                        "p, proj:${_resourceName}:viewer, applications, get, ${_resourceName}/*, allow"
-                        "p, proj:${_resourceName}:viewer, clusters, get, ${_resourceName}/*, allow"
-                        "p, proj:${_resourceName}:viewer, repositories, get, ${_resourceName}/*, allow"
+                        "p, proj:${_resourceName}:viewers, applications, get, ${_resourceName}/*, allow"
+                        "p, proj:${_resourceName}:viewers, clusters, get, ${_resourceName}/*, allow"
+                        "p, proj:${_resourceName}:viewers, repositories, get, ${_resourceName}/*, allow"
                     ]
                 }
             ]
         }
-        spec.providerConfigRef.name = argoCdProviderConfigName(_projectNamespace, _instanceOwnerProjectName, _instanceName, "instance")
+        spec.providerConfigRef.name = argoCdProviderConfigName(_projectName, _argoCdInstanceOverride)
     }
     usages: [Usage] = []
 

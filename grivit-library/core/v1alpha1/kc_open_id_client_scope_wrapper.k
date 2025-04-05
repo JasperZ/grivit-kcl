@@ -1,9 +1,7 @@
 schema KcOpenIdClientScopeWrapper:
-    _instanceName: str
-    _instanceOwnerProjectName: str
+    _keycloakInstance: KeycloakInstance
     _name: str
-    _projectNamespace: str
-    _realmId: str
+    _projectName: str
     _scopeName: str
 
     managedResource: ManagedResource {
@@ -14,15 +12,15 @@ schema KcOpenIdClientScopeWrapper:
             "krm.kcl.dev/composition-resource-name" = _name
         }
         metadata.labels = {
-            "keycloak-instance" = _instanceName
-            "keycloak-instance-owner-roject" = _instanceOwnerProjectName
-            "keycloak-realm-id" = _realmId
-            "project" = _projectNamespace
+            "keycloak-instance" = _keycloakInstance.name
+            "keycloak-instance-owner-roject" = _keycloakInstance.ownerProjectName
+            "keycloak-realm-id" = _keycloakInstance.realmId
+            "project" = _projectName
         }
         spec.forProvider.includeInTokenScope = True
         spec.forProvider.name = _scopeName
-        spec.forProvider.realmId = _realmId
-        spec.providerConfigRef.name = kcProviderConfigName(_projectNamespace, _instanceOwnerProjectName, _instanceName, _realmId)
+        spec.forProvider.realmId = _keycloakInstance.realmId
+        spec.providerConfigRef.name = kcProviderConfigName(_projectName, _keycloakInstance)
     }
     usages: [Usage] = []
 

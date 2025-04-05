@@ -2,10 +2,9 @@ import crypto
 import json
 
 schema KcOpenIdClientJwtWrapper:
+    _keycloakInstance: KeycloakInstance
     _keycloakClientId: str
     _keycloakClientSecret: str
-    _keycloakDomain: str
-    _keycloakRealmId: str
     _managedResourceName: str
     _projectName: str
     _uses: [ManagedResource] = []
@@ -30,7 +29,7 @@ schema KcOpenIdClientJwtWrapper:
             method = "POST"
             nextReconcile: "4m"
             shouldLoopInfinitely = True
-            url = "https://${_keycloakDomain}/realms/${_keycloakRealmId}/protocol/openid-connect/token"
+            url = "https://${_keycloakInstance.domain}/realms/${_keycloakInstance.realmId}/protocol/openid-connect/token"
         }
         spec.providerConfigRef.name = httpProviderConfigName(_projectName)
     }

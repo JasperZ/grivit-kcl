@@ -1,10 +1,8 @@
 schema KcOpenIdClientServiceAccountRole:
     _clientId: str
-    _instanceName: str
-    _instanceOwnerProjectName: str
+    _keycloakInstance: KeycloakInstance
     _name: str
     _projectNamespace: str
-    _realmId: str
     _roleName: str
     _serviceAccountUserId: str
     _uses: [ManagedResource] = []
@@ -17,16 +15,16 @@ schema KcOpenIdClientServiceAccountRole:
             "krm.kcl.dev/composition-resource-name" = _name
         }
         metadata.labels = {
-            "keycloak-instance" = _instanceName
-            "keycloak-instance-owner-roject" = _instanceOwnerProjectName
-            "keycloak-realm-id" = _realmId
+            "keycloak-instance" = _keycloakInstance.name
+            "keycloak-instance-owner-roject" = _keycloakInstance.ownerProjectName
+            "keycloak-realm-id" = _keycloakInstance.realmId
             "project" = _projectNamespace
         }
         spec.forProvider.clientId = _clientId
         spec.forProvider.serviceAccountUserId = _serviceAccountUserId
-        spec.forProvider.realmId = _realmId
+        spec.forProvider.realmId = _keycloakInstance.realmId
         spec.forProvider.role = _roleName
-        spec.providerConfigRef.name = kcProviderConfigName(_projectNamespace, _instanceOwnerProjectName, _instanceName, _realmId)
+        spec.providerConfigRef.name = kcProviderConfigName(_projectNamespace, _keycloakInstance)
     }
     usages: [Usage] = [Usage {
         metadata.name = "${_name}-uses-${ofResource.metadata.name}"

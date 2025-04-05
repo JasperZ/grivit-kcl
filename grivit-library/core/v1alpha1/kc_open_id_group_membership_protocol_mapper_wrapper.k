@@ -1,11 +1,9 @@
 schema KcOpenIdGroupMembershipProtocolMapperWrapper:
     _claimName: str
     _clientScopeId: str
-    _instanceName: str
-    _instanceOwnerProjectName: str
+    _keycloakInstance: KeycloakInstance
     _name: str
-    _projectNamespace: str
-    _realmId: str
+    _projectName: str
 
     managedResource: ManagedResource {
         apiVersion = "openidgroup.keycloak.crossplane.io/v1alpha1"
@@ -15,10 +13,10 @@ schema KcOpenIdGroupMembershipProtocolMapperWrapper:
             "krm.kcl.dev/composition-resource-name" = _name
         }
         metadata.labels = {
-            "keycloak-instance" = _instanceName
-            "keycloak-instance-owner-roject" = _instanceOwnerProjectName
-            "keycloak-realm-id" = _realmId
-            "project" = _projectNamespace
+            "keycloak-instance" = _keycloakInstance.name
+            "keycloak-instance-owner-roject" = _keycloakInstance.ownerProjectName
+            "keycloak-realm-id" = _keycloakInstance.realmId
+            "project" = _projectName
         }
         spec.forProvider.addToAccessToken = True
         spec.forProvider.addToIdToken = True
@@ -27,8 +25,8 @@ schema KcOpenIdGroupMembershipProtocolMapperWrapper:
         spec.forProvider.clientScopeId = _clientScopeId
         spec.forProvider.fullPath = False
         spec.forProvider.name = "groups"
-        spec.forProvider.realmId = _realmId
-        spec.providerConfigRef.name = kcProviderConfigName(_projectNamespace, _instanceOwnerProjectName, _instanceName, _realmId)
+        spec.forProvider.realmId = _keycloakInstance.realmId
+        spec.providerConfigRef.name = kcProviderConfigName(_projectName, _keycloakInstance)
     }
     usages: [Usage] = []
 

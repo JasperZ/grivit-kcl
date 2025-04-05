@@ -1,29 +1,30 @@
+import crypto
 import core.v1alpha1 as core
 import core.v1alpha1.kc_utils as kcUtils
 
 schema KeycloakAppK8s:
+    _claimNamespace: str
     _fluxHelmReleaseDependencies?: [core.K8sFluxHelmReleaseWrapper | core.K8sFluxHelmOciReleaseWrapper] = []
+    _keycloakInstance: core.KeycloakInstance
     _keycloakAdminPassword: str
-    _keycloakDomain: str
-    _keycloakInstanceName: str
     _kubernetesClusterName: str
-    _name: str
-    _projectNamespace: str
+
+    _managedResourcePrefix = crypto.md5("${_claimNamespace}-keycloak-${_keycloakInstance.ownerProjectName}-${_keycloakInstance.name}") + "-" + _keycloakInstance.realmId + "-"
 
     repo: core.K8sFluxOciRepositoryWrapper {
-        _name = "${_name}-repo"
+        _name = "${_managedResourcePrefix}-repo"
         _tag = "24.2.2"
         _url = "oci://registry-1.docker.io/bitnamicharts/keycloak"
-        _projectNamespace = _projectNamespace
+        _projectNamespace = _claimNamespace
     }
     release: core.K8sFluxHelmOciReleaseWrapper {
         _clusterName = _kubernetesClusterName
-        _name = "${_name}-rel"
-        _helmReleaseName = "keycloak-${_keycloakInstanceName}"
-        _helmReleaseNamespace = "keycloak-${_keycloakInstanceName}"
+        _name = "${_managedResourcePrefix}-rel"
+        _helmReleaseName = "keycloak-${_keycloakInstance.name}"
+        _helmReleaseNamespace = "keycloak-${_keycloakInstance.name}"
         _helmOciRepositoryWrapper = repo
         _helmReleaseWrapperDependencies = _fluxHelmReleaseDependencies
-        _projectNamespace = _projectNamespace
+        _projectNamespace = _claimNamespace
         managedResource.spec.forProvider.manifest.spec.values = {
             auth = {
                 adminUser = "admin"
@@ -33,7 +34,7 @@ schema KeycloakAppK8s:
             ingress = {
                 enabled = True
                 ingressClassName = "nginx"
-                hostname = _keycloakDomain
+                hostname = _keycloakInstance.domain
                 annotations = {
                     "cert-manager.io/cluster-issuer" = "letsencrypt"
                 }
@@ -47,17 +48,17 @@ schema KeycloakAppK8s:
     }
     providerConfigCredentials: core.K8sObjectSecretWrapper {
         _clusterName = "ctrl"
-        _name = kcUtils.kcProviderConfigSecretName(_projectNamespace, _projectNamespace, _keycloakInstanceName, "master")
-        _namespace = _projectNamespace
-        _projectName = _projectNamespace
-        _secretName = kcUtils.kcProviderConfigSecretName(_projectNamespace, _projectNamespace, _keycloakInstanceName, "master")
+        _name = kcUtils.kcProviderConfigSecretName(_claimNamespace, _keycloakInstance)
+        _namespace = _claimNamespace
+        _projectName = _claimNamespace
+        _secretName = kcUtils.kcProviderConfigSecretName(_claimNamespace, _keycloakInstance)
         _stringData = {
             value = """\
 {
   "client_id":"admin-cli",
   "username": "admin",
   "password": "${_keycloakAdminPassword}",
-  "url": "https://${_keycloakDomain}",
+  "url": "https://${_keycloakInstance.domain}",
   "base_path": "/",
   "realm": "master"
 }
@@ -71,10 +72,8 @@ schema KeycloakAppK8s:
     providerConfig: core.KcProviderConfigWrapper {
         _credentialsSecretName = providerConfigCredentials.managedResource.spec.forProvider.manifest.metadata.name
         _credentialsSecretNamespace = providerConfigCredentials.managedResource.spec.forProvider.manifest.metadata.namespace
-        _kcInstanceName = _keycloakInstanceName
-        _kcInstanceOwnerProjectName = _projectNamespace
-        _kcRealmId = "master"
-        _projectNamespace = _projectNamespace
+        _keycloakInstance = _keycloakInstance
+        _projectName = _claimNamespace
         _uses = [
             providerConfigCredentials.managedResource
         ]

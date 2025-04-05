@@ -3,11 +3,9 @@ import base64
 schema KcOpenIdClientWrapper:
     _clientId: str
     _description: str
-    _instanceName: str
-    _instanceOwnerProjectName: str
+    _keycloakInstance: KeycloakInstance
     _name: str
     _projectNamespace: str
-    _realmId: str
     _url: str
     _validRedirectUris: [str]
 
@@ -19,9 +17,9 @@ schema KcOpenIdClientWrapper:
             "krm.kcl.dev/composition-resource-name" = _name
         }
         metadata.labels = {
-            "keycloak-instance" = _instanceName
-            "keycloak-instance-owner-roject" = _instanceOwnerProjectName
-            "keycloak-realm-id" = _realmId
+            "keycloak-instance" = _keycloakInstance.name
+            "keycloak-instance-owner-roject" = _keycloakInstance.ownerProjectName
+            "keycloak-realm-id" = _keycloakInstance.realmId
             "project" = _projectNamespace
         }
         spec.forProvider.accessType = "CONFIDENTIAL"
@@ -30,7 +28,7 @@ schema KcOpenIdClientWrapper:
         spec.forProvider.directAccessGrantsEnabled = True
         spec.forProvider.description = _description
         spec.forProvider.name = _clientId
-        spec.forProvider.realmId = _realmId
+        spec.forProvider.realmId = _keycloakInstance.realmId
         spec.forProvider.rootUrl = _url
         spec.forProvider.standardFlowEnabled = True
         spec.forProvider.validPostLogoutRedirectUris = [_url]
@@ -38,7 +36,7 @@ schema KcOpenIdClientWrapper:
         spec.forProvider.webOrigins = [_url]
         spec.writeConnectionSecretToRef.name = "${_name}-conn"
         spec.writeConnectionSecretToRef.namespace = _projectNamespace
-        spec.providerConfigRef.name = kcProviderConfigName(_projectNamespace, _instanceOwnerProjectName, _instanceName, _realmId)
+        spec.providerConfigRef.name = kcProviderConfigName(_projectNamespace, _keycloakInstance)
     }
     usages: [Usage] = []
 
@@ -65,4 +63,3 @@ schema KcOpenIdClientWrapper:
 
         _serviceAccountUserId
     }
-

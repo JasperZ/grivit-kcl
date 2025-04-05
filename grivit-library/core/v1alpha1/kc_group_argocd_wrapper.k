@@ -1,15 +1,11 @@
 schema KcGroupArgoCdWrapper:
-    _argoCdInstanceName: str
-    _argoCdInstanceOwnerProjectName: str
-    _argoCdProjectName: str
+    _argoCdInstance: ArgoCdInstance
     _groupType: "admins" | "viewers"
-    _keycloakInstanceName: str
-    _keycloakInstanceOwnerProjectName: str
-    _keycloakRealmId: str
+    _keycloakInstance: KeycloakInstance
     _projectName: str
     _uses: [ManagedResource] = []
 
-    _groupName: str = "argocd-${_argoCdInstanceOwnerProjectName}-${_argoCdInstanceName}-${_argoCdProjectName}-${_groupType}"
+    _groupName: str = "argocd-${_argoCdInstance.ownerProjectName}-${_argoCdInstance.name}-${_argoCdInstance.projectName}-${_groupType}"
     _resourceName: str = "${_projectName}-${_groupName}"
 
     managedResource: ManagedResource {
@@ -20,17 +16,17 @@ schema KcGroupArgoCdWrapper:
             "krm.kcl.dev/composition-resource-name" = _resourceName
         }
         metadata.labels = {
-            "argocd-instance" = _argoCdInstanceName
-            "argocd-instance-owner-project" = _argoCdInstanceOwnerProjectName
-            "argocd-project-name" = _argoCdProjectName
-            "keycloak-instance" = _keycloakInstanceName
-            "keycloak-instance-owner-project" = _keycloakInstanceOwnerProjectName
-            "keycloak-realm-id" = _keycloakRealmId
+            "argocd-instance" = _argoCdInstance.name
+            "argocd-instance-owner-project" = _argoCdInstance.ownerProjectName
+            "argocd-project-name" = _argoCdInstance.projectName
+            "keycloak-instance" = _keycloakInstance.name
+            "keycloak-instance-owner-project" = _keycloakInstance.ownerProjectName
+            "keycloak-realm-id" = _keycloakInstance.realmId
             "project" = _projectName
         }
         spec.forProvider.name = _groupName
-        spec.forProvider.realmId = _keycloakRealmId
-        spec.providerConfigRef.name = kcProviderConfigName(_projectName, _keycloakInstanceOwnerProjectName, _keycloakInstanceName, _keycloakRealmId)
+        spec.forProvider.realmId = _keycloakInstance.realmId
+        spec.providerConfigRef.name = kcProviderConfigName(_projectName, _keycloakInstance)
     }
     usages: [Usage] = [Usage {
         metadata.name = "${_resourceName}-uses-${ofResource.metadata.name}"

@@ -1,11 +1,9 @@
 schema KcOpenIdClientDefaultScopesWrapper:
     _additionalScopes: [str] = []
     _clientId: str
-    _instanceName: str
-    _instanceOwnerProjectName: str
+    _keycloakInstance: KeycloakInstance
     _name: str
     _projectName: str
-    _realmId: str
     _uses: [ManagedResource] = []
 
     managedResource: ManagedResource {
@@ -16,9 +14,9 @@ schema KcOpenIdClientDefaultScopesWrapper:
             "krm.kcl.dev/composition-resource-name" = _name
         }
         metadata.labels = {
-            "keycloak-instance" = _instanceName
-            "keycloak-instance-owner-roject" = _instanceOwnerProjectName
-            "keycloak-realm-id" = _realmId
+            "keycloak-instance" = _keycloakInstance.name
+            "keycloak-instance-owner-roject" = _keycloakInstance.ownerProjectName
+            "keycloak-realm-id" = _keycloakInstance.realmId
             "project" = _projectName
         }
         spec.forProvider.clientId = _clientId
@@ -30,8 +28,8 @@ schema KcOpenIdClientDefaultScopesWrapper:
             "roles"
             "web-origins"
         ] + _additionalScopes
-        spec.forProvider.realmId = _realmId
-        spec.providerConfigRef.name = kcProviderConfigName(_projectName, _instanceOwnerProjectName, _instanceName, _realmId)
+        spec.forProvider.realmId = _keycloakInstance.realmId
+        spec.providerConfigRef.name = kcProviderConfigName(_projectName, _keycloakInstance)
     }
     usages: [Usage] = [Usage {
         metadata.name = "${_name}-uses-${ofResource.metadata.name}"

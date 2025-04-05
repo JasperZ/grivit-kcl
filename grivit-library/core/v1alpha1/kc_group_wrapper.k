@@ -1,8 +1,6 @@
 schema KcGroupWrapper:
     _keycloakGroupName: str
-    _keycloakInstanceName: str
-    _keycloakInstanceOwnerProjectName: str
-    _keycloakRealmId: str
+    _keycloakInstance: KeycloakInstance
     _projectName: str
     _resourceName: str
 
@@ -14,14 +12,14 @@ schema KcGroupWrapper:
             "krm.kcl.dev/composition-resource-name" = _resourceName
         }
         metadata.labels = {
-            "keycloak-instance" = _keycloakInstanceName
-            "keycloak-instance-owner-roject" = _keycloakInstanceOwnerProjectName
-            "keycloak-realm-id" = _keycloakRealmId
+            "keycloak-instance" = _keycloakInstance.name
+            "keycloak-instance-owner-roject" = _keycloakInstance.ownerProjectName
+            "keycloak-realm-id" = _keycloakInstance.realmId
             "project" = _projectName
         }
         spec.forProvider.name = _keycloakGroupName
-        spec.forProvider.realmId = _keycloakRealmId
-        spec.providerConfigRef.name = kcProviderConfigName(_projectName, _keycloakInstanceOwnerProjectName, _keycloakInstanceName, _keycloakRealmId)
+        spec.forProvider.realmId = _keycloakInstance.realmId
+        spec.providerConfigRef.name = kcProviderConfigName(_projectName, _keycloakInstance)
     }
     usages: [Usage] = []
 

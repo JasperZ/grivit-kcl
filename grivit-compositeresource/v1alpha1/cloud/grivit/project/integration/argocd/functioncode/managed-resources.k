@@ -1,4 +1,5 @@
 import grivit_library.composite.v1alpha1.project.integration as integrations
+import grivit_library.core.v1alpha1 as core
 
 observedComposedResources: any = option("params").ocds
 observedCompositeResource: any = option("params").oxr
@@ -7,16 +8,24 @@ claimName: str = observedCompositeResource.metadata.name
 claimNamespace: str = observedCompositeResource.metadata.labels["crossplane.io/claim-namespace"]
 spec: any = observedCompositeResource.spec
 
+argoCdInstance: core.argoCdInstance {
+    domain = spec.argoCdDomain
+    name = spec.argoCdInstanceName
+    ownerProjectName = spec.argoCdInstanceOwnerProjectName
+    projectName = "instance"
+}
+
+keycloakInstance: core.keycloakInstance {
+    domain = spec.keycloakDomain
+    name = spec.keycloakInstanceName
+    ownerProjectName = spec.keycloakInstanceOwnerProjectName
+    realmId = claimNamespace
+}
+
 argoCdProjectIntegration: integrations.ArgoCdProjectIntegration = integrations.ArgoCdProjectIntegration {
-    _argoCdDomain = spec.argoCdDomain
-    _argoCdInstanceName = spec.argoCdInstanceName
-    _argoCdInstanceOwnerProjectName = spec.argoCdInstanceOwnerProjectName
-    _argoCdProjectName = claimNamespace
+    _argoCdInstance = argoCdInstance
     _claimNamespace = claimNamespace
-    _keycloakDomain = spec.keycloakDomain
-    _keycloakInstanceName = spec.keycloakInstanceName
-    _keycloakInstanceOwnerProjectName = spec.keycloakInstanceOwnerProjectName
-    _keycloakRealmId = claimNamespace
+    _keycloakInstance = keycloakInstance
     _observedComposedResources = observedComposedResources
     _targetProjectName = spec.targetProjectName
 }

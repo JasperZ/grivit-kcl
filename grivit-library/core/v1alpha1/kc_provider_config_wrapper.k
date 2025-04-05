@@ -1,23 +1,21 @@
 schema KcProviderConfigWrapper:
     _credentialsSecretName: str
     _credentialsSecretNamespace: str
-    _kcInstanceName: str
-    _kcInstanceOwnerProjectName: str
-    _kcRealmId: str
-    _projectNamespace: str
+    _keycloakInstance: KeycloakInstance
+    _projectName: str
     _uses: [ManagedResource] = []
 
-    _resourceName: str = kcProviderConfigName(_projectNamespace, _kcInstanceOwnerProjectName, _kcInstanceName, _kcRealmId)
+    _resourceName: str = kcProviderConfigName(_projectName, _keycloakInstance)
 
     managedResource: KcProviderConfig {
         _name = _resourceName
         _credentialsSecretName = _credentialsSecretName
         _credentialsSecretNamespace = _credentialsSecretNamespace
         metadata.labels = {
-            "keycloak-instance" = _kcInstanceName
-            "keycloak-instance-owner-roject" = _kcInstanceOwnerProjectName
-            "keycloak-realm-id" = _kcRealmId
-            "project" = _projectNamespace
+            "keycloak-instance" = _keycloakInstance.name
+            "keycloak-instance-owner-roject" = _keycloakInstance.ownerProjectName
+            "keycloak-realm-id" = _keycloakInstance.realmId
+            "project" = _projectName
         }
     }
     usages: [Usage] = [Usage {
