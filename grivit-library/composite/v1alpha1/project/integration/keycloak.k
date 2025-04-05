@@ -26,14 +26,16 @@ schema KeycloakProjectIntegration:
 
     adminGroup: core.KcGroupWrapper {
         _keycloakGroupName = "admin"
-        _keycloakInstance = _keycloakInstance
+        _keycloakInstance = _keycloakInstanceTargetRealm
+        _keycloakProviderConfig = core.kcProviderConfigName(_claimNamespace, _keycloakInstance)
         _projectName = _claimNamespace
         _resourceName = "${_managedResourcePrefix}admin-group"
     }
 
     viewerGroup: core.KcGroupWrapper {
         _keycloakGroupName = "viewer"
-        _keycloakInstance = _keycloakInstance
+        _keycloakInstance = _keycloakInstanceTargetRealm
+        _keycloakProviderConfig = core.kcProviderConfigName(_claimNamespace, _keycloakInstance)
         _projectName = _claimNamespace
         _resourceName = "${_managedResourcePrefix}viewer-group"
     }
