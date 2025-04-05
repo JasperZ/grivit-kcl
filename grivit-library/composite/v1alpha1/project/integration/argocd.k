@@ -109,6 +109,15 @@ schema ArgoCdProjectIntegration:
         _projectName = _claimNamespace
         _resourceName= "${_managedResourcePrefix}project"
     }
+    argoCdProjectToken: core.ArgoCdTokenWrapper {
+        _argoCdInstance = _argoCdInstance
+        _argoCdTokenDescription = "Managed by Crossplane"
+        _argoCdTokenId = "crossplane-admin"
+        _argoCdTokenProject = argoCdProject.managedResource.metadata.name
+        _argoCdTokenRole = "admins"
+        _projectName = _claimNamespace
+        _resourceName = "${_managedResourcePrefix}project-token"
+    }
     managedResources: [core.ManagedResource | core.ArgoCdProviderConfig] = [
         kcArgoCdAdminsGroup.managedResource
         kcArgoCdViewersGroup.managedResource
@@ -120,6 +129,7 @@ schema ArgoCdProjectIntegration:
         providerConfigCredentialsSecret.managedResource
         providerConfig.managedResource
         argoCdProject.managedResource
+        argoCdProjectToken.managedResource
     ]
     usages: [core.Usage] = sum([
         kcArgoCdAdminsGroup.usages
@@ -132,5 +142,6 @@ schema ArgoCdProjectIntegration:
         providerConfigCredentialsSecret.usages
         providerConfig.usages
         argoCdProject.usages
+        argoCdProjectToken.usages
     ], [])
 
