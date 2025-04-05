@@ -41,14 +41,16 @@ schema KeycloakProjectIntegration:
     }
 
     crossplaneClient: core.KcOpenIdClientKcXpProviderWrapper {
-        _keycloakInstance = _keycloakInstance
+        _keycloakInstance = _keycloakInstanceTargetRealm
+        _keycloakProviderConfig = core.kcProviderConfigName(_claimNamespace, _keycloakInstance)
         _projectName = _claimNamespace
     }
 
     realmManagementClientObserve: core.KcOpenIdClientWrapper {
         _clientId = "realm-management"
         _description = ""
-        _keycloakInstance = _keycloakInstance
+        _keycloakInstance = _keycloakInstanceTargetRealm
+        _keycloakProviderConfig = core.kcProviderConfigName(_claimNamespace, _keycloakInstance)
         _name = "${_managedResourcePrefix}realm-management"
         _projectNamespace = _claimNamespace
         _url = ""
@@ -63,7 +65,8 @@ schema KeycloakProjectIntegration:
 
     crossplaneClientRealmAdminRole: core.KcOpenIdClientServiceAccountRole {
         _clientId = realmManagementClientObserve.getAtProviderId(_observedComposedResources)
-        _keycloakInstance = _keycloakInstance
+        _keycloakInstance = _keycloakInstanceTargetRealm
+        _keycloakProviderConfig = core.kcProviderConfigName(_claimNamespace, _keycloakInstance)
         _name = "${_managedResourcePrefix}crossplane-client-realm-admin"
         _projectNamespace = _claimNamespace
         _roleName = "realm-admin"
