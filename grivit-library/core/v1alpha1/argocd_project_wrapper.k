@@ -4,9 +4,8 @@ schema ArgoCdProjectWrapper:
     _instanceOwnerProjectName: str
     _projectName: str
     _projectNamespace: str
+    _resourceName: str
     _viewerGroupName: str
-
-    _resourceName: str = "${_projectNamespace}-argocd-${_instanceOwnerProjectName}-${_instanceName}-${_projectName}-project"
 
     managedResource: ManagedResource {
         apiVersion = "projects.argocd.crossplane.io/v1alpha1"

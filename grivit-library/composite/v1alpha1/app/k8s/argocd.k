@@ -16,7 +16,6 @@ schema ArgoCdAppK8s:
     _kubernetesClusterName: str
     _observedComposedResources: any
 
-    #_managedResourcePrefix = "${_claimNamespace}-argocd-${_argoCdInstanceOwnerProjectName}-${_argoCdInstanceName}-${_argoCdProjectName}-"
     _managedResourcePrefix = crypto.md5("${_claimNamespace}-argocd-${_argoCdInstanceOwnerProjectName}-${_argoCdInstanceName}") + "-" + _argoCdProjectName + "-"
 
     kcArgoCdClient: core.KcOpenIdClientArgoCdWrapper {
@@ -202,10 +201,12 @@ g, ${kcArgoCdAdminsGroup.managedResource.spec.forProvider.name}, role:admin
         _argoCdInstanceName = _argoCdInstanceName
         _argoCdInstanceOwnerProjectName = _argoCdInstanceOwnerProjectName
         _argoCdProjectName = _argoCdProjectName
+        _keycloakClientId = "argocd-${_argoCdInstanceOwnerProjectName}-${_argoCdInstanceName}-${_argoCdProjectName}-crossplane"
         _keycloakInstanceName= _keycloakInstanceName
         _keycloakInstanceOwnerProjectName = _keycloakInstanceOwnerProjectName
         _keycloakRealmId= _keycloakRealmId
         _projectName = _claimNamespace
+        _resourceName = "${_managedResourcePrefix}crossplane"
         _uses = [
             helmRelease.managedResource
         ]
@@ -252,16 +253,6 @@ g, ${kcArgoCdAdminsGroup.managedResource.spec.forProvider.name}, role:admin
             #providerConfigKcClientDefaultScopes.managedResource
         ]
     }
-#    providerConfigCredentialsSecret: core.ArgoCdProviderConfigK8sCredentialsSecretWrapper {
-#        _argoCdProjectName = "admin"
-#        _argoCdInstanceName = _argoCdInstanceName
-#        _argoCdInstanceOwnerProjectName = _argoCdInstanceOwnerProjectName
-#        _jwtToken = providerConfigHttpJwtToken.getAccessToken(_observedComposedResources)
-#        _projectNamespace = _claimNamespace
-#        _uses = [
-#            providerConfigHttpJwtToken.managedResource
-#        ]
-#    }
 
     _providerConfigCredentialsSecretName: str = argoCdUtils.argoCdProviderConfigSecretName(_claimNamespace, _argoCdInstanceOwnerProjectName, _argoCdInstanceName, _argoCdProjectName)
     providerConfigCredentialsSecret: core.K8sObjectSecretWrapper {

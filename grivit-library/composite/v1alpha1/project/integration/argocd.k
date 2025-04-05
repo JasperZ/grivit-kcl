@@ -15,17 +15,18 @@ schema ArgoCdProjectIntegration:
     _observedComposedResources: any
     _targetProjectName: str
 
-    #_managedResourcePrefix = "${_claimNamespace}-argocd-${_argoCdInstanceOwnerProjectName}-${_argoCdInstanceName}-${_argoCdProjectName}-"
     _managedResourcePrefix = crypto.md5("${_claimNamespace}-argocd-${_argoCdInstanceOwnerProjectName}-${_argoCdInstanceName}") + "-" + _argoCdProjectName + "-"
 
     providerConfigKcClient: core.KcOpenIdClientArgoCdXpProviderWrapper {
         _argoCdInstanceName = _argoCdInstanceName
         _argoCdInstanceOwnerProjectName = _argoCdInstanceOwnerProjectName
         _argoCdProjectName = _argoCdProjectName
+        _keycloakClientId = "argocd-${_argoCdInstanceOwnerProjectName}-${_argoCdInstanceName}-${_argoCdProjectName}-crossplane"
         _keycloakInstanceName= _keycloakInstanceName
         _keycloakInstanceOwnerProjectName = _keycloakInstanceOwnerProjectName
         _keycloakRealmId= _keycloakRealmId
         _projectName = _claimNamespace
+        _resourceName = "${_managedResourcePrefix}crossplane"
     }
     kcArgoCdAdminsGroup: core.KcGroupArgoCdWrapper {
         _argoCdInstanceName = _argoCdInstanceName
