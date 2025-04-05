@@ -130,6 +130,7 @@ schema ArgoCdProjectIntegration:
         _instanceOwnerProjectName = _argoCdInstanceOwnerProjectName
         _projectName = _argoCdProjectName
         _projectNamespace = _claimNamespace
+        _resourceName= "${_managedResourcePrefix}project"
         _viewerGroupName = kcArgoCdViewersGroup.managedResource.spec.forProvider.name
     }
     managedResources: [core.ManagedResource | core.ArgoCdProviderConfig] = [
