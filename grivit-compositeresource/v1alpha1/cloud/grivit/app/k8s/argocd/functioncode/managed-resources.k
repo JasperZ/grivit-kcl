@@ -17,7 +17,7 @@ argoCdInstance: core.ArgoCdInstance {
     projectName = "instance"
 }
 
-keycloakInstance: core.keycloakInstance {
+keycloakInstance: core.KeycloakInstance {
     domain = spec.keycloakDomain
     name = spec.keycloakInstanceName
     ownerProjectName = spec.keycloakInstanceOwnerProjectName

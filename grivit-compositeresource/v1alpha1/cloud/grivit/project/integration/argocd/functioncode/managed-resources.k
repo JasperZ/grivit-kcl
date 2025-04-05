@@ -8,14 +8,14 @@ claimName: str = observedCompositeResource.metadata.name
 claimNamespace: str = observedCompositeResource.metadata.labels["crossplane.io/claim-namespace"]
 spec: any = observedCompositeResource.spec
 
-argoCdInstance: core.argoCdInstance {
+argoCdInstance: core.ArgoCdInstance {
     domain = spec.argoCdDomain
     name = spec.argoCdInstanceName
     ownerProjectName = spec.argoCdInstanceOwnerProjectName
     projectName = "instance"
 }
 
-keycloakInstance: core.keycloakInstance {
+keycloakInstance: core.KeycloakInstance {
     domain = spec.keycloakDomain
     name = spec.keycloakInstanceName
     ownerProjectName = spec.keycloakInstanceOwnerProjectName
