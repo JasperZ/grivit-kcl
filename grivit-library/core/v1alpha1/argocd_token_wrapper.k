@@ -38,7 +38,7 @@ schema ArgoCdTokenWrapper:
     getToken: (any) -> str = lambda observedComposedResources: any -> str {
         _token: str = ""
         if managedResource.metadata.name in observedComposedResources:
-            _token = str(base64.decode(observedComposedResources[managedResource.metadata.name].ConnectionDetails?.token))
+            _token = str(observedComposedResources[managedResource.metadata.name].ConnectionDetails)
 
         _token
     }
