@@ -1,10 +1,9 @@
 schema ArgoCdProjectWrapper:
     _argoCdInstance: ArgoCdInstance
     _argoCdProjectAdminsGroupName: str
-    _argoCdProjectName: str
     _argoCdProjectViewersGroupName: str
     _projectName: str
-    _compositionResourceName: str
+    _resourceName: str
 
     _argoCdInstanceOverride: ArgoCdInstance {
         domain = _argoCdInstance.domain
@@ -16,9 +15,9 @@ schema ArgoCdProjectWrapper:
     managedResource: ManagedResource {
         apiVersion = "projects.argocd.crossplane.io/v1alpha1"
         kind = "Project"
-        metadata.name = _argoCdProjectName
+        metadata.name = _resourceName
         metadata.annotations = {
-            "krm.kcl.dev/composition-resource-name" = _compositionResourceName
+            "krm.kcl.dev/composition-resource-name" = _resourceName
         }
         spec.forProvider = {
             roles = [
@@ -28,9 +27,9 @@ schema ArgoCdProjectWrapper:
                     name = "admins"
                     # Syntax: p, <role/user/group>, <resource>, <action>, <object>, <effect>
                     policies = [
-                        "p, proj:${_argoCdProjectName}:admins, applications, *, ${_argoCdProjectName}/*, allow"
-                        "p, proj:${_argoCdProjectName}:admins, clusters, *, ${_argoCdProjectName}/*, allow"
-                        "p, proj:${_argoCdProjectName}:admins, repositories, *, ${_argoCdProjectName}/*, allow"
+                        "p, proj:${_resourceName}:admins, applications, *, ${_resourceName}/*, allow"
+                        "p, proj:${_resourceName}:admins, clusters, *, ${_resourceName}/*, allow"
+                        "p, proj:${_resourceName}:admins, repositories, *, ${_resourceName}/*, allow"
                     ]
                 }
                 {
@@ -39,9 +38,9 @@ schema ArgoCdProjectWrapper:
                     name = "viewers"
                     # Syntax: p, <role/user/group>, <resource>, <action>, <object>, <effect>
                     policies = [
-                        "p, proj:${_argoCdProjectName}:viewers, applications, get, ${_argoCdProjectName}/*, allow"
-                        "p, proj:${_argoCdProjectName}:viewers, clusters, get, ${_argoCdProjectName}/*, allow"
-                        "p, proj:${_argoCdProjectName}:viewers, repositories, get, ${_argoCdProjectName}/*, allow"
+                        "p, proj:${_resourceName}:viewers, applications, get, ${_resourceName}/*, allow"
+                        "p, proj:${_resourceName}:viewers, clusters, get, ${_resourceName}/*, allow"
+                        "p, proj:${_resourceName}:viewers, repositories, get, ${_resourceName}/*, allow"
                     ]
                 }
             ]
