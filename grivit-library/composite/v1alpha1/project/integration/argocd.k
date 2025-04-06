@@ -47,16 +47,10 @@ schema ArgoCdProjectIntegration:
             kcArgoCdAdminsGroup.managedResource
         ]
     }
-    # GroupMembershipProtocolMapper currently working with clientScopeId
-    groupClientScope: core.KcOpenIdClientScopeWrapper {
-        _keycloakInstance = _keycloakInstance
-        _name = "${_managedResourcePrefix}group-client-scope"
-        _projectName = _claimNamespace
-        _scopeName = "groups"
-    }
+
     groupsMapper: core.KcOpenIdGroupMembershipProtocolMapperWrapper {
         _claimName = "groups"
-        _clientScopeId = groupClientScope.getClientScopeId(_observedComposedResources)
+        _clientScopeId = ""
         _keycloakInstance = _keycloakInstance
         _name = "${_managedResourcePrefix}groups-mapper"
         _projectName = _claimNamespace
@@ -114,7 +108,6 @@ schema ArgoCdProjectIntegration:
         kcArgoCdViewersGroup.managedResource
         providerConfigKcClient.managedResource
         kcUserGroupsWrapper.managedResource
-        groupClientScope.managedResource
         groupsMapper.managedResource
         providerConfigHttpJwtToken.managedResource
         providerConfigCredentialsSecret.managedResource
@@ -126,7 +119,6 @@ schema ArgoCdProjectIntegration:
         kcArgoCdViewersGroup.usages
         providerConfigKcClient.usages
         kcUserGroupsWrapper.usages
-        groupClientScope.usages
         groupsMapper.usages
         providerConfigHttpJwtToken.usages
         providerConfigCredentialsSecret.usages
