@@ -49,7 +49,7 @@ schema ArgoCdProjectIntegration:
     }
 
     groupsMapper: core.KcOpenIdGroupMembershipProtocolMapperWrapper {
-        _claimName = "groups"
+        _claimName = ""
         _clientScopeId = ""
         _keycloakInstance = _keycloakInstance
         _name = "${_managedResourcePrefix}groups-mapper"

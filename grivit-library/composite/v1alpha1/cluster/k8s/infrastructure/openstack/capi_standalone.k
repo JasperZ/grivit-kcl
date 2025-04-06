@@ -1,23 +1,23 @@
 import crypto
 import core.v1alpha1 as core
-import .app.k8s as apps
+import .....app.k8s as apps
 
-schema K8sClusterOsStandaloneConfigWorkersAutoscaling:
+schema CapiStandaloneClusterK8sInfrastructureOpenStackConfigWorkersAutoscaling:
     minSize: int
     maxSize: int
 
-schema K8sClusterOsStandaloneConfigWorkers:
+schema CapiStandaloneClusterK8sInfrastructureOpenStackConfigWorkers:
     flavorName: str
     rootVolumeSize: int
-    autoscaling: K8sClusterOsStandaloneConfigWorkersAutoscaling
+    autoscaling: CapiStandaloneClusterK8sInfrastructureOpenStackConfigWorkersAutoscaling
 
-schema K8sClusterOsStandaloneConfigControlPlane:
+schema CapiStandaloneClusterK8sInfrastructureOpenStackConfigControlPlane:
     flavorName: str
     rootVolumeSize: int
     replicas: int
 
-schema K8sClusterOsStandalone:
-    _controlPlane: K8sClusterOsStandaloneConfigControlPlane
+schema CapiStandaloneClusterK8sInfrastructureOpenStack:
+    _controlPlane: CapiStandaloneClusterK8sInfrastructureOpenStackConfigControlPlane
     _domain: str
     _email: str
     _externalNetworkName: str
@@ -25,7 +25,7 @@ schema K8sClusterOsStandalone:
     _name: str
     _observedComposedResources: any
     _projectNamespace: str
-    _workers: K8sClusterOsStandaloneConfigWorkers
+    _workers: CapiStandaloneClusterK8sInfrastructureOpenStackConfigWorkers
 
     applicationCredential: core.OsIdentityApplicationCredentialWrapper {
         _name = "${_name}-application-credential"
@@ -123,10 +123,10 @@ clouds:
     }
     k8sProviderConfigCredentialsSecret: core.K8sObjectSecretWrapper {
         _clusterName = _name
-        _name = k8sUtils.k8sProviderConfigSecretName(_projectNamespace, _name)
+        _name = core.k8sProviderConfigSecretName(_projectNamespace, _name)
         _namespace = _projectNamespace
         _projectName = _projectNamespace
-        _secretName = k8sUtils.k8sProviderConfigSecretName(_projectNamespace, _name)
+        _secretName = core.k8sProviderConfigSecretName(_projectNamespace, _name)
         _stringData = {}
         managedResource.spec.references = {
             patchesFrom = {
@@ -154,27 +154,78 @@ clouds:
             k8sProviderConfigCredentialsSecret.managedResource
         ]
     }
-    k8sAppPrometheusOperatorCrds: apps.PrometheusOperatorCrdsAppK8s {
+    appPrometheusOperatorCrds: apps.PrometheusOperatorCrdsAppK8s {
         _clusterName = _name
         _name = "${_clusterName}-crd-prom"
         _projectNamespace = _projectNamespace
     }
-    k8sAppsInfrastructureOsBundle: K8sAppBundleOsInfrastructure {
+    crdAppHelmReleases: [core.K8sFluxHelmReleaseWrapper] = [
+        appPrometheusOperatorCrds.helmRelease
+    ]
+    appCilium: apps.CiliumAppK8s {
+        _clusterName = cluster.managedResource.metadata.name
+        _fluxHelmReleaseDependencies = crdAppHelmReleases
+        _name = "${cluster.managedResource.metadata.name}-cilium"
+        _projectNamespace = _projectNamespace
+    }
+    appOpenStackCloudControllerManager: apps.OpenStackCloudControllerManagerAppK8s {
         _clusterName = cluster.managedResource.metadata.name
         _clusterSubnetId = openstackCluster.getSubnetId(_observedComposedResources)
-        _domainFilters = [_domain]
         _externalNetworkId = openstackCluster.getExternalNetworkId(_observedComposedResources)
-        _fluxHelmReleaseDependencies = [k8sAppPrometheusOperatorCrds.helmRelease]
-        _name = "${_name}-ia"
+        _fluxHelmReleaseDependencies = crdAppHelmReleases
+        _name = "${cluster.managedResource.metadata.name}-occm"
         _observedComposedResources = _observedComposedResources
         _projectNamespace = _projectNamespace
     }
-    k8sAppsPlatformBundle: K8sAppBundlePlatform {
-        _clusterName = _name
-        _email = _email
-        _fluxHelmReleaseDependencies = k8sAppsInfrastructureOsBundle.fluxHelmReleases
-        _name = "${_name}-pa"
+    appOpenStackCinderCsi: apps.OpenStackCinderCsiAppK8s {
+        _clusterName = cluster.managedResource.metadata.name
+        _name = "${cluster.managedResource.metadata.name}-ocsi"
+        _fluxHelmReleaseDependencies = crdAppHelmReleases
         _observedComposedResources = _observedComposedResources
+        _projectNamespace = _projectNamespace
+    }
+    appOpenStackExternalDns: apps.OpenStackExternalDnsAppK8s {
+        _clusterName = cluster.managedResource.metadata.name
+        _domainFilters = [_domain]
+        _fluxHelmReleaseDependencies = crdAppHelmReleases
+        _name = "${cluster.managedResource.metadata.name}-oexdns"
+        _observedComposedResources = _observedComposedResources
+        _projectNamespace = _projectNamespace
+    }
+    appClusterAutoscaler: apps.ClusterAutoscalerAppK8s {
+        _clusterName = cluster.managedResource.metadata.name
+        _name = "${cluster.managedResource.metadata.name}-ca"
+        _projectNamespace = _projectNamespace
+    }
+    infrastructureAppHelmReleases: [core.K8sFluxHelmReleaseWrapper] = [
+        appCilium.helmRelease
+        appOpenStackCloudControllerManager.helmRelease
+        appOpenStackCinderCsi.helmRelease
+        appOpenStackExternalDns.helmRelease
+    ]
+    appsPlatformCertManager: apps.CertManagerAppK8s {
+        _clusterName = cluster.managedResource.metadata.name
+        _email: _email
+        _fluxHelmReleaseDependencies = infrastructureAppHelmReleases
+        _name = "${cluster.managedResource.metadata.name}-certmanager"
+        _observedComposedResources = _observedComposedResources
+        _projectNamespace = _projectNamespace
+    }
+    appsPlatformIngressNginx: apps.IngressNginxAppK8s {
+        _clusterName = cluster.managedResource.metadata.name
+        _name = "${cluster.managedResource.metadata.name}-ingress"
+        _fluxHelmReleaseDependencies = infrastructureAppHelmReleases
+        _projectNamespace = _projectNamespace
+    }
+    appsPlatformMetricsServer: apps.MetricsServerAppK8s {
+        _clusterName = cluster.managedResource.metadata.name
+        _name = "${cluster.managedResource.metadata.name}-metrics"
+        _fluxHelmReleaseDependencies = infrastructureAppHelmReleases
+        _projectNamespace = _projectNamespace
+    }
+    appsPlatformSnapshotController: apps.SnapshotControllerAppK8s {
+        _clusterName = cluster.managedResource.metadata.name
+        _name = "${_name}-sc"
         _projectNamespace = _projectNamespace
     }
     k8sCrossplaneSecretsNamespace: core.K8sObjectNamespaceWrapper {
@@ -198,9 +249,16 @@ clouds:
         providerConfig.managedResource
         k8sCrossplaneSecretsNamespace.managedResource
     ] + sum([
-        k8sAppPrometheusOperatorCrds.managedResources
-        k8sAppsInfrastructureOsBundle.managedResources
-        k8sAppsPlatformBundle.managedResources
+        appPrometheusOperatorCrds.managedResources
+        appCilium.managedResources
+        appOpenStackCloudControllerManager.managedResources
+        appOpenStackCinderCsi.managedResources
+        appOpenStackExternalDns.managedResources
+        appClusterAutoscaler.managedResources
+        appsPlatformCertManager.managedResources
+        appsPlatformIngressNginx.managedResources
+        appsPlatformMetricsServer.managedResources
+        appsPlatformSnapshotController.managedResources
     ], [])
     usages: [core.Usage] = sum([
         applicationCredential.usages
@@ -215,8 +273,15 @@ clouds:
         workerMachineTemplate.usages
         k8sProviderConfigCredentialsSecret.usages
         providerConfig.usages
-        k8sAppPrometheusOperatorCrds.usages
-        k8sAppsInfrastructureOsBundle.usages
-        k8sAppsPlatformBundle.usages
+        appPrometheusOperatorCrds.usages
+        appCilium.usages
+        appOpenStackCloudControllerManager.usages
+        appOpenStackCinderCsi.usages
+        appOpenStackExternalDns.usages
+        appClusterAutoscaler.usages
+        appsPlatformCertManager.usages
+        appsPlatformIngressNginx.usages
+        appsPlatformMetricsServer.usages
+        appsPlatformSnapshotController.usages
         k8sCrossplaneSecretsNamespace.usages
     ], [])
