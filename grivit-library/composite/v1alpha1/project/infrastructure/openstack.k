@@ -1,6 +1,6 @@
 import core.v1alpha1 as core
 
-schema OsStage:
+schema OpenStackProjectInfrastructure:
     _domain: str
     _email: str
     _name: str

@@ -1,4 +1,5 @@
 import core.v1alpha1 as core
+import ...project.infrastructure as infra
 
 schema TenantProjectConfiguration:
     _claimNamespace: str
@@ -100,34 +101,13 @@ schema TenantProjectConfiguration:
             k8sProviderConfigCredentialsSecret.managedResource
         ]
     }
-    osProviderConfigCredentialsSecret: core.K8sObjectSecretWrapper {
-        _clusterName = _k8sClusterName
-        _name = core.osProviderConfigSecretName(_claimNamespace)
-        _namespace = _claimNamespace
+    openStackProjectInfrastructure: infra.OpenStackProjectInfrastructure {
+        _domain = _domain
+        _email = _contactEmail
+        _name = "${_claimNamespace}-openstack-project-infra"
+        _observedComposedResources = _observedComposedResources
         _projectName = _claimNamespace
-        _secretName = core.osProviderConfigSecretName(_claimNamespace)
-        _stringData = {}
-        managedResource.spec.references = [
-            {
-                patchesFrom = {
-                    apiVersion = "v1"
-                    fieldPath = "data.value"
-                    kind = "Secret"
-                    name = "bootstrap-os-provider"
-                    namespace = "bootstrap"
-                }
-                toFieldPath = "data.value"
-            }
-        ]
-        managedResource.spec.providerConfigRef.name = "bootstrap-k8s"
-    }
-    osProviderConfig: core.OsProviderConfigWrapper {
-        _credentialsSecretName = osProviderConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.name
-        _credentialsSecretNamespace = osProviderConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.namespace
         _projectNamespace = _claimNamespace
-        _uses = [
-            osProviderConfigCredentialsSecret.managedResource
-        ]
     }
 
     managedResources: [core.ManagedResource | core.AwsProviderConfig | core.HelmProviderConfig | core.K8sProviderConfig | core.OsProviderConfig] = sum([
@@ -139,6 +119,7 @@ schema TenantProjectConfiguration:
         # k8sAppMetricsServer.managedResources
         # k8sAppSnapshotController.managedResources
         # k8sAppVerticalPodAutoscaler.managedResources
+        openStackProjectInfrastructure.managedResources
     ], [
         awsProviderConfigCredentialsSecret.managedResource
         awsProviderConfig.managedResource
@@ -147,8 +128,6 @@ schema TenantProjectConfiguration:
         httpProviderConfig.managedResource
         k8sProviderConfigCredentialsSecret.managedResource
         k8sProviderConfig.managedResource
-        osProviderConfigCredentialsSecret.managedResource
-        osProviderConfig.managedResource
     ])
 
     usages: [core.Usage] = sum([
@@ -159,7 +138,6 @@ schema TenantProjectConfiguration:
         httpProviderConfig.usages
         k8sProviderConfigCredentialsSecret.usages
         k8sProviderConfig.usages
-        osProviderConfigCredentialsSecret.usages
-        osProviderConfig.usages
+        openStackProjectInfrastructure.usages
     ], [])
 
