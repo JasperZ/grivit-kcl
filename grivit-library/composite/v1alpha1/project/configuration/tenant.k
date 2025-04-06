@@ -70,7 +70,7 @@ schema TenantProjectConfiguration:
         ]
     }
     httpProviderConfig: core.HttpProviderConfigWrapper {
-        _projectNamespace = _claimNamespace
+        _projectNamespace = _projectName
     }
     k8sProviderConfigCredentialsSecret: core.K8sObjectSecretWrapper {
         _clusterName = _k8sClusterName
