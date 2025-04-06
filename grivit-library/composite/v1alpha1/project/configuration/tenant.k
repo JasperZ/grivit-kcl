@@ -34,7 +34,7 @@ schema TenantProjectConfiguration:
     awsProviderConfig: core.AwsProviderConfigWrapper {
         _credentialsSecretName = awsProviderConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.name
         _credentialsSecretNamespace = awsProviderConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.namespace
-        _projectNamespace = _claimNamespace
+        _projectNamespace = _projectName
         _uses = [
             awsProviderConfigCredentialsSecret.managedResource
         ]
@@ -64,7 +64,7 @@ schema TenantProjectConfiguration:
         _clusterName = _k8sClusterName
         _credentialsSecretName = helmProviderConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.name
         _credentialsSecretNamespace = helmProviderConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.namespace
-        _projectNamespace = _claimNamespace
+        _projectNamespace = _projectName
         _uses = [
             helmProviderConfigCredentialsSecret.managedResource
         ]
@@ -97,7 +97,7 @@ schema TenantProjectConfiguration:
         _clusterName = _k8sClusterName
         _credentialsSecretName = k8sProviderConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.name
         _credentialsSecretNamespace = k8sProviderConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.namespace
-        _projectNamespace = _claimNamespace
+        _projectNamespace = _projectName
         _uses = [
             k8sProviderConfigCredentialsSecret.managedResource
         ]
