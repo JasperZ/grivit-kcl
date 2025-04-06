@@ -1,5 +1,3 @@
-import base64
-
 schema ArgoCdTokenWrapper:
     _argoCdInstance: ArgoCdInstance
     _argoCdTokenDescription: str
@@ -34,11 +32,3 @@ schema ArgoCdTokenWrapper:
         spec.writeConnectionSecretToRef.namespace = _projectName
     }
     usages: [Usage] = []
-
-    getToken: (any) -> str = lambda observedComposedResources: any -> str {
-        _token: str = ""
-        if managedResource.metadata.name in observedComposedResources:
-            _token = str(observedComposedResources[managedResource.metadata.name].ConnectionDetails?.token)
-
-        _token
-    }
