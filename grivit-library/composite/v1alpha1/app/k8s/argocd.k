@@ -180,6 +180,31 @@ g, ${kcArgoCdAdminsGroup.managedResource.spec.forProvider.name}, role:admin
             kcArgoCdAdminsGroup.managedResource
         ]
     }
+    # Override default project
+    # https://github.com/kahou82/argo-cd/blob/92f2c1374a7c7cd993a96f2dd95d1005cbfb9511/docs/user-guide/projects.md#the-default-project
+    argoCdDefaultProject: core.K8sObjectGenericWrapper {
+        _clusterName = _kubernetesClusterName
+        _name = "${_managedResourcePrefix}default-project"
+        _projectNamespace = _claimNamespace
+        
+        managedResource.spec.forProvider = {
+            apiVersion = "argoproj.io/v1alpha1"
+            kind = "AppProject"
+            metadata.name = "default"
+            metadata.namespace = "argocd-${_argoCdInstance.name}"
+            spec = {
+                sourceRepos = []
+                sourceNamespaces = []
+                destinations = []
+                namespaceResourceBlacklist = [
+                    {
+                        group = "*"
+                        kind = "*"
+                    }
+                ]
+            }
+        }
+    }
     providerConfigKcClient: core.KcOpenIdClientArgoCdXpProviderWrapper {
         _argoCdInstance = _argoCdInstance
         _keycloakClientId = "argocd-${_argoCdInstance.ownerProjectName}-${_argoCdInstance.name}-${_argoCdInstance.projectName}-crossplane"
@@ -258,6 +283,7 @@ g, ${kcArgoCdAdminsGroup.managedResource.spec.forProvider.name}, role:admin
         kcArgoCdClientGroupMapper.managedResource
         helmRepo.managedResource
         helmRelease.managedResource
+        argoCdDefaultProject.managedResource
         providerConfigKcClient.managedResource
         kcUserGroupsWrapper.managedResource
         groupsMapper.managedResource
@@ -271,6 +297,7 @@ g, ${kcArgoCdAdminsGroup.managedResource.spec.forProvider.name}, role:admin
         kcArgoCdClientGroupMapper.usages
         helmRepo.usages
         helmRelease.usages
+        argoCdDefaultProject.usages
         providerConfigKcClient.usages
         kcUserGroupsWrapper.usages
         groupsMapper.usages
