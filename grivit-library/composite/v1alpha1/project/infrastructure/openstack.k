@@ -77,7 +77,7 @@ schema OpenStackProjectInfrastructure:
         _domain = _domain
         _email = _email
         _name = "${_name}-zone"
-        _projectNamespace = _projectNamespace
+        _projectNamespace = _projectName
         _uses = [providerConfig.managedResource]
     }
     managedResources: [core.ManagedResource | core.OsProviderConfig] = [
