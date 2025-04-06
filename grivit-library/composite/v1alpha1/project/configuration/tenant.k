@@ -72,10 +72,10 @@ schema TenantProjectConfiguration:
     }
     k8sProviderConfigCredentialsSecret: core.K8sObjectSecretWrapper {
         _clusterName = _k8sClusterName
-        _name = k8sUtils.k8sProviderConfigSecretName(_claimNamespace, _k8sClusterName)
+        _name = core.k8sProviderConfigSecretName(_claimNamespace, _k8sClusterName)
         _namespace = _claimNamespace
         _projectName = _claimNamespace
-        _secretName = k8sUtils.k8sProviderConfigSecretName(_claimNamespace, _k8sClusterName)
+        _secretName = core.k8sProviderConfigSecretName(_claimNamespace, _k8sClusterName)
         _stringData = {}
         managedResource.spec.references = [
             {
@@ -102,10 +102,10 @@ schema TenantProjectConfiguration:
     }
     osProviderConfigCredentialsSecret: core.K8sObjectSecretWrapper {
         _clusterName = _k8sClusterName
-        _name = osUtils.osProviderConfigSecretName(_claimNamespace)
+        _name = core.osProviderConfigSecretName(_claimNamespace)
         _namespace = _claimNamespace
         _projectName = _claimNamespace
-        _secretName = osUtils.osProviderConfigSecretName(_claimNamespace)
+        _secretName = core.osProviderConfigSecretName(_claimNamespace)
         _stringData = {}
         managedResource.spec.references = [
             {
