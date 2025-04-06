@@ -12,6 +12,7 @@ xpControlPlaneProject: proj_conf.TenantProjectConfiguration = proj_conf.TenantPr
     _contactEmail = spec.contactEmail
     _domain = spec.domain
     _observedComposedResources = observedComposedResources
+    _projectName = spec.projectName
 }
 
 items = sum([

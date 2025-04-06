@@ -6,15 +6,16 @@ schema TenantProjectConfiguration:
     _contactEmail: str
     _domain: str
     _observedComposedResources: any
+    _projectName: str
 
     _k8sClusterName: str = "ctrl"
 
     awsProviderConfigCredentialsSecret: core.K8sObjectSecretWrapper {
         _clusterName = _k8sClusterName
-        _name = core.awsProviderConfigSecretName(_claimNamespace)
+        _name = core.awsProviderConfigSecretName(_projectName)
         _namespace = _claimNamespace
         _projectName = _claimNamespace
-        _secretName = core.awsProviderConfigSecretName(_claimNamespace)
+        _secretName = core.awsProviderConfigSecretName(_projectName)
         _stringData = {}
         managedResource.spec.references = [
             {
@@ -40,10 +41,10 @@ schema TenantProjectConfiguration:
     }
     helmProviderConfigCredentialsSecret: core.K8sObjectSecretWrapper {
         _clusterName = _k8sClusterName
-        _name = core.helmProviderConfigSecretName(_claimNamespace, _k8sClusterName)
+        _name = core.helmProviderConfigSecretName(_projectName, _k8sClusterName)
         _namespace = _claimNamespace
         _projectName = _claimNamespace
-        _secretName = core.helmProviderConfigSecretName(_claimNamespace, _k8sClusterName)
+        _secretName = core.helmProviderConfigSecretName(_projectName, _k8sClusterName)
         _stringData = {}
         managedResource.spec.references = [
             {
@@ -73,10 +74,10 @@ schema TenantProjectConfiguration:
     }
     k8sProviderConfigCredentialsSecret: core.K8sObjectSecretWrapper {
         _clusterName = _k8sClusterName
-        _name = core.k8sProviderConfigSecretName(_claimNamespace, _k8sClusterName)
+        _name = core.k8sProviderConfigSecretName(_projectName, _k8sClusterName)
         _namespace = _claimNamespace
         _projectName = _claimNamespace
-        _secretName = core.k8sProviderConfigSecretName(_claimNamespace, _k8sClusterName)
+        _secretName = core.k8sProviderConfigSecretName(_projectName, _k8sClusterName)
         _stringData = {}
         managedResource.spec.references = [
             {
@@ -106,7 +107,7 @@ schema TenantProjectConfiguration:
         _email = _contactEmail
         _name = "${_claimNamespace}-openstack-project-infra"
         _observedComposedResources = _observedComposedResources
-        _projectName = _claimNamespace
+        _projectName = _projectName
         _projectNamespace = _claimNamespace
     }
 

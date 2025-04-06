@@ -34,7 +34,7 @@ schema XrdTenantProject(core.CompositeResourceDefinition):
                                     domain = {
                                         type = "string"
                                     }
-                                    k8sClusterName = {
+                                    projectName = {
                                         type = "string"
                                     }
                                 }
