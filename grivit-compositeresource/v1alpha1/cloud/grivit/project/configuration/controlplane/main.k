@@ -1,26 +1,26 @@
 import manifests
 
-nameSingular: str = "ControlPlane"
-namePlural: str = "ControlPlanes"
-apiGroup: str = "configuration.project.grivit.cloud"
-apiVersion: str = "v1alpha1"
+nameSingularControlPlaneProject: str = "ControlPlane"
+namePluralControlPlaneProject: str = "ControlPlanes"
+apiGroupControlPlaneProject: str = "configuration.project.grivit.cloud"
+apiVersionControlPlaneProject: str = "v1alpha1"
 
-xr: Xr = Xr {
-    _nameSingular = nameSingular
-    _apiGroup = apiGroup
-    _apiVersion = apiVersion
+xrControlPlaneProject: XrControlPlaneProject = XrControlPlaneProject {
+    _nameSingular = nameSingularControlPlaneProject
+    _apiGroup = apiGroupControlPlaneProject
+    _apiVersion = apiVersionControlPlaneProject
 }
 
-xrd: Xrd = Xrd {
-    _nameSingular = nameSingular
-    _namePlural = namePlural
-    _apiGroup = apiGroup
-    _apiVersion = apiVersion
+xrdControlPlaneProject: XrdControlPlaneProject = XrdControlPlaneProject {
+    _nameSingular = nameSingularControlPlaneProject
+    _namePlural = namePluralControlPlaneProject
+    _apiGroup = apiGroupControlPlaneProject
+    _apiVersion = apiVersionControlPlaneProject
 }
 
 manifests.yaml_stream([
-    xr
-    xrd
+    xrControlPlaneProject
+    xrdControlPlaneProject
 ], {
     sort_keys = False
     ignore_private = True

@@ -1,6 +1,6 @@
 import grivit_library.core.v1alpha1 as core
 
-schema XrdControlPlaneProject(core.CompositeResourceDefinition):
+schema XrdTenantProject(core.CompositeResourceDefinition):
     _nameSingular: str
     _namePlural: str
     _apiGroup: str
