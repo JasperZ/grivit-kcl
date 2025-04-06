@@ -99,9 +99,10 @@ schema ArgoCdProjectIntegration:
     argoCdProject: core.ArgoCdProjectWrapper {
         _argoCdInstance = _argoCdInstance
         _argoCdProjectAdminsGroupName = kcArgoCdAdminsGroup.managedResource.spec.forProvider.name
+        _argoCdProjectName = _claimNamespace
         _argoCdProjectViewersGroupName = kcArgoCdViewersGroup.managedResource.spec.forProvider.name
         _projectName = _claimNamespace
-        _resourceName= "${_managedResourcePrefix}project"
+        _compositionResourceName = "${_managedResourcePrefix}project"
     }
     managedResources: [core.ManagedResource | core.ArgoCdProviderConfig] = [
         kcArgoCdAdminsGroup.managedResource
