@@ -187,7 +187,7 @@ g, ${kcArgoCdAdminsGroup.managedResource.spec.forProvider.name}, role:admin
         _name = "${_managedResourcePrefix}default-project"
         _projectNamespace = _claimNamespace
         
-        managedResource.spec.forProvider = {
+        managedResource.spec.forProvider.manifest = {
             apiVersion = "argoproj.io/v1alpha1"
             kind = "AppProject"
             metadata.name = "default"
