@@ -68,7 +68,7 @@ schema OpenStackProjectInfrastructure:
     providerConfig: core.OsProviderConfigWrapper {
         _credentialsSecretName = cloudConfig.managedResource.spec.forProvider.manifest.metadata.name
         _credentialsSecretNamespace = cloudConfig.managedResource.spec.forProvider.manifest.metadata.namespace
-        _projectNamespace = _projectNamespace
+        _projectNamespace = _projectName
         _uses = [
             cloudConfig.managedResource
         ]
