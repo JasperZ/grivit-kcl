@@ -39,10 +39,10 @@ schema TenantProjectConfiguration:
     }
     helmProviderConfigCredentialsSecret: core.K8sObjectSecretWrapper {
         _clusterName = _k8sClusterName
-        _name = helmUtils.helmProviderConfigSecretName(_claimNamespace, _k8sClusterName)
+        _name = core.helmProviderConfigSecretName(_claimNamespace, _k8sClusterName)
         _namespace = _claimNamespace
         _projectName = _claimNamespace
-        _secretName = helmUtils.helmProviderConfigSecretName(_claimNamespace, _k8sClusterName)
+        _secretName = core.helmProviderConfigSecretName(_claimNamespace, _k8sClusterName)
         _stringData = {}
         managedResource.spec.references = [
             {
