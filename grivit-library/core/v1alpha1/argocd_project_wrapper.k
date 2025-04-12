@@ -1,6 +1,6 @@
 schema ArgoCdProjectWrapper:
     _argoCdInstance: ArgoCdInstance
-    _argoCdDescription: str = ""
+    _argoCdProjectDescription: str = ""
     _argoCdProjectDestinations: [any] = []
     _argoCdProjectRoles: [any] = []
     _argoCdProjectSourceNamespaces: [str] = []
@@ -22,7 +22,7 @@ schema ArgoCdProjectWrapper:
             "krm.kcl.dev/composition-resource-name" = _resourceName
         }
         spec.forProvider = {
-            description = _argoCdDescription
+            description = _argoCdProjectDescription
             destinations = _argoCdProjectDestinations
             roles = _argoCdProjectRoles
             sourceNamespaces = _argoCdProjectSourceNamespaces

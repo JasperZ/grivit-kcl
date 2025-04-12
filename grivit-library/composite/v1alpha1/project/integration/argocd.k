@@ -96,7 +96,7 @@ schema ArgoCdProjectIntegration:
     }
     argoCdControlPlaneProject: core.ArgoCdProjectWrapper {
         _argoCdInstance = _argoCdInstance
-        _argoCdDescription = _targetProjectName
+        _argoCdProjectDescription = "${_targetProjectName} - Control Plane Cluster"
         _argoCdProjectDestinations = [
             {name = "instance-cluster", namespace = _targetProjectName}
         ]
@@ -130,7 +130,7 @@ schema ArgoCdProjectIntegration:
     }
     argoCdTenantProject: core.ArgoCdProjectWrapper {
         _argoCdInstance = _argoCdInstance
-        _argoCdDescription = _targetProjectName
+        _argoCdProjectDescription = "${_targetProjectName} - Tenant Clusters"
         _argoCdProjectDestinations = [
             {name = "!instance-cluster", namespace = "*"}
         ]
