@@ -128,16 +128,18 @@ clouds:
         _projectName = _projectNamespace
         _secretName = core.k8sProviderConfigSecretName(_projectNamespace, _name)
         _stringData = {}
-        managedResource.spec.references = {
-            patchesFrom = {
-                apiVersion = "v1"
-                fieldPath = "data.value"
-                kind = "Secret"
-                name = "${cluster.managedResource.metadata.name}-kubeconfig"
-                namespace = _projectNamespace
+        managedResource.spec.references = [
+            {
+                patchesFrom = {
+                    apiVersion = "v1"
+                    fieldPath = "data.value"
+                    kind = "Secret"
+                    name = "${cluster.managedResource.metadata.name}-kubeconfig"
+                    namespace = _projectNamespace
+                }
+                toFieldPath = "data.value"
             }
-            toFieldPath = "data.value"
-        }
+        ]
         _uses = [
             cluster.managedResource
             openstackCluster.managedResource
