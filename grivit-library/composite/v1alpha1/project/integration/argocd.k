@@ -37,8 +37,9 @@ schema ArgoCdProjectIntegration:
         _projectName = _claimNamespace
         _resourceName = "${_managedResourcePrefix}viewers"
     }
+    kcArgoCdAdminsGroupId: str = kcArgoCdAdminsGroup.getAtProviderId(_observedComposedResources)
     kcUserGroupsWrapper: core.KcUserGroupsWrapper {
-        _keycloakGroupIds = [kcArgoCdAdminsGroup.getAtProviderId(_observedComposedResources)]
+        _keycloakGroupIds = [kcArgoCdAdminsGroupId] if kcArgoCdAdminsGroupId else []
         _keycloakInstance = _keycloakInstance
         _keycloakUserId = providerConfigKcClient.getServiceAccountUserId(_observedComposedResources)
         _projectName = _claimNamespace
