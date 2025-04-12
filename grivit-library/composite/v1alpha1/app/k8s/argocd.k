@@ -277,6 +277,15 @@ g, ${kcArgoCdAdminsGroup.managedResource.spec.forProvider.name}, role:admin
             providerConfigCredentialsSecret.managedResource
         ]
     }
+    argoCdInstanceCluster: core.ArgoCdClusterWrapper {
+        _argoCdInstance = _argoCdInstance
+        _argoCdClusterKubeconfigSecretKey= "value"
+        _argoCdClusterKubeconfigSecretName = core.k8sProviderConfigSecretName(_claimNamespace, "ctrl")
+        _argoCdClusterKubeconfigSecretNamespace = _claimNamespace
+        _argoCdClusterName = "instance-cluster"
+        _projectName= _claimNamespace
+        _resourceName: "${_managedResourcePrefix}instance-cluster"
+    }
     managedResources: [core.ManagedResource | core.ArgoCdProviderConfig] = [
         kcArgoCdClient.managedResource
         kcArgoCdAdminsGroup.managedResource
@@ -290,6 +299,7 @@ g, ${kcArgoCdAdminsGroup.managedResource.spec.forProvider.name}, role:admin
         providerConfigHttpJwtToken.managedResource
         providerConfigCredentialsSecret.managedResource
         providerConfig.managedResource
+        argoCdInstanceCluster.managedResource
     ]
     usages: [core.Usage] = sum([
         kcArgoCdClient.usages
@@ -304,6 +314,7 @@ g, ${kcArgoCdAdminsGroup.managedResource.spec.forProvider.name}, role:admin
         providerConfigHttpJwtToken.usages
         providerConfigCredentialsSecret.usages
         providerConfig.usages
+        argoCdInstanceCluster.usages
     ], [])
 
 

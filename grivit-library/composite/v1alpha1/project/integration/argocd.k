@@ -15,7 +15,6 @@ schema ArgoCdProjectIntegration:
         ownerProjectName = _argoCdInstance.ownerProjectName
         projectName = _targetProjectName
     }
-
     _managedResourcePrefix = crypto.md5("${_claimNamespace}-${_claimName}-argocd-${_argoCdInstanceTargetProject.ownerProjectName}-${_argoCdInstanceTargetProject.name}") + "-" + _argoCdInstanceTargetProject.projectName + "-"
 
     providerConfigKcClient: core.KcOpenIdClientArgoCdXpProviderWrapper {
@@ -48,14 +47,12 @@ schema ArgoCdProjectIntegration:
             kcArgoCdAdminsGroup.managedResource
         ]
     }
-
     groupsMapper: core.KcOpenIdGroupMembershipProtocolMapperWrapper {
         _claimName = ""
         _clientScopeId = ""
         _keycloakInstance = _keycloakInstance
         _name = "${_managedResourcePrefix}groups-mapper"
         _projectName = _claimNamespace
-        
         managedResource.spec.forProvider = {
             addToAccessToken = True
             claimName = "groups"
@@ -100,21 +97,25 @@ schema ArgoCdProjectIntegration:
     argoCdProject: core.ArgoCdProjectWrapper {
         _argoCdInstance = _argoCdInstance
         _argoCdProjectAdminsGroupName = kcArgoCdAdminsGroup.managedResource.spec.forProvider.name
+        _argoCdProjectDestinations = [
+            {name = "instance-cluster", namespace = _targetProjectName}
+            {name = "!instance-cluster", namespace = "*"}
+        ]
         _argoCdProjectViewersGroupName = kcArgoCdViewersGroup.managedResource.spec.forProvider.name
         _projectName = _claimNamespace
         _resourceName = "${_managedResourcePrefix}project"
     }
-    argoCdInstanceCluster: core.ArgoCdClusterWrapper {
-        _argoCdInstance = _argoCdInstance
-        _argoCdClusterKubeconfigSecretKey= "value"
-        _argoCdClusterKubeconfigSecretName = core.k8sProviderConfigSecretName(_claimNamespace, "ctrl")
-        _argoCdClusterKubeconfigSecretNamespace = _claimNamespace
-        _argoCdClusterName = "${_targetProjectName}-controlplane"
-        _argoCdClusterNamespaces = [_targetProjectName]
-        _argoCdClusterProject = argoCdProject.managedResource.metadata.name
-        _projectName= _claimNamespace
-        _resourceName: "${_managedResourcePrefix}instance"
-    }
+    # argoCdInstanceCluster: core.ArgoCdClusterWrapper {
+    #     _argoCdInstance = _argoCdInstance
+    #     _argoCdClusterKubeconfigSecretKey= "value"
+    #     _argoCdClusterKubeconfigSecretName = core.k8sProviderConfigSecretName(_claimNamespace, "ctrl")
+    #     _argoCdClusterKubeconfigSecretNamespace = _claimNamespace
+    #     _argoCdClusterName = "${_targetProjectName}-controlplane"
+    #     _argoCdClusterNamespaces = [_targetProjectName]
+    #     _argoCdClusterProject = argoCdProject.managedResource.metadata.name
+    #     _projectName= _claimNamespace
+    #     _resourceName: "${_managedResourcePrefix}instance"
+    # }
     managedResources: [core.ManagedResource | core.ArgoCdProviderConfig] = [
         kcArgoCdAdminsGroup.managedResource
         kcArgoCdViewersGroup.managedResource
@@ -125,8 +126,8 @@ schema ArgoCdProjectIntegration:
         providerConfigCredentialsSecret.managedResource
         providerConfig.managedResource
         argoCdProject.managedResource
-        argoCdInstanceCluster.managedResource
     ]
+    # argoCdInstanceCluster.managedResource
     usages: [core.Usage] = sum([
         kcArgoCdAdminsGroup.usages
         kcArgoCdViewersGroup.usages
@@ -137,5 +138,6 @@ schema ArgoCdProjectIntegration:
         providerConfigCredentialsSecret.usages
         providerConfig.usages
         argoCdProject.usages
-        argoCdInstanceCluster.usages
     ], [])
+
+# argoCdInstanceCluster.usages

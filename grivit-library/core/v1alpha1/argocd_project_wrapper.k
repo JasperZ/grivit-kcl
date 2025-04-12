@@ -1,6 +1,7 @@
 schema ArgoCdProjectWrapper:
     _argoCdInstance: ArgoCdInstance
     _argoCdProjectAdminsGroupName: str
+    _argoCdProjectDestinations: [any] = []
     _argoCdProjectViewersGroupName: str
     _projectName: str
     _resourceName: str
@@ -20,6 +21,7 @@ schema ArgoCdProjectWrapper:
             "krm.kcl.dev/composition-resource-name" = _resourceName
         }
         spec.forProvider = {
+            destinations = _argoCdProjectDestinations
             roles = [
                 {
                     description = "Project admin"

@@ -5,7 +5,7 @@ schema ArgoCdClusterWrapper:
     _argoCdClusterKubeconfigSecretNamespace: str
     _argoCdClusterName: str
     _argoCdClusterNamespaces: [str] = []
-    _argoCdClusterProject: str
+    _argoCdClusterProject?: str
     _projectName: str
     _resourceName: str
 
@@ -33,7 +33,8 @@ schema ArgoCdClusterWrapper:
             }
             name = _argoCdClusterName
             namespaces = _argoCdClusterNamespaces
-            project = _argoCdClusterProject
+            if _argoCdClusterProject:
+                project = _argoCdClusterProject
         }
         spec.providerConfigRef.name = argoCdProviderConfigName(_projectName, _argoCdInstanceOverride)
     }
