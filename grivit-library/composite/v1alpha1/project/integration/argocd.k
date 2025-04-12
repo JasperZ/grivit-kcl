@@ -107,7 +107,8 @@ schema ArgoCdProjectIntegration:
                 name = "admins"
                 # Syntax: p, <role/user/group>, <resource>, <action>, <object>, <effect>
                 policies = [
-                    "p, proj:${_managedResourcePrefix}controlplane:admins, applications, *, ${_managedResourcePrefix}controlplane/*, allow"
+                    "p, proj:${_managedResourcePrefix}controlplane:admins, applications, *, ${_managedResourcePrefix}controlplane/${_targetProjectName}/*, allow"
+                    "p, proj:${_managedResourcePrefix}controlplane:admins, applicationsets, *, ${_managedResourcePrefix}controlplane/${_targetProjectName}/*, allow"
                     "p, proj:${_managedResourcePrefix}controlplane:admins, clusters, get, ${_managedResourcePrefix}controlplane/*, allow"
                     "p, proj:${_managedResourcePrefix}controlplane:admins, repositories, *, ${_managedResourcePrefix}controlplane/*, allow"
                 ]
@@ -118,7 +119,8 @@ schema ArgoCdProjectIntegration:
                 name = "viewers"
                 # Syntax: p, <role/user/group>, <resource>, <action>, <object>, <effect>
                 policies = [
-                    "p, proj:${_managedResourcePrefix}controlplane:viewers, applications, get, ${_managedResourcePrefix}controlplane/*, allow"
+                    "p, proj:${_managedResourcePrefix}controlplane:viewers, applications, get, ${_managedResourcePrefix}controlplane/${_targetProjectName}/*, allow"
+                    "p, proj:${_managedResourcePrefix}controlplane:viewers, applicationsets, get, ${_managedResourcePrefix}controlplane/${_targetProjectName}/*, allow"
                     "p, proj:${_managedResourcePrefix}controlplane:viewers, clusters, get, ${_managedResourcePrefix}controlplane/*, allow"
                     "p, proj:${_managedResourcePrefix}controlplane:viewers, repositories, get, ${_managedResourcePrefix}controlplane/*, allow"
                 ]
@@ -141,7 +143,8 @@ schema ArgoCdProjectIntegration:
                 name = "admins"
                 # Syntax: p, <role/user/group>, <resource>, <action>, <object>, <effect>
                 policies = [
-                    "p, proj:${_managedResourcePrefix}tenant:admins, applications, *, ${_managedResourcePrefix}tenant/*, allow"
+                    "p, proj:${_managedResourcePrefix}tenant:admins, applications, *, ${_managedResourcePrefix}tenant/*/*, allow"
+                    "p, proj:${_managedResourcePrefix}tenant:admins, applicationsets, *, ${_managedResourcePrefix}tenant/*/*, allow"
                     "p, proj:${_managedResourcePrefix}tenant:admins, clusters, get, ${_managedResourcePrefix}tenant/*, allow"
                     "p, proj:${_managedResourcePrefix}tenant:admins, repositories, *, ${_managedResourcePrefix}tenant/*, allow"
                 ]
@@ -152,7 +155,8 @@ schema ArgoCdProjectIntegration:
                 name = "viewers"
                 # Syntax: p, <role/user/group>, <resource>, <action>, <object>, <effect>
                 policies = [
-                    "p, proj:${_managedResourcePrefix}tenant:viewers, applications, get, ${_managedResourcePrefix}tenant/*, allow"
+                    "p, proj:${_managedResourcePrefix}tenant:viewers, applications, get, ${_managedResourcePrefix}tenant/*/*, allow"
+                    "p, proj:${_managedResourcePrefix}tenant:viewers, applicationsets, get, ${_managedResourcePrefix}tenant/*/*, allow"
                     "p, proj:${_managedResourcePrefix}tenant:viewers, clusters, get, ${_managedResourcePrefix}tenant/*, allow"
                     "p, proj:${_managedResourcePrefix}tenant:viewers, repositories, get, ${_managedResourcePrefix}tenant/*, allow"
                 ]
