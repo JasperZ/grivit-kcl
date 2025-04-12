@@ -97,6 +97,7 @@ schema ArgoCdProjectIntegration:
     argoCdProject: core.ArgoCdProjectWrapper {
         _argoCdInstance = _argoCdInstance
         _argoCdProjectAdminsGroupName = kcArgoCdAdminsGroup.managedResource.spec.forProvider.name
+        _argoCdDescription = _targetProjectName
         _argoCdProjectDestinations = [
             {name = "instance-cluster", namespace = _targetProjectName}
             {name = "!instance-cluster", namespace = "*"}
