@@ -1,7 +1,7 @@
 import crypto
 
 k8sProviderConfigName: (str, str) -> str = lambda projectName: str, clusterName: str -> str {
-    _name = crypto.md5("${projectName}-${clusterName}") + "-k8s"
+    _name = crypto.md5(projectName) + "-k8s-" + clusterName
 }
 
 k8sProviderConfigSecretName: (str, str) -> str = lambda projectName: str, clusterName: str -> str {
