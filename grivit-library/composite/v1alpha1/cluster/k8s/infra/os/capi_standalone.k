@@ -133,7 +133,7 @@ clouds:
                 apiVersion = "v1"
                 fieldPath = "data.value"
                 kind = "Secret"
-                name = "${_name}-kubeconfig"
+                name = "${cluster.managedResource.metadata.name}-kubeconfig"
                 namespace = _projectNamespace
             }
             toFieldPath = "data.value"
@@ -163,40 +163,40 @@ clouds:
         appPrometheusOperatorCrds.helmRelease
     ]
     appCilium: apps.CiliumAppK8s {
-        _clusterName = _name
+        _clusterName = cluster.managedResource.metadata.name
         _fluxHelmReleaseDependencies = crdAppHelmReleases
-        _name = "${_name}-cilium"
+        _name = "${cluster.managedResource.metadata.name}-cilium"
         _projectNamespace = _projectNamespace
     }
     appOpenStackCloudControllerManager: apps.OpenStackCloudControllerManagerAppK8s {
-        _clusterName = _name
+        _clusterName = cluster.managedResource.metadata.name
         _clusterSubnetId = openstackCluster.getSubnetId(_observedComposedResources)
         _externalNetworkId = openstackCluster.getExternalNetworkId(_observedComposedResources)
         _fluxHelmReleaseDependencies = crdAppHelmReleases
-        _name = "${_name}-occm"
+        _name = "${cluster.managedResource.metadata.name}-occm"
         _observedComposedResources = _observedComposedResources
         _projectNamespace = _projectNamespace
     }
     appOpenStackCinderCsi: apps.OpenStackCinderCsiAppK8s {
-        _clusterName = _name
-        _name = "${_name}-ocsi"
+        _clusterName = cluster.managedResource.metadata.name
+        _name = "${cluster.managedResource.metadata.name}-ocsi"
         _fluxHelmReleaseDependencies = crdAppHelmReleases
         _observedComposedResources = _observedComposedResources
         _projectNamespace = _projectNamespace
     }
     appOpenStackExternalDns: apps.OpenStackExternalDnsAppK8s {
-        _clusterName = _name
+        _clusterName = cluster.managedResource.metadata.name
         _domainFilters = [_domain]
         _fluxHelmReleaseDependencies = crdAppHelmReleases
-        _name = "${_name}-oexdns"
+        _name = "${cluster.managedResource.metadata.name}-oexdns"
         _observedComposedResources = _observedComposedResources
         _projectNamespace = _projectNamespace
     }
-    appClusterAutoscaler: apps.ClusterAutoscalerAppK8s {
-        _clusterName = _name
-        _name = "${_name}-ca"
-        _projectNamespace = _projectNamespace
-    }
+    # appClusterAutoscaler: apps.ClusterAutoscalerAppK8s {
+    #     _clusterName = cluster.managedResource.metadata.name
+    #     _name = "${cluster.managedResource.metadata.name}-ca"
+    #     _projectNamespace = _projectNamespace
+    # }
     infrastructureAppHelmReleases: [core.K8sFluxHelmReleaseWrapper] = [
         appCilium.helmRelease
         appOpenStackCloudControllerManager.helmRelease
@@ -204,27 +204,27 @@ clouds:
         appOpenStackExternalDns.helmRelease
     ]
     appsPlatformCertManager: apps.CertManagerAppK8s {
-        _clusterName = _name
+        _clusterName = cluster.managedResource.metadata.name
         _email: _email
         _fluxHelmReleaseDependencies = infrastructureAppHelmReleases
-        _name = "${_name}-certmanager"
+        _name = "${cluster.managedResource.metadata.name}-certmanager"
         _observedComposedResources = _observedComposedResources
         _projectNamespace = _projectNamespace
     }
     appsPlatformIngressNginx: apps.IngressNginxAppK8s {
-        _clusterName = _name
-        _name = "${_name}-ingress"
+        _clusterName = cluster.managedResource.metadata.name
+        _name = "${cluster.managedResource.metadata.name}-ingress"
         _fluxHelmReleaseDependencies = infrastructureAppHelmReleases
         _projectNamespace = _projectNamespace
     }
     appsPlatformMetricsServer: apps.MetricsServerAppK8s {
-        _clusterName = _name
-        _name = "${_name}-metrics"
+        _clusterName = cluster.managedResource.metadata.name
+        _name = "${cluster.managedResource.metadata.name}-metrics"
         _fluxHelmReleaseDependencies = infrastructureAppHelmReleases
         _projectNamespace = _projectNamespace
     }
     appsPlatformSnapshotController: apps.SnapshotControllerAppK8s {
-        _clusterName = _name
+        _clusterName = cluster.managedResource.metadata.name
         _name = "${_name}-sc"
         _projectNamespace = _projectNamespace
     }
@@ -254,7 +254,7 @@ clouds:
         appOpenStackCloudControllerManager.managedResources
         appOpenStackCinderCsi.managedResources
         appOpenStackExternalDns.managedResources
-        appClusterAutoscaler.managedResources
+        # appClusterAutoscaler.managedResources
         appsPlatformCertManager.managedResources
         appsPlatformIngressNginx.managedResources
         appsPlatformMetricsServer.managedResources
@@ -278,7 +278,7 @@ clouds:
         appOpenStackCloudControllerManager.usages
         appOpenStackCinderCsi.usages
         appOpenStackExternalDns.usages
-        appClusterAutoscaler.usages
+        # appClusterAutoscaler.usages
         appsPlatformCertManager.usages
         appsPlatformIngressNginx.usages
         appsPlatformMetricsServer.usages
