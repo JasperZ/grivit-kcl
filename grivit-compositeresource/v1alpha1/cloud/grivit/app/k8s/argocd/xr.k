@@ -23,4 +23,3 @@ schema XrArgoCdAppK8s(core.Composition):
             }
         ]
     }
-

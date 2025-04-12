@@ -57,9 +57,6 @@ schema XrdCapiStandaloneClusterK8sInfrastructureOpenStack(core.CompositeResource
                                     externalNetworkName = {
                                         type = "string"
                                     }
-                                    headlampDomain = {
-                                        type = "string"
-                                    }
                                     kubernetesVersion = {
                                         type = "string"
                                         pattern = "^v(1.28.13|1.29.8|1.30.4|1.31.0)$"
