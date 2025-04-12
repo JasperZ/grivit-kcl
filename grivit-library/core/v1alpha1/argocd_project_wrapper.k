@@ -1,9 +1,9 @@
 schema ArgoCdProjectWrapper:
     _argoCdInstance: ArgoCdInstance
-    _argoCdProjectAdminsGroupName: str
     _argoCdDescription: str = ""
     _argoCdProjectDestinations: [any] = []
-    _argoCdProjectViewersGroupName: str
+    _argoCdProjectRoles: [any] = []
+    _argoCdProjectSourceNamespaces: [str] = []
     _projectName: str
     _resourceName: str
 
@@ -24,30 +24,8 @@ schema ArgoCdProjectWrapper:
         spec.forProvider = {
             description = _argoCdDescription
             destinations = _argoCdProjectDestinations
-            roles = [
-                {
-                    description = "Project admin"
-                    groups = [_argoCdProjectAdminsGroupName]
-                    name = "admins"
-                    # Syntax: p, <role/user/group>, <resource>, <action>, <object>, <effect>
-                    policies = [
-                        "p, proj:${_resourceName}:admins, applications, *, ${_resourceName}/*, allow"
-                        "p, proj:${_resourceName}:admins, clusters, *, ${_resourceName}/*, allow"
-                        "p, proj:${_resourceName}:admins, repositories, *, ${_resourceName}/*, allow"
-                    ]
-                }
-                {
-                    description = "Project viewer"
-                    groups = [_argoCdProjectViewersGroupName]
-                    name = "viewers"
-                    # Syntax: p, <role/user/group>, <resource>, <action>, <object>, <effect>
-                    policies = [
-                        "p, proj:${_resourceName}:viewers, applications, get, ${_resourceName}/*, allow"
-                        "p, proj:${_resourceName}:viewers, clusters, get, ${_resourceName}/*, allow"
-                        "p, proj:${_resourceName}:viewers, repositories, get, ${_resourceName}/*, allow"
-                    ]
-                }
-            ]
+            roles = _argoCdProjectRoles
+            sourceNamespaces = _argoCdProjectSourceNamespaces
         }
         spec.providerConfigRef.name = argoCdProviderConfigName(_projectName, _argoCdInstanceOverride)
     }

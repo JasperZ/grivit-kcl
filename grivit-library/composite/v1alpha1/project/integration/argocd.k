@@ -94,29 +94,74 @@ schema ArgoCdProjectIntegration:
             providerConfigCredentialsSecret.managedResource
         ]
     }
-    argoCdProject: core.ArgoCdProjectWrapper {
+    argoCdControlPlaneProject: core.ArgoCdProjectWrapper {
         _argoCdInstance = _argoCdInstance
-        _argoCdProjectAdminsGroupName = kcArgoCdAdminsGroup.managedResource.spec.forProvider.name
         _argoCdDescription = _targetProjectName
         _argoCdProjectDestinations = [
             {name = "instance-cluster", namespace = _targetProjectName}
+        ]
+        _argoCdProjectRoles = [
+            {
+                description = "Project admin"
+                groups = [kcArgoCdAdminsGroup.managedResource.spec.forProvider.name]
+                name = "admins"
+                # Syntax: p, <role/user/group>, <resource>, <action>, <object>, <effect>
+                policies = [
+                    "p, proj:${_managedResourcePrefix}controlplane:admins, applications, *, ${_managedResourcePrefix}controlplane/*, allow"
+                    "p, proj:${_managedResourcePrefix}controlplane:admins, clusters, get, ${_managedResourcePrefix}controlplane/*, allow"
+                    "p, proj:${_managedResourcePrefix}controlplane:admins, repositories, *, ${_managedResourcePrefix}controlplane/*, allow"
+                ]
+            }
+            {
+                description = "Project viewer"
+                groups = [kcArgoCdViewersGroup.managedResource.spec.forProvider.name]
+                name = "viewers"
+                # Syntax: p, <role/user/group>, <resource>, <action>, <object>, <effect>
+                policies = [
+                    "p, proj:${_managedResourcePrefix}controlplane:viewers, applications, get, ${_managedResourcePrefix}controlplane/*, allow"
+                    "p, proj:${_managedResourcePrefix}controlplane:viewers, clusters, get, ${_managedResourcePrefix}controlplane/*, allow"
+                    "p, proj:${_managedResourcePrefix}controlplane:viewers, repositories, get, ${_managedResourcePrefix}controlplane/*, allow"
+                ]
+            }
+        ]
+        _argoCdProjectSourceNamespaces = [_targetProjectName]
+        _projectName = _claimNamespace
+        _resourceName = "${_managedResourcePrefix}controlplane"
+    }
+    argoCdTenantProject: core.ArgoCdProjectWrapper {
+        _argoCdInstance = _argoCdInstance
+        _argoCdDescription = _targetProjectName
+        _argoCdProjectDestinations = [
             {name = "!instance-cluster", namespace = "*"}
         ]
-        _argoCdProjectViewersGroupName = kcArgoCdViewersGroup.managedResource.spec.forProvider.name
+        _argoCdProjectRoles = [
+            {
+                description = "Project admin"
+                groups = [kcArgoCdAdminsGroup.managedResource.spec.forProvider.name]
+                name = "admins"
+                # Syntax: p, <role/user/group>, <resource>, <action>, <object>, <effect>
+                policies = [
+                    "p, proj:${_managedResourcePrefix}project:admins, applications, *, ${_managedResourcePrefix}project/*, allow"
+                    "p, proj:${_managedResourcePrefix}project:admins, clusters, get, ${_managedResourcePrefix}project/*, allow"
+                    "p, proj:${_managedResourcePrefix}project:admins, repositories, *, ${_managedResourcePrefix}project/*, allow"
+                ]
+            }
+            {
+                description = "Project viewer"
+                groups = [kcArgoCdViewersGroup.managedResource.spec.forProvider.name]
+                name = "viewers"
+                # Syntax: p, <role/user/group>, <resource>, <action>, <object>, <effect>
+                policies = [
+                    "p, proj:${_managedResourcePrefix}project:viewers, applications, get, ${_managedResourcePrefix}project/*, allow"
+                    "p, proj:${_managedResourcePrefix}project:viewers, clusters, get, ${_managedResourcePrefix}project/*, allow"
+                    "p, proj:${_managedResourcePrefix}project:viewers, repositories, get, ${_managedResourcePrefix}project/*, allow"
+                ]
+            }
+        ]
+        _argoCdProjectSourceNamespaces = [_targetProjectName]
         _projectName = _claimNamespace
-        _resourceName = "${_managedResourcePrefix}project"
+        _resourceName = "${_managedResourcePrefix}tenant"
     }
-    # argoCdInstanceCluster: core.ArgoCdClusterWrapper {
-    #     _argoCdInstance = _argoCdInstance
-    #     _argoCdClusterKubeconfigSecretKey= "value"
-    #     _argoCdClusterKubeconfigSecretName = core.k8sProviderConfigSecretName(_claimNamespace, "ctrl")
-    #     _argoCdClusterKubeconfigSecretNamespace = _claimNamespace
-    #     _argoCdClusterName = "${_targetProjectName}-controlplane"
-    #     _argoCdClusterNamespaces = [_targetProjectName]
-    #     _argoCdClusterProject = argoCdProject.managedResource.metadata.name
-    #     _projectName= _claimNamespace
-    #     _resourceName: "${_managedResourcePrefix}instance"
-    # }
     managedResources: [core.ManagedResource | core.ArgoCdProviderConfig] = [
         kcArgoCdAdminsGroup.managedResource
         kcArgoCdViewersGroup.managedResource
@@ -126,9 +171,9 @@ schema ArgoCdProjectIntegration:
         providerConfigHttpJwtToken.managedResource
         providerConfigCredentialsSecret.managedResource
         providerConfig.managedResource
-        argoCdProject.managedResource
+        argoCdControlPlaneProject.managedResource
+        argoCdTenantProject.managedResource
     ]
-    # argoCdInstanceCluster.managedResource
     usages: [core.Usage] = sum([
         kcArgoCdAdminsGroup.usages
         kcArgoCdViewersGroup.usages
@@ -138,7 +183,6 @@ schema ArgoCdProjectIntegration:
         providerConfigHttpJwtToken.usages
         providerConfigCredentialsSecret.usages
         providerConfig.usages
-        argoCdProject.usages
+        argoCdControlPlaneProject.usages
+        argoCdTenantProject.usages
     ], [])
-
-# argoCdInstanceCluster.usages

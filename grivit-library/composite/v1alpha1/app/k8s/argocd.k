@@ -75,6 +75,7 @@ schema ArgoCdAppK8s:
             }
             configs = {
                 cm = {
+                    "application.resourceTrackingMethod" = "annotation+label"
                     "oidc.config" = """\
 name: Keycloak
 issuer: https://${_keycloakInstance.domain}/realms/${_keycloakInstance.realmId}
@@ -90,6 +91,7 @@ allowedAudiences:
                 }
                 params = {
                     "server.insecure" = True
+                    "application.namespaces" = "grivit-ctrl-*, grivit-cust-*"
                 }
                 rbac = {
                     "policy.csv" = """\
