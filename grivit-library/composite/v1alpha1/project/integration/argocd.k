@@ -142,7 +142,7 @@ schema ArgoCdProjectIntegration:
                 # Syntax: p, <role/user/group>, <resource>, <action>, <object>, <effect>
                 policies = [
                     "p, proj:${_managedResourcePrefix}tenant:admins, applications, *, ${_managedResourcePrefix}tenant/*, allow"
-                    "p, proj:${_managedResourcePrefix}tenant:admins, clusters, get, ${_managedResourcePrefix}tenantct/*, allow"
+                    "p, proj:${_managedResourcePrefix}tenant:admins, clusters, get, ${_managedResourcePrefix}tenant/*, allow"
                     "p, proj:${_managedResourcePrefix}tenant:admins, repositories, *, ${_managedResourcePrefix}tenant/*, allow"
                 ]
             }
