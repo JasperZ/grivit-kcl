@@ -103,6 +103,17 @@ schema ArgoCdProjectIntegration:
         _projectName = _claimNamespace
         _resourceName = "${_managedResourcePrefix}project"
     }
+    argoCdInstanceCluster: core.ArgoCdClusterWrapper {
+        _argoCdInstance = _argoCdInstance
+        _argoCdClusterKubeconfigSecretKey= "value"
+        _argoCdClusterKubeconfigSecretName = core.k8sProviderConfigSecretName(_claimNamespace, "ctrl")
+        _argoCdClusterKubeconfigSecretNamespace = _claimNamespace
+        _argoCdClusterName = "${_targetProjectName}-controlplane"
+        _argoCdClusterNamespaces = [_targetProjectName]
+        _argoCdClusterProject = argoCdProject.managedResource.metadata.name
+        _projectName= _claimNamespace
+        _resourceName: "${_managedResourcePrefix}instance"
+    }
     managedResources: [core.ManagedResource | core.ArgoCdProviderConfig] = [
         kcArgoCdAdminsGroup.managedResource
         kcArgoCdViewersGroup.managedResource
@@ -113,6 +124,7 @@ schema ArgoCdProjectIntegration:
         providerConfigCredentialsSecret.managedResource
         providerConfig.managedResource
         argoCdProject.managedResource
+        argoCdInstanceCluster.managedResource
     ]
     usages: [core.Usage] = sum([
         kcArgoCdAdminsGroup.usages
@@ -124,5 +136,5 @@ schema ArgoCdProjectIntegration:
         providerConfigCredentialsSecret.usages
         providerConfig.usages
         argoCdProject.usages
+        argoCdInstanceCluster.usages
     ], [])
-
