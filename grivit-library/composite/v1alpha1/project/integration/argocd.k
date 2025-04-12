@@ -141,9 +141,9 @@ schema ArgoCdProjectIntegration:
                 name = "admins"
                 # Syntax: p, <role/user/group>, <resource>, <action>, <object>, <effect>
                 policies = [
-                    "p, proj:${_managedResourcePrefix}project:admins, applications, *, ${_managedResourcePrefix}project/*, allow"
-                    "p, proj:${_managedResourcePrefix}project:admins, clusters, get, ${_managedResourcePrefix}project/*, allow"
-                    "p, proj:${_managedResourcePrefix}project:admins, repositories, *, ${_managedResourcePrefix}project/*, allow"
+                    "p, proj:${_managedResourcePrefix}tenant:admins, applications, *, ${_managedResourcePrefix}tenant/*, allow"
+                    "p, proj:${_managedResourcePrefix}tenant:admins, clusters, get, ${_managedResourcePrefix}tenantct/*, allow"
+                    "p, proj:${_managedResourcePrefix}tenant:admins, repositories, *, ${_managedResourcePrefix}tenant/*, allow"
                 ]
             }
             {
@@ -152,9 +152,9 @@ schema ArgoCdProjectIntegration:
                 name = "viewers"
                 # Syntax: p, <role/user/group>, <resource>, <action>, <object>, <effect>
                 policies = [
-                    "p, proj:${_managedResourcePrefix}project:viewers, applications, get, ${_managedResourcePrefix}project/*, allow"
-                    "p, proj:${_managedResourcePrefix}project:viewers, clusters, get, ${_managedResourcePrefix}project/*, allow"
-                    "p, proj:${_managedResourcePrefix}project:viewers, repositories, get, ${_managedResourcePrefix}project/*, allow"
+                    "p, proj:${_managedResourcePrefix}tenant:viewers, applications, get, ${_managedResourcePrefix}tenant/*, allow"
+                    "p, proj:${_managedResourcePrefix}tenant:viewers, clusters, get, ${_managedResourcePrefix}tenant/*, allow"
+                    "p, proj:${_managedResourcePrefix}tenant:viewers, repositories, get, ${_managedResourcePrefix}tenant/*, allow"
                 ]
             }
         ]
