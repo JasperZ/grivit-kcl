@@ -105,7 +105,7 @@ schema TenantProjectConfiguration:
     openStackProjectInfrastructure: infra.OpenStackProjectInfrastructure {
         _domain = _domain
         _email = _contactEmail
-        _name = "${_claimNamespace}-openstack-project-infra"
+        _name = "${_projectName}-openstack-project-infra"
         _observedComposedResources = _observedComposedResources
         _projectName = _projectName
         _projectNamespace = _claimNamespace
