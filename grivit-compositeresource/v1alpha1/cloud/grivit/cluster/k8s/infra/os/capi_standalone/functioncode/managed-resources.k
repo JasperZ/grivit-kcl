@@ -1,14 +1,13 @@
-import grivit_library.composite.v1alpha1.cluster.k8s.infrastructure.openstack as cluster_k8s_infra
+import grivit_library.composite.v1alpha1.cluster.k8s.infra.os as cluster_k8s_infra
 
 observedComposedResources: any = option("params").ocds
 observedCompositeResource: any = option("params").oxr
-extraResources: any = option("params")?.extraResources
 
 claimName: str = observedCompositeResource.metadata.name
 claimNamespace: str = observedCompositeResource.metadata.labels["crossplane.io/claim-namespace"]
 spec: any = observedCompositeResource.spec
 
-k8sClusterOsStandalone: cluster_k8s_infra.CapiStandaloneClusterK8sInfrastructureOpenStack = cluster_k8s_infra.CapiStandaloneClusterK8sInfrastructureOpenStack {
+k8sClusterOsStandalone: cluster_k8s_infra.CapiStandaloneClusterK8sInfraOs = cluster_k8s_infra.CapiStandaloneClusterK8sInfraOs {
     _controlPlane = {
         flavorName = spec.controlPlane.flavor
         replicas = spec.controlPlane.replicas

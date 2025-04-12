@@ -1,7 +1,7 @@
 import file
 import grivit_library.core.v1alpha1 as core
 
-schema XrCapiStandaloneClusterK8sInfrastructureOpenStack(core.Composition):
+schema XrCapiStandaloneClusterK8sInfraOs(core.Composition):
     _nameSingular: str
     _apiGroup: str
     _apiVersion: str
@@ -16,7 +16,7 @@ schema XrCapiStandaloneClusterK8sInfrastructureOpenStack(core.Composition):
             core.CompositionSpecPipelineStepKcl {
                 step = "managed-resources"
                 input.spec.dependencies = 'grivit-library = { git = "https://github.com/JasperZ/grivit-kcl.git", branch = "unify-provider-naming", version = "0.0.2" }'
-                input.spec.source = file.read(filepath="${file.modpath()}/v1alpha1/cloud/grivit/cluster/k8s/infrastructure/openstack/capi_standalone/functioncode/managed-resources.k")
+                input.spec.source = file.read(filepath="${file.modpath()}/v1alpha1/cloud/grivit/cluster/k8s/infra/os/capi_standalone/functioncode/managed-resources.k")
             }
             core.CompositionSpecPipelineStepAutoReady {
                 step = "automatically-detect-readiness"

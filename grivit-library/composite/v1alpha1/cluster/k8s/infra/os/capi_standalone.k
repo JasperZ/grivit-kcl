@@ -2,22 +2,22 @@ import crypto
 import core.v1alpha1 as core
 import .....app.k8s as apps
 
-schema CapiStandaloneClusterK8sInfrastructureOpenStackConfigWorkersAutoscaling:
+schema CapiStandaloneClusterK8sInfraOsConfigWorkersAutoscaling:
     minSize: int
     maxSize: int
 
-schema CapiStandaloneClusterK8sInfrastructureOpenStackConfigWorkers:
+schema CapiStandaloneClusterK8sInfraOsConfigWorkers:
     flavorName: str
     rootVolumeSize: int
-    autoscaling: CapiStandaloneClusterK8sInfrastructureOpenStackConfigWorkersAutoscaling
+    autoscaling: CapiStandaloneClusterK8sInfraOsConfigWorkersAutoscaling
 
-schema CapiStandaloneClusterK8sInfrastructureOpenStackConfigControlPlane:
+schema CapiStandaloneClusterK8sInfraOsConfigControlPlane:
     flavorName: str
     rootVolumeSize: int
     replicas: int
 
-schema CapiStandaloneClusterK8sInfrastructureOpenStack:
-    _controlPlane: CapiStandaloneClusterK8sInfrastructureOpenStackConfigControlPlane
+schema CapiStandaloneClusterK8sInfraOs:
+    _controlPlane: CapiStandaloneClusterK8sInfraOsConfigControlPlane
     _domain: str
     _email: str
     _externalNetworkName: str
@@ -25,7 +25,7 @@ schema CapiStandaloneClusterK8sInfrastructureOpenStack:
     _name: str
     _observedComposedResources: any
     _projectNamespace: str
-    _workers: CapiStandaloneClusterK8sInfrastructureOpenStackConfigWorkers
+    _workers: CapiStandaloneClusterK8sInfraOsConfigWorkers
 
     applicationCredential: core.OsIdentityApplicationCredentialWrapper {
         _name = "${_name}-application-credential"

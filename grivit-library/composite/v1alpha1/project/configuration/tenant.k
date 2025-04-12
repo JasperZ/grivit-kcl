@@ -102,7 +102,7 @@ schema TenantProjectConfiguration:
             k8sProviderConfigCredentialsSecret.managedResource
         ]
     }
-    openStackProjectInfrastructure: infra.OpenStackProjectInfrastructure {
+    osProjectInfrastructure: infra.OsProjectInfrastructure {
         _domain = _domain
         _email = _contactEmail
         _name = "${_projectName}-openstack-project-infra"
@@ -120,7 +120,7 @@ schema TenantProjectConfiguration:
         # k8sAppMetricsServer.managedResources
         # k8sAppSnapshotController.managedResources
         # k8sAppVerticalPodAutoscaler.managedResources
-        openStackProjectInfrastructure.managedResources
+        osProjectInfrastructure.managedResources
     ], [
         awsProviderConfigCredentialsSecret.managedResource
         awsProviderConfig.managedResource
@@ -139,6 +139,6 @@ schema TenantProjectConfiguration:
         httpProviderConfig.usages
         k8sProviderConfigCredentialsSecret.usages
         k8sProviderConfig.usages
-        openStackProjectInfrastructure.usages
+        osProjectInfrastructure.usages
     ], [])
 
