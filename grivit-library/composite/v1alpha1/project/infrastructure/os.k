@@ -42,10 +42,10 @@ schema OsProjectInfrastructure:
     }
     cloudConfig: core.K8sObjectSecretWrapper {
         _clusterName = "ctrl"
-        _name = "${_name}-cloud-config"
+        _name = core.osProviderConfigSecretName(_projectName)
         _namespace = _projectNamespace
         _projectName = _projectNamespace
-        _secretName = "${_name}-cloud-config"
+        _secretName = core.osProviderConfigSecretName(_projectName)
         _stringData = {
             # ToDo: Hard coded url
             value = """\
