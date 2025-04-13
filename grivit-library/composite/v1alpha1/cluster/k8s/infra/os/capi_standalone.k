@@ -54,12 +54,12 @@ clouds:
       auth_type: v3applicationcredential
       application_credential_id: ${applicationCredential.getApplicationCredentialId(_observedComposedResources)}
       application_credential_secret: ${applicationCredential.getApplicationCredentialSecret(_observedComposedResources)}
-      project_id: 48f988d765c6418e92ad153a9bfcb5a4
-      project_name: "os.grivit.cust.jasper.dev"
-      user_domain_name: "Default"
-      region_name: "RegionOne"
-      interface: "public"
-      identity_api_version: 3
+      # project_id: 48f988d765c6418e92ad153a9bfcb5a4
+      # project_name: "os.grivit.cust.jasper.dev"
+      # user_domain_name: "Default"
+      # region_name: "RegionOne"
+      # interface: "public"
+      # identity_api_version: 3
 """
         }
         _uses = [applicationCredential.managedResource]
