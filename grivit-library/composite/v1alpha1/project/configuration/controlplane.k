@@ -11,14 +11,14 @@ schema ControlPlaneProjectConfiguration:
     _domain: str
     _k8sClusterName: str
     _observedComposedResources: any
-    _projectNamespace: str
+    _claimNamespace: str
 
     awsProviderConfigCredentialsSecret: core.K8sObjectSecretWrapper {
         _clusterName = _k8sClusterName
-        _name = awsUtils.awsProviderConfigSecretName(_projectNamespace)
-        _namespace = _projectNamespace
-        _projectName = _projectNamespace
-        _secretName = awsUtils.awsProviderConfigSecretName(_projectNamespace)
+        _name = awsUtils.awsProviderConfigSecretName(_claimNamespace)
+        _namespace = _claimNamespace
+        _projectName = _claimNamespace
+        _secretName = awsUtils.awsProviderConfigSecretName(_claimNamespace)
         _stringData = {}
         managedResource.spec.references = [
             {
@@ -37,17 +37,17 @@ schema ControlPlaneProjectConfiguration:
     awsProviderConfig: core.AwsProviderConfigWrapper {
         _credentialsSecretName = awsProviderConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.name
         _credentialsSecretNamespace = awsProviderConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.namespace
-        _projectNamespace = _projectNamespace
+        _projectNamespace = _claimNamespace
         _uses = [
             awsProviderConfigCredentialsSecret.managedResource
         ]
     }
     helmProviderConfigCredentialsSecret: core.K8sObjectSecretWrapper {
         _clusterName = _k8sClusterName
-        _name = helmUtils.helmProviderConfigSecretName(_projectNamespace, _k8sClusterName)
-        _namespace = _projectNamespace
-        _projectName = _projectNamespace
-        _secretName = helmUtils.helmProviderConfigSecretName(_projectNamespace, _k8sClusterName)
+        _name = helmUtils.helmProviderConfigSecretName(_claimNamespace, _k8sClusterName)
+        _namespace = _claimNamespace
+        _projectName = _claimNamespace
+        _secretName = helmUtils.helmProviderConfigSecretName(_claimNamespace, _k8sClusterName)
         _stringData = {}
         managedResource.spec.references = [
             {
@@ -67,20 +67,20 @@ schema ControlPlaneProjectConfiguration:
         _clusterName = _k8sClusterName
         _credentialsSecretName = helmProviderConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.name
         _credentialsSecretNamespace = helmProviderConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.namespace
-        _projectNamespace = _projectNamespace
+        _projectNamespace = _claimNamespace
         _uses = [
             helmProviderConfigCredentialsSecret.managedResource
         ]
     }
     httpProviderConfig: core.HttpProviderConfigWrapper {
-        _projectNamespace = _projectNamespace
+        _projectNamespace = _claimNamespace
     }
     k8sProviderConfigCredentialsSecret: core.K8sObjectSecretWrapper {
         _clusterName = _k8sClusterName
-        _name = k8sUtils.k8sProviderConfigSecretName(_projectNamespace, _k8sClusterName)
-        _namespace = _projectNamespace
-        _projectName = _projectNamespace
-        _secretName = k8sUtils.k8sProviderConfigSecretName(_projectNamespace, _k8sClusterName)
+        _name = k8sUtils.k8sProviderConfigSecretName(_claimNamespace, _k8sClusterName)
+        _namespace = _claimNamespace
+        _projectName = _claimNamespace
+        _secretName = k8sUtils.k8sProviderConfigSecretName(_claimNamespace, _k8sClusterName)
         _stringData = {}
         managedResource.spec.references = [
             {
@@ -100,17 +100,17 @@ schema ControlPlaneProjectConfiguration:
         _clusterName = _k8sClusterName
         _credentialsSecretName = k8sProviderConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.name
         _credentialsSecretNamespace = k8sProviderConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.namespace
-        _projectNamespace = _projectNamespace
+        _projectNamespace = _claimNamespace
         _uses = [
             k8sProviderConfigCredentialsSecret.managedResource
         ]
     }
     osProviderConfigCredentialsSecret: core.K8sObjectSecretWrapper {
         _clusterName = _k8sClusterName
-        _name = osUtils.osProviderConfigSecretName(_projectNamespace)
-        _namespace = _projectNamespace
-        _projectName = _projectNamespace
-        _secretName = osUtils.osProviderConfigSecretName(_projectNamespace)
+        _name = osUtils.osProviderConfigSecretName(_claimNamespace)
+        _namespace = _claimNamespace
+        _projectName = _claimNamespace
+        _secretName = osUtils.osProviderConfigSecretName(_claimNamespace)
         _stringData = {}
         managedResource.spec.references = [
             {
@@ -129,30 +129,30 @@ schema ControlPlaneProjectConfiguration:
     osProviderConfig: core.OsProviderConfigWrapper {
         _credentialsSecretName = osProviderConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.name
         _credentialsSecretNamespace = osProviderConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.namespace
-        _projectNamespace = _projectNamespace
+        _projectNamespace = _claimNamespace
         _uses = [
             osProviderConfigCredentialsSecret.managedResource
         ]
     }
     k8sAppPrometheusOperatorCrds: apps.PrometheusOperatorCrdsAppK8s {
         _clusterName = _k8sClusterName
-        _name = "${_projectNamespace}-${_k8sClusterName}-crd-prom"
-        _projectNamespace = _projectNamespace
+        _name = "${_claimNamespace}-${_k8sClusterName}-crd-prom"
+        _projectNamespace = _claimNamespace
     }
     k8sAppOpenStackCinderCsi: apps.OpenStackCinderCsiAppK8s {
         _clusterName = _k8sClusterName
         _fluxHelmReleaseDependencies = [k8sAppPrometheusOperatorCrds.helmRelease]
-        _name = "${_projectNamespace}-${_k8sClusterName}-ia-ocsi"
+        _name = "${_claimNamespace}-${_k8sClusterName}-ia-ocsi"
         _observedComposedResources = _observedComposedResources
-        _projectNamespace = _projectNamespace
+        _projectNamespace = _claimNamespace
     }
     k8sAppOpenStackExternalDns: apps.OpenStackExternalDnsAppK8s {
         _clusterName = _k8sClusterName
         _domainFilters = [_domain]
         _fluxHelmReleaseDependencies = [k8sAppPrometheusOperatorCrds.helmRelease]
-        _name = "${_projectNamespace}-${_k8sClusterName}-ia-oexdns"
+        _name = "${_claimNamespace}-${_k8sClusterName}-ia-oexdns"
         _observedComposedResources = _observedComposedResources
-        _projectNamespace = _projectNamespace
+        _projectNamespace = _claimNamespace
     }
     k8sAppCertManager: apps.CertManagerAppK8s {
         _clusterName = _k8sClusterName
@@ -161,42 +161,42 @@ schema ControlPlaneProjectConfiguration:
             k8sAppOpenStackCinderCsi.helmRelease
             k8sAppOpenStackExternalDns.helmRelease
         ]
-        _name = "${_projectNamespace}-${_k8sClusterName}-certmanager"
+        _name = "${_claimNamespace}-${_k8sClusterName}-certmanager"
         _observedComposedResources = _observedComposedResources
-        _projectNamespace = _projectNamespace
+        _projectNamespace = _claimNamespace
     }
     k8sAppIngressNginx: apps.IngressNginxAppK8s {
         _clusterName = _k8sClusterName
-        _name = "${_projectNamespace}-${_k8sClusterName}-ingress"
+        _name = "${_claimNamespace}-${_k8sClusterName}-ingress"
         _fluxHelmReleaseDependencies = [
             k8sAppOpenStackCinderCsi.helmRelease
             k8sAppOpenStackExternalDns.helmRelease
         ]
-        _projectNamespace = _projectNamespace
+        _projectNamespace = _claimNamespace
     }
     k8sAppMetricsServer: apps.MetricsServerAppK8s {
         _clusterName = _k8sClusterName
-        _name = "${_projectNamespace}-${_k8sClusterName}-metrics"
+        _name = "${_claimNamespace}-${_k8sClusterName}-metrics"
         _fluxHelmReleaseDependencies = [
             k8sAppOpenStackCinderCsi.helmRelease
             k8sAppOpenStackExternalDns.helmRelease
         ]
-        _projectNamespace = _projectNamespace
+        _projectNamespace = _claimNamespace
     }
     k8sAppSnapshotController: apps.SnapshotControllerAppK8s {
         _clusterName = _k8sClusterName
-        _name = "${_projectNamespace}-${_k8sClusterName}-sc"
-        _projectNamespace = _projectNamespace
+        _name = "${_claimNamespace}-${_k8sClusterName}-sc"
+        _projectNamespace = _claimNamespace
     }
     # ToDo: Velero
     k8sAppVerticalPodAutoscaler: apps.VerticalPodAutoscalerAppK8s {
         _clusterName = _k8sClusterName
-        _name = "${_projectNamespace}-${_k8sClusterName}-vpa"
+        _name = "${_claimNamespace}-${_k8sClusterName}-vpa"
         _fluxHelmReleaseDependencies = [
             k8sAppOpenStackCinderCsi.helmRelease
             k8sAppOpenStackExternalDns.helmRelease
         ]
-        _projectNamespace = _projectNamespace
+        _projectNamespace = _claimNamespace
     }
     fluxHelmReleases: [core.K8sFluxHelmReleaseWrapper] = [
         k8sAppPrometheusOperatorCrds.helmRelease

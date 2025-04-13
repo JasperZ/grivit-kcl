@@ -34,9 +34,6 @@ schema XrdControlPlaneProject(core.CompositeResourceDefinition):
                                     domain = {
                                         type = "string"
                                     }
-                                    k8sClusterName = {
-                                        type = "string"
-                                    }
                                 }
                             }
                         }

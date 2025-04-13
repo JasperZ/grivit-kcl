@@ -23,4 +23,3 @@ schema XrControlPlaneProject(core.Composition):
             }
         ]
     }
-
