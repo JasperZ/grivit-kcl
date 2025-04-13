@@ -44,7 +44,7 @@ schema CapiStandaloneClusterK8sInfraOs:
         _name = "${_managedResourcePrefix}cloud-config-secret"
         _namespace = _claimNamespace
         _projectName = _claimNamespace
-        _secretName = "${_managedResourcePrefix}os-cloud-config-secret"
+        _secretName = "${_managedResourcePrefix}cloud-config-secret"
         _stringData = {
             "clouds.yaml": """\
 clouds:
