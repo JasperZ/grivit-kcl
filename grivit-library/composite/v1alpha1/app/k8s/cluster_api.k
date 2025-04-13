@@ -25,7 +25,7 @@ schema ClusterApiAppK8s:
         _helmReleaseWrapperDependencies = _fluxHelmReleaseDependencies
         _projectNamespace = _claimNamespace
         managedResource.spec.forProvider.manifest.spec.values = {
-            
+            infrastructure = "openstack"
         }
     }
     
