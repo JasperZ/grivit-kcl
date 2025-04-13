@@ -1,26 +1,26 @@
 import manifests
 
-nameSingularTenantProject: str = "Tenant"
-namePluralTenantProject: str = "Tenants"
-apiGroupTenantProject: str = "configuration.project.grivit.cloud"
-apiVersionTenantProject: str = "v1alpha1"
+nameSingularTenantProjectConfiguration: str = "Tenant"
+namePluralTenantProjectConfiguration: str = "Tenants"
+apiGroupTenantProjectConfiguration: str = "configuration.project.grivit.cloud"
+apiVersionTenantProjectConfiguration: str = "v1alpha1"
 
-xrTenantProject: XrTenantProject = XrTenantProject {
-    _nameSingular = nameSingularTenantProject
-    _apiGroup = apiGroupTenantProject
-    _apiVersion = apiVersionTenantProject
+xrTenantProjectConfiguration: XrTenantProjectConfiguration = XrTenantProjectConfiguration {
+    _nameSingular = nameSingularTenantProjectConfiguration
+    _apiGroup = apiGroupTenantProjectConfiguration
+    _apiVersion = apiVersionTenantProjectConfiguration
 }
 
-xrdTenantProject: XrdTenantProject = XrdTenantProject {
-    _nameSingular = nameSingularTenantProject
-    _namePlural = namePluralTenantProject
-    _apiGroup = apiGroupTenantProject
-    _apiVersion = apiVersionTenantProject
+xrdTenantProjectConfiguration: XrdTenantProjectConfiguration = XrdTenantProjectConfiguration {
+    _nameSingular = nameSingularTenantProjectConfiguration
+    _namePlural = namePluralTenantProjectConfiguration
+    _apiGroup = apiGroupTenantProjectConfiguration
+    _apiVersion = apiVersionTenantProjectConfiguration
 }
 
 manifests.yaml_stream([
-    xrTenantProject
-    xrdTenantProject
+    xrTenantProjectConfiguration
+    xrdTenantProjectConfiguration
 ], {
     sort_keys = False
     ignore_private = True

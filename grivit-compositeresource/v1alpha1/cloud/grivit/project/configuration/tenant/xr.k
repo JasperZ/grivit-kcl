@@ -1,7 +1,7 @@
 import file
 import grivit_library.core.v1alpha1 as core
 
-schema XrTenantProject(core.Composition):
+schema XrTenantProjectConfiguration(core.Composition):
     _nameSingular: str
     _apiGroup: str
     _apiVersion: str
