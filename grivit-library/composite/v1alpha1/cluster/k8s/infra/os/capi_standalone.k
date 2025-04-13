@@ -29,7 +29,7 @@ schema CapiStandaloneClusterK8sInfraOs:
     _claimName: str
     _workers: CapiStandaloneClusterK8sInfraOsConfigWorkers
 
-    _managedResourcePrefix = crypto.md5("${_claimNamespace}-${_claimName}-cluster-k8s-infra-os-capi-standalone") + "-${_clusterName}-"
+    _managedResourcePrefix = "g-" + crypto.md5("${_claimNamespace}-${_claimName}") + "-${_clusterName}-"
 
     applicationCredential: core.OsIdentityApplicationCredentialWrapper {
         _name = "${_managedResourcePrefix}os-app-cred"
