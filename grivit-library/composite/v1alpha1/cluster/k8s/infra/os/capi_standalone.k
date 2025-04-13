@@ -213,7 +213,7 @@ clouds:
         _clusterName = cluster.managedResource.metadata.name
         _email: _email
         _fluxHelmReleaseDependencies = infrastructureAppHelmReleases
-        _name = "${_managedResourcePrefix}certmanager"
+        _name = "${_managedResourcePrefix}certmgr"
         _observedComposedResources = _observedComposedResources
         _projectNamespace = _claimNamespace
     }
@@ -236,7 +236,7 @@ clouds:
     }
     k8sCrossplaneSecretsNamespace: core.K8sObjectNamespaceWrapper {
         _clusterName = _name
-        _name = "${_managedResourcePrefix}k8s-ns-crossplane-secrets"
+        _name = "${_managedResourcePrefix}k8s-ns-crossplane"
         _namespaceName = "crossplane-secrets"
         _projectNamespace = _claimNamespace
     }

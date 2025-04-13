@@ -110,7 +110,7 @@ schema CertManagerAppK8s:
     }
     clusterIssuerCredentials: core.K8sObjectSecretWrapper {
         _clusterName = _clusterName
-        _name = "${_name}-cluster-issuer-credentials"
+        _name = "${_name}-cissuer-cred"
         _namespace = "cert-manager"
         _projectName = _projectNamespace
         _secretName = "${_name}-cluster-issuer-credentials"
@@ -121,7 +121,7 @@ schema CertManagerAppK8s:
     }
     clusterIssuer: core.K8sObjectGenericWrapper {
         _clusterName = _clusterName
-        _name = "${_name}-cluster-issuer"
+        _name = "${_name}-cissuer"
         _projectNamespace = _projectNamespace
         managedResource.spec.forProvider.manifest = {
             apiVersion = "cert-manager.io/v1"
