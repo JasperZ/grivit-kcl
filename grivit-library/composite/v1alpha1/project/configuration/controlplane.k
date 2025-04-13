@@ -209,6 +209,7 @@ schema ControlPlaneProjectConfiguration:
         _kubernetesClusterName = _k8sClusterName
         _fluxHelmReleaseDependencies = [
             k8sAppPrometheusOperatorCrds.helmRelease
+            k8sAppCertManager.helmRelease
         ]
     }
     fluxHelmReleases: [core.K8sFluxHelmReleaseWrapper] = [
