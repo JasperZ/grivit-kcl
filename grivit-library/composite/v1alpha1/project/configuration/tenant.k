@@ -11,7 +11,7 @@ schema TenantProjectConfiguration:
     _observedComposedResources: any
     _projectName: str
 
-    _managedResourcePrefix = crypto.md5("${_claimNamespace}-${_claimName}") + "-"
+    _managedResourcePrefix = crypto.md5("_${_claimNamespace}-${_claimName}") + "-"
     _k8sClusterName: str = "ctrl"
 
     awsProviderConfigCredentialsSecret: core.K8sObjectSecretWrapper {
@@ -137,4 +137,3 @@ schema TenantProjectConfiguration:
         k8sProviderConfig.usages
         osProjectInfrastructure.usages
     ], [])
-

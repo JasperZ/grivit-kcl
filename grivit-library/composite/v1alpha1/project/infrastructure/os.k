@@ -49,15 +49,15 @@ schema OsProjectInfrastructure:
         _stringData = {
             # ToDo: Hard coded url
             value = """\
-    {
-    "auth_url": "https://test.grivit.cloud:5000",
-    "insecure": "false",
-    "tenant_id": "${project.getProjectId(_observedComposedResources)}",
-    "tenant_name": "${project.managedResource.spec.forProvider.name}",
-    "user_domain_name": "Default",
-    "user_name": "${user.managedResource.spec.forProvider.name}",
-    "password": "${password._stringData.password}"
-    }
+{
+  "auth_url": "https://test.grivit.cloud:5000",
+  "insecure": "false",
+  "tenant_id": "${project.getProjectId(_observedComposedResources)}",
+  "tenant_name": "${project.managedResource.spec.forProvider.name}",
+  "user_domain_name": "Default",
+  "user_name": "${user.managedResource.spec.forProvider.name}",
+  "password": "${password._stringData.password}"
+}
     """
         }
         _uses = [
