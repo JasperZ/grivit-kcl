@@ -16,7 +16,7 @@ schema ControlPlaneProjectConfiguration:
     _k8sClusterName: str
     _observedComposedResources: any
 
-    _managedResourcePrefix = crypto.md5("${_claimNamespace}-${_claimName}") + "-"
+    _managedResourcePrefix = "g-" + crypto.md5("${_claimNamespace}-${_claimName}") + "-"
 
     awsProviderConfigCredentialsSecret: core.K8sObjectSecretWrapper {
         _clusterName = _k8sClusterName
