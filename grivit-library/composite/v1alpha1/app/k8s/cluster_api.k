@@ -18,7 +18,7 @@ schema ClusterApiAppK8s:
         _clusterName = _kubernetesClusterName
         _name = "${_managedResourcePrefix}rel"
         _helmChartName = "cluster-api-operator"
-        _helmChartVersion = "0.18.1"
+        _helmChartVersion = "0.14.0"
         _helmReleaseName = "cluster-api-operator"
         _helmReleaseNamespace = "capi-operator-system"
         _helmRepositoryWrapper = helmRepo
