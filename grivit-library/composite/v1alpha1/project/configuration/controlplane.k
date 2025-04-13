@@ -190,7 +190,7 @@ schema ControlPlaneProjectConfiguration:
     }
     k8sAppSnapshotController: apps.SnapshotControllerAppK8s {
         _clusterName = _k8sClusterName
-        _name = "${_managedResourcePrefix}snaphot-controller"
+        _name = "${_managedResourcePrefix}snap-ctrl"
         _projectNamespace = _claimNamespace
     }
     # ToDo: Velero
