@@ -71,9 +71,9 @@ schema CertManagerAppK8s:
         managedResource.spec.forProvider.manifest.spec.values = {
             cainjector = {
                 resources = {
-                    limits.cpu = "50m"
-                    limits.memory = "128Mi"
-                    requests.cpu = "50m"
+                    limits.cpu = "100m"
+                    limits.memory = "256Mi"
+                    requests.cpu = "100m"
                     requests.memory = "128Mi"
                 }
             }
