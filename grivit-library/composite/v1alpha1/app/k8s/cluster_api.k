@@ -24,6 +24,7 @@ schema ClusterApiAppK8s:
         _helmRepositoryWrapper = helmRepo
         _helmReleaseWrapperDependencies = _fluxHelmReleaseDependencies
         _projectNamespace = _claimNamespace
+        managedResource.spec.forProvider.manifest.spec.persistentClient = False
         managedResource.spec.forProvider.manifest.spec.values = {
             infrastructure = "openstack"
         }
