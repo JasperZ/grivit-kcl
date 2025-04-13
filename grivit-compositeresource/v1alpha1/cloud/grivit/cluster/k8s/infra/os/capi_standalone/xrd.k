@@ -28,6 +28,9 @@ schema XrdCapiStandaloneClusterK8sInfraOs(core.CompositeResourceDefinition):
                                 type = "object"
                                 default = {}
                                 properties = {
+                                    clusterName = {
+                                        type = "string"
+                                    }
                                     controlPlane = {
                                         type = "object"
                                         default = {}
