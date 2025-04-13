@@ -7,15 +7,15 @@ claimName: str = observedCompositeResource.metadata.name
 claimNamespace: str = observedCompositeResource.metadata.labels["crossplane.io/claim-namespace"]
 spec: any = observedCompositeResource.spec
 
-xpControlPlaneProject: proj_conf.ControlPlaneProjectConfiguration = proj_conf.ControlPlaneProjectConfiguration {
+controlPlaneProjectConfiguration: proj_conf.ControlPlaneProjectConfiguration = proj_conf.ControlPlaneProjectConfiguration {
+    _claimNamespace = claimNamespace
     _contactEmail = spec.contactEmail
     _domain = spec.domain
     _k8sClusterName = "ctrl"
     _observedComposedResources = observedComposedResources
-    _claimNamespace = claimNamespace
 }
 
 items = sum([
-    xpControlPlaneProject.managedResources
-    xpControlPlaneProject.usages
+    controlPlaneProjectConfiguration.managedResources
+    controlPlaneProjectConfiguration.usages
 ], [])
