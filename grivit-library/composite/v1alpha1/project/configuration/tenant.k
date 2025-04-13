@@ -2,12 +2,14 @@ import core.v1alpha1 as core
 import ...project.infrastructure as infra
 
 schema TenantProjectConfiguration:
+    _claimName: str
     _claimNamespace: str
     _contactEmail: str
     _domain: str
     _observedComposedResources: any
     _projectName: str
 
+    _managedResourcePrefix = crypto.md5("${_claimNamespace}-${_claimName}") + "-"
     _k8sClusterName: str = "ctrl"
 
     awsProviderConfigCredentialsSecret: core.K8sObjectSecretWrapper {
@@ -105,21 +107,13 @@ schema TenantProjectConfiguration:
     osProjectInfrastructure: infra.OsProjectInfrastructure {
         _domain = _domain
         _email = _contactEmail
-        _name = "${_projectName}-openstack-project-infra"
+        _name = "${_managedResourcePrefix}os"
         _observedComposedResources = _observedComposedResources
         _projectName = _projectName
         _projectNamespace = _claimNamespace
     }
 
     managedResources: [core.ManagedResource | core.AwsProviderConfig | core.HelmProviderConfig | core.K8sProviderConfig | core.OsProviderConfig] = sum([
-        # k8sAppPrometheusOperatorCrds.managedResources
-        # k8sAppOpenStackCinderCsi.managedResources
-        # k8sAppOpenStackExternalDns.managedResources
-        # k8sAppCertManager.managedResources
-        # k8sAppIngressNginx.managedResources
-        # k8sAppMetricsServer.managedResources
-        # k8sAppSnapshotController.managedResources
-        # k8sAppVerticalPodAutoscaler.managedResources
         osProjectInfrastructure.managedResources
     ], [
         awsProviderConfigCredentialsSecret.managedResource
