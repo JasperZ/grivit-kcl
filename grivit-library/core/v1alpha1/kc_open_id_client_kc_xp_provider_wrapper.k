@@ -4,6 +4,7 @@ schema KcOpenIdClientKcXpProviderWrapper:
     _keycloakInstance: KeycloakInstance
     _keycloakProviderConfig?: str
     _projectName: str
+    _uses: [ManagedResource] = []
 
     _clientId: str = "kc-${_keycloakInstance.name}-${_keycloakInstance.realmId}-xp-provider"
     _resourceName: str = "${_projectName}-${_clientId}"
@@ -33,7 +34,18 @@ schema KcOpenIdClientKcXpProviderWrapper:
         spec.writeConnectionSecretToRef.namespace = _projectName
         spec.providerConfigRef.name = _keycloakProviderConfig if _keycloakProviderConfig else kcProviderConfigName(_projectName, _keycloakInstance)
     }
-    usages: [Usage] = []
+    usages: [Usage] = [Usage {
+        metadata.name = "${managedResource.metadata.name}-uses-${ofResource.metadata.name}"
+        metadata.annotations = {
+            "krm.kcl.dev/composition-resource-name" = "${managedResource.metadata.name}-uses-${ofResource.metadata.name}"
+        }
+        spec.by.apiVersion = managedResource.apiVersion
+        spec.by.kind = managedResource.kind
+        spec.by.resourceRef.name = managedResource.metadata.name
+        spec.of.apiVersion = ofResource.apiVersion
+        spec.of.kind = ofResource.kind
+        spec.of.resourceRef.name = ofResource.metadata.name
+    } for ofResource in _uses]
 
     getAtProviderId: (any) -> str = lambda observedComposedResources: any -> str {
         _id: str = ""
