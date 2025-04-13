@@ -22,6 +22,7 @@ schema OsProjectInfrastructure:
     project: core.OsIdentityProjectWrapper {
         _projectName = _projectName
         _projectNamespace = _projectNamespace
+        _resourceName = "${_name}-project"
     }
     user: core.OsIdentityUserWrapper {
         _name = "${_name}-user"

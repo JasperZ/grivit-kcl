@@ -1,13 +1,14 @@
 schema OsIdentityProjectWrapper:
     _projectName: str
     _projectNamespace: str
+    _resourceName: str
 
     managedResource: ManagedResource {
         apiVersion = "identity.openstack.crossplane.io/v1alpha1"
         kind = "ProjectV3"
-        metadata.name = _projectName
+        metadata.name = _resourceName
         metadata.annotations = {
-            "krm.kcl.dev/composition-resource-name" = _projectName
+            "krm.kcl.dev/composition-resource-name" = _resourceName
         }
         spec.forProvider.description = "Project '${_projectName}' manged by Crossplane"
         spec.forProvider.name = _projectName
