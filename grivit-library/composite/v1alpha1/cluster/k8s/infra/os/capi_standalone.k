@@ -127,10 +127,10 @@ clouds:
     }
     k8sProviderConfigCredentialsSecret: core.K8sObjectSecretWrapper {
         _clusterName = _name
-        _name = core.k8sProviderConfigSecretName(_claimNamespace, _name)
+        _name = core.k8sProviderConfigSecretName(_claimNamespace, _clusterName)
         _namespace = _claimNamespace
         _projectName = _claimNamespace
-        _secretName = core.k8sProviderConfigSecretName(_claimNamespace, _name)
+        _secretName = core.k8sProviderConfigSecretName(_claimNamespace, _clusterName)
         _stringData = {}
         managedResource.spec.references = [
             {
@@ -152,7 +152,7 @@ clouds:
         ]
     }
     providerConfig: core.K8sProviderConfigWrapper {
-        _clusterName = _name
+        _clusterName = _clusterName
         _credentialsSecretName = k8sProviderConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.name
         _credentialsSecretNamespace = k8sProviderConfigCredentialsSecret.managedResource.spec.forProvider.manifest.metadata.namespace
         _projectNamespace = _claimNamespace
