@@ -126,7 +126,7 @@ clouds:
         _projectNamespace = _claimNamespace
     }
     k8sProviderConfigCredentialsSecret: core.K8sObjectSecretWrapper {
-        _clusterName = _name
+        _clusterName = _claimNamespace
         _name = core.k8sProviderConfigSecretName(_claimNamespace, _clusterName)
         _namespace = _claimNamespace
         _projectName = _claimNamespace
