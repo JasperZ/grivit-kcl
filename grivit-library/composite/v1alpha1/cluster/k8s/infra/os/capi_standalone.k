@@ -72,7 +72,7 @@ clouds:
         _flavor = _controlPlaneMachineTemplateFlavorName
         _imageName = _controlPlaneMachineTemplateImageName
         _keypairName = keypair.managedResource.metadata.name
-        _name = "${_managedResourcePrefix}capi-ctrl-machine-template-${_controlPlaneMachineTemplateHash}"
+        _name = "${_managedResourcePrefix}capi-ctrl-mach-tpl-${_controlPlaneMachineTemplateHash}"
         _projectNamespace = _claimNamespace
         _rootVolumeSize = _controlPlaneMachineTemplateRootVolumeSize
         _uses = [keypair.managedResource]
@@ -110,7 +110,7 @@ clouds:
         _flavor = _workerMachineTemplateFlavorName
         _imageName = _workerMachineTemplateImageName
         _keypairName = keypair.managedResource.metadata.name
-        _name = "${_managedResourcePrefix}capi-worker-machine-template-${_workerMachineTemplateHash}"
+        _name = "${_managedResourcePrefix}capi-wrk-mach-tpl-${_workerMachineTemplateHash}"
         _projectNamespace = _claimNamespace
         _rootVolumeSize = _workerMachineTemplateRootVolumeSize
         _uses = [keypair.managedResource]
@@ -122,7 +122,7 @@ clouds:
         _configTemplateWrapper = workerKubeadmConfigTemplate
         _k8sVersion = _workerMachineKubernetesVersion
         _machineTemplateWrapper = workerMachineTemplate
-        _name = "${_managedResourcePrefix}capi-worker-machine-deployment"
+        _name = "${_managedResourcePrefix}capi-wrk-mach-depl"
         _projectNamespace = _claimNamespace
     }
     k8sProviderConfigCredentialsSecret: core.K8sObjectSecretWrapper {
