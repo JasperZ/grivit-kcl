@@ -141,13 +141,13 @@ schema ControlPlaneProjectConfiguration:
     }
     k8sAppPrometheusOperatorCrds: apps.PrometheusOperatorCrdsAppK8s {
         _clusterName = _k8sClusterName
-        _name = "${_managedResourcePrefix}k8s-app-prom-crd"
+        _name = "${_managedResourcePrefix}prom-crds"
         _projectNamespace = _claimNamespace
     }
     k8sAppOpenStackCinderCsi: apps.OpenStackCinderCsiAppK8s {
         _clusterName = _k8sClusterName
         _fluxHelmReleaseDependencies = [k8sAppPrometheusOperatorCrds.helmRelease]
-        _name = "${_managedResourcePrefix}k8s-app-ocsi"
+        _name = "${_managedResourcePrefix}cinder-csi"
         _observedComposedResources = _observedComposedResources
         _projectNamespace = _claimNamespace
     }
@@ -155,7 +155,7 @@ schema ControlPlaneProjectConfiguration:
         _clusterName = _k8sClusterName
         _domainFilters = [_domain]
         _fluxHelmReleaseDependencies = [k8sAppPrometheusOperatorCrds.helmRelease]
-        _name = "${_managedResourcePrefix}k8s-app-oexdns"
+        _name = "${_managedResourcePrefix}external-dns"
         _observedComposedResources = _observedComposedResources
         _projectNamespace = _claimNamespace
     }
@@ -166,13 +166,13 @@ schema ControlPlaneProjectConfiguration:
             k8sAppOpenStackCinderCsi.helmRelease
             k8sAppOpenStackExternalDns.helmRelease
         ]
-        _name = "${_managedResourcePrefix}k8s-app-certmanager"
+        _name = "${_managedResourcePrefix}certmgr"
         _observedComposedResources = _observedComposedResources
         _projectNamespace = _claimNamespace
     }
     k8sAppIngressNginx: apps.IngressNginxAppK8s {
         _clusterName = _k8sClusterName
-        _name = "${_managedResourcePrefix}k8s-app-ingress"
+        _name = "${_managedResourcePrefix}ingress-nginx"
         _fluxHelmReleaseDependencies = [
             k8sAppOpenStackCinderCsi.helmRelease
             k8sAppOpenStackExternalDns.helmRelease
@@ -181,7 +181,7 @@ schema ControlPlaneProjectConfiguration:
     }
     k8sAppMetricsServer: apps.MetricsServerAppK8s {
         _clusterName = _k8sClusterName
-        _name = "${_managedResourcePrefix}k8s-app-metrics"
+        _name = "${_managedResourcePrefix}metrics"
         _fluxHelmReleaseDependencies = [
             k8sAppOpenStackCinderCsi.helmRelease
             k8sAppOpenStackExternalDns.helmRelease
@@ -190,13 +190,13 @@ schema ControlPlaneProjectConfiguration:
     }
     k8sAppSnapshotController: apps.SnapshotControllerAppK8s {
         _clusterName = _k8sClusterName
-        _name = "${_managedResourcePrefix}k8s-app-sc"
+        _name = "${_managedResourcePrefix}snaphot-controller"
         _projectNamespace = _claimNamespace
     }
     # ToDo: Velero
     k8sAppVerticalPodAutoscaler: apps.VerticalPodAutoscalerAppK8s {
         _clusterName = _k8sClusterName
-        _name = "${_managedResourcePrefix}k8s-app-vpa"
+        _name = "${_managedResourcePrefix}vpa"
         _fluxHelmReleaseDependencies = [
             k8sAppOpenStackCinderCsi.helmRelease
             k8sAppOpenStackExternalDns.helmRelease
