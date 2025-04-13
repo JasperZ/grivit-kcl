@@ -41,10 +41,10 @@ schema CapiStandaloneClusterK8sInfraOs:
     }
     cloudConfig: core.K8sObjectSecretWrapper {
         _clusterName = "ctrl"
-        _name = "${_managedResourcePrefix}k8s-cloud-config-secret"
+        _name = "${_managedResourcePrefix}cloud-config-secret"
         _namespace = _claimNamespace
         _projectName = _claimNamespace
-        _secretName = "${_managedResourcePrefix}k8s-os-cloud-config-secret"
+        _secretName = "${_managedResourcePrefix}os-cloud-config-secret"
         _stringData = {
             "clouds.yaml": """\
 clouds:
@@ -236,7 +236,7 @@ clouds:
     }
     k8sCrossplaneSecretsNamespace: core.K8sObjectNamespaceWrapper {
         _clusterName = _name
-        _name = "${_managedResourcePrefix}k8s-ns-crossplane"
+        _name = "${_managedResourcePrefix}crossplane-secrets-ns"
         _namespaceName = "crossplane-secrets"
         _projectNamespace = _claimNamespace
     }
