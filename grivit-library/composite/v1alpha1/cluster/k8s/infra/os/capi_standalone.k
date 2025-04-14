@@ -161,7 +161,7 @@ clouds:
         ]
     }
     appPrometheusOperatorCrds: apps.PrometheusOperatorCrdsAppK8s {
-        _clusterName = _name
+        _clusterName = _clusterName
         _name = "${_managedResourcePrefix}prom-crds"
         _projectNamespace = _claimNamespace
     }
