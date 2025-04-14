@@ -26,14 +26,9 @@ schema ClusterApiAppK8s:
         _projectNamespace = _claimNamespace
         managedResource.spec.forProvider.manifest.spec.persistentClient = False
         managedResource.spec.forProvider.manifest.spec.values = {
-            infrastructure = {
-                openstack = {
-                    version = "v0.11.5"
-                }
-            }
+            infrastructure = "openstack:v0.11.5"
         }
     }
-    
     managedResources: [core.ManagedResource | core.ArgoCdProviderConfig] = [
         helmRepo.managedResource
         helmRelease.managedResource
@@ -43,6 +38,6 @@ schema ClusterApiAppK8s:
         helmRelease.usages
     ], [])
 
-
     check:
         len(managedResources) == len({managedResource.metadata.name: True for managedResource in managedResources}), "Names of managed Resources must be unique"
+
