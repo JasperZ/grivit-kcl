@@ -231,7 +231,7 @@ clouds:
     }
     appsPlatformSnapshotController: apps.SnapshotControllerAppK8s {
         _clusterName = _clusterName
-        _name = "${_managedResourcePrefix}snaphot-controller"
+        _name = "${_managedResourcePrefix}sc"
         _projectNamespace = _claimNamespace
     }
     k8sCrossplaneSecretsNamespace: core.K8sObjectNamespaceWrapper {
