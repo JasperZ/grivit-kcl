@@ -26,7 +26,11 @@ schema ClusterApiAppK8s:
         _projectNamespace = _claimNamespace
         managedResource.spec.forProvider.manifest.spec.persistentClient = False
         managedResource.spec.forProvider.manifest.spec.values = {
-            infrastructure = "openstack"
+            infrastructure = {
+                openstack = {
+                    version = "v0.11.5"
+                }
+            }
         }
     }
     

@@ -203,15 +203,15 @@ schema ControlPlaneProjectConfiguration:
         ]
         _projectNamespace = _claimNamespace
     }
-    # k8sAppClusterApi: apps.ClusterApiAppK8s {
-    #     _claimName = _claimName
-    #     _claimNamespace = _claimNamespace
-    #     _kubernetesClusterName = _k8sClusterName
-    #     _fluxHelmReleaseDependencies = [
-    #         k8sAppPrometheusOperatorCrds.helmRelease
-    #         k8sAppCertManager.helmRelease
-    #     ]
-    # }
+    k8sAppClusterApi: apps.ClusterApiAppK8s {
+        _claimName = _claimName
+        _claimNamespace = _claimNamespace
+        _kubernetesClusterName = _k8sClusterName
+        _fluxHelmReleaseDependencies = [
+            k8sAppPrometheusOperatorCrds.helmRelease
+            k8sAppCertManager.helmRelease
+        ]
+    }
     fluxHelmReleases: [core.K8sFluxHelmReleaseWrapper] = [
         k8sAppPrometheusOperatorCrds.helmRelease
         k8sAppOpenStackCinderCsi.helmRelease
@@ -220,7 +220,7 @@ schema ControlPlaneProjectConfiguration:
         k8sAppIngressNginx.helmRelease
         k8sAppMetricsServer.helmRelease
         k8sAppVerticalPodAutoscaler.helmRelease
-        # k8sAppClusterApi.helmRelease
+        k8sAppClusterApi.helmRelease
     ]
     managedResources: [core.ManagedResource | core.AwsProviderConfig | core.HelmProviderConfig | core.K8sProviderConfig | core.OsProviderConfig] = sum([
         k8sAppPrometheusOperatorCrds.managedResources
@@ -231,7 +231,7 @@ schema ControlPlaneProjectConfiguration:
         k8sAppMetricsServer.managedResources
         k8sAppSnapshotController.managedResources
         k8sAppVerticalPodAutoscaler.managedResources
-        # k8sAppClusterApi.managedResources
+        k8sAppClusterApi.managedResources
     ], [
         awsProviderConfigCredentialsSecret.managedResource
         awsProviderConfig.managedResource
@@ -262,6 +262,6 @@ schema ControlPlaneProjectConfiguration:
         k8sAppMetricsServer.usages
         k8sAppSnapshotController.usages
         k8sAppVerticalPodAutoscaler.usages
-        # k8sAppClusterApi.usages
+        k8sAppClusterApi.usages
     ], [])
 
