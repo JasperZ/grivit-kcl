@@ -29,22 +29,23 @@ schema CapiStandaloneClusterK8sInfraOs:
     _claimName: str
     _workers: CapiStandaloneClusterK8sInfraOsConfigWorkers
 
-    _managedResourcePrefix = "g-" + crypto.md5("${_claimNamespace}-${_claimName}")[:8] + "-cluster-k8s-${_clusterName}-"
+    _managedResourcePrefix: str = "cluster-k8s-${_clusterName}-"
+    _managedResourceSuffix: str = "-" + crypto.md5("${_claimNamespace}-${_claimName}")[:8]
 
     applicationCredential: core.OsIdentityApplicationCredentialWrapper {
-        _name = "${_managedResourcePrefix}os-app-cred"
+        _name = "${_managedResourcePrefix}os-app-cred${_managedResourceSuffix}"
         _projectNamespace = _claimNamespace
     }
     keypair: core.OsComputeKeypairWrapper {
-        _name = "${_managedResourcePrefix}os-keypair"
+        _name = "${_managedResourcePrefix}os-keypair${_managedResourceSuffix}"
         _projectNamespace = _claimNamespace
     }
     cloudConfig: core.K8sObjectSecretWrapper {
         _clusterName = "ctrl"
-        _name = "${_managedResourcePrefix}cloud-config-secret"
+        _name = "${_managedResourcePrefix}cloud-config-secret${_managedResourceSuffix}"
         _namespace = _claimNamespace
         _projectName = _claimNamespace
-        _secretName = "${_managedResourcePrefix}cloud-config-secret"
+        _secretName = "${_managedResourcePrefix}cloud-config-secret${_managedResourceSuffix}"
         _stringData = {
             "clouds.yaml": """\
 clouds:
@@ -72,7 +73,7 @@ clouds:
         _flavor = _controlPlaneMachineTemplateFlavorName
         _imageName = _controlPlaneMachineTemplateImageName
         _keypairName = keypair.managedResource.metadata.name
-        _name = "${_managedResourcePrefix}capi-ctrl-mach-tpl-${_controlPlaneMachineTemplateHash}"
+        _name = "${_managedResourcePrefix}capi-ctrl-mach-tpl-${_controlPlaneMachineTemplateHash}${_managedResourceSuffix}"
         _projectNamespace = _claimNamespace
         _rootVolumeSize = _controlPlaneMachineTemplateRootVolumeSize
         _uses = [keypair.managedResource]
@@ -80,25 +81,25 @@ clouds:
     controlPlaneKubeadm: core.K8sCapiKubeadmControlPlaneWrapper {
         _controlPlaneMachineTemplate = controlPlaneMachineTemplate
         _k8sVersion = _k8sVersion
-        _name = "${_managedResourcePrefix}capi-ctl-plane-kubeadm"
+        _name = "${_managedResourcePrefix}capi-ctl-plane-kubeadm${_managedResourceSuffix}"
         _projectNamespace = _claimNamespace
         _replicas = _controlPlane.replicas
     }
     openstackCluster: core.K8sCapiOsClusterWrapper {
         _cloudConfigName = cloudConfig.managedResource.metadata.name
         _externalNetworkName = _externalNetworkName
-        _name = "${_managedResourcePrefix}capi-os-cluster"
+        _name = "${_managedResourcePrefix}capi-os-cluster${_managedResourceSuffix}"
         _projectNamespace = _claimNamespace
     }
     cluster: core.K8sCapiClusterWrapper {
         _capiControlPlaneWrapper = controlPlaneKubeadm
         _capiInfrastructureWrapper = openstackCluster
-        _name = "${_managedResourcePrefix}capi-cluster"
+        _name = "${_managedResourcePrefix}capi-cluster${_managedResourceSuffix}"
         _projectNamespace = _claimNamespace
         _uses = [cloudConfig.managedResource]
     }
     workerKubeadmConfigTemplate: core.K8sCapiKubeadmWorkerConfigTemplateWrapper {
-        _name = "${_managedResourcePrefix}capi-kubeadm-worker-template"
+        _name = "${_managedResourcePrefix}capi-kubeadm-worker-template${_managedResourceSuffix}"
         _projectNamespace = _claimNamespace
     }
     _workerMachineKubernetesVersion = controlPlaneKubeadm.getKubernetesVersion(_observedComposedResources)
@@ -110,7 +111,7 @@ clouds:
         _flavor = _workerMachineTemplateFlavorName
         _imageName = _workerMachineTemplateImageName
         _keypairName = keypair.managedResource.metadata.name
-        _name = "${_managedResourcePrefix}capi-wrk-mach-tpl-${_workerMachineTemplateHash}"
+        _name = "${_managedResourcePrefix}capi-wrk-mach-tpl-${_workerMachineTemplateHash}${_managedResourceSuffix}"
         _projectNamespace = _claimNamespace
         _rootVolumeSize = _workerMachineTemplateRootVolumeSize
         _uses = [keypair.managedResource]
@@ -122,7 +123,7 @@ clouds:
         _configTemplateWrapper = workerKubeadmConfigTemplate
         _k8sVersion = _workerMachineKubernetesVersion
         _machineTemplateWrapper = workerMachineTemplate
-        _name = "${_managedResourcePrefix}capi-wrk-mach-depl"
+        _name = "${_managedResourcePrefix}capi-wrk-mach-depl${_managedResourceSuffix}"
         _projectNamespace = _claimNamespace
     }
     k8sProviderConfigCredentialsSecret: core.K8sObjectSecretWrapper {
@@ -162,7 +163,7 @@ clouds:
     }
     appPrometheusOperatorCrds: apps.PrometheusOperatorCrdsAppK8s {
         _clusterName = _clusterName
-        _name = "${_managedResourcePrefix}prom-crds"
+        _name = "${_managedResourcePrefix}prom-crds${_managedResourceSuffix}"
         _projectNamespace = _claimNamespace
     }
     crdAppHelmReleases: [core.K8sFluxHelmReleaseWrapper] = [
@@ -171,7 +172,7 @@ clouds:
     appCilium: apps.CiliumAppK8s {
         _clusterName = _clusterName
         _fluxHelmReleaseDependencies = crdAppHelmReleases
-        _name = "${_managedResourcePrefix}cilium"
+        _name = "${_managedResourcePrefix}cilium${_managedResourceSuffix}"
         _projectNamespace = _claimNamespace
     }
     appOpenStackCloudControllerManager: apps.OpenStackCloudControllerManagerAppK8s {
@@ -179,13 +180,13 @@ clouds:
         _clusterSubnetId = openstackCluster.getSubnetId(_observedComposedResources)
         _externalNetworkId = openstackCluster.getExternalNetworkId(_observedComposedResources)
         _fluxHelmReleaseDependencies = crdAppHelmReleases
-        _name = "${_managedResourcePrefix}occm"
+        _name = "${_managedResourcePrefix}occm${_managedResourceSuffix}"
         _observedComposedResources = _observedComposedResources
         _projectNamespace = _claimNamespace
     }
     appOpenStackCinderCsi: apps.OpenStackCinderCsiAppK8s {
         _clusterName = _clusterName
-        _name = "${_managedResourcePrefix}cinder-csi"
+        _name = "${_managedResourcePrefix}cinder-csi${_managedResourceSuffix}"
         _fluxHelmReleaseDependencies = crdAppHelmReleases
         _observedComposedResources = _observedComposedResources
         _projectNamespace = _claimNamespace
@@ -194,7 +195,7 @@ clouds:
         _clusterName = _clusterName
         _domainFilters = [_domain]
         _fluxHelmReleaseDependencies = crdAppHelmReleases
-        _name = "${_managedResourcePrefix}external-dns"
+        _name = "${_managedResourcePrefix}external-dns${_managedResourceSuffix}"
         _observedComposedResources = _observedComposedResources
         _projectNamespace = _claimNamespace
     }
@@ -213,30 +214,30 @@ clouds:
         _clusterName = _clusterName
         _email: _email
         _fluxHelmReleaseDependencies = infrastructureAppHelmReleases
-        _name = "${_managedResourcePrefix}certmgr"
+        _name = "${_managedResourcePrefix}certmgr${_managedResourceSuffix}"
         _observedComposedResources = _observedComposedResources
         _projectNamespace = _claimNamespace
     }
     appsPlatformIngressNginx: apps.IngressNginxAppK8s {
         _clusterName = _clusterName
-        _name = "${_managedResourcePrefix}ingress-nginx"
+        _name = "${_managedResourcePrefix}ingress-nginx${_managedResourceSuffix}"
         _fluxHelmReleaseDependencies = infrastructureAppHelmReleases
         _projectNamespace = _claimNamespace
     }
     appsPlatformMetricsServer: apps.MetricsServerAppK8s {
         _clusterName = _clusterName
-        _name = "${_managedResourcePrefix}metrics"
+        _name = "${_managedResourcePrefix}metrics${_managedResourceSuffix}"
         _fluxHelmReleaseDependencies = infrastructureAppHelmReleases
         _projectNamespace = _claimNamespace
     }
     appsPlatformSnapshotController: apps.SnapshotControllerAppK8s {
         _clusterName = _clusterName
-        _name = "${_managedResourcePrefix}sc"
+        _name = "${_managedResourcePrefix}sc${_managedResourceSuffix}"
         _projectNamespace = _claimNamespace
     }
     k8sCrossplaneSecretsNamespace: core.K8sObjectNamespaceWrapper {
         _clusterName = _clusterName 
-        _name = "${_managedResourcePrefix}crossplane-secrets-ns"
+        _name = "${_managedResourcePrefix}crossplane-secrets-ns${_managedResourceSuffix}"
         _namespaceName = "crossplane-secrets"
         _projectNamespace = _claimNamespace
         _uses = [
