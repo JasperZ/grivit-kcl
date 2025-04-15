@@ -4,6 +4,7 @@ schema ArgoCdProjectWrapper:
     _argoCdProjectDestinations: [any] = []
     _argoCdProjectRoles: [any] = []
     _argoCdProjectSourceNamespaces: [str] = []
+    _argoCdProjectClusterResourceWhitelist: [any] = []
     _projectName: str
     _resourceName: str
 
@@ -22,6 +23,7 @@ schema ArgoCdProjectWrapper:
             "krm.kcl.dev/composition-resource-name" = _resourceName
         }
         spec.forProvider = {
+            clusterResourceWhitelist= _argoCdProjectClusterResourceWhitelist
             description = _argoCdProjectDescription
             destinations = _argoCdProjectDestinations
             roles = _argoCdProjectRoles
