@@ -75,7 +75,7 @@ schema ArgoCdAppK8s:
             }
             configs = {
                 cm = {
-                    "application.resourceTrackingMethod" = "annotation" #"annotation+label"
+                    "application.resourceTrackingMethod" = "annotation+label"
                     "oidc.config" = """\
 name: Keycloak
 issuer: https://${_keycloakInstance.domain}/realms/${_keycloakInstance.realmId}
