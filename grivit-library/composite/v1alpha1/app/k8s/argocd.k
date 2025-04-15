@@ -224,7 +224,7 @@ allowedAudiences:
 - apiGroups:
   - "*"
   kinds:
-  - ProviderConfigUsage  
+  - ProviderConfigUsage
 """
                 }
                 params = {
