@@ -136,6 +136,12 @@ schema ArgoCdProjectIntegration:
         _argoCdProjectDestinations = [
             {name = "!instance-cluster", namespace = "*"}
         ]
+        _argoCdProjectClusterResourceWhitelist = [
+            {
+                group = "*"
+                kind = "*"
+            }
+        ]
         _argoCdProjectRoles = [
             {
                 description = "Project admin"
