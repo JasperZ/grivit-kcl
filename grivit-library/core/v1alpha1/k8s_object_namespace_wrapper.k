@@ -3,7 +3,7 @@ schema K8sObjectNamespaceWrapper:
     _name: str
     _namespaceName: str
     _projectNamespace: str
-    _uses: [ManagedResource] = []
+    _uses: [ManagedResource | K8sProviderConfig] = []
 
     managedResource: ManagedResource {
         apiVersion = "kubernetes.crossplane.io/v1alpha2"

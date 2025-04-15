@@ -239,6 +239,9 @@ clouds:
         _name = "${_managedResourcePrefix}crossplane-secrets-ns"
         _namespaceName = "crossplane-secrets"
         _projectNamespace = _claimNamespace
+        _uses = [
+            providerConfig.managedResource
+        ]
     }
     managedResources: [core.K8sProviderConfig | core.ManagedResource] = [
         applicationCredential.managedResource
