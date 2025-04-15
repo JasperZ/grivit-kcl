@@ -220,6 +220,12 @@ allowedAudiences:
 
     return health_status
 """
+                    "resource.exclusions" = """\
+- apiGroups:
+  - "*"
+  kinds:
+  - ProviderConfigUsage  
+"""
                 }
                 params = {
                     "server.insecure" = True
