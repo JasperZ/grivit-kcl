@@ -295,3 +295,6 @@ clouds:
         appsPlatformSnapshotController.usages
         k8sCrossplaneSecretsNamespace.usages
     ], [])
+
+    check:
+        len(managedResources) == len({managedResource.metadata.name: True for managedResource in managedResources}), "Names of managed Resources must be unique"
