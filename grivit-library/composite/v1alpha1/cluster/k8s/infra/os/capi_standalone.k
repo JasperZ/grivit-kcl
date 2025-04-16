@@ -29,8 +29,8 @@ schema CapiStandaloneClusterK8sInfraOs:
     _claimName: str
     _workers: CapiStandaloneClusterK8sInfraOsConfigWorkers
 
-    _managedResourcePrefix: str = "cluster-k8s-${_clusterName}-"
-    _managedResourceSuffix: str = "-" + crypto.md5("${_claimNamespace}-${_claimName}")[:8]
+    _managedResourcePrefix: str = "cluster-k8s-" + crypto.sha256("${_claimNamespace}-${_claimName}")[:4] + "${_clusterName}-"
+    _managedResourceSuffix: str = ""
 
     applicationCredential: core.OsIdentityApplicationCredentialWrapper {
         _name = "${_managedResourcePrefix}os-app-cred${_managedResourceSuffix}"
