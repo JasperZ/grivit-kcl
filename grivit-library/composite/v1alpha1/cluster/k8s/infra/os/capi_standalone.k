@@ -19,6 +19,7 @@ schema CapiStandaloneClusterK8sInfraOsConfigControlPlane:
 schema CapiStandaloneClusterK8sInfraOs:
     _clusterName: str
     _controlPlane: CapiStandaloneClusterK8sInfraOsConfigControlPlane
+    _composite: str
     _domain: str
     _email: str
     _externalNetworkName: str
@@ -29,7 +30,7 @@ schema CapiStandaloneClusterK8sInfraOs:
     _claimName: str
     _workers: CapiStandaloneClusterK8sInfraOsConfigWorkers
 
-    _managedResourcePrefix: str = "cluster-k8s-" + crypto.sha256("${_claimNamespace}-${_claimName}")[:4] + "${_clusterName}-"
+    _managedResourcePrefix: str = _composite
     _managedResourceSuffix: str = ""
 
     applicationCredential: core.OsIdentityApplicationCredentialWrapper {
