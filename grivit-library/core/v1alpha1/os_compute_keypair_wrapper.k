@@ -16,3 +16,5 @@ schema OsComputeKeypairWrapper:
     }
     usages: [Usage] = []
 
+    check:
+        len(managedResource.metadata.name) < 64

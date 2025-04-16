@@ -104,3 +104,5 @@ schema K8sCapiOsClusterWrapper:
         _externalNetworkId
     }
 
+    check:
+        len(managedResource.metadata.name) < 64

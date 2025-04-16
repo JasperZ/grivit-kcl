@@ -46,3 +46,6 @@ schema K8sObjectSecretWrapper:
 
         _data
     }
+
+    check:
+        len(managedResource.metadata.name) < 64

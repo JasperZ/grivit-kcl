@@ -48,3 +48,5 @@ schema K8sCapiClusterWrapper:
         spec.of.resourceRef.name = ofResource.metadata.name
     } for ofResource in _uses]
 
+    check:
+        len(managedResource.metadata.name) < 64

@@ -50,3 +50,5 @@ schema K8sCapiMachineDeploymentWrapper:
     }
     usages: [Usage] = []
 
+    check:
+        len(managedResource.metadata.name) < 64

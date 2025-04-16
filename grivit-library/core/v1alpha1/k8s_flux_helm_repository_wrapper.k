@@ -30,3 +30,5 @@ schema K8sFluxHelmRepositoryWrapper:
     }
     usages: [Usage] = []
 
+    check:
+        len(managedResource.metadata.name) < 64

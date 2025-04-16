@@ -102,3 +102,5 @@ override_path = true
         _kubernetesVersion
     }
 
+    check:
+        len(managedResource.metadata.name) < 64

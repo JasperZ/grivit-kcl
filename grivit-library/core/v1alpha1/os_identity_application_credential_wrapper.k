@@ -35,3 +35,5 @@ schema OsIdentityApplicationCredentialWrapper:
         _applicationCredentialSecret
     }
 
+    check:
+        len(managedResource.metadata.name) < 64

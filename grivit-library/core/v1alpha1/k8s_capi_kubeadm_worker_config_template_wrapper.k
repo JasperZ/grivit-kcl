@@ -75,3 +75,5 @@ override_path = true
     }
     usages: [Usage] = []
 
+    check:
+        len(managedResource.metadata.name) < 64
