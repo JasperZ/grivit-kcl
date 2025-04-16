@@ -9,7 +9,7 @@ schema OpenStackExternalDnsAppK8s:
     _observedComposedResources: any
 
     applicationCredential: core.OsIdentityApplicationCredentialWrapper {
-        _name = "${_name}-application-credential"
+        _name = "${_name}-app-cred"
         _projectNamespace = _projectNamespace
     }
     helmRepo: core.K8sFluxHelmRepositoryWrapper {

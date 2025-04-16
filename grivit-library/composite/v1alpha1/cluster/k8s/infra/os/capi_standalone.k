@@ -30,7 +30,7 @@ schema CapiStandaloneClusterK8sInfraOs:
     _claimName: str
     _workers: CapiStandaloneClusterK8sInfraOsConfigWorkers
 
-    _managedResourcePrefix: str = _composite
+    _managedResourcePrefix: str = _composite + "-"
     _managedResourceSuffix: str = ""
 
     applicationCredential: core.OsIdentityApplicationCredentialWrapper {
