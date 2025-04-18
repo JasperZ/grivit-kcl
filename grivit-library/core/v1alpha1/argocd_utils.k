@@ -7,20 +7,11 @@ schema ArgoCdInstance:
     projectName: str
 
 argoCdProviderConfigName: (str, ArgoCdInstance) -> str = lambda projectName: str, argoCdInstance: ArgoCdInstance -> str {
-    _humanReadablePrefix = "${projectName}-argocd-${argoCdInstance.name}-${argoCdInstance.ownerProjectName}"
-    _humanReadableName = "${_humanReadablePrefix}-${argoCdInstance.projectName}"
-
-    _hashedPrefix = crypto.md5(_humanReadablePrefix)
-    _hashedName = "${_hashedPrefix}-${argoCdInstance.projectName}"
-
-    _name = _hashedName
+    _name = crypto.md5("${projectName}-${argoCdInstance.ownerProjectName}-${argoCdInstance.name}")[:8] + "-argocd-${argoCdInstance.projectName}"
 }
 
 argoCdProviderConfigSecretName: (str, ArgoCdInstance) -> str = lambda projectName: str, argoCdInstance: ArgoCdInstance -> str {
-    _providerConfigName = argoCdProviderConfigName(projectName, argoCdInstance)
-    _providerConfigSecretName = "${_providerConfigName}-provider"
-
-    _name = _providerConfigSecretName
+    _name = argoCdProviderConfigName(projectName, argoCdInstance) + "-provider"
 }
 
 argoCdControlPlaneProjectName: (ArgoCdInstance) -> str = lambda argoCdInstance: ArgoCdInstance -> str {
