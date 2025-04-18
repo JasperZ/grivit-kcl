@@ -10,13 +10,6 @@ schema ArgoCdClusterWrapper:
     _resourceName: str
     _uses: [ManagedResource] = []
 
-    _argoCdInstanceOverride: ArgoCdInstance {
-        domain = _argoCdInstance.domain
-        name = _argoCdInstance.name
-        ownerProjectName = _argoCdInstance.ownerProjectName
-        projectName = "instance"
-    }
-
     managedResource: ManagedResource {
         apiVersion = "cluster.argocd.crossplane.io/v1alpha1"
         kind = "Cluster"
@@ -37,7 +30,7 @@ schema ArgoCdClusterWrapper:
             if _argoCdClusterProject:
                 project = _argoCdClusterProject
         }
-        spec.providerConfigRef.name = argoCdProviderConfigName(_projectName, _argoCdInstanceOverride)
+        spec.providerConfigRef.name = argoCdProviderConfigName(_projectName, _argoCdInstance)
     }
     usages: [Usage] = [Usage {
         metadata.name = "${_resourceName}-uses-${ofResource.metadata.name}"

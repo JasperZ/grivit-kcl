@@ -153,7 +153,7 @@ schema ArgoCdProjectIntegration:
                 policies = [
                     "p, proj:${_argoCdTenantProjectName}:admins, applications, *, ${_argoCdTenantProjectName}/*/*, allow"
                     # "p, proj:${_argoCdTenantProjectName}:admins, applicationsets, *, ${_argoCdTenantProjectName}/*/*, allow"
-                    "p, proj:${_argoCdTenantProjectName}:admins, clusters, get, ${_argoCdTenantProjectName}/*, allow"
+                    "p, proj:${_argoCdTenantProjectName}:admins, clusters, *, ${_argoCdTenantProjectName}/*, allow"
                     "p, proj:${_argoCdTenantProjectName}:admins, repositories, *, ${_argoCdTenantProjectName}/*, allow"
                 ]
             }
