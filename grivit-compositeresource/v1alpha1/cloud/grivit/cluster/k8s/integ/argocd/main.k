@@ -1,26 +1,26 @@
 import manifests
 
-nameSingularArgoCdIntK8sCluster: str = "ArgoCd"
-namePluralArgoCdIntK8sCluster: str = "ArgoCds"
-apiGroupArgoCdIntK8sCluster: str = "int.k8s.cluster.grivit.cloud"
-apiVersionArgoCdIntK8sCluster: str = "v1alpha1"
+nameSingularArgoCdIntegK8sCluster: str = "ArgoCd"
+namePluralArgoCdIntegK8sCluster: str = "ArgoCds"
+apiGroupArgoCdIntegK8sCluster: str = "integ.k8s.cluster.grivit.cloud"
+apiVersionArgoCdIntegK8sCluster: str = "v1alpha1"
 
-xrArgoCdIntK8sCluster: XrArgoCdIntK8sCluster = XrArgoCdIntK8sCluster {
-    _nameSingular = nameSingularArgoCdIntK8sCluster
-    _apiGroup = apiGroupArgoCdIntK8sCluster
-    _apiVersion = apiVersionArgoCdIntK8sCluster
+xrArgoCdIntegK8sCluster: XrArgoCdIntegK8sCluster = XrArgoCdIntegK8sCluster {
+    _nameSingular = nameSingularArgoCdIntegK8sCluster
+    _apiGroup = apiGroupArgoCdIntegK8sCluster
+    _apiVersion = apiVersionArgoCdIntegK8sCluster
 }
 
-xrdArgoCdIntK8sCluster: XrdArgoCdIntK8sCluster = XrdArgoCdIntK8sCluster {
-    _nameSingular = nameSingularArgoCdIntK8sCluster
-    _namePlural = namePluralArgoCdIntK8sCluster
-    _apiGroup = apiGroupArgoCdIntK8sCluster
-    _apiVersion = apiVersionArgoCdIntK8sCluster
+xrdArgoCdIntegK8sCluster: XrdArgoCdIntegK8sCluster = XrdArgoCdIntegK8sCluster {
+    _nameSingular = nameSingularArgoCdIntegK8sCluster
+    _namePlural = namePluralArgoCdIntegK8sCluster
+    _apiGroup = apiGroupArgoCdIntegK8sCluster
+    _apiVersion = apiVersionArgoCdIntegK8sCluster
 }
 
 manifests.yaml_stream([
-    xrArgoCdIntK8sCluster
-    xrdArgoCdIntK8sCluster
+    xrArgoCdIntegK8sCluster
+    xrdArgoCdIntegK8sCluster
 ], {
     sort_keys = False
     ignore_private = True
