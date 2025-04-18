@@ -113,7 +113,7 @@ schema CertManagerAppK8s:
         _name = "${_name}-cissuer-cred"
         _namespace = "cert-manager"
         _projectName = _projectNamespace
-        _secretName = "${_name}-cluster-issuer-credentials"
+        _secretName = "${_name}-cissuer-cred"
         _stringData = {
             accessKeyId = awsAccessKey.getAccessKeyId(_observedComposedResources)
             accessKeySecret = awsAccessKey.getAccessKeySecret(_observedComposedResources)
