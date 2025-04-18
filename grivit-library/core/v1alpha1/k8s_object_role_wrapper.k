@@ -36,3 +36,6 @@ schema K8sObjectRoleWrapper:
         spec.of.resourceRef.name = ofResource.metadata.name
     } for ofResource in _uses]
 
+    check:
+        len(managedResource.metadata.name) < 64
+        len(managedResource.spec.forProvider.manifest.metadata.name) < 64

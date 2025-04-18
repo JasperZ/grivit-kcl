@@ -86,3 +86,6 @@ schema K8sFluxHelmOciReleaseWrapper:
         spec.of.resourceRef.name = k8sFluxHelmReleaseDependency.managedResource.metadata.name
     } for k8sFluxHelmReleaseDependency in _helmReleaseWrapperDependencies]
 
+    check:
+        len(managedResource.metadata.name) < 64
+        len(managedResource.spec.forProvider.manifest.metadata.name) < 64

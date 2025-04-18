@@ -53,3 +53,6 @@ schema K8sCapiK0smotronControlPlaneWrapper:
         _kubernetesVersion
     }
 
+    check:
+        len(managedResource.metadata.name) < 64
+        len(managedResource.spec.forProvider.manifest.metadata.name) < 64

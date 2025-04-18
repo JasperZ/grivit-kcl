@@ -35,4 +35,5 @@ schema K8sFluxGitRepositoryWrapper:
     usages: [Usage] = []
 
     check:
-        len(managedResource.metadata.name) < 64    
+        len(managedResource.metadata.name) < 64
+        len(managedResource.spec.forProvider.manifest.metadata.name) < 64

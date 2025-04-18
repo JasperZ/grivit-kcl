@@ -31,3 +31,7 @@ schema K8sCapiK0smotronWorkerConfigTemplateWrapper:
     }
     usages: [Usage] = []
 
+    check:
+        len(managedResource.metadata.name) < 64
+        len(managedResource.spec.forProvider.manifest.metadata.name) < 64
+
