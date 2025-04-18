@@ -5,7 +5,7 @@ schema K8sCluster:
     projectName: str
 
 k8sProviderConfigName: (str, str) -> str = lambda projectName: str, clusterName: str -> str {
-    _name = crypto.md5(projectName) + "-k8s-" + clusterName
+    _name = crypto.md5(projectName)[:8] + "-k8s-" + clusterName
 }
 
 k8sProviderConfigSecretName: (str, str) -> str = lambda projectName: str, clusterName: str -> str {
