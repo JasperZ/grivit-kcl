@@ -8,6 +8,7 @@ schema ArgoCdClusterWrapper:
     _argoCdClusterProject?: str
     _projectName: str
     _resourceName: str
+    _uses: [ManagedResource] = []
 
     _argoCdInstanceOverride: ArgoCdInstance {
         domain = _argoCdInstance.domain
@@ -38,5 +39,15 @@ schema ArgoCdClusterWrapper:
         }
         spec.providerConfigRef.name = argoCdProviderConfigName(_projectName, _argoCdInstanceOverride)
     }
-    usages: [Usage] = []
-
+    usages: [Usage] = [Usage {
+        metadata.name = "${_resourceName}-uses-${ofResource.metadata.name}"
+        metadata.annotations = {
+            "krm.kcl.dev/composition-resource-name" = "${_resourceName}-uses-${ofResource.metadata.name}"
+        }
+        spec.by.apiVersion = managedResource.apiVersion
+        spec.by.kind = managedResource.kind
+        spec.by.resourceRef.name = managedResource.metadata.name
+        spec.of.apiVersion = ofResource.apiVersion
+        spec.of.kind = ofResource.kind
+        spec.of.resourceRef.name = ofResource.metadata.name
+    } for ofResource in _uses]
