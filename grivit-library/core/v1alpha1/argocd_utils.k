@@ -24,9 +24,9 @@ argoCdProviderConfigSecretName: (str, ArgoCdInstance) -> str = lambda projectNam
 }
 
 argoCdControlPlaneProjectName: (ArgoCdInstance) -> str = lambda argoCdInstance: ArgoCdInstance -> str {
-    _name = "${argoCdInstance.ownerProjectName}-${argoCdInstance.name}-${argoCdInstance.projectName}-controlplane"
+    _name = crypto.md5("${argoCdInstance.ownerProjectName}-${argoCdInstance.name}")[:8] + "-${argoCdInstance.projectName}-controlplane"
 }
 
 argoCdTenantProjectName: (ArgoCdInstance) -> str = lambda argoCdInstance: ArgoCdInstance -> str {
-    _name = "${argoCdInstance.ownerProjectName}-${argoCdInstance.name}-${argoCdInstance.projectName}-tenant"
+    _name = crypto.md5("${argoCdInstance.ownerProjectName}-${argoCdInstance.name}")[:8] + "-${argoCdInstance.projectName}-tenant"
 }
