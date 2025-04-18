@@ -1,4 +1,4 @@
-import grivit_library.composite.v1alpha1.project.configuration as proj_conf
+import grivit_library.composite.v1alpha1.project.configuration as config
 
 observedComposedResources: any = option("params").ocds
 observedCompositeResource: any = option("params").oxr
@@ -7,7 +7,7 @@ claimName: str = observedCompositeResource.metadata.name
 claimNamespace: str = observedCompositeResource.metadata.labels["crossplane.io/claim-namespace"]
 spec: any = observedCompositeResource.spec
 
-controlPlaneProjectConfiguration: proj_conf.ControlPlaneProjectConfiguration = proj_conf.ControlPlaneProjectConfiguration {
+controlPlaneProjectConfiguration: config.ControlPlaneProjectConfiguration = config.ControlPlaneProjectConfiguration {
     _claimName = claimName
     _claimNamespace = claimNamespace
     _contactEmail = spec.contactEmail
