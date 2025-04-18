@@ -134,7 +134,7 @@ schema ArgoCdProjectIntegration:
         ]
         _argoCdProjectSourceNamespaces = [_targetProjectName]
         _projectName = _claimNamespace
-        _resourceName = "${_managedResourcePrefix}controlplane"
+        _resourceName = core.argoCdControlPlaneProjectName(_argoCdInstanceTargetProject)
     }
     argoCdTenantProject: core.ArgoCdProjectWrapper {
         _argoCdInstance = _argoCdInstance
@@ -170,7 +170,7 @@ schema ArgoCdProjectIntegration:
         ]
         _argoCdProjectSourceNamespaces = [_targetProjectName]
         _projectName = _claimNamespace
-        _resourceName = "${_managedResourcePrefix}tenant"
+        _resourceName = core.argoCdTenantProjectName(_argoCdInstanceTargetProject)
     }
     managedResources: [core.ManagedResource | core.ArgoCdProviderConfig] = [
         kcArgoCdAdminsGroup.managedResource

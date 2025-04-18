@@ -22,3 +22,11 @@ argoCdProviderConfigSecretName: (str, ArgoCdInstance) -> str = lambda projectNam
 
     _name = _providerConfigSecretName
 }
+
+argoCdControlPlaneProjectName: (ArgoCdInstance) -> str = lambda argoCdInstance: ArgoCdInstance -> str {
+    _name = "${argoCdInstance.ownerProjectName}-${argoCdInstance.name}-${argoCdInstance.projectName}-controlplane"
+}
+
+argoCdTenantProjectName: (ArgoCdInstance) -> str = lambda argoCdInstance: ArgoCdInstance -> str {
+    _name = "${argoCdInstance.ownerProjectName}-${argoCdInstance.name}-${argoCdInstance.projectName}-tenant"
+}
