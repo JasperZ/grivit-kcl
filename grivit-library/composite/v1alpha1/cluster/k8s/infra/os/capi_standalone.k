@@ -17,6 +17,7 @@ schema CapiStandaloneClusterK8sInfraOsConfigControlPlane:
     replicas: int
 
 schema CapiStandaloneClusterK8sInfraOs:
+    _argoCdInstance: core.ArgoCdInstance
     _clusterName: str
     _controlPlane: CapiStandaloneClusterK8sInfraOsConfigControlPlane
     _composite: str
@@ -162,6 +163,16 @@ clouds:
             k8sProviderConfigCredentialsSecret.managedResource
         ]
     }
+    argoCdCluster: core.ArgoCdClusterWrapper {
+        _argoCdInstance = _argoCdInstance
+        _argoCdClusterKubeconfigSecretKey = "value"
+        _argoCdClusterKubeconfigSecretName = core.k8sProviderConfigSecretName(_claimNamespace, _clusterName)
+        _argoCdClusterKubeconfigSecretNamespace = _claimNamespace
+        _argoCdClusterName = _clusterName
+        _argoCdClusterProject = core.argoCdTenantProjectName(_argoCdInstance)
+        _projectName = _claimNamespace
+        _resourceName = "${_managedResourcePrefix}cluster${_managedResourceSuffix}"
+    }
     appPrometheusOperatorCrds: apps.PrometheusOperatorCrdsAppK8s {
         _clusterName = _clusterName
         _name = "${_managedResourcePrefix}prom-crds${_managedResourceSuffix}"
@@ -258,6 +269,7 @@ clouds:
         workerMachineTemplate.managedResource
         k8sProviderConfigCredentialsSecret.managedResource
         providerConfig.managedResource
+        argoCdCluster.managedResource
         k8sCrossplaneSecretsNamespace.managedResource
     ] + sum([
         appPrometheusOperatorCrds.managedResources
@@ -284,6 +296,7 @@ clouds:
         workerMachineTemplate.usages
         k8sProviderConfigCredentialsSecret.usages
         providerConfig.usages
+        argoCdCluster.usages
         appPrometheusOperatorCrds.usages
         appCilium.usages
         appOpenStackCloudControllerManager.usages

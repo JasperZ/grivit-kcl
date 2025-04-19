@@ -1,4 +1,5 @@
-import grivit_library.composite.v1alpha1.cluster.k8s.infra.os as cluster_k8s_infra
+import grivit_library.composite.v1alpha1.cluster.k8s.infra.os as infra
+import grivit_library.core.v1alpha1 as core
 
 observedComposedResources: any = option("params").ocds
 observedCompositeResource: any = option("params").oxr
@@ -8,7 +9,15 @@ claimNamespace: str = observedCompositeResource.metadata.labels["crossplane.io/c
 composite: str = observedCompositeResource.metadata.labels["crossplane.io/composite"]
 spec: any = observedCompositeResource.spec
 
-k8sClusterOsStandalone: cluster_k8s_infra.CapiStandaloneClusterK8sInfraOs = cluster_k8s_infra.CapiStandaloneClusterK8sInfraOs {
+argoCdInstance: core.ArgoCdInstance {
+    domain = "domain not required here"
+    name = spec.argoCd.instanceName
+    ownerProjectName = spec.argoCd.instanceOwnerProjectName
+    projectName = claimNamespace
+}
+
+k8sClusterOsStandalone: infra.CapiStandaloneClusterK8sInfraOs = infra.CapiStandaloneClusterK8sInfraOs {
+    _argoCdInstance = argoCdInstance
     _claimNamespace = claimNamespace
     _claimName = claimName
     _clusterName = spec.clusterName
