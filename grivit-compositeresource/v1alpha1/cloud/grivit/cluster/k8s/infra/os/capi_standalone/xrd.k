@@ -28,14 +28,14 @@ schema XrdCapiStandaloneClusterK8sInfraOs(core.CompositeResourceDefinition):
                                 type = "object"
                                 default = {}
                                 properties = {
-                                    argoCd = {
+                                    argoCdInstance = {
                                         type = "object"
                                         default = {}
                                         properties = {
-                                            instanceName = {
+                                            name = {
                                                 type = "string"
                                             }
-                                            instanceOwnerProjectName = {
+                                            ownerProjectName = {
                                                 type = "string"
                                             }
                                         }

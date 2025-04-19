@@ -11,8 +11,8 @@ spec: any = observedCompositeResource.spec
 
 argoCdInstance: core.ArgoCdInstance {
     domain = "domain not required here"
-    name = spec.argoCd.instanceName
-    ownerProjectName = spec.argoCd.instanceOwnerProjectName
+    name = spec.argoCdInstance.name
+    ownerProjectName = spec.argoCdInstance.ownerProjectName
     projectName = claimNamespace
 }
 
