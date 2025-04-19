@@ -172,6 +172,9 @@ clouds:
         _argoCdClusterProject = core.argoCdTenantProjectName(_argoCdInstance)
         _projectName = _claimNamespace
         _resourceName = "${_managedResourcePrefix}cluster${_managedResourceSuffix}"
+        _uses = [
+            providerConfig.managedResource
+        ]
     }
     appPrometheusOperatorCrds: apps.PrometheusOperatorCrdsAppK8s {
         _clusterName = _clusterName
@@ -237,10 +240,15 @@ clouds:
         _projectNamespace = _claimNamespace
     }
     appsPlatformMetricsServer: apps.MetricsServerAppK8s {
-        _clusterName = _clusterName
+        _argoCdDestinationCluster = _clusterName
         _name = "${_managedResourcePrefix}metrics${_managedResourceSuffix}"
-        _fluxHelmReleaseDependencies = infrastructureAppHelmReleases
-        _projectNamespace = _claimNamespace
+        _projectName = _claimNamespace
+        # _uses = [
+        #     appCilium.helmRelease
+        #     appOpenStackCloudControllerManager.helmRelease
+        #     appOpenStackCinderCsi.helmRelease
+        #     appOpenStackExternalDns.helmRelease
+        # ]
     }
     appsPlatformSnapshotController: apps.SnapshotControllerAppK8s {
         _clusterName = _clusterName

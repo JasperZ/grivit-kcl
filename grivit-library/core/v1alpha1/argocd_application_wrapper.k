@@ -1,34 +1,30 @@
-schema ArgoCdClusterWrapper:
+schema ArgoCdApplicationWrapper:
+    _argoCdApplicationDestinationName: str
+    _argoCdApplicationSource: {any:any} = {}
+    _argoCdApplicationSources: [any] = []
+    _argoCdApplicationSyncWave: str = "0"
     _argoCdInstance: ArgoCdInstance
-    _argoCdClusterKubeconfigSecretKey: str
-    _argoCdClusterKubeconfigSecretName: str
-    _argoCdClusterKubeconfigSecretNamespace: str
-    _argoCdClusterName: str
-    _argoCdClusterNamespaces: [str] = []
-    _argoCdClusterProject?: str
     _projectName: str
     _resourceName: str
     _uses: [ManagedResource | K8sProviderConfig] = []
 
     managedResource: ManagedResource {
-        apiVersion = "cluster.argocd.crossplane.io/v1alpha1"
-        kind = "Cluster"
+        # https://marketplace.upbound.io/providers/crossplane-contrib/provider-argocd/v0.10.1/resources/applications.argocd.crossplane.io/Application/v1alpha1
+        apiVersion = "applications.argocd.crossplane.io/v1alpha1"
+        kind = "Application"
         metadata.name = _resourceName
         metadata.annotations = {
             "krm.kcl.dev/composition-resource-name" = _resourceName
         }
         spec.forProvider = {
-            config = {
-                kubeconfigSecretRef = {
-                    key = _argoCdClusterKubeconfigSecretKey
-                    name = _argoCdClusterKubeconfigSecretName
-                    namespace = _argoCdClusterKubeconfigSecretNamespace
-                }
+            annotations = {
+                "argocd.argoproj.io/sync-wave" = _argoCdApplicationSyncWave
             }
-            name = _argoCdClusterName
-            namespaces = _argoCdClusterNamespaces
-            if _argoCdClusterProject:
-                project = _argoCdClusterProject
+            destination = _argoCdApplicationDestinationName
+            finalizers = ["resources-finalizer.argocd.argoproj.io"]
+            project = _argoCdInstance.projectName
+            source = _argoCdApplicationSource
+            sources = _argoCdApplicationSources
         }
         spec.providerConfigRef.name = argoCdProviderConfigName(_projectName, _argoCdInstance)
     }
@@ -44,3 +40,4 @@ schema ArgoCdClusterWrapper:
         spec.of.kind = ofResource.kind
         spec.of.resourceRef.name = ofResource.metadata.name
     } for ofResource in _uses]
+

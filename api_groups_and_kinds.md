@@ -1,0 +1,38 @@
+# Api Groups & Kinds
+- docker.app.grivit.cloud
+  - bitwarden
+  - home-assistant
+  - nextcloud
+- k8s.app.grivit.cloud
+  - argocd
+  - keycloak
+  - openbao
+- podman.app.grivit.cloud
+  - bitwarden
+  - home-assistant
+  - nextcloud
+- configuration.project.grivit.cloud
+  - controlplane
+  - tenant
+- infrastructure.project.grivit.cloud
+  - openstack
+- integration.project.grivit.cloud
+  - argocd
+  - keycloak
+  - openbao
+- aws.infrastructure.k8s.cluster.grivit.cloud
+  - capi-standalon
+  - eks
+- azure.infrastructure.k8s.cluster.grivit.cloud
+  - capi-standalon
+  - aks
+- openstack.infrastructure.k8s.cluster.grivit.cloud
+  - capi-standalon
+  - capi-k0smotron
+- integration.k8s.cluster.grivit.cloud
+  - argocd
+  - openbao
+- instance.grivit.cloud
+  - aws
+  - azure
+  - openstack
