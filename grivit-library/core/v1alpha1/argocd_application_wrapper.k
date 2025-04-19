@@ -20,7 +20,9 @@ schema ArgoCdApplicationWrapper:
             annotations = {
                 "argocd.argoproj.io/sync-wave" = _argoCdApplicationSyncWave
             }
-            destination = _argoCdApplicationDestinationName
+            destination = {
+                name = _argoCdApplicationDestinationName
+            }
             finalizers = ["resources-finalizer.argocd.argoproj.io"]
             project = _argoCdInstance.projectName
             source = _argoCdApplicationSource
