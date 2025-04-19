@@ -240,16 +240,10 @@ clouds:
         _projectNamespace = _claimNamespace
     }
     appsPlatformMetricsServer: apps.MetricsServerAppK8s {
-        _argoCdDestinationCluster = _clusterName
-        _argoCdInstance = _argoCdInstance
+        _clusterName = _clusterName
         _name = "${_managedResourcePrefix}metrics${_managedResourceSuffix}"
-        _projectName = _claimNamespace
-        # _uses = [
-        #     appCilium.helmRelease
-        #     appOpenStackCloudControllerManager.helmRelease
-        #     appOpenStackCinderCsi.helmRelease
-        #     appOpenStackExternalDns.helmRelease
-        # ]
+        _fluxHelmReleaseDependencies = infrastructureAppHelmReleases
+        _projectNamespace = _claimNamespace
     }
     appsPlatformSnapshotController: apps.SnapshotControllerAppK8s {
         _clusterName = _clusterName
