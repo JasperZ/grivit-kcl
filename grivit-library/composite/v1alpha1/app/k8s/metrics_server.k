@@ -23,9 +23,9 @@ schema MetricsServerAppK8s:
                         requests.memory = "256Mi"
                     }
                 }
-                repoURL = "https://kubernetes-sigs.github.io/metrics-server"
-                targetRevision = "3.12.1"
             }
+            repoURL = "https://kubernetes-sigs.github.io/metrics-server"
+            targetRevision = "3.12.1"
         }
         _argoCdInstance = _argoCdInstance
         _projectName = _projectName
