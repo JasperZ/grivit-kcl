@@ -13,6 +13,7 @@ schema ArgoCdApplicationWrapper:
         apiVersion = "applications.argocd.crossplane.io/v1alpha1"
         kind = "Application"
         metadata.name = _resourceName
+        metadata.namespace = _projectName
         metadata.annotations = {
             "krm.kcl.dev/composition-resource-name" = _resourceName
         }
@@ -22,7 +23,6 @@ schema ArgoCdApplicationWrapper:
             }
             destination = {
                 name = _argoCdApplicationDestinationName
-                namespace = _projectName
             }
             finalizers = ["resources-finalizer.argocd.argoproj.io"]
             project = argoCdTenantProjectName(_argoCdInstance)

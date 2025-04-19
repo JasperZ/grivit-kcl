@@ -8,6 +8,7 @@ schema ManagedResourceMetadata:
     annotations: ManagedResourceMetadataAnnotations
     labels?: ManagedResourceMetadataLabels
     name: str
+    namespace?: str
 
 schema ManagedResourceMetadataAnnotations:
     [str]: str
