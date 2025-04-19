@@ -23,5 +23,5 @@ argoCdTenantProjectName: (ArgoCdInstance) -> str = lambda argoCdInstance: ArgoCd
 }
 
 argoCdClusterName: (str, ArgoCdInstance) -> str = lambda clusterName: str, argoCdInstance: ArgoCdInstance -> str {
-    _name = ${argoCdInstance.projectName}-${clusterName}"
+    _name = "${argoCdInstance.projectName}-${clusterName}"
 }
