@@ -168,7 +168,7 @@ clouds:
         _argoCdClusterKubeconfigSecretKey = "value"
         _argoCdClusterKubeconfigSecretName = core.k8sProviderConfigSecretName(_claimNamespace, _clusterName)
         _argoCdClusterKubeconfigSecretNamespace = _claimNamespace
-        _argoCdClusterName = _clusterName
+        _argoCdClusterName = core.argoCdClusterName(_clusterName, _argoCdInstance)
         _argoCdClusterProject = core.argoCdTenantProjectName(_argoCdInstance)
         _projectName = _claimNamespace
         _resourceName = "${_managedResourcePrefix}cluster${_managedResourceSuffix}"
