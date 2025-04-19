@@ -24,7 +24,7 @@ schema ArgoCdApplicationWrapper:
                 name = _argoCdApplicationDestinationName
             }
             finalizers = ["resources-finalizer.argocd.argoproj.io"]
-            project = _argoCdInstance.projectName
+            project = argoCdTenantProjectName(_argoCdInstance)
             source = _argoCdApplicationSource
             sources = _argoCdApplicationSources
         }
