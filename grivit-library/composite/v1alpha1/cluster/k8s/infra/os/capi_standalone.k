@@ -241,6 +241,7 @@ clouds:
     }
     appsPlatformMetricsServer: apps.MetricsServerAppK8s {
         _argoCdDestinationCluster = _clusterName
+        _argoCdInstance = _argoCdInstance
         _name = "${_managedResourcePrefix}metrics${_managedResourceSuffix}"
         _projectName = _claimNamespace
         # _uses = [
