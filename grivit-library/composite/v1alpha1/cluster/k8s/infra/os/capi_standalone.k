@@ -215,6 +215,7 @@ clouds:
         _projectNamespace = _claimNamespace
     }
     appClusterAutoscaler: apps.ClusterAutoscalerAppK8s {
+        _clusterAPIKubeconfigSecret = "${cluster.managedResource.metadata.name}-kubeconfig"
         _clusterName = cluster.managedResource.metadata.name
         _name = "${cluster.managedResource.metadata.name}-ca"
         _projectNamespace = _claimNamespace

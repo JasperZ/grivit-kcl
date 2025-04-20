@@ -1,6 +1,7 @@
 import core.v1alpha1 as core
 
 schema ClusterAutoscalerAppK8s:
+    _clusterAPIKubeconfigSecret: str
     _clusterName: str
     _name: str
     _projectNamespace: str
@@ -21,7 +22,7 @@ schema ClusterAutoscalerAppK8s:
             }
             cloudProvider = "clusterapi"
             clusterAPIMode = "kubeconfig-incluster"
-            clusterAPIKubeconfigSecret = "${_projectNamespace}-k8s-${_clusterName}-provider"
+            clusterAPIKubeconfigSecret = _clusterAPIKubeconfigSecret
             resources = {
                 limits.cpu = "100m"
                 limits.memory = "128Mi"
