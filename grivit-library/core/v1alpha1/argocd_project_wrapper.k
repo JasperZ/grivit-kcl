@@ -4,6 +4,7 @@ schema ArgoCdProjectWrapper:
     _argoCdProjectDestinations: [any] = []
     _argoCdProjectRoles: [any] = []
     _argoCdProjectClusterResourceWhitelist: [any] = []
+    _argoCdProjectNamespaceResourceWhitelist: [any] = []
     _argoCdProjectSourceNamespaces: [str] = []
     _argoCdProjectSourceRepos: [str] = []
     _projectName: str
@@ -27,6 +28,7 @@ schema ArgoCdProjectWrapper:
             clusterResourceWhitelist= _argoCdProjectClusterResourceWhitelist
             description = _argoCdProjectDescription
             destinations = _argoCdProjectDestinations
+            namespaceResourceWhitelist = _argoCdProjectNamespaceResourceWhitelist
             roles = _argoCdProjectRoles
             sourceNamespaces = _argoCdProjectSourceNamespaces
             sourceRepos = _argoCdProjectSourceRepos
