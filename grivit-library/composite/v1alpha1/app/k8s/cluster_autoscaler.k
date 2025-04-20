@@ -6,10 +6,11 @@ schema ClusterAutoscalerAppK8s:
     _projectNamespace: str
 
     helmRelease: core.HelmReleaseWrapper {
-        _name = _name
+        _clusterName = _clusterName
         _chartName = "cluster-autoscaler"
         _chartVersion = "9.40.0"
         _chartRepoUrl = "https://kubernetes.github.io/autoscaler"
+        _name = _name
         _projectNamespace = _projectNamespace
         _targetNamespace = _projectNamespace
         managedResource.spec.forProvider.skipCreateNamespace = True
