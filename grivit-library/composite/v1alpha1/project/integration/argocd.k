@@ -107,6 +107,12 @@ schema ArgoCdProjectIntegration:
                 kind = "*"
             }
         ]
+        _argoCdProjectNamespaceResourceWhitelist = [
+            {
+                group = "*"
+                kind = "*"
+            }
+        ]
         _argoCdProjectRoles = [
             {
                 description = "Project admin"
