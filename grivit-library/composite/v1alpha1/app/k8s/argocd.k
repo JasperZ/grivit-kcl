@@ -235,7 +235,7 @@ allowedAudiences:
                     # https://argo-cd.readthedocs.io/en/latest/operator-manual/applicationset/Appset-Any-Namespace/
               #  "applicationsetcontroller.enable.scm.providers" = False
                     "applicationsetcontroller.namespaces" = "grivit-ctrl-*, grivit-cust-*"
-                    "applicationsetcontroller.allowed.scm.providers" = "git@github.com"
+                    "applicationsetcontroller.allowed.scm.providers" = "ssh://github.com"
                 }
                 rbac = {
                     "policy.csv" = """\
