@@ -59,6 +59,7 @@ schema ArgoCdAppK8s:
         _projectNamespace = _claimNamespace
         managedResource.spec.forProvider.manifest.spec.values = {
             applicationSet = {
+                allowAnyNamespace = True
                 metrics = {
                     enabled = True
                     serviceMonitor = {
@@ -234,7 +235,6 @@ allowedAudiences:
                     # https://argo-cd.readthedocs.io/en/latest/operator-manual/applicationset/Appset-Any-Namespace/
                "applicationsetcontroller.enable.scm.providers" = False
                     "applicationsetcontroller.namespaces" = "grivit-ctrl-*, grivit-cust-*"
-                    "applicationSet.allowAnyNamespace" = True
                 }
                 rbac = {
                     "policy.csv" = """\
