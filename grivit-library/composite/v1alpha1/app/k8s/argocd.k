@@ -229,7 +229,10 @@ allowedAudiences:
                 }
                 params = {
                     "server.insecure" = True
+                    # https://argo-cd.readthedocs.io/en/latest/operator-manual/app-any-namespace/
                     "application.namespaces" = "grivit-ctrl-*, grivit-cust-*"
+                    # https://argo-cd.readthedocs.io/en/latest/operator-manual/applicationset/Appset-Any-Namespace/
+                    "applicationsetcontroller.enable.scm.providers" = False
                     "applicationsetcontroller.namespaces" = "grivit-ctrl-*, grivit-cust-*"
                 }
                 rbac = {
