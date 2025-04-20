@@ -51,7 +51,7 @@ schema ArgoCdAppK8s:
         _clusterName = _kubernetesClusterName
         _name = "${_managedResourcePrefix}rel"
         _helmChartName = "argo-cd"
-        _helmChartVersion = "7.8.23"
+        _helmChartVersion = "7.8.27"
         _helmReleaseName = "argocd-${_argoCdInstance.name}"
         _helmReleaseNamespace = "argocd-${_argoCdInstance.name}"
         _helmRepositoryWrapper = helmRepo
