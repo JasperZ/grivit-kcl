@@ -214,11 +214,11 @@ clouds:
         _observedComposedResources = _observedComposedResources
         _projectNamespace = _claimNamespace
     }
-    # appClusterAutoscaler: apps.ClusterAutoscalerAppK8s {
-    #     _clusterName = cluster.managedResource.metadata.name
-    #     _name = "${cluster.managedResource.metadata.name}-ca"
-    #     _projectNamespace = _claimNamespace
-    # }
+    appClusterAutoscaler: apps.ClusterAutoscalerAppK8s {
+        _clusterName = cluster.managedResource.metadata.name
+        _name = "${cluster.managedResource.metadata.name}-ca"
+        _projectNamespace = _claimNamespace
+    }
     infrastructureAppHelmReleases: [core.K8sFluxHelmReleaseWrapper] = [
         appCilium.helmRelease
         appOpenStackCloudControllerManager.helmRelease
@@ -280,7 +280,7 @@ clouds:
         appOpenStackCloudControllerManager.managedResources
         appOpenStackCinderCsi.managedResources
         appOpenStackExternalDns.managedResources
-        # appClusterAutoscaler.managedResources
+        appClusterAutoscaler.managedResources
         appsPlatformCertManager.managedResources
         appsPlatformIngressNginx.managedResources
         appsPlatformMetricsServer.managedResources
@@ -305,7 +305,7 @@ clouds:
         appOpenStackCloudControllerManager.usages
         appOpenStackCinderCsi.usages
         appOpenStackExternalDns.usages
-        # appClusterAutoscaler.usages
+        appClusterAutoscaler.usages
         appsPlatformCertManager.usages
         appsPlatformIngressNginx.usages
         appsPlatformMetricsServer.usages
