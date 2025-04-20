@@ -6,7 +6,7 @@ schema ClusterAutoscalerAppK8s:
     _projectNamespace: str
 
     helmRelease: core.HelmReleaseWrapper {
-        _clusterName = _clusterName
+        _clusterName = "ctrl"
         _chartName = "cluster-autoscaler"
         _chartVersion = "9.40.0"
         _chartRepoUrl = "https://kubernetes.github.io/autoscaler"
