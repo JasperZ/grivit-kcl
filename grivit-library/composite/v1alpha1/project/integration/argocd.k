@@ -152,7 +152,7 @@ schema ArgoCdProjectIntegration:
                 # Syntax: p, <role/user/group>, <resource>, <action>, <object>, <effect>
                 policies = [
                     "p, proj:${_argoCdTenantProjectName}:admins, applications, *, ${_argoCdTenantProjectName}/*/*, allow"
-                    # "p, proj:${_argoCdTenantProjectName}:admins, applicationsets, *, ${_argoCdTenantProjectName}/*/*, allow"
+                    "p, proj:${_argoCdTenantProjectName}:admins, applicationsets, *, ${_argoCdTenantProjectName}/*/*, allow"
                     "p, proj:${_argoCdTenantProjectName}:admins, clusters, *, ${_argoCdTenantProjectName}/*, allow"
                     "p, proj:${_argoCdTenantProjectName}:admins, repositories, *, ${_argoCdTenantProjectName}/*, allow"
                 ]
@@ -164,7 +164,7 @@ schema ArgoCdProjectIntegration:
                 # Syntax: p, <role/user/group>, <resource>, <action>, <object>, <effect>
                 policies = [
                     "p, proj:${_argoCdTenantProjectName}:viewers, applications, get, ${_argoCdTenantProjectName}/*/*, allow"
-                    # "p, proj:${_argoCdTenantProjectName}:viewers, applicationsets, get, ${_argoCdTenantProjectName}/*/*, allow"
+                    "p, proj:${_argoCdTenantProjectName}:viewers, applicationsets, get, ${_argoCdTenantProjectName}/*/*, allow"
                     "p, proj:${_argoCdTenantProjectName}:viewers, clusters, get, ${_argoCdTenantProjectName}/*, allow"
                     "p, proj:${_argoCdTenantProjectName}:viewers, repositories, get, ${_argoCdTenantProjectName}/*, allow"
                 ]
