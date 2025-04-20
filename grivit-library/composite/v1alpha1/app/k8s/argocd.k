@@ -251,7 +251,7 @@ g, ${kcArgoCdAdminsGroup.managedResource.spec.forProvider.name}, role:admin
                 replicas = 1
                 resources = {
                     limits.cpu = "300m"
-                    limits.memory = "1024Mi"
+                    limits.memory = "2048Mi"
                     requests.cpu = "300m"
                     requests.memory = "1024Mi"
                 }
