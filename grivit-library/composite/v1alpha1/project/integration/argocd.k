@@ -142,7 +142,8 @@ schema ArgoCdProjectIntegration:
         _argoCdInstance = _argoCdInstance
         _argoCdProjectDescription = "${_targetProjectName} - Tenant Clusters"
         _argoCdProjectDestinations = [
-            {name = "!instance-cluster", namespace = "*"}
+            {name = "instance-cluster", namespace = _targetProjectName}
+            {name = "${_targetProjectName}-*", namespace = "*"}
         ]
         _argoCdProjectRoles = [
             {
