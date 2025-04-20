@@ -172,6 +172,7 @@ schema ArgoCdProjectIntegration:
             }
         ]
         _argoCdProjectSourceNamespaces = [_targetProjectName]
+        _argoCdProjectSourceRepos = ["*"]
         _projectName = _claimNamespace
         _resourceName = _argoCdTenantProjectName
     }
@@ -199,3 +200,4 @@ schema ArgoCdProjectIntegration:
         argoCdControlPlaneProject.usages
         argoCdTenantProject.usages
     ], [])
+
