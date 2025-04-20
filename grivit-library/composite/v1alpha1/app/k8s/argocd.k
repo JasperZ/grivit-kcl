@@ -230,6 +230,7 @@ allowedAudiences:
                 params = {
                     "server.insecure" = True
                     "application.namespaces" = "grivit-ctrl-*, grivit-cust-*"
+                    "applicationsetcontroller.namespaces" = "grivit-ctrl-*, grivit-cust-*"
                 }
                 rbac = {
                     "policy.csv" = """\
