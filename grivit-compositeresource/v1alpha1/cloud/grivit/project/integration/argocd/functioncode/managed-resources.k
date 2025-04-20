@@ -1,4 +1,4 @@
-import grivit_library.composite.v1alpha1.project.integration as integrations
+import grivit_library.composite.v1alpha1.project.integration as integ
 import grivit_library.core.v1alpha1 as core
 
 observedComposedResources: any = option("params").ocds
@@ -22,7 +22,7 @@ keycloakInstance: core.KeycloakInstance {
     realmId = claimNamespace
 }
 
-argoCdProjectIntegration: integrations.ArgoCdProjectIntegration = integrations.ArgoCdProjectIntegration {
+argoCdProjectIntegration: integ.ArgoCdProjectIntegration = integ.ArgoCdProjectIntegration {
     _argoCdInstance = argoCdInstance
     _claimName = claimName
     _claimNamespace = claimNamespace

@@ -3,8 +3,9 @@ schema ArgoCdProjectWrapper:
     _argoCdProjectDescription: str = ""
     _argoCdProjectDestinations: [any] = []
     _argoCdProjectRoles: [any] = []
-    _argoCdProjectSourceNamespaces: [str] = []
     _argoCdProjectClusterResourceWhitelist: [any] = []
+    _argoCdProjectSourceNamespaces: [str] = []
+    _argoCdProjectSourceRepos: [str] = []
     _projectName: str
     _resourceName: str
 
@@ -28,6 +29,7 @@ schema ArgoCdProjectWrapper:
             destinations = _argoCdProjectDestinations
             roles = _argoCdProjectRoles
             sourceNamespaces = _argoCdProjectSourceNamespaces
+            sourceRepos = _argoCdProjectSourceRepos
         }
         spec.providerConfigRef.name = argoCdProviderConfigName(_projectName, _argoCdInstanceOverride)
     }
