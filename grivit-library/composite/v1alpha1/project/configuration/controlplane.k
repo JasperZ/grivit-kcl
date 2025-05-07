@@ -6,7 +6,7 @@ import core.v1alpha1.helm_utils as helmUtils
 import core.v1alpha1.k8s_utils as k8sUtils
 import core.v1alpha1.os_utils as osUtils
 
-import ...app.k8s as apps
+import ...k8s.app.certmanager as certmanager
 
 schema ControlPlaneProjectConfiguration:
     _claimName: str
@@ -139,99 +139,15 @@ schema ControlPlaneProjectConfiguration:
             osProviderConfigCredentialsSecret.managedResource
         ]
     }
-    k8sAppPrometheusOperatorCrds: apps.PrometheusOperatorCrdsAppK8s {
+    certmanagerClusterIssuer: certmanager.ClusterIssuerCertManagerAppK8s {
         _clusterName = _k8sClusterName
-        _name = "${_managedResourcePrefix}prom-crds"
-        _projectNamespace = _claimNamespace
-    }
-    k8sAppOpenStackCinderCsi: apps.OpenStackCinderCsiAppK8s {
-        _clusterName = _k8sClusterName
-        _fluxHelmReleaseDependencies = [k8sAppPrometheusOperatorCrds.helmRelease]
-        _name = "${_managedResourcePrefix}cinder-csi"
+        _email = _contactEmail
+        _name = _managedResourcePrefix
         _observedComposedResources = _observedComposedResources
         _projectNamespace = _claimNamespace
     }
-    k8sAppOpenStackExternalDns: apps.OpenStackExternalDnsAppK8s {
-        _clusterName = _k8sClusterName
-        _domainFilters = [_domain]
-        _fluxHelmReleaseDependencies = [k8sAppPrometheusOperatorCrds.helmRelease]
-        _name = "${_managedResourcePrefix}external-dns"
-        _observedComposedResources = _observedComposedResources
-        _projectNamespace = _claimNamespace
-    }
-    k8sAppCertManager: apps.CertManagerAppK8s {
-        _clusterName = _k8sClusterName
-        _email: _contactEmail
-        _fluxHelmReleaseDependencies = [
-            k8sAppOpenStackCinderCsi.helmRelease
-            k8sAppOpenStackExternalDns.helmRelease
-        ]
-        _name = "${_managedResourcePrefix}certmgr"
-        _observedComposedResources = _observedComposedResources
-        _projectNamespace = _claimNamespace
-    }
-    k8sAppIngressNginx: apps.IngressNginxAppK8s {
-        _clusterName = _k8sClusterName
-        _name = "${_managedResourcePrefix}ingress-nginx"
-        _fluxHelmReleaseDependencies = [
-            k8sAppOpenStackCinderCsi.helmRelease
-            k8sAppOpenStackExternalDns.helmRelease
-        ]
-        _projectNamespace = _claimNamespace
-    }
-    k8sAppMetricsServer: apps.MetricsServerAppK8s {
-        _clusterName = _k8sClusterName
-        _name = "${_managedResourcePrefix}metrics"
-        _fluxHelmReleaseDependencies = [
-            k8sAppOpenStackCinderCsi.helmRelease
-            k8sAppOpenStackExternalDns.helmRelease
-        ]
-        _projectNamespace = _claimNamespace
-    }
-    k8sAppSnapshotController: apps.SnapshotControllerAppK8s {
-        _clusterName = _k8sClusterName
-        _name = "${_managedResourcePrefix}snap-ctrl"
-        _projectNamespace = _claimNamespace
-    }
-    # ToDo: Velero
-    k8sAppVerticalPodAutoscaler: apps.VerticalPodAutoscalerAppK8s {
-        _clusterName = _k8sClusterName
-        _name = "${_managedResourcePrefix}vpa"
-        _fluxHelmReleaseDependencies = [
-            k8sAppOpenStackCinderCsi.helmRelease
-            k8sAppOpenStackExternalDns.helmRelease
-        ]
-        _projectNamespace = _claimNamespace
-    }
-    k8sAppClusterApi: apps.ClusterApiAppK8s {
-        _claimName = _claimName
-        _claimNamespace = _claimNamespace
-        _kubernetesClusterName = _k8sClusterName
-        _fluxHelmReleaseDependencies = [
-            k8sAppPrometheusOperatorCrds.helmRelease
-            k8sAppCertManager.helmRelease
-        ]
-    }
-    fluxHelmReleases: [core.K8sFluxHelmReleaseWrapper] = [
-        k8sAppPrometheusOperatorCrds.helmRelease
-        k8sAppOpenStackCinderCsi.helmRelease
-        k8sAppOpenStackExternalDns.helmRelease
-        k8sAppCertManager.helmRelease
-        k8sAppIngressNginx.helmRelease
-        k8sAppMetricsServer.helmRelease
-        k8sAppVerticalPodAutoscaler.helmRelease
-        k8sAppClusterApi.helmRelease
-    ]
     managedResources: [core.ManagedResource | core.AwsProviderConfig | core.HelmProviderConfig | core.K8sProviderConfig | core.OsProviderConfig] = sum([
-        k8sAppPrometheusOperatorCrds.managedResources
-        k8sAppOpenStackCinderCsi.managedResources
-        k8sAppOpenStackExternalDns.managedResources
-        k8sAppCertManager.managedResources
-        k8sAppIngressNginx.managedResources
-        k8sAppMetricsServer.managedResources
-        k8sAppSnapshotController.managedResources
-        k8sAppVerticalPodAutoscaler.managedResources
-        k8sAppClusterApi.managedResources
+        certmanagerClusterIssuer.managedResources
     ], [
         awsProviderConfigCredentialsSecret.managedResource
         awsProviderConfig.managedResource
@@ -254,14 +170,6 @@ schema ControlPlaneProjectConfiguration:
         k8sProviderConfig.usages
         osProviderConfigCredentialsSecret.usages
         osProviderConfig.usages
-        k8sAppPrometheusOperatorCrds.usages
-        k8sAppOpenStackCinderCsi.usages
-        k8sAppOpenStackExternalDns.usages
-        k8sAppCertManager.usages
-        k8sAppIngressNginx.usages
-        k8sAppMetricsServer.usages
-        k8sAppSnapshotController.usages
-        k8sAppVerticalPodAutoscaler.usages
-        k8sAppClusterApi.usages
+        certmanagerClusterIssuer.usages
     ], [])
 
