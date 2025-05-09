@@ -115,6 +115,58 @@ schema TenantProjectConfiguration:
         _projectNamespace = _claimNamespace
     }
 
+    _argoCdTenantProjectName: str = "${_projectName}-tenant"
+    argoCdTenantProject: core.ArgoCdProjectWrapper2 {
+        _argoCdProjectDescription = "${_projectName} - Tenant Clusters"
+        _argoCdProjectDestinations = [
+            {name = "instance-cluster", namespace = _projectName}
+            {name = "${_projectName}-*", namespace = "*"}
+        ]
+        _argoCdProjectClusterResourceWhitelist = [
+            {
+                group = "*"
+                kind = "*"
+            }
+        ]
+        _argoCdProjectNamespaceResourceWhitelist = [
+            {
+                group = "*"
+                kind = "*"
+            }
+        ]
+        _argoCdProjectRoles = [
+            {
+                description = "Project admin"
+                groups = "admin" #[kcArgoCdAdminsGroup.managedResource.spec.forProvider.name]
+                name = "admins"
+                # Syntax: p, <role/user/group>, <resource>, <action>, <object>, <effect>
+                policies = [
+                    "p, proj:${_argoCdTenantProjectName}:admins, applications, *, ${_argoCdTenantProjectName}/*/*, allow"
+                    "p, proj:${_argoCdTenantProjectName}:admins, applicationsets, *, ${_argoCdTenantProjectName}/*/*, allow"
+                    "p, proj:${_argoCdTenantProjectName}:admins, clusters, *, ${_argoCdTenantProjectName}/*, allow"
+                    "p, proj:${_argoCdTenantProjectName}:admins, repositories, *, ${_argoCdTenantProjectName}/*, allow"
+                ]
+            }
+            # {
+            #     description = "Project viewer"
+            #     groups = [kcArgoCdViewersGroup.managedResource.spec.forProvider.name]
+            #     name = "viewers"
+            #     # Syntax: p, <role/user/group>, <resource>, <action>, <object>, <effect>
+            #     policies = [
+            #         "p, proj:${_argoCdTenantProjectName}:viewers, applications, get, ${_argoCdTenantProjectName}/*/*, allow"
+            #         "p, proj:${_argoCdTenantProjectName}:viewers, applicationsets, get, ${_argoCdTenantProjectName}/*/*, allow"
+            #         "p, proj:${_argoCdTenantProjectName}:viewers, clusters, get, ${_argoCdTenantProjectName}/*, allow"
+            #         "p, proj:${_argoCdTenantProjectName}:viewers, repositories, get, ${_argoCdTenantProjectName}/*, allow"
+            #     ]
+            # }
+        ]
+        _argoCdProjectSourceNamespaces = [_projectName]
+        _argoCdProjectSourceRepos = ["*"]
+        _projectName = _claimNamespace
+        _resourceName = _argoCdTenantProjectName
+    }
+
+
     managedResources: [core.ManagedResource | core.AwsProviderConfig | core.HelmProviderConfig | core.K8sProviderConfig | core.OsProviderConfig] = sum([
         osProjectInfrastructure.managedResources
     ], [
@@ -125,6 +177,7 @@ schema TenantProjectConfiguration:
         httpProviderConfig.managedResource
         k8sProviderConfigCredentialsSecret.managedResource
         k8sProviderConfig.managedResource
+        argoCdTenantProject.managedResource
     ])
 
     usages: [core.Usage] = sum([

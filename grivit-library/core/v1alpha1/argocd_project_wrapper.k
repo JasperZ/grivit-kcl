@@ -37,3 +37,34 @@ schema ArgoCdProjectWrapper:
     }
     usages: [Usage] = []
 
+schema ArgoCdProjectWrapper2:
+    _argoCdProjectDescription: str = ""
+    _argoCdProjectDestinations: [any] = []
+    _argoCdProjectRoles: [any] = []
+    _argoCdProjectClusterResourceWhitelist: [any] = []
+    _argoCdProjectNamespaceResourceWhitelist: [any] = []
+    _argoCdProjectSourceNamespaces: [str] = []
+    _argoCdProjectSourceRepos: [str] = []
+    _projectName: str
+    _resourceName: str
+
+    managedResource: ManagedResource {
+        apiVersion = "projects.argocd.crossplane.io/v1alpha1"
+        kind = "Project"
+        metadata.name = _resourceName
+        metadata.annotations = {
+            "krm.kcl.dev/composition-resource-name" = _resourceName
+        }
+        spec.forProvider = {
+            clusterResourceWhitelist= _argoCdProjectClusterResourceWhitelist
+            description = _argoCdProjectDescription
+            destinations = _argoCdProjectDestinations
+            namespaceResourceWhitelist = _argoCdProjectNamespaceResourceWhitelist
+            roles = _argoCdProjectRoles
+            sourceNamespaces = _argoCdProjectSourceNamespaces
+            sourceRepos = _argoCdProjectSourceRepos
+        }
+        spec.providerConfigRef.name = "bootstrap-argocd"
+    }
+    usages: [Usage] = []
+

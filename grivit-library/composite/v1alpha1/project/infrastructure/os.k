@@ -92,4 +92,3 @@ schema OsProjectInfrastructure:
     ]
 
     usages: [core.Usage] = password.usages + project.usages + user.usages + userRoleAssignment.usages + cloudConfig.usages + providerConfig.usages + zone.usages
-
