@@ -137,7 +137,7 @@ schema TenantProjectConfiguration:
         _argoCdProjectRoles = [
             {
                 description = "Project admin"
-                groups = "admin" #[kcArgoCdAdminsGroup.managedResource.spec.forProvider.name]
+                groups = ["admin"] #[kcArgoCdAdminsGroup.managedResource.spec.forProvider.name]
                 name = "admins"
                 # Syntax: p, <role/user/group>, <resource>, <action>, <object>, <effect>
                 policies = [
