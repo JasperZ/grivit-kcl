@@ -119,6 +119,7 @@ schema TenantProjectConfiguration:
     argoCdTenantProject: core.ArgoCdProjectWrapper2 {
         _argoCdProjectDescription = "${_projectName} - Tenant Clusters"
         _argoCdProjectDestinations = [
+            {name = "in-cluster", namespace = _projectName}
             {name = "instance-cluster", namespace = _projectName}
             {name = "${_projectName}-*", namespace = "*"}
         ]
