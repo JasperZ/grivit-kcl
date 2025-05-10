@@ -172,7 +172,7 @@ clouds:
             "project": _claimNamespace
         }
         _argoCdClusterName = core.argoCdClusterName(_clusterName, _argoCdInstance)
-        _argoCdClusterProject = "${_argoCdInstance.projectName}-tenant"
+        _argoCdClusterProject = _argoCdInstance.projectName
         _projectName = _claimNamespace
         _resourceName = "${_managedResourcePrefix}cluster${_managedResourceSuffix}"
         _uses = [

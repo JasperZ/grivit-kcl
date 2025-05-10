@@ -115,7 +115,7 @@ schema TenantProjectConfiguration:
         _projectNamespace = _claimNamespace
     }
 
-    _argoCdTenantProjectName: str = "${_projectName}-tenant"
+    _argoCdTenantProjectName: str = _projectName
     argoCdTenantProject: core.ArgoCdProjectWrapper2 {
         _argoCdProjectDescription = "${_projectName} - Tenant Clusters"
         _argoCdProjectDestinations = [
