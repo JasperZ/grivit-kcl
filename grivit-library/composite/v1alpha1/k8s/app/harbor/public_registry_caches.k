@@ -34,14 +34,12 @@ schema PublicRegistryCachesHarborAppK8s:
         _harborRegistryName = configName
         _harborRegistryProviderName = config.registryProviderName
         _resourceName = _resourceNamePrefix + "registry-" + regex.replace(configName, "\.", "-") + _resourceNameSuffix
-        _resourceNamespace = _claimNamespace
     } for configName, config in _publicRegistryConfigurations}
 
     _projects: {str:core.HarborProject} = {configName = core.HarborProject {
         _harborProjectName = "cache-" + configName
         _harborProjectRegistryId = _registries[configName].getProviderAtRegistryId(_observedComposedResources)
         _resourceName = _resourceNamePrefix + "project-" + regex.replace(configName, "\.", "-") + _resourceNameSuffix
-        _resourceNamespace = _claimNamespace
     } for configName, config in _publicRegistryConfigurations}
 
     managedResources: [core.ManagedResource] = [registry.managedResource for registryName, registry in _registries] + [project.managedResource for projectName, project in _projects]

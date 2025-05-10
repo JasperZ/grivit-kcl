@@ -5,14 +5,12 @@ schema HarborRegistry:
     _harborRegistryName: str
     _harborRegistryProviderName: "alibaba" | "artifact-hub" | "aws" | "azure" | "docker-hub" | "docker-registry" | "gitlab" | "github" | "google" | "harbor" | "huawei" | "jfrog" | "quay"
     _resourceName: str
-    _resourceNamespace: str
     _uses: [ManagedResource] = []
 
     managedResource: ManagedResource {
         apiVersion = "registry.harbor.crossplane.io/v1alpha1"
         kind = "Registry"
         metadata.name = _resourceName
-        metadata.namespace = _resourceNamespace
         metadata.annotations = {
             "krm.kcl.dev/composition-resource-name" = _resourceName
         }

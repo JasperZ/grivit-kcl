@@ -5,14 +5,12 @@ schema HarborProject:
     _harborProjectRegistryId: str
     _harborProjectVulnerabilityScanning: bool = True
     _resourceName: str
-    _resourceNamespace: str
     _uses: [ManagedResource] = []
 
     managedResource: ManagedResource {
         apiVersion = "project.harbor.crossplane.io/v1alpha1"
         kind = "Project"
         metadata.name = _resourceName
-        metadata.namespace = _resourceNamespace
         metadata.annotations = {
             "krm.kcl.dev/composition-resource-name" = _resourceName
         }
