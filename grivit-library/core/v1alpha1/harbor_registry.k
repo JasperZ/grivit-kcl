@@ -1,5 +1,3 @@
-import base64
-
 schema HarborRegistry:
     _harborRegistryDescription: str
     _harborRegistryEndpointUrl: str
@@ -41,7 +39,8 @@ schema HarborRegistry:
     getProviderAtRegistryId: (any) -> int = lambda observedComposedResources: any -> int {
         _registryId: int = 1234567890
         if managedResource.metadata.name in observedComposedResources:
-            _registryId = int(base64.decode(observedComposedResources[managedResource.metadata.name].Resource?.status?.atProvider?.registryId or base64.encode("1234567890")))
+            if observedComposedResources[managedResource.metadata.name].Resource?.status?.atProvider?.registryId:
+                _registryId = int(observedComposedResources[managedResource.metadata.name].Resource.status.atProvider.registryId)
 
         _registryId
     }
