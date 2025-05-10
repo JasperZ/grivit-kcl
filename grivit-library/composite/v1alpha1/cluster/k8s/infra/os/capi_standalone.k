@@ -1,7 +1,7 @@
 import crypto
 import core.v1alpha1 as core
-# import .....app.k8s as apps
 
+# import .....app.k8s as apps
 schema CapiStandaloneClusterK8sInfraOsConfigWorkersAutoscaling:
     minSize: int
     maxSize: int
@@ -244,90 +244,6 @@ subnet-id = "${openstackCluster.getSubnetId(_observedComposedResources)}"
             controlPlaneMachineTemplate.managedResource
         ]
     }
-    # appPrometheusOperatorCrds: apps.PrometheusOperatorCrdsAppK8s {
-    #     _clusterName = _clusterName
-    #     _name = "${_managedResourcePrefix}prom-crds${_managedResourceSuffix}"
-    #     _projectNamespace = _claimNamespace
-    # }
-    # crdAppHelmReleases: [core.K8sFluxHelmReleaseWrapper] = [
-    #     appPrometheusOperatorCrds.helmRelease
-    # ]
-    # appCilium: apps.CiliumAppK8s {
-    #     _clusterName = _clusterName
-    #     _fluxHelmReleaseDependencies = crdAppHelmReleases
-    #     _name = "${_managedResourcePrefix}cilium${_managedResourceSuffix}"
-    #     _projectNamespace = _claimNamespace
-    # }
-    # appOpenStackCloudControllerManager: apps.OpenStackCloudControllerManagerAppK8s {
-    #     _clusterName = _clusterName
-    #     _clusterSubnetId = openstackCluster.getSubnetId(_observedComposedResources)
-    #     _externalNetworkId = openstackCluster.getExternalNetworkId(_observedComposedResources)
-    #     _fluxHelmReleaseDependencies = crdAppHelmReleases
-    #     _name = "${_managedResourcePrefix}occm${_managedResourceSuffix}"
-    #     _observedComposedResources = _observedComposedResources
-    #     _projectNamespace = _claimNamespace
-    # }
-    # appOpenStackCinderCsi: apps.OpenStackCinderCsiAppK8s {
-    #     _clusterName = _clusterName
-    #     _name = "${_managedResourcePrefix}cinder-csi${_managedResourceSuffix}"
-    #     _fluxHelmReleaseDependencies = crdAppHelmReleases
-    #     _observedComposedResources = _observedComposedResources
-    #     _projectNamespace = _claimNamespace
-    # }
-    # appOpenStackExternalDns: apps.OpenStackExternalDnsAppK8s {
-    #     _clusterName = _clusterName
-    #     _domainFilters = [_domain]
-    #     _fluxHelmReleaseDependencies = crdAppHelmReleases
-    #     _name = "${_managedResourcePrefix}external-dns${_managedResourceSuffix}"
-    #     _observedComposedResources = _observedComposedResources
-    #     _projectNamespace = _claimNamespace
-    # }
-    # appClusterAutoscaler: apps.ClusterAutoscalerAppK8s {
-    #     _clusterAPIKubeconfigSecret = "${cluster.managedResource.metadata.name}-kubeconfig"
-    #     _clusterName = cluster.managedResource.metadata.name
-    #     _name = "${cluster.managedResource.metadata.name}-ca"
-    #     _projectNamespace = _claimNamespace
-    # }
-    # infrastructureAppHelmReleases: [core.K8sFluxHelmReleaseWrapper] = [
-    #     appCilium.helmRelease
-    #     appOpenStackCloudControllerManager.helmRelease
-    #     appOpenStackCinderCsi.helmRelease
-    #     appOpenStackExternalDns.helmRelease
-    # ]
-    # appsPlatformCertManager: apps.CertManagerAppK8s {
-    #     _clusterName = _clusterName
-    #     _email: _email
-    #     _fluxHelmReleaseDependencies = infrastructureAppHelmReleases
-    #     _name = "${_managedResourcePrefix}certmgr${_managedResourceSuffix}"
-    #     _observedComposedResources = _observedComposedResources
-    #     _projectNamespace = _claimNamespace
-    # }
-    # appsPlatformIngressNginx: apps.IngressNginxAppK8s {
-    #     _clusterName = _clusterName
-    #     _name = "${_managedResourcePrefix}ingress-nginx${_managedResourceSuffix}"
-    #     _fluxHelmReleaseDependencies = infrastructureAppHelmReleases
-    #     _projectNamespace = _claimNamespace
-    # }
-    # appsPlatformMetricsServer: apps.MetricsServerAppK8s {
-    #     _clusterName = _clusterName
-    #     _name = "${_managedResourcePrefix}metrics${_managedResourceSuffix}"
-    #     _fluxHelmReleaseDependencies = infrastructureAppHelmReleases
-    #     _projectNamespace = _claimNamespace
-    # }
-    # appsPlatformSnapshotController: apps.SnapshotControllerAppK8s {
-    #     _clusterName = _clusterName
-    #     _name = "${_managedResourcePrefix}sc${_managedResourceSuffix}"
-    #     _projectNamespace = _claimNamespace
-    # }
-    k8sCrossplaneSecretsNamespace: core.K8sObjectNamespaceWrapper {
-        _clusterName = _clusterName 
-        _name = "${_managedResourcePrefix}crossplane-secrets-ns${_managedResourceSuffix}"
-        _namespaceName = "crossplane-secrets"
-        _projectNamespace = _claimNamespace
-        _uses = [
-            providerConfig.managedResource
-        ]
-    }
     managedResources: [core.K8sProviderConfig | core.ManagedResource] = [
         applicationCredential.managedResource
         cluster.managedResource
@@ -345,19 +261,7 @@ subnet-id = "${openstackCluster.getSubnetId(_observedComposedResources)}"
         openstackCinderCsiCloudConfig.managedResource
         openstackCloudControllerManagerCloudConfig.managedResource
         argoCdCluster.managedResource
-        k8sCrossplaneSecretsNamespace.managedResource
-    ] + sum([
-        # appPrometheusOperatorCrds.managedResources
-        # appCilium.managedResources
-        # appOpenStackCloudControllerManager.managedResources
-        # appOpenStackCinderCsi.managedResources
-        # appOpenStackExternalDns.managedResources
-        # appClusterAutoscaler.managedResources
-        # appsPlatformCertManager.managedResources
-        # appsPlatformIngressNginx.managedResources
-        # appsPlatformMetricsServer.managedResources
-        # appsPlatformSnapshotController.managedResources
-    ], [])
+    ] + sum([], [])
     usages: [core.Usage] = sum([
         applicationCredential.usages
         cluster.usages
@@ -375,18 +279,8 @@ subnet-id = "${openstackCluster.getSubnetId(_observedComposedResources)}"
         openstackCinderCsiCloudConfig.usages
         openstackCloudControllerManagerCloudConfig.usages
         argoCdCluster.usages
-        # appPrometheusOperatorCrds.usages
-        # appCilium.usages
-        # appOpenStackCloudControllerManager.usages
-        # appOpenStackCinderCsi.usages
-        # appOpenStackExternalDns.usages
-        # appClusterAutoscaler.usages
-        # appsPlatformCertManager.usages
-        # appsPlatformIngressNginx.usages
-        # appsPlatformMetricsServer.usages
-        # appsPlatformSnapshotController.usages
-        k8sCrossplaneSecretsNamespace.usages
     ], [])
 
     check:
         len(managedResources) == len({managedResource.metadata.name: True for managedResource in managedResources}), "Names of managed Resources must be unique"
+
