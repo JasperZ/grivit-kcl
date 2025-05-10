@@ -1,4 +1,11 @@
+import regex
 import core.v1alpha1 as core
+
+test: PublicRegistryCachesHarborAppK8s = PublicRegistryCachesHarborAppK8s {
+    _claimName = "claim-name"
+    _claimNamespace = "claim-namespace"
+    _observedComposedResources = ""
+}
 
 schema PublicRegistryCachesHarborAppK8s:
     _claimName: str
@@ -32,14 +39,14 @@ schema PublicRegistryCachesHarborAppK8s:
         _harborRegistryEndpointUrl = config.registryEndpointUrl
         _harborRegistryName = configName
         _harborRegistryProviderName = config.registryProviderName
-        _resourceName = _resourceNamePrefix + "registry" + _resourceNameSuffix
+        _resourceName = _resourceNamePrefix + "registry-" + regex.replace(configName, "\.", "-") + _resourceNameSuffix
         _resourceNamespace = _claimNamespace
     } for configName, config in _publicRegistryConfigurations}
 
     _projects: {str:core.HarborProject} = {configName = core.HarborProject {
         _harborProjectName = "cache-" + configName
         _harborProjectRegistryId = _registries[configName].getProviderAtRegistryId(_observedComposedResources)
-        _resourceName = _resourceNamePrefix + "project" + _resourceNameSuffix
+        _resourceName = _resourceNamePrefix + "project-" + regex.replace(configName, "\.", "-") + _resourceNameSuffix
         _resourceNamespace = _claimNamespace
     } for configName, config in _publicRegistryConfigurations}
 
