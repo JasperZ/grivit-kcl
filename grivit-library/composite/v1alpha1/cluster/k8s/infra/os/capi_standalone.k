@@ -170,16 +170,73 @@ clouds:
         _projectName = _claimNamespace
         _secretName = "external-dns-openstack-clouds-config"
         _stringData = {
-            "clouds.yaml": """\
-clouds:
-  openstack:
-    auth:
-      application_credential_id: "${applicationCredential.getApplicationCredentialId(_observedComposedResources)}"
-      application_credential_secret: "${applicationCredential.getApplicationCredentialSecret(_observedComposedResources)}"
-      auth_type: "v3applicationcredential"
-    auth_url: "https://test.grivit.cloud:5000"
-    interface: "public"
-    region_name: "RegionOne"
+            "cloud.conf": """\
+[Global]
+application-credential-id = "${applicationCredential.getApplicationCredentialId(_observedComposedResources)}"
+application-credential-secret = "${applicationCredential.getApplicationCredentialSecret(_observedComposedResources)}"
+auth-url = "https://test.grivit.cloud:5000"
+"""
+        }
+        _uses = [providerConfig.managedResource]
+    }
+    openstackCinderCsiCloudConfig: core.K8sObjectSecretWrapper {
+        _clusterName = _clusterName
+        _name = "${_managedResourcePrefix}cloud-config-secret${_managedResourceSuffix}"
+        _namespace = "kube-system"
+        _projectName = _claimNamespace
+        _secretName = "openstack-cinder-csi-cloud-config"
+        _stringData = {
+            "cloud.conf": """\
+[Global]
+application-credential-id = "${applicationCredential.getApplicationCredentialId(_observedComposedResources)}"
+application-credential-secret = "${applicationCredential.getApplicationCredentialSecret(_observedComposedResources)}"
+auth-url = "https://test.grivit.cloud:5000"
+
+[Networking]
+
+[LoadBalancer]
+create-monitor = "true"
+floating-network-id = "${openstackCluster.getExternalNetworkId(_observedComposedResources)}"
+lb-method = "SOURCE_IP_PORT"
+lb-provider = "ovn"
+subnet-id = "${openstackCluster.getSubnetId(_observedComposedResources)}"
+
+[BlockStorage]
+
+[Metadata]
+
+[Route]
+"""
+        }
+        _uses = [providerConfig.managedResource]
+    }
+    openstackCloudControllerManagerCloudConfig: core.K8sObjectSecretWrapper {
+        _clusterName = _clusterName
+        _name = "${_managedResourcePrefix}cloud-config-secret${_managedResourceSuffix}"
+        _namespace = "kube-system"
+        _projectName = _claimNamespace
+        _secretName = "openstack-cloud-controller-manager-cloud-config"
+        _stringData = {
+            "cloud.conf": """\
+[Global]
+application-credential-id = "${applicationCredential.getApplicationCredentialId(_observedComposedResources)}"
+application-credential-secret = "${applicationCredential.getApplicationCredentialSecret(_observedComposedResources)}"
+auth-url = "https://test.grivit.cloud:5000"
+
+[Networking]
+
+[LoadBalancer]
+create-monitor = "true"
+floating-network-id = "${openstackCluster.getExternalNetworkId(_observedComposedResources)}"
+lb-method = "SOURCE_IP_PORT"
+lb-provider = "ovn"
+subnet-id = "${openstackCluster.getSubnetId(_observedComposedResources)}"
+
+[BlockStorage]
+
+[Metadata]
+
+[Route]
 """
         }
         _uses = [providerConfig.managedResource]
@@ -301,6 +358,8 @@ clouds:
         k8sProviderConfigCredentialsSecret.managedResource
         providerConfig.managedResource
         externalDnsCloudConfig.managedResource
+        openstackCinderCsiCloudConfig.managedResource
+        openstackCloudControllerManagerCloudConfig.managedResource
         argoCdCluster.managedResource
         k8sCrossplaneSecretsNamespace.managedResource
     ] + sum([
@@ -329,6 +388,8 @@ clouds:
         k8sProviderConfigCredentialsSecret.usages
         providerConfig.usages
         externalDnsCloudConfig.usages
+        openstackCinderCsiCloudConfig.usages
+        openstackCloudControllerManagerCloudConfig.usages
         argoCdCluster.usages
         # appPrometheusOperatorCrds.usages
         # appCilium.usages
