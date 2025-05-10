@@ -21,7 +21,7 @@ schema HarborProject:
             registryId: _harborProjectRegistryId
             vulnerabilityScanning: _harborProjectVulnerabilityScanning
         }
-        spec.providerConfigRef.name = "bootstrap-harbor-provider"
+        spec.providerConfigRef.name = "bootstrap-harbor"
     }
     usages: [Usage] = [Usage {
         metadata.name = "${_resourceName}-uses-${ofResource.metadata.name}"

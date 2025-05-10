@@ -23,7 +23,7 @@ schema HarborRegistry:
             name: _harborRegistryName
             providerName: _harborRegistryProviderName
         }
-        spec.providerConfigRef.name = "bootstrap-harbor-provider"
+        spec.providerConfigRef.name = "bootstrap-harbor"
     }
     usages: [Usage] = [Usage {
         metadata.name = "${_resourceName}-uses-${ofResource.metadata.name}"
