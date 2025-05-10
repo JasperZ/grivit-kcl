@@ -163,6 +163,27 @@ clouds:
             k8sProviderConfigCredentialsSecret.managedResource
         ]
     }
+    externalDnsCloudConfig: core.K8sObjectSecretWrapper {
+        _clusterName = _clusterName
+        _name = "${_managedResourcePrefix}cloud-config-secret${_managedResourceSuffix}"
+        _namespace = "kube-system"
+        _projectName = _claimNamespace
+        _secretName = "external-dns-openstack-clouds-config"
+        _stringData = {
+            "clouds.yaml": """\
+clouds:
+  openstack:
+    auth:
+      application_credential_id: "${applicationCredential.getApplicationCredentialId(_observedComposedResources)}"
+      application_credential_secret: "${applicationCredential.getApplicationCredentialSecret(_observedComposedResources)}"
+      auth_type: "v3applicationcredential"
+    auth_url: "https://test.grivit.cloud:5000"
+    interface: "public"
+    region_name: "RegionOne"
+"""
+        }
+        _uses = [providerConfig.managedResource]
+    }
     argoCdCluster: core.ArgoCdClusterWrapper2 {
         _argoCdClusterKubeconfigSecretKey = "value"
         _argoCdClusterKubeconfigSecretName = "${cluster.managedResource.metadata.name}-kubeconfig"
@@ -279,6 +300,7 @@ clouds:
         workerMachineTemplate.managedResource
         k8sProviderConfigCredentialsSecret.managedResource
         providerConfig.managedResource
+        externalDnsCloudConfig.managedResource
         argoCdCluster.managedResource
         k8sCrossplaneSecretsNamespace.managedResource
     ] + sum([
@@ -306,6 +328,7 @@ clouds:
         workerMachineTemplate.usages
         k8sProviderConfigCredentialsSecret.usages
         providerConfig.usages
+        externalDnsCloudConfig.usages
         argoCdCluster.usages
         # appPrometheusOperatorCrds.usages
         # appCilium.usages

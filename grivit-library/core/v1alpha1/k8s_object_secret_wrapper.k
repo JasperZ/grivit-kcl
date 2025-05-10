@@ -7,7 +7,7 @@ schema K8sObjectSecretWrapper:
     _projectName: str
     _secretName: str
     _stringData: {str:str}
-    _uses: [ManagedResource] = []
+    _uses: [ManagedResource|K8sProviderConfig] = []
 
     managedResource: ManagedResource {
         apiVersion = "kubernetes.crossplane.io/v1alpha2"
