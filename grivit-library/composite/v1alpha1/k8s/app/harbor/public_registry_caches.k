@@ -1,12 +1,6 @@
 import regex
 import core.v1alpha1 as core
 
-test: PublicRegistryCachesHarborAppK8s = PublicRegistryCachesHarborAppK8s {
-    _claimName = "claim-name"
-    _claimNamespace = "claim-namespace"
-    _observedComposedResources = ""
-}
-
 schema PublicRegistryCachesHarborAppK8s:
     _claimName: str
     _claimNamespace: str
