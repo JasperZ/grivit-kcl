@@ -164,11 +164,16 @@ clouds:
         _projectName = _claimNamespace
         _secretName = "external-dns-openstack-clouds-config"
         _stringData = {
-            "cloud.conf": """\
-[Global]
-application-credential-id = "${applicationCredential.getApplicationCredentialId(_observedComposedResources)}"
-application-credential-secret = "${applicationCredential.getApplicationCredentialSecret(_observedComposedResources)}"
-auth-url = "https://test.grivit.cloud:5000"
+            "clouds.yaml": """\
+clouds:
+  openstack:
+    auth:
+      application_credential_id: "${applicationCredential.getApplicationCredentialId(_observedComposedResources)}"
+      application_credential_secret: "${applicationCredential.getApplicationCredentialSecret(_observedComposedResources)}"
+      auth_url: "https://test.grivit.cloud:5000"
+      auth_type: "v3applicationcredential"
+      interface: "public"
+      region_name: "RegionOne"
 """
         }
         _uses = [providerConfig.managedResource]
