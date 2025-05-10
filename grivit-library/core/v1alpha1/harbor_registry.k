@@ -15,11 +15,11 @@ schema HarborRegistry:
             "krm.kcl.dev/composition-resource-name" = _resourceName
         }
         spec.forProvider = {
-            description: _harborRegistryDescription
-            endpointUrl: _harborRegistryEndpointUrl
-            insecure: _harborRegistryInsecure
-            name: _harborRegistryName
-            providerName: _harborRegistryProviderName
+            description = _harborRegistryDescription
+            endpointUrl = _harborRegistryEndpointUrl
+            insecure = _harborRegistryInsecure
+            name = _harborRegistryName
+            providerName = _harborRegistryProviderName
         }
         spec.providerConfigRef.name = "bootstrap-harbor"
     }

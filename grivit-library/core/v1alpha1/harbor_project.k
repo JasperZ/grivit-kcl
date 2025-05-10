@@ -2,6 +2,7 @@ schema HarborProject:
     _harborProjectEnableContentTrust: bool = False
     _harborProjectEnableContentTrustCosign: bool = False
     _harborProjectName: str
+    _harborProjectPublic: bool = False
     _harborProjectRegistryId: int
     _harborProjectVulnerabilityScanning: bool = True
     _resourceName: str
@@ -15,11 +16,12 @@ schema HarborProject:
             "krm.kcl.dev/composition-resource-name" = _resourceName
         }
         spec.forProvider = {
-            enableContentTrust: _harborProjectEnableContentTrust
-            enableContentTrustCosign: _harborProjectEnableContentTrustCosign
-            name: _harborProjectName
-            registryId: _harborProjectRegistryId
-            vulnerabilityScanning: _harborProjectVulnerabilityScanning
+            enableContentTrust = _harborProjectEnableContentTrust
+            enableContentTrustCosign = _harborProjectEnableContentTrustCosign
+            name = _harborProjectName
+            public = _harborProjectPublic
+            registryId = _harborProjectRegistryId
+            vulnerabilityScanning = _harborProjectVulnerabilityScanning
         }
         spec.providerConfigRef.name = "bootstrap-harbor"
     }
