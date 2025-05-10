@@ -23,7 +23,7 @@ schema K8sCapiKubeadmWorkerConfigTemplateWrapper:
                                 content = """\
 server = "https://registry-1.docker.io"
 
-[host."https://harbor.hub.test.grivit.com/v2/cache-docker-io"]
+[host."harbor.dev-crossplane.test.grivit.com/v2/cache-docker-io"]
 capabilities = ["pull", "resolve"]
 override_path = true
 """
@@ -33,7 +33,7 @@ override_path = true
                                 content = """\
 server = "https://quay.io"
 
-[host."https://harbor.hub.test.grivit.com/v2/cache-quay-io"]
+[host."harbor.dev-crossplane.test.grivit.com/v2/cache-quay-io"]
 capabilities = ["pull", "resolve"]
 override_path = true
 """
@@ -43,7 +43,7 @@ override_path = true
                                 content = """\
 server = "https://registry.k8s.io"
 
-[host."https://harbor.hub.test.grivit.com/v2/cache-registry-k8s-io"]
+[host."harbor.dev-crossplane.test.grivit.com/v2/cache-registry-k8s-io"]
 capabilities = ["pull", "resolve"]
 override_path = true
 """
@@ -53,7 +53,7 @@ override_path = true
                                 content = """\
 server = "https://ghcr.io"
 
-[host."https://harbor.hub.test.grivit.com/v2/cache-ghcr-io"]
+[host."harbor.dev-crossplane.test.grivit.com/v2/cache-ghcr-io"]
 capabilities = ["pull", "resolve"]
 override_path = true
 """
