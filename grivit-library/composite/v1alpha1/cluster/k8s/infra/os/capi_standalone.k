@@ -168,7 +168,7 @@ clouds:
         _argoCdClusterKubeconfigSecretName = "${cluster.managedResource.metadata.name}-kubeconfig"
         _argoCdClusterKubeconfigSecretNamespace = _claimNamespace
         _argoCdClusterName = core.argoCdClusterName(_clusterName, _argoCdInstance)
-        _argoCdClusterProject = core.argoCdTenantProjectName(_argoCdInstance)
+        _argoCdClusterProject = "${_argoCdInstance.projectName}-tenant"
         _projectName = _claimNamespace
         _resourceName = "${_managedResourcePrefix}cluster${_managedResourceSuffix}"
         _uses = [
