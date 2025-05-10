@@ -57,12 +57,6 @@ clouds:
       auth_type: v3applicationcredential
       application_credential_id: ${applicationCredential.getApplicationCredentialId(_observedComposedResources)}
       application_credential_secret: ${applicationCredential.getApplicationCredentialSecret(_observedComposedResources)}
-      # project_id: 48f988d765c6418e92ad153a9bfcb5a4
-      # project_name: "os.grivit.cust.jasper.dev"
-      # user_domain_name: "Default"
-      # region_name: "RegionOne"
-      # interface: "public"
-      # identity_api_version: 3
 """
         }
         _uses = [applicationCredential.managedResource]
@@ -165,7 +159,7 @@ clouds:
     }
     externalDnsCloudConfig: core.K8sObjectSecretWrapper {
         _clusterName = _clusterName
-        _name = "${_managedResourcePrefix}cloud-config-secret${_managedResourceSuffix}"
+        _name = "${_managedResourcePrefix}ext-sec-cloud-conf${_managedResourceSuffix}"
         _namespace = "kube-system"
         _projectName = _claimNamespace
         _secretName = "external-dns-openstack-clouds-config"
@@ -181,7 +175,7 @@ auth-url = "https://test.grivit.cloud:5000"
     }
     openstackCinderCsiCloudConfig: core.K8sObjectSecretWrapper {
         _clusterName = _clusterName
-        _name = "${_managedResourcePrefix}cloud-config-secret${_managedResourceSuffix}"
+        _name = "${_managedResourcePrefix}cinder-csi-cloud-conf${_managedResourceSuffix}"
         _namespace = "kube-system"
         _projectName = _claimNamespace
         _secretName = "openstack-cinder-csi-cloud-config"
@@ -212,7 +206,7 @@ subnet-id = "${openstackCluster.getSubnetId(_observedComposedResources)}"
     }
     openstackCloudControllerManagerCloudConfig: core.K8sObjectSecretWrapper {
         _clusterName = _clusterName
-        _name = "${_managedResourcePrefix}cloud-config-secret${_managedResourceSuffix}"
+        _name = "${_managedResourcePrefix}occm-cloud-conf${_managedResourceSuffix}"
         _namespace = "kube-system"
         _projectName = _claimNamespace
         _secretName = "openstack-cloud-controller-manager-cloud-config"
