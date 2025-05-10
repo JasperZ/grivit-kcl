@@ -3,6 +3,7 @@ schema ArgoCdClusterWrapper:
     _argoCdClusterKubeconfigSecretKey: str
     _argoCdClusterKubeconfigSecretName: str
     _argoCdClusterKubeconfigSecretNamespace: str
+    _argoCdClusterLabels: {str: str} = {}
     _argoCdClusterName: str
     _argoCdClusterNamespaces: [str] = []
     _argoCdClusterProject?: str
@@ -25,6 +26,7 @@ schema ArgoCdClusterWrapper:
                     namespace = _argoCdClusterKubeconfigSecretNamespace
                 }
             }
+            labels = _argoCdClusterLabels
             name = _argoCdClusterName
             namespaces = _argoCdClusterNamespaces
             if _argoCdClusterProject:
@@ -49,6 +51,7 @@ schema ArgoCdClusterWrapper2:
     _argoCdClusterKubeconfigSecretKey: str
     _argoCdClusterKubeconfigSecretName: str
     _argoCdClusterKubeconfigSecretNamespace: str
+    _argoCdClusterLabels: {str: str} = {}
     _argoCdClusterName: str
     _argoCdClusterNamespaces: [str] = []
     _argoCdClusterProject?: str
@@ -71,6 +74,7 @@ schema ArgoCdClusterWrapper2:
                     namespace = _argoCdClusterKubeconfigSecretNamespace
                 }
             }
+            labels = _argoCdClusterLabels
             name = _argoCdClusterName
             namespaces = _argoCdClusterNamespaces
             if _argoCdClusterProject:
