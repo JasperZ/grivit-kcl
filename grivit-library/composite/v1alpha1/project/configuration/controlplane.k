@@ -7,6 +7,7 @@ import core.v1alpha1.k8s_utils as k8sUtils
 import core.v1alpha1.os_utils as osUtils
 
 import ...k8s.app.certmanager as certmanager
+import ...k8s.app.harbor as harbor
 
 schema ControlPlaneProjectConfiguration:
     _claimName: str
@@ -146,8 +147,14 @@ schema ControlPlaneProjectConfiguration:
         _observedComposedResources = _observedComposedResources
         _projectNamespace = _claimNamespace
     }
+    harborPublicRegistryCaches: harbor.PublicRegistryCachesHarborAppK8s {
+        _claimName = _claimName
+        _claimNamespace = _claimNamespace
+        _observedComposedResources = _observedComposedResources
+    }
     managedResources: [core.ManagedResource | core.AwsProviderConfig | core.HelmProviderConfig | core.K8sProviderConfig | core.OsProviderConfig] = sum([
         certmanagerClusterIssuer.managedResources
+        harborPublicRegistryCaches.managedResources
     ], [
         awsProviderConfigCredentialsSecret.managedResource
         awsProviderConfig.managedResource
@@ -171,5 +178,6 @@ schema ControlPlaneProjectConfiguration:
         osProviderConfigCredentialsSecret.usages
         osProviderConfig.usages
         certmanagerClusterIssuer.usages
+        harborPublicRegistryCaches.usages
     ], [])
 
