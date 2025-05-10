@@ -1,3 +1,5 @@
+import base64
+
 schema HarborRegistry:
     _harborRegistryDescription: str
     _harborRegistryEndpointUrl: str
