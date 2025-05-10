@@ -2,7 +2,7 @@ schema HarborProject:
     _harborProjectEnableContentTrust: bool = False
     _harborProjectEnableContentTrustCosign: bool = False
     _harborProjectName: str
-    _harborProjectRegistryId: str
+    _harborProjectRegistryId: int
     _harborProjectVulnerabilityScanning: bool = True
     _resourceName: str
     _uses: [ManagedResource] = []

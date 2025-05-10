@@ -38,10 +38,10 @@ schema HarborRegistry:
         spec.of.resourceRef.name = ofResource.metadata.name
     } for ofResource in _uses]
 
-    getProviderAtRegistryId: (any) -> str = lambda observedComposedResources: any -> str {
-        _registryId: str = ""
+    getProviderAtRegistryId: (any) -> int = lambda observedComposedResources: any -> int {
+        _registryId: int = 1234567890
         if managedResource.metadata.name in observedComposedResources:
-            _registryId = str(base64.decode(observedComposedResources[managedResource.metadata.name].ConnectionDetails?.username))
+            _registryId = int(base64.decode(observedComposedResources[managedResource.metadata.name].ConnectionDetails?.username))
 
         _registryId
     }
