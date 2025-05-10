@@ -4,7 +4,7 @@ import grivit_library.core.v1alpha1 as core
 observedComposedResources: any = option("params").ocds
 observedCompositeResource: any = option("params").oxr
 
-claimName: str = observedCompositeResource.metadata.name
+claimName: str = observedCompositeResource.metadata.labels["crossplane.io/claim-name"]
 claimNamespace: str = observedCompositeResource.metadata.labels["crossplane.io/claim-namespace"]
 composite: str = observedCompositeResource.metadata.labels["crossplane.io/composite"]
 spec: any = observedCompositeResource.spec
