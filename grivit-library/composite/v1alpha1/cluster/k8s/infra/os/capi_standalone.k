@@ -185,21 +185,6 @@ auth-url = "https://test.grivit.cloud:5000"
 application-credential-id = "${applicationCredential.getApplicationCredentialId(_observedComposedResources)}"
 application-credential-secret = "${applicationCredential.getApplicationCredentialSecret(_observedComposedResources)}"
 auth-url = "https://test.grivit.cloud:5000"
-
-[Networking]
-
-[LoadBalancer]
-create-monitor = "true"
-floating-network-id = "${openstackCluster.getExternalNetworkId(_observedComposedResources)}"
-lb-method = "SOURCE_IP_PORT"
-lb-provider = "ovn"
-subnet-id = "${openstackCluster.getSubnetId(_observedComposedResources)}"
-
-[BlockStorage]
-
-[Metadata]
-
-[Route]
 """
         }
         _uses = [providerConfig.managedResource]
