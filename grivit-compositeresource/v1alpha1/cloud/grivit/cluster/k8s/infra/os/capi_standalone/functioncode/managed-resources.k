@@ -9,15 +9,7 @@ claimNamespace: str = observedCompositeResource.metadata.labels["crossplane.io/c
 composite: str = observedCompositeResource.metadata.labels["crossplane.io/composite"]
 spec: any = observedCompositeResource.spec
 
-argoCdInstance: core.ArgoCdInstance {
-    domain = "domain not required here"
-    name = spec.argoCdInstance.name
-    ownerProjectName = spec.argoCdInstance.ownerProjectName
-    projectName = claimNamespace
-}
-
 k8sClusterOsStandalone: infra.CapiStandaloneClusterK8sInfraOs = infra.CapiStandaloneClusterK8sInfraOs {
-    _argoCdInstance = argoCdInstance
     _claimNamespace = claimNamespace
     _claimName = claimName
     _clusterName = spec.clusterName

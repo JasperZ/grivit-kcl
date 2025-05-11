@@ -18,7 +18,6 @@ schema CapiStandaloneClusterK8sInfraOsConfigControlPlane:
     replicas: int
 
 schema CapiStandaloneClusterK8sInfraOs:
-    _argoCdInstance: core.ArgoCdInstance
     _clusterName: str
     _controlPlane: CapiStandaloneClusterK8sInfraOsConfigControlPlane
     _composite: str
@@ -234,7 +233,7 @@ subnet-id = "${openstackCluster.getSubnetId(_observedComposedResources)}"
             "project": _claimNamespace
         }
         _argoCdClusterName = core.argoCdClusterName(_claimNamespace, _clusterName)
-        _argoCdClusterProject = _argoCdInstance.projectName
+        _argoCdClusterProject = _claimNamespace
         _projectName = _claimNamespace
         _resourceName = "${_managedResourcePrefix}cluster${_managedResourceSuffix}"
         _uses = [
