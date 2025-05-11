@@ -22,6 +22,6 @@ argoCdTenantProjectName: (ArgoCdInstance) -> str = lambda argoCdInstance: ArgoCd
     _name = crypto.md5("${argoCdInstance.ownerProjectName}-${argoCdInstance.name}")[:8] + "-${argoCdInstance.projectName}-tenant"
 }
 
-argoCdClusterName: (str, ArgoCdInstance) -> str = lambda clusterName: str, argoCdInstance: ArgoCdInstance -> str {
-    _name = "${argoCdInstance.projectName}-${clusterName}"
+argoCdClusterName: (str, str) -> str = lambda claimNamespace: str, clusterName: str -> str {
+    _name = "${claimNamespace}-${clusterName}"
 }

@@ -1,7 +1,8 @@
 import crypto
 import core.v1alpha1 as core
 
-# import .....app.k8s as apps
+import .....k8s.app.certmanager as certmanager
+
 schema CapiStandaloneClusterK8sInfraOsConfigWorkersAutoscaling:
     minSize: int
     maxSize: int
@@ -230,10 +231,9 @@ subnet-id = "${openstackCluster.getSubnetId(_observedComposedResources)}"
         _argoCdClusterKubeconfigSecretName = "${cluster.managedResource.metadata.name}-kubeconfig"
         _argoCdClusterKubeconfigSecretNamespace = _claimNamespace
         _argoCdClusterLabels = {
-            "argocd.argoproj.io/auto-label-cluster-info": "true"
             "project": _claimNamespace
         }
-        _argoCdClusterName = core.argoCdClusterName(_clusterName, _argoCdInstance)
+        _argoCdClusterName = core.argoCdClusterName(_claimNamespace, _clusterName)
         _argoCdClusterProject = _argoCdInstance.projectName
         _projectName = _claimNamespace
         _resourceName = "${_managedResourcePrefix}cluster${_managedResourceSuffix}"
@@ -243,6 +243,13 @@ subnet-id = "${openstackCluster.getSubnetId(_observedComposedResources)}"
             controlPlaneKubeadm.managedResource
             controlPlaneMachineTemplate.managedResource
         ]
+    }
+    certmanagerClusterIssuer: certmanager.ClusterIssuerCertManagerAppK8s {
+        _clusterName = _clusterName
+        _email = _email
+        _name = _managedResourcePrefix
+        _observedComposedResources = _observedComposedResources
+        _projectNamespace = _claimNamespace
     }
     managedResources: [core.K8sProviderConfig | core.ManagedResource] = [
         applicationCredential.managedResource
@@ -261,7 +268,9 @@ subnet-id = "${openstackCluster.getSubnetId(_observedComposedResources)}"
         openstackCinderCsiCloudConfig.managedResource
         openstackCloudControllerManagerCloudConfig.managedResource
         argoCdCluster.managedResource
-    ] + sum([], [])
+    ] + sum([
+        certmanagerClusterIssuer.managedResources
+    ], [])
     usages: [core.Usage] = sum([
         applicationCredential.usages
         cluster.usages
@@ -279,6 +288,7 @@ subnet-id = "${openstackCluster.getSubnetId(_observedComposedResources)}"
         openstackCinderCsiCloudConfig.usages
         openstackCloudControllerManagerCloudConfig.usages
         argoCdCluster.usages
+        certmanagerClusterIssuer.usages
     ], [])
 
     check:
