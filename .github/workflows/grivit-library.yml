@@ -42,7 +42,7 @@ jobs:
         run: aws sts get-caller-identity
       
       - name: set version in kcl.mod
-        run: asel put -r toml -f grivit-library/kcl.mod -w toml --indent 0 -t string -v "${KCL_PACKAGE_VERSION}" '.package.version'
+        run: dasel put -r toml -f grivit-library/kcl.mod -w toml --indent 0 -t string -v "${KCL_PACKAGE_VERSION}" '.package.version'
 
       - name: create kcl package
         run: |
