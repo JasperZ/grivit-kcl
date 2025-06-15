@@ -19,9 +19,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: print ENVs
-        run: env
-
       - name: install aws
         run: |
           curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
@@ -41,3 +38,11 @@ jobs:
       
       - name: list created kcl package
         run: ls -lah grivit-library/pkg
+      
+      - name: login to ECR registry
+        run: |
+          AWS_ECR_PASSWORD=$(aws ecr get-login-password --region eu-central-1)
+          echo "{AWS_ECR_PASSWORD}={${AWS_ECR_PASSWORD}}" >> "$GITHUB_ENV"
+      
+      - name: login to registry
+        run: kcl registry login -u AWS -p ${AWS_ECR_PASSWORD} ${AWS_ECR_REGISTRY}
