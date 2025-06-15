@@ -54,7 +54,7 @@ jobs:
 
       - name: get password for ECR registry
         run: |
-          AWS_ECR_PASSWORD=$(aws ecr get-login-password --region eu-central-1)
+          AWS_ECR_PASSWORD=$(aws ecr get-login-password --region ${AWS_DEFAULT_REGION})
           echo "AWS_ECR_PASSWORD=${AWS_ECR_PASSWORD}" >> "$GITHUB_ENV"
 
       - name: login kcl registry
