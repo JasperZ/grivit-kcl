@@ -11,13 +11,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: install kcl
-        run: wget -q https://kcl-lang.io/script/install-cli.sh -O - | /bin/bash
+      # - name: install kcl
+      #   run: wget -q https://kcl-lang.io/script/install-cli.sh -O - | /bin/bash
 
-      - name: create kcl package
-        run: |
-          cd grivit-library
-          kcl mod pkg --target pkg
+      # - name: create kcl package
+      #   run: |
+      #     cd grivit-library
+      #     kcl mod pkg --target pkg
       
-      - name: list created kcl package
-        run: ls -lah grivit-library/pkg
+      # - name: list created kcl package
+      #   run: ls -lah grivit-library/pkg
