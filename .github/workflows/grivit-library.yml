@@ -6,6 +6,13 @@ on:
       - '**'
       - "!main"
 
+env:
+  AWS_ACCESS_KEY_ID: ${{ vars.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ vars.AWS_SECRET_ACCESS_KEY }}
+  AWS_DEFAULT_REGION: ${{ vars.AWS_DEFAULT_REGION }}
+  AWS_ECR_REGISTRY: ${{ vars.AWS_ECR_REGISTRY }}
+  AWS_ECR_REPOSITORY: ${{ vars.AWS_ECR_REPOSITORY_GRIVIT_KCL_LIBRARY_PACKAGE }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
