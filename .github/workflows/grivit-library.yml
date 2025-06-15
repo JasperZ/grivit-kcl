@@ -29,18 +29,18 @@ jobs:
           curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
           unzip awscliv2.zip
           sudo ./aws/install --update
-      
+
       - name: install kcl
         run: wget -q https://kcl-lang.io/script/install-cli.sh -O - | /bin/bash
-      
+
       - name: install dasel
         run: |
           curl -sSLf "$(curl -sSLf https://api.github.com/repos/tomwright/dasel/releases/latest | grep browser_download_url | grep linux_amd64 | grep -v .gz | cut -d\" -f 4)" -L -o dasel && chmod +x dasel
           sudo mv ./dasel /usr/local/bin/dasel
-      
+
       - name: verify the identity being used
         run: aws sts get-caller-identity
-      
+
       - name: set version in kcl.mod
         run: dasel put -r toml -f grivit-library/kcl.mod -w toml --indent 0 -t string -v "${KCL_PACKAGE_VERSION}" '.package.version'
 
@@ -48,17 +48,37 @@ jobs:
         run: |
           cd grivit-library
           kcl mod pkg --target pkg
-      
+
       - name: list created kcl package
         run: ls -lah grivit-library/pkg
-      
-      - name: login to ECR registry
+
+      - name: get password for ECR registry
         run: |
           AWS_ECR_PASSWORD=$(aws ecr get-login-password --region eu-central-1)
           echo "AWS_ECR_PASSWORD=${AWS_ECR_PASSWORD}" >> "$GITHUB_ENV"
-      
-      - name: login to registry
+
+      - name: login kcl registry
         run: kcl registry login -u AWS -p ${AWS_ECR_PASSWORD} ${AWS_ECR_REGISTRY}
       
+      - name: login crane registry
+        run: crane auth login --username AWS --password ${AWS_ECR_PASSWORD} ${AWS_ECR_REGISTRY}
+
+      - name: remove existing OCI artifact with same tag, if exists
+        run: |
+          IMAGE_DIGEST=$(aws ecr list-images --repository-name "${AWS_ECR_REPOSITORY}" --query "imageIds[?imageTag=='${KCL_PACKAGE_VERSION}'] | [0].imageDigest" --no-cli-pager)
+
+          if [ -n "${IMAGE_DIGEST}" ]; then
+            echo "Found image digest: ${AWS_ECR_REPOSITORY}"
+            echo "Proceeding with deletion from repository: ${AWS_ECR_REPOSITORY}"
+
+            # AWS CLI command to delete the specific image digest
+            aws ecr batch-delete-image --repository-name "${AWS_ECR_REPOSITORY}" --image-ids imageDigest="${IMAGE_DIGEST}"
+
+            echo "Deletion command sent."
+          else
+            # This block executes if {IMAGE_DIGEST} is empty "" or unset.
+            echo "{IMAGE_DIGEST} is null or empty. Skipping deletion."
+          fi
+
       - name: push kcl package
         run: kcl mod push --tar_path grivit-library/pkg/grivit-library_${KCL_PACKAGE_VERSION}.tar oci://${AWS_ECR_REGISTRY}/${AWS_ECR_REPOSITORY}
